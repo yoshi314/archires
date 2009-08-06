@@ -1,0 +1,125 @@
+<?php
+/*
+ ----------------------------------------------------------------------
+ GLPI - Gestionnaire Libre de Parc Informatique
+ Copyright (C) 2003-2008 by the INDEPNET Development Team.
+ 
+ http://indepnet.net/   http://glpi-project.org/
+ ----------------------------------------------------------------------
+
+ LICENSE
+
+	This file is part of GLPI.
+
+    GLPI is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    GLPI is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with GLPI; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ ------------------------------------------------------------------------
+*/
+ 
+// ----------------------------------------------------------------------
+// Original Author of file: Sébastien Prud'homme
+// Purpose of file:
+// ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+// Fichier modifiéar Pierre Bérd pour la socié GRUAU
+// Le 5 mai 2006
+// ----------------------------------------------------------------------
+// modifier par Adrien RAVISE  aravise@citali.com
+// le 12 septembre 2006
+// Pour la societe CITALI
+// ----------------------------------------------------------------------
+
+$NEEDED_ITEMS=array("search");
+define('GLPI_ROOT', '../..'); 
+include (GLPI_ROOT."/inc/includes.php");
+
+$plugin = new Plugin();
+if ($plugin->isActivated("network"))
+	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
+else
+	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
+
+if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
+
+	if(isset($_GET['new'])){
+			
+		echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
+		echo "<tr><th>".$LANG['plugin_archires']['menu'][1]."</th></tr>";
+
+		echo "<tr class='tab_bg_1'><td>";
+		echo "<a href='front/plugin_archires.config.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
+		echo "</td></tr>";
+
+		if (countElementsInTable('glpi_plugin_archires_config',"`FK_entities`='".$_SESSION["glpiactive_entity"]."'")>0) {
+			
+			echo "<tr class='tab_bg_1'><td>";
+			echo "<a href='front/plugin_archires.location.form.php?new=1'>".$LANG['plugin_archires']['title'][2]."</a>";
+			echo "</td></tr>";
+
+			echo "<tr class='tab_bg_1'><td>";
+			echo "<a href='front/plugin_archires.switch.form.php?new=1'>".$LANG['plugin_archires']['title'][6]."</a>";
+			echo "</td></tr>";
+
+			if ($plugin->isActivated("applicatifs")){
+				echo "<tr class='tab_bg_1'><td>";
+				echo "<a href='front/plugin_archires.applicatif.form.php?new=1'>".$LANG['plugin_archires']['title'][9]."</a>";
+				echo "</td></tr>";
+			}
+		}
+		echo "</table></div>";
+
+	}else{
+		
+		if ($plugin->isActivated("network")){
+			$PluginArchires=new PluginArchires();
+			$PluginArchires->title();
+		}
+		echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
+		echo "<tr><th>".$LANG['plugin_archires']['menu'][0]."</th></tr>";
+
+		if (countElementsInTable('glpi_plugin_archires_config',"`FK_entities`='".$_SESSION["glpiactive_entity"]."'")>0) {
+
+			echo "<tr class='tab_bg_1'><td>";
+			echo "<a href='front/plugin_archires.config.index.php'>".$LANG['plugin_archires']['title'][3]."</a>";
+			echo "</td></tr>";				
+
+			echo "<tr class='tab_bg_1'><td>";
+			echo "<a href='front/plugin_archires.location.index.php'>".$LANG['plugin_archires']['title'][4]."</a>";
+			echo "</td></tr>";
+
+			echo "<tr class='tab_bg_1'><td>";
+			echo "<a href='front/plugin_archires.switch.index.php'>".$LANG['plugin_archires']['title'][5]."</a>";
+			echo "</td></tr>";
+
+			if ($plugin->isActivated("applicatifs")){
+				echo "<tr class='tab_bg_1'><td>";
+				echo "<a href='front/plugin_archires.applicatif.index.php'>".$LANG['plugin_archires']['title'][8]."</a>";
+				echo "</td></tr>";
+			}
+		} else {
+			echo "<tr class='tab_bg_1'><td>";
+			echo "<a href='front/plugin_archires.config.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
+			echo "</td></tr>";				
+		}
+		echo "</table></div>";
+		
+	}
+}else{
+	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
+	echo "<b>".$LANG['login'][5]."</b></div>";
+}
+
+commonFooter();
+
+?>

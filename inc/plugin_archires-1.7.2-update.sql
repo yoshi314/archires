@@ -1,0 +1,1 @@
+ALTER TABLE `glpi_plugin_archires_config` DROP COLUMN `system`;
