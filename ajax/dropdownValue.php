@@ -1,8 +1,8 @@
 <?php
 /*
  * @version $Id: dropdownValue.php 3825 2006-08-25 16:01:22Z moyo $
- ------------------------------------------------------------------------- 
- GLPI - Gestionnaire Libre de Parc Informatique 
+ -------------------------------------------------------------------------
+ GLPI - Gestionnaire Libre de Parc Informatique
  Copyright (C) 2003-2008 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
@@ -33,22 +33,22 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
+include_once (GLPI_ROOT."/plugins/archires/locales/".$_SESSION["glpilanguage"].".php");
+
 // Direct access to file
 if (!defined('GLPI_ROOT')){
 	die("Can not acces directly to this file");
 	}
-	
+
 if(strpos($_SERVER['PHP_SELF'],"dropdownValue.php")){
 	define('GLPI_ROOT', '../../..');
 	$AJAX_INCLUDE=1;
 	include (GLPI_ROOT."/inc/includes.php");
-	
+
 	header("Content-Type: text/html; charset=UTF-8");
 	header_nocache();
 };
-include_once (GLPI_ROOT."/plugins/archires/locales/".$_SESSION["glpilanguage"].".php");
 
-	
 checkLoginUser();
 
 // Security
@@ -60,7 +60,7 @@ if (! TableExists($_POST['table']) ){
 if (!isset($_POST["limit"])) $_POST["limit"]=$CFG_GLPI["dropdown_limit"];
 $first=true;
 $where="WHERE ";
-	
+
 if (in_array($_POST['table'],$CFG_GLPI["deleted_tables"])){
 	if (!$first) $where.=" AND ";
 	else $first=false;
@@ -94,7 +94,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 
 		if (!$first) $where.=" AND ";
 		else $first=false;
-	
+
 		if (isset($_POST["entity_restrict"])&&$_POST["entity_restrict"]>=0){
 			$where.= $_POST['table'].".FK_entities='".$_POST["entity_restrict"]."'";
 		} else {
@@ -106,9 +106,9 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 	if ($where=="WHERE ") $where="";
 
 
-	$query = "SELECT * 
-			FROM `".$_POST['table']."` 
-			$where 
+	$query = "SELECT *
+			FROM `".$_POST['table']."`
+			$where
 			ORDER BY $add_order completename $LIMIT";
 	$result = $DB->query($query);
 
@@ -180,15 +180,15 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 
 	switch ($_POST['table']){
 		case "glpi_contacts":
-			$query = "SELECT CONCAT(name,' ',firstname) AS $field, `".$_POST['table']."`.`comments`, `".$_POST['table']."`.`ID` 
-					FROM `".$_POST['table']."` 
-					$where 
+			$query = "SELECT CONCAT(name,' ',firstname) AS $field, `".$_POST['table']."`.`comments`, `".$_POST['table']."`.`ID`
+					FROM `".$_POST['table']."`
+					$where
 					ORDER BY $field $LIMIT";
 		break;
 		default :
-			$query = "SELECT * 
-					FROM `".$_POST['table']."` 
-					$where 
+			$query = "SELECT *
+					FROM `".$_POST['table']."`
+					$where
 					ORDER BY $field $LIMIT";
 		break;
 	}
@@ -199,8 +199,8 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 
 	if ($_POST['searchText']!=$CFG_GLPI["ajax_wildcard"]&&$DB->numrows($result)==$NBMAX)
 		echo "<option value=\"0\">--".$LANG['common'][11]."--</option>";
-	
-	
+
+
 	echo "<option value=\"0\">-----</option>";
 	$number = $DB->numrows($result);
 	if($number != 0)
@@ -218,7 +218,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 			if (isset($data["comments"])) $addcomment=" - ".$data["comments"];
 
 			if (empty($output)) $output="($ID)";
-			
+
 			echo "<option value=\"".$_POST['devicetype'].";$ID\" title=\"$output$addcomment\">".substr($output,0,$_POST["limit"])."</option>";
 		}
 	}
