@@ -136,7 +136,7 @@ function plugin_init_archires() {
 				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_addtemplate.png' title='".$LANG['plugin_archires']["title"][1]."' alt='".$LANG['plugin_archires']["title"][1]."'>"]['summary'] = 'front/plugin_archires.config.form.php?new=1';
 
 				if (haveRight("config","w"))
-				$PLUGIN_HOOKS['submenu_entry']['archires']['config'] = 'front/plugin_archires.config.php';
+          $PLUGIN_HOOKS['submenu_entry']['archires']['config'] = 'front/plugin_archires.config.php';
 				$PLUGIN_HOOKS['use_massive_action']['archires']=1;
 			}
 		}
@@ -147,7 +147,7 @@ function plugin_init_archires() {
 		}
 		// Config page
 			if (plugin_archires_haveRight("archires","w") || haveRight("config","w"))
-			$PLUGIN_HOOKS['config_page']['archires'] = 'front/plugin_archires.config.php';
+        $PLUGIN_HOOKS['config_page']['archires'] = 'front/plugin_archires.config.php';
 
 		$PLUGIN_HOOKS['pre_item_delete']['archires'] = 'plugin_pre_item_delete_archires';
 

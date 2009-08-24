@@ -479,7 +479,8 @@ function plugin_archires_generate_Graphviz($graph,$format,$PluginArchiresConfig)
 		if ($PluginArchiresConfig->fields["engine"]!=0) $engine_archires="neato";
 		else $engine_archires="dot";
 
-		$command = $engine_archires." -T".$format." -o ".$output_name." ".$graph_name;
+		//$command = $engine_archires." -T".$format." -o ".$output_name." ".$graph_name;
+    $command = $engine_archires." -T" .$format." -o \"".$output_name ."\" \"".$graph_name."\"";
 		`$command`;
 
 		unlink($graph_name);
