@@ -396,7 +396,8 @@ $engine="dot";
     if ($graph_file = fopen($graph_name, "w")) {
         fputs($graph_file, $graph);
         fclose($graph_file);
-		$command = $engine." -T" . $format . " -o " . $output_name . " " . $graph_name;
+		//$command = $engine." -T" . $format . " -o " . $output_name . " " . $graph_name;
+    $command = $engine." -T" .$format." -o \"".$output_name ."\" \"".$graph_name."\"";
 		`$command`;
 
         unlink($graph_name);
