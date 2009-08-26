@@ -33,35 +33,35 @@
 // ----------------------------------------------------------------------
 
 
-function plugin_archires_type_Add($type_query,$type,$device_type,$query_ID){
+function plugin_archires_type_Add($querytype,$type,$itemtype,$queries_id){
 	GLOBAL  $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
 	
 	$obj = new PluginArchiresQueryType();
 	
 	if ($type!='-1'){
-		if (!$obj->GetfromDBbyType($device_type,$type,$type_query,$query_ID)){
+		if (!$obj->GetfromDBbyType($itemtype,$type,$querytype,$queries_id)){
 
 			$obj->add(array(
-				'device_type'=>$device_type,
+				'itemtype'=>$itemtype,
 				'type'=>$type,
-				'type_query'=>$type_query,
-				'FK_query'=>$query_ID));
+				'querytype'=>$querytype,
+				'queries_id'=>$queries_id));
 		}
 	}else{
 			
 		$query="SELECT * 
-				FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$device_type]."` ";	    
+				FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$itemtype]."` ";	    
 		$result = $DB->query($query);
 		$number = $DB->numrows($result);
 		$i = 0;
 		while($i < $number){
-			$type_table=$DB->result($result, $i, "ID");
-			if (!$obj->GetfromDBbyType($device_type,$type_table,$type_query,$query_ID)){
+			$type_table=$DB->result($result, $i, "id");
+			if (!$obj->GetfromDBbyType($itemtype,$type_table,$querytype,$queries_id)){
 				$obj->add(array(
-				'device_type'=>$device_type,
+				'itemtype'=>$itemtype,
 				'type'=>$type_table,
-				'type_query'=>$type_query,
-				'FK_query'=>$query_ID));
+				'querytype'=>$querytype,
+				'queries_id'=>$queries_id));
 			}
 			$i++;
 		}			
@@ -71,45 +71,45 @@ function plugin_archires_type_Add($type_query,$type,$device_type,$query_ID){
 function plugin_archires_type_Delete($ID){
 	
 	$obj = new PluginArchiresQueryType();
-	$obj->delete(array('ID'=>$ID));
+	$obj->delete(array('id'=>$ID));
 			
 }
 
-function plugin_archires_image_Device_Add($type,$device_type,$img){
+function plugin_archires_image_Device_Add($type,$itemtype,$img){
 	GLOBAL  $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
 	
-	$obj = new PluginArchiresImageDevice();
+	$obj = new PluginArchiresItemImage();
 	
 	if ($type!='-1'){
-		if ($obj->GetfromDBbyType($device_type,$type)){
+		if ($obj->GetfromDBbyType($itemtype,$type)){
 
 			$obj->update(array(
-				'ID'=>$obj->fields['ID'],
+				'id'=>$obj->fields['id'],
 				'img'=>$img));
 		} else {
 
 			$obj->add(array(
-				'device_type'=>$device_type,
+				'itemtype'=>$itemtype,
 				'type'=>$type,
 				'img'=>$img));
 		}
 	}else{
 		$query="SELECT * 
-				FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$device_type]."` ";	    
+				FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$itemtype]."` ";	    
 		$result = $DB->query($query);
 		$number = $DB->numrows($result);
 		$i = 0;
 		while($i < $number){
-			$type_table=$DB->result($result, $i, "ID");
-			if ($obj->GetfromDBbyType($device_type,$type_table)){
+			$type_table=$DB->result($result, $i, "id");
+			if ($obj->GetfromDBbyType($itemtype,$type_table)){
 
 				$obj->update(array(
-					'ID'=>$obj->fields['ID'],
+					'id'=>$obj->fields['id'],
 					'img'=>$img));
 			} else {
 
 				$obj->add(array(
-					'device_type'=>$device_type,
+					'itemtype'=>$itemtype,
 					'type'=>$type_table,
 					'img'=>$img));
 			}
@@ -120,8 +120,8 @@ function plugin_archires_image_Device_Add($type,$device_type,$img){
 
 function plugin_archires_image_Device_Delete($ID){
 	
-	$obj = new PluginArchiresImageDevice();
-	$obj->delete(array('ID'=>$ID));
+	$obj = new PluginArchiresItemImage();
+	$obj->delete(array('id'=>$ID));
 		
 }
 
@@ -129,37 +129,37 @@ function plugin_archires_color_Iface_Add($iface,$color){
 	
 	GLOBAL $DB;
 	
-	$obj=new PluginArchiresColorIface();
+	$obj=new PluginArchiresNetworkInterfaceColor();
 	
 	if ($iface!='-1'){
 		if ($obj->GetfromDBbyIface($iface)){
 
 			$obj->update(array(
-			'ID'=>$obj->fields['ID'],
+			'id'=>$obj->fields['id'],
 			'color'=>$color));
 		} else {
 
 			$obj->add(array(
-			'iface'=>$iface,
+			'networkinterfaces_id'=>$iface,
 			'color'=>$color));
 		}
 	}else{
 		$query="SELECT * 
-				FROM `glpi_dropdown_iface` ";	    
+				FROM `glpi_networkinterfaces` ";	    
 		$result = $DB->query($query);
 		$number = $DB->numrows($result);
 		$i = 0;
 		while($i < $number){
-			$iface_table=$DB->result($result, $i, "ID");
+			$iface_table=$DB->result($result, $i, "id");
 			if ($obj->GetfromDBbyIface($iface_table)){
 
 				$obj->update(array(
-				'ID'=>$obj->fields['ID'],
+				'id'=>$obj->fields['id'],
 				'color'=>$color));
 			} else {
 
 				$obj->add(array(
-				'iface'=>$iface_table,
+				'networkinterfaces_id'=>$iface_table,
 				'color'=>$color));
 			}
 			$i++;
@@ -169,8 +169,8 @@ function plugin_archires_color_Iface_Add($iface,$color){
 
 function plugin_archires_color_Iface_Delete($ID){
 	
-	$obj = new PluginArchiresColorIface();
-	$obj->delete(array('ID'=>$ID));
+	$obj = new PluginArchiresNetworkInterfaceColor();
+	$obj->delete(array('id'=>$ID));
 		
 }
 
@@ -178,37 +178,37 @@ function plugin_archires_color_State_Add($state,$color){
 	
 	GLOBAL $DB;
 	
-	$obj=new PluginArchiresColorState();
+	$obj=new PluginArchiresStateColor();
 	
 	if ($state!='-1'){
 		if ($obj->GetfromDBbyState($state)){
 
 			$obj->update(array(
-			'ID'=>$obj->fields['ID'],
+			'id'=>$obj->fields['id'],
 			'color'=>$color));
 		} else {
 
 			$obj->add(array(
-			'state'=>$state,
+			'states_id'=>$state,
 			'color'=>$color));
 		}
 	}else{
 		$query="SELECT * 
-				FROM `glpi_dropdown_state` ";	    
+				FROM `glpi_states` ";	    
 		$result = $DB->query($query);
 		$number = $DB->numrows($result);
 		$i = 0;
 		while($i < $number){
-			$state_table=$DB->result($result, $i, "ID");
+			$state_table=$DB->result($result, $i, "id");
 			if ($obj->GetfromDBbyState($state_table)){
 
 				$obj->update(array(
-				'ID'=>$obj->fields['ID'],
+				'id'=>$obj->fields['id'],
 				'color'=>$color));
 			} else {
 
 				$obj->add(array(
-			'state'=>$state_table,
+			'states_id'=>$state_table,
 			'color'=>$color));
 			}
 			$i++;
@@ -218,8 +218,8 @@ function plugin_archires_color_State_Add($state,$color){
 
 function plugin_archires_color_State_Delete($ID){
 	
-	$obj = new PluginArchiresColorState();
-	$obj->delete(array('ID'=>$ID));
+	$obj = new PluginArchiresStateColor();
+	$obj->delete(array('id'=>$ID));
 		
 }
 
@@ -227,37 +227,37 @@ function plugin_archires_color_Vlan_Add($vlan,$color){
 	
 	GLOBAL $DB;
 	
-	$obj = new PluginArchiresColorVlan();
+	$obj = new PluginArchiresVlanColor();
 	
 	if ($vlan!='-1'){
 		if ($obj->GetfromDBbyVlan($vlan)){
 
 			$obj->update(array(
-			'ID'=>$obj->fields['ID'],
+			'id'=>$obj->fields['id'],
 			'color'=>$color));
 		} else {
 
 			$obj->add(array(
-			'vlan'=>$vlan,
+			'vlans_id'=>$vlan,
 			'color'=>$color));
 		}
 	}else{
 		$query="SELECT * 
-				FROM `glpi_dropdown_vlan` ";	    
+				FROM `glpi_vlans` ";	    
 		$result = $DB->query($query);
 		$number = $DB->numrows($result);
 		$i = 0;
 		while($i < $number){
-			$vlan_table=$DB->result($result, $i, "ID");
+			$vlan_table=$DB->result($result, $i, "id");
 			if ($obj->GetfromDBbyVlan($vlan_table)){
 
 				$obj->update(array(
-				'ID'=>$obj->fields['ID'],
+				'id'=>$obj->fields['id'],
 				'color'=>$color));
 			} else {
 
 				$obj->add(array(
-			'vlan'=>$vlan_table,
+			'vlans_id'=>$vlan_table,
 			'color'=>$color));
 			}
 			$i++;
@@ -267,8 +267,8 @@ function plugin_archires_color_Vlan_Add($vlan,$color){
 
 function plugin_archires_color_Vlan_Delete($ID){
 	
-	$obj = new PluginArchiresColorVlan();
-	$obj->delete(array('ID'=>$ID));
+	$obj = new PluginArchiresVlanColor();
+	$obj->delete(array('id'=>$ID));
 		
 }
 

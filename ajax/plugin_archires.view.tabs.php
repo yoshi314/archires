@@ -40,16 +40,13 @@ include (GLPI_ROOT . "/inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
-if(!isset($_POST["ID"])) {
+if(!isset($_POST["id"])) {
 	exit();
 }
-if(!isset($_POST["sort"])) $_POST["sort"] = "";
-if(!isset($_POST["order"])) $_POST["order"] = "";
-if(!isset($_POST["withtemplate"])) $_POST["withtemplate"] = "";
 
 	plugin_archires_checkRight("archires","r");
 
-	if (empty($_POST["ID"])){
+	if (empty($_POST["id"])){
 		switch($_POST['glpi_tab']){
 			default :
 				break;

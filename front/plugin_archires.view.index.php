@@ -40,28 +40,35 @@
 // Pour la societe CITALI
 // ----------------------------------------------------------------------
 
-$NEEDED_ITEMS=array("search");
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
+
+useplugin('archires',true);
 
 $plugin = new Plugin();
 if ($plugin->isActivated("network"))
 	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
 else
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","switch");
+	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
 if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 	
+	if(!isset($_GET["start"])) $_GET["start"] = 0;
+	if (!isset($_GET["order"])) $_GET["order"] = "ASC";
+	if (!isset($_GET["field"])) $_GET["field"] = "glpi_plugin_archires_views.name";
+	if (!isset($_GET["phrasetype"])) $_GET["phrasetype"] = "contains";
+	if (!isset($_GET["contains"])) $_GET["contains"] = "";
+	if (!isset($_GET["sort"])) $_GET["sort"] = "glpi_plugin_archires_views.name";
+	if (!isset($_GET["is_deleted"])) $_GET["is_deleted"] = "0";
+	
 	if ($plugin->isActivated("network")){
-		$PluginArchires=new PluginArchires();
-		$PluginArchires->title();
+		$PluginArchiresConfig=new PluginArchiresConfig();
+		$PluginArchiresConfig->title();
 	}
-		
-	manageGetValuesInSearch(PLUGIN_ARCHIRES_SWITCH_TYPE);
-			
-	searchForm(PLUGIN_ARCHIRES_SWITCH_TYPE,$_GET);
+	plugin_archires_config_searchForm();
 
-	showList(PLUGIN_ARCHIRES_SWITCH_TYPE,$_GET);
+	plugin_archires_config_showList($_SERVER["PHP_SELF"],$_SESSION["glpiname"],$_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["is_deleted"]);
+
 	
 }else{
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";

@@ -46,27 +46,35 @@ include (GLPI_ROOT."/inc/includes.php");
 
 useplugin('archires',true);
 
-$PluginArchiresConfig=new PluginArchiresConfig();
-$PluginArchiresConfig->getFromDB($_GET["config"]);
-$format=$PluginArchiresConfig->fields["format"];
+$PluginArchiresView=new PluginArchiresView();
+$PluginArchiresView->getFromDB($_GET["views_id"]);
+if (isset($_GET["format"])) $format=$_GET["format"];
+else $format=$PluginArchiresView->fields["format"];
 
-if ($format=='0') $format_graph="jpeg";
-elseif ($format=='1') $format_graph="png ";
-elseif ($format=='2') $format_graph="gif ";
+if ($format==PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
+elseif ($format==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
+elseif ($format==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
+elseif ($format==PLUGIN_ARCHIRES_SVG_FORMAT) $format_graph="svg";
 
-if ($_GET["type"]==PLUGIN_ARCHIRES_LOCATION_QUERY){
+if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 	$object= "PluginArchiresQueryLocation";
-}elseif ($_GET["type"]==PLUGIN_ARCHIRES_SWITCH_QUERY){
-	$object= "PluginArchiresQuerySwitch";
-}elseif ($_GET["type"]==PLUGIN_ARCHIRES_APPLICATIFS_QUERY){
-	$object= "PluginArchiresQueryApplicatifs";
+}elseif ($_GET["querytype"]==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+	$object= "PluginArchiresQueryNetworkEquipment";
+}elseif ($_GET["querytype"]==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+	$object= "PluginArchiresQueryAppliance";
 }
 			
 $obj=new $object();
-$output_data = plugin_archires_Create_Graph($format_graph,$obj,$_GET["ID"],$_GET["config"]);
+$output_data = plugin_archires_Create_Graph($format_graph,$obj,$_GET["id"],$_GET["views_id"]);
 
-header("Content-Type: image/".$format_graph."");
-header("Content-Length: " . strlen($output_data));
+if ($format==PLUGIN_ARCHIRES_SVG_FORMAT){
+  header("Content-type: image/svg+xml");
+  header('Content-Disposition: attachment; filename="image.svg"');
+}else{
+  header("Content-Type: image/".$format_graph."");
+}
+header("Content-Length: ".strlen($output_data));
+
 echo $output_data;
 
 ?>

@@ -27,22 +27,34 @@
  ------------------------------------------------------------------------
 */
 
-function plugin_archires_Query_Type_check($type,$ID,$val) {
+function plugin_archires_Query_Type_check($querytype,$views_id,$val) {
 	
 	global $DB,$LINK_ID_TABLE;
 	
 	$query0="SELECT * 
-				FROM `glpi_plugin_archires_query_type` 
-				WHERE `type_query` = '".$type."' 
-				AND `FK_query` = '".$ID."' 
-				AND `device_type` = '" . $val . "';";
+				FROM `glpi_plugin_archires_query_types` 
+				WHERE `querytype` = '".$querytype."' 
+				AND `queries_id` = '".$views_id."' 
+				AND `itemtype` = '" . $val . "';";
 	$result0=$DB->query($query0);
 	
 	$query="";
 	
+	if ($val == COMPUTER_TYPE) {
+    $typefield = "computerstypes_id";
+  }elseif ($val == NETWORKING_TYPE) {
+    $typefield = "networkequipmentstypes_id";
+  }elseif ($val == PERIPHERAL_TYPE) {
+    $typefield = "peripheralstypes_id";
+  }elseif ($val == PRINTER_TYPE) {
+    $typefield = "printerstypes_id";
+  }elseif ($val == PHONE_TYPE) {
+    $typefield = "phonestypes_id";
+  }
+    
 	if ($DB->numrows($result0)>0){
 			
-			$query = "AND `$LINK_ID_TABLE[$val]`.`type` IN (0 ";	
+			$query = "AND `$LINK_ID_TABLE[$val]`.`$typefield` IN (0 ";	
 			while ($data0=$DB->fetch_array($result0)){
 				$type_where=",'".$data0["type"]."' ";
 				$query .= " $type_where ";
@@ -57,20 +69,20 @@ function plugin_archires_query_Test($type,$ID) {
 	
 	global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
    
-   if ($type==PLUGIN_ARCHIRES_LOCATION_QUERY){
+   if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 		$object= "PluginArchiresQueryLocation";
-   }elseif ($type==PLUGIN_ARCHIRES_SWITCH_QUERY){
-		$object= "PluginArchiresQuerySwitch";
-   }elseif ($type==PLUGIN_ARCHIRES_APPLICATIFS_QUERY){
-		$object= "PluginArchiresQueryApplicatifs";
+   }elseif ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+		$object= "PluginArchiresQueryNetworkEquipment";
+   }elseif ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+		$object= "PluginArchiresQueryAppliance";
 	}
 	
    $obj=new $object();
 	$obj->getFromDB($ID);
-	$FK_config=$obj->fields["FK_config"];
+	$views_id=$obj->fields["views_id"];
 	
-	$PluginArchiresConfig=new PluginArchiresConfig;
-	$PluginArchiresConfig->getFromDB($FK_config);
+	$PluginArchiresView=new PluginArchiresView;
+	$PluginArchiresView->getFromDB($views_id);
 
    $devices = array();
    $ports = array();
@@ -85,28 +97,28 @@ function plugin_archires_query_Test($type,$ID) {
 	echo "<th>".$LANG['plugin_archires']['test'][8]."</th>";
 	echo "<th>".$LANG['plugin_archires']['test'][9]."</th></tr>";
 
-	 if ($type==PLUGIN_ARCHIRES_LOCATION_QUERY){
-		$devices=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresConfig,true);
-		$ports=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresConfig,false);
-   }elseif ($type==PLUGIN_ARCHIRES_SWITCH_QUERY){
-		$devices=plugin_archires_display_Query_Switch($ID,$obj,$PluginArchiresConfig,true);
-		$ports=plugin_archires_display_Query_Switch($ID,$obj,$PluginArchiresConfig,false);
-   }elseif ($type==PLUGIN_ARCHIRES_APPLICATIFS_QUERY){
-		$devices=plugin_archires_display_Query_Applicatifs($ID,$obj,$PluginArchiresConfig,true);
-		$ports=plugin_archires_display_Query_Applicatifs($ID,$obj,$PluginArchiresConfig,false);
+	 if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
+		$devices=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresView,true);
+		$ports=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresView,false);
+   }elseif ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+		$devices=plugin_archires_display_Query_NetworkEquipment($ID,$obj,$PluginArchiresView,true);
+		$ports=plugin_archires_display_Query_NetworkEquipment($ID,$obj,$PluginArchiresView,false);
+   }elseif ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+		$devices=plugin_archires_display_Query_Appliance($ID,$obj,$PluginArchiresView,true);
+		$ports=plugin_archires_display_Query_Appliance($ID,$obj,$PluginArchiresView,false);
 	}
 	
 
-	foreach ($devices as $device_type => $typed_devices){
+	foreach ($devices as $itemtype => $typed_devices){
 
 		foreach ($typed_devices as $device_id => $device){
 
-			$device_unique_name = $device_type . "_" . $device_id . "_";
+			$device_unique_name = $itemtype . "_" . $device_id . "_";
 			$device_unique_name .= $device["name"];
 
-			$image_name = plugin_archires_display_Image_Device($device["type"],$device_type,true);
+			$image_name = plugin_archires_display_Image_Device($device["type"],$itemtype,true);
 
-			$url = $CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$device_type]."?ID=".$device_id;
+			$url = $CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$itemtype]."?id=".$device_id;
 
 			echo "<tr class='tab_bg_1'>";
 			echo "<td>$device_unique_name</td>";
@@ -115,11 +127,11 @@ function plugin_archires_query_Test($type,$ID) {
 			echo "</td>";
 			
 			echo "<td>";
-			echo plugin_archires_display_Type_And_IP($PluginArchiresConfig,$device_type,$device,false);
+			echo plugin_archires_display_Type_And_IP($PluginArchiresView,$itemtype,$device,false);
 			echo  "</td>";
 			
 			echo  "<td>";
-			if ($PluginArchiresConfig->fields["display_state"]!=0 && isset($device["state"]) ){
+			if ($PluginArchiresView->fields["display_state"]!=0 && isset($device["states_id"]) ){
 				echo plugin_archires_display_Color_State($device);
 			}
 			echo  "</td>";
@@ -145,53 +157,53 @@ function plugin_archires_query_Test($type,$ID) {
 
 	$wires = array();
 
-	$query = "SELECT `ID`, `end1`, `end2`
-	FROM `glpi_networking_wire`";
+	$query = "SELECT `id`, `networkports_id_1`, `networkports_id_2`
+	FROM `glpi_networkports_networkports`";
 
 	if ($result = $DB->query($query)) {
 		while ($data = $DB->fetch_array($result)) {
-			$wires[$data["ID"]]["end1"] = $data["end1"];
-			$wires[$data["ID"]]["end2"] = $data["end2"];
+			$wires[$data["id"]]["networkports_id_1"] = $data["networkports_id_1"];
+			$wires[$data["id"]]["networkports_id_2"] = $data["networkports_id_2"];
 		}
 	}
 
 	foreach ($wires as $wire) {
-		if (!empty($ports[$wire["end1"]]) && !empty($ports[$wire["end2"]]) && isset($ports[$wire["end1"]]) && isset($ports[$wire["end2"]]) ) {
-			$on_device1 = $ports[$wire["end1"]]["on_device"];
-			$device_type1 = $ports[$wire["end1"]]["device_type"];
-			$logical_number1 = $ports[$wire["end1"]]["logical_number"];
-			$name1 = $ports[$wire["end1"]]["namep"];
-			$ID1 = $ports[$wire["end1"]]["IDp"];
-			$iface1 = $ports[$wire["end1"]]["iface"];
-			$ifaddr1 = $ports[$wire["end1"]]["ifaddr"];
-			$device_unique_name1 = $device_type1 . "_" . $on_device1 . "_";
-			$device_unique_name1 .= $devices[$device_type1][$on_device1]["name"];
+		if (isset($ports[$wire["networkports_id_1"]]) && !empty($ports[$wire["networkports_id_1"]]) && isset($ports[$wire["networkports_id_2"]]) && !empty($ports[$wire["networkports_id_2"]])) {
+			$items_id1 = $ports[$wire["networkports_id_1"]]["items_id"];
+			$itemtype1 = $ports[$wire["networkports_id_1"]]["itemtype"];
+			$logical_number1 = $ports[$wire["networkports_id_1"]]["logical_number"];
+			$name1 = $ports[$wire["networkports_id_1"]]["namep"];
+			$ID1 = $ports[$wire["networkports_id_1"]]["idp"];
+			$networkinterfaces_id1 = $ports[$wire["networkports_id_1"]]["networkinterfaces_id"];
+			$ip1 = $ports[$wire["networkports_id_1"]]["ip"];
+			$device_unique_name1 = $itemtype1 . "_" . $items_id1 . "_";
+			$device_unique_name1 .= $devices[$itemtype1][$items_id1]["name"];
 
-			$on_device2 = $ports[$wire["end2"]]["on_device"];
-			$device_type2 = $ports[$wire["end2"]]["device_type"];
-			$logical_number2 = $ports[$wire["end2"]]["logical_number"];
-			$name2 = $ports[$wire["end2"]]["namep"];
-			$ID2 = $ports[$wire["end2"]]["IDp"];
-			$iface2 = $ports[$wire["end2"]]["iface"];
-			$ifaddr2 = $ports[$wire["end2"]]["ifaddr"];
-			$device_unique_name2 = $device_type2 . "_" . $on_device2 . "_";
-			$device_unique_name2 .= $devices[$device_type2][$on_device2]["name"];
+			$items_id2 = $ports[$wire["networkports_id_2"]]["items_id"];
+			$itemtype2 = $ports[$wire["networkports_id_2"]]["itemtype"];
+			$logical_number2 = $ports[$wire["networkports_id_2"]]["logical_number"];
+			$name2 = $ports[$wire["networkports_id_2"]]["namep"];
+			$ID2 = $ports[$wire["networkports_id_2"]]["idp"];
+			$networkinterfaces_id2 = $ports[$wire["networkports_id_2"]]["networkinterfaces_id"];
+			$ip2 = $ports[$wire["networkports_id_2"]]["ip"];
+			$device_unique_name2 = $itemtype2 . "_" . $items_id2 . "_";
+			$device_unique_name2 .= $devices[$itemtype2][$items_id2]["name"];
 
 
 			echo "<tr class='tab_bg_1'>";
 
-			if ($PluginArchiresConfig->fields["display_ports"]!=0 && $PluginArchiresConfig->fields["engine"]!=1){
-				$url_ports = $CFG_GLPI["root_doc"] . "/front/networking.port.php?ID=";
+			if ($PluginArchiresView->fields["display_ports"]!=0 && $PluginArchiresView->fields["engine"]!=1){
+				$url_ports = $CFG_GLPI["root_doc"] . "/front/networking.port.php?id=";
 				echo  "<td>".$device_unique_name1;		
 				echo  " -- " . $device_unique_name2 ."</td>";
 
-				if ($PluginArchiresConfig->fields["display_ip"]!=0)
-					echo  "<td>".$ifaddr1."</td>";
+				if ($PluginArchiresView->fields["display_ip"]!=0)
+					echo  "<td>".$ip1."</td>";
 				echo  "<td><a href='".$url_ports.$ID1."'>".$name1."</a> - ".$LANG['plugin_archires'][17]." ".$logical_number1."</td>";   
 				echo  "<td><div align='center'><img src= \"../pics/socket.png\" alt='../pics/socket.png' /></div></td>";
 				echo  "<td><a href='".$url_ports.$ID2."'>".$name2."</a> - ".$LANG['plugin_archires'][17]." ".$logical_number2."</td>";
-				if ($PluginArchiresConfig->fields["display_ip"]!=0)
-					echo  "<td>".$ifaddr2."</td>";
+				if ($PluginArchiresView->fields["display_ip"]!=0)
+					echo  "<td>".$ip2."</td>";
 
 			}else{
 
@@ -212,11 +224,11 @@ function plugin_archires_query_Test($type,$ID) {
 	echo "</div>";
 }
 
-function plugin_archires_generate_Graph_Devices($device,$device_id,$device_type,$format,$image_name,$url,$PluginArchiresConfig) {
+function plugin_archires_generate_Graph_Devices($device,$device_id,$itemtype,$format,$image_name,$url,$PluginArchiresView) {
 	
 	global $DB;
 	
-	$device_unique_name = $device_type . "_" . $device_id . "_";
+	$device_unique_name = $itemtype . "_" . $device_id . "_";
 	$device_unique_name .= $device["name"];
 			
 	$graph = "\"".$device_unique_name."\"[shape=plaintext, label=";
@@ -231,18 +243,18 @@ function plugin_archires_generate_Graph_Devices($device,$device_id,$device_type,
 
 	$graph .= "<tr><td> </td></tr><tr><td>".$device["name"];
 	//ip / type
-	$graph .= plugin_archires_display_Type_And_IP($PluginArchiresConfig,$device_type,$device,true);
+	$graph .= plugin_archires_display_Type_And_IP($PluginArchiresView,$itemtype,$device,true);
 	//entity
-	if ($PluginArchiresConfig->fields["display_entity"]!=0 && isset($device["entity"])){
+	if ($PluginArchiresView->fields["display_entity"]!=0 && isset($device["entity"])){
 		$graph .="<tr><td>".plugin_archires_Brut(getDropdownName("glpi_entities",$device["entity"]))."</td></tr>";
 	}
 	//location
-	if ($PluginArchiresConfig->fields["display_location"]!=0 && isset($device["location"])){
-		$graph .="<tr><td>".plugin_archires_Brut(getDropdownName("glpi_dropdown_locations",$device["location"]))."</td></tr>";
+	if ($PluginArchiresView->fields["display_location"]!=0 && isset($device["locations_id"])){
+		$graph .="<tr><td>".plugin_archires_Brut(getDropdownName("glpi_locations",$device["locations_id"]))."</td></tr>";
 	}
 
 	//state
-	if ($PluginArchiresConfig->fields["display_state"]!=0 && isset($device["state"]) ){
+	if ($PluginArchiresView->fields["display_state"]!=0 && isset($device["states_id"]) ){
 
 		$graph .="<tr><td>".plugin_archires_display_Color_State($device)."</td></tr>";
 	}
@@ -258,110 +270,110 @@ function plugin_archires_generate_Graph_Devices($device,$device_id,$device_type,
 	return $graph;
 }
 
-function plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$PluginArchiresConfig) {
+function plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$PluginArchiresView) {
 	
 	global $DB,$CFG_GLPI,$LANG;
 	
-	$PluginArchiresColorIface=new PluginArchiresColorIface();
-	$PluginArchiresColorVlan=new PluginArchiresColorVlan();
+	$PluginArchiresNetworkInterfaceColor=new PluginArchiresNetworkInterfaceColor();
+	$PluginArchiresVlanColor=new PluginArchiresVlanColor();
 	
-	$on_device1 = $ports[$wire["end1"]]["on_device"];
-	$device_type1 = $ports[$wire["end1"]]["device_type"];
-	$logical_number1 = $ports[$wire["end1"]]["logical_number"];
-	$name1 = $ports[$wire["end1"]]["namep"];
-	$ID1 = $ports[$wire["end1"]]["IDp"];
-	$iface1 = $ports[$wire["end1"]]["iface"];
-	$ifaddr1 = $ports[$wire["end1"]]["ifaddr"];
-	$netmask1 = $ports[$wire["end2"]]["netmask"];
-	$device_unique_name1 = $device_type1 . "_" . $on_device1 . "_";
-	$device_unique_name1 .= $devices[$device_type1][$on_device1]["name"];
+	$items_id1 = $ports[$wire["networkports_id_1"]]["items_id"];
+	$itemtype1 = $ports[$wire["networkports_id_1"]]["itemtype"];
+	$logical_number1 = $ports[$wire["networkports_id_1"]]["logical_number"];
+	$name1 = $ports[$wire["networkports_id_1"]]["namep"];
+	$ID1 = $ports[$wire["networkports_id_1"]]["idp"];
+	$networkinterfaces_id1 = $ports[$wire["networkports_id_1"]]["networkinterfaces_id"];
+	$ip1 = $ports[$wire["networkports_id_1"]]["ip"];
+	$netmask1 = $ports[$wire["networkports_id_2"]]["netmask"];
+	$device_unique_name1 = $itemtype1 . "_" . $items_id1 . "_";
+	$device_unique_name1 .= $devices[$itemtype1][$items_id1]["name"];
 
-	$on_device2 = $ports[$wire["end2"]]["on_device"];
-	$device_type2 = $ports[$wire["end2"]]["device_type"];
-	$logical_number2 = $ports[$wire["end2"]]["logical_number"];
-	$name2 = $ports[$wire["end2"]]["namep"];
-	$ID2 = $ports[$wire["end2"]]["IDp"];
-	$iface2 = $ports[$wire["end2"]]["iface"];
-	$ifaddr2 = $ports[$wire["end2"]]["ifaddr"];
-	$netmask2 = $ports[$wire["end2"]]["netmask"];
-	$device_unique_name2 = $device_type2 . "_" . $on_device2 . "_";
-	$device_unique_name2 .= $devices[$device_type2][$on_device2]["name"];
+	$items_id2 = $ports[$wire["networkports_id_2"]]["items_id"];
+	$itemtype2 = $ports[$wire["networkports_id_2"]]["itemtype"];
+	$logical_number2 = $ports[$wire["networkports_id_2"]]["logical_number"];
+	$name2 = $ports[$wire["networkports_id_2"]]["namep"];
+	$ID2 = $ports[$wire["networkports_id_2"]]["idp"];
+	$networkinterfaces_id2 = $ports[$wire["networkports_id_2"]]["networkinterfaces_id"];
+	$ip2 = $ports[$wire["networkports_id_2"]]["ip"];
+	$netmask2 = $ports[$wire["networkports_id_2"]]["netmask"];
+	$device_unique_name2 = $itemtype2 . "_" . $items_id2 . "_";
+	$device_unique_name2 .= $devices[$itemtype2][$items_id2]["name"];
 	
 	$graph="";
 
-	if($PluginArchiresConfig->fields["color"] == PLUGIN_ARCHIRES_NETWORK_COLOR ) {
-		if (empty($iface1) && empty($iface2)) {
+	if($PluginArchiresView->fields["color"] == PLUGIN_ARCHIRES_NETWORK_COLOR ) {
+		if (empty($networkinterfaces_id1) && empty($networkinterfaces_id2)) {
 			$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
-		}elseif (!empty($iface1)){
+		}elseif (!empty($networkinterfaces_id1)){
 			
-			if ($PluginArchiresColorIface->GetfromDBbyIface($iface1)){
-				$graph .= "edge [color=".$PluginArchiresColorIface->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
+			if ($PluginArchiresNetworkInterfaceColor->getFromDBbyIface($networkinterfaces_id1)){
+				$graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
 			}else{
 				$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";			
 			}
 		}else{
-			if ($PluginArchiresColorIface->GetfromDBbyIface($iface2)){
-				$graph .= "edge [color=".$PluginArchiresColorIface->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
+			if ($PluginArchiresNetworkInterfaceColor->getFromDBbyIface($networkinterfaces_id2)){
+				$graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
 			}else{
 				$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";			
 			}
 		}
-	}elseif($PluginArchiresConfig->fields["color"] == PLUGIN_ARCHIRES_VLAN_COLOR ) {
+	}elseif($PluginArchiresView->fields["color"] == PLUGIN_ARCHIRES_VLAN_COLOR ) {
 		
-		$q = "SELECT `glpi_dropdown_vlan`.`ID` 
-		FROM `glpi_dropdown_vlan`, `glpi_networking_vlan` 
-		WHERE `glpi_networking_vlan`.`FK_vlan` = `glpi_dropdown_vlan`.`ID` 
-		AND `glpi_networking_vlan`.`FK_port` = '$ID1' " ;
+		$q = "SELECT `glpi_vlans`.`id` 
+		FROM `glpi_vlans`, `glpi_networkports_vlans` 
+		WHERE `glpi_networkports_vlans`.`vlans_id` = `glpi_vlans`.`id` 
+		AND `glpi_networkports_vlans`.`networkports_id` = '$ID1' " ;
 		$r=$DB->query($q);
 		$nb = $DB->numrows($r);
 		if( $r = $DB->query($q)){
 			$data_vlan = $DB->fetch_array($r) ;
-			$vlan1= $data_vlan["ID"] ;
+			$vlan1= $data_vlan["id"] ;
 		}
 
-		$q = "SELECT `glpi_dropdown_vlan`.`ID` 
-		FROM `glpi_dropdown_vlan`, `glpi_networking_vlan` 
-		WHERE `glpi_networking_vlan`.`FK_vlan` = `glpi_dropdown_vlan`.`ID` 
-		AND `glpi_networking_vlan`.`FK_port` = '$ID2' " ;
+		$q = "SELECT `glpi_vlans`.`id` 
+		FROM `glpi_vlans`, `glpi_networkports_vlans` 
+		WHERE `glpi_networkports_vlans`.`vlans_id` = `glpi_vlans`.`id` 
+		AND `glpi_networkports_vlans`.`networkports_id` = '$ID2' " ;
 		$r=$DB->query($q);
 		$nb = $DB->numrows($r);
 		if( $r = $DB->query($q)){
 			$data_vlan = $DB->fetch_array($r) ;
-			$vlan2= $data_vlan["ID"] ;
+			$vlan2= $data_vlan["id"] ;
 		}
 
 		if (empty($vlan1) && empty($vlan2)) {
 			$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
 		}elseif (!empty($vlan1)){
 			
-			if ($PluginArchiresColorVlan->getFromDBbyVlan($vlan1)){
-				$graph .= "edge [color=".$PluginArchiresColorVlan->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
+			if ($PluginArchiresVlanColor->getFromDBbyVlan($vlan1)){
+				$graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
 			}else{
 				$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";			
 			}
 		}else{
-			if ($PluginArchiresColorVlan->getFromDBbyVlan($vlan2)){
-				$graph .= "edge [color=".$PluginArchiresColorVlan->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
+			if ($PluginArchiresVlanColor->getFromDBbyVlan($vlan2)){
+				$graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
 			}else{
 				$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";			
 			}
 		}	 
 	}
 	//Display Ports
-	if ($PluginArchiresConfig->fields["display_ports"]!=0 && $PluginArchiresConfig->fields["engine"]!=1){
-		$url_ports = $CFG_GLPI["root_doc"] . "/front/networking.port.php?ID=";
+	if ($PluginArchiresView->fields["display_ports"]!=0 && $PluginArchiresView->fields["engine"]!=1){
+		$url_ports = $CFG_GLPI["root_doc"] . "/front/networking.port.php?id=";
 		$graph .= "\"".$device_unique_name1."\"";		
 		$graph .= " -- \"".$device_unique_name2."\"[label=";
 		$graph .= "<<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\">";
 
-		if ($PluginArchiresConfig->fields["display_ip"]!=0){
+		if ($PluginArchiresView->fields["display_ip"]!=0){
 
-			if (!empty($ifaddr1))
-				$graph .= "<tr><td>".$ifaddr1;
+			if (!empty($ip1))
+				$graph .= "<tr><td>".$ip1;
 
-			if (!empty($ifaddr1)&&!empty($netmask1))
+			if (!empty($ip1)&&!empty($netmask1))
 				$graph .= "/".$netmask1."</td></tr>";
-			elseif (!empty($ifaddr1) && empty($netmask1))
+			elseif (!empty($ip1) && empty($netmask1))
 				$graph .= "</td></tr>";
 		}
 		$graph .= "<tr><td HREF=\"".$url_ports.$ID1."\" tooltip=\"".$name1."\">".$LANG['plugin_archires'][17]." ".$logical_number1."</td></tr>";
@@ -373,14 +385,14 @@ function plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$Plu
 
 		$graph .= "<tr><td HREF=\"".$url_ports.$ID2."\" tooltip=\"".$name2."\">".$LANG['plugin_archires'][17]." ".$logical_number2."</td></tr>";
 		
-		if ($PluginArchiresConfig->fields["display_ip"]!=0){
+		if ($PluginArchiresView->fields["display_ip"]!=0){
 
-			if (!empty($ifaddr2))
-				$graph .= "<tr><td>".$ifaddr2;
+			if (!empty($ip2))
+				$graph .= "<tr><td>".$ip2;
 
-			if (!empty($ifaddr2)&&!empty($netmask2))
+			if (!empty($ip2)&&!empty($netmask2))
 				$graph .= "/".$netmask2."</td></tr>";
-			elseif (!empty($ifaddr2) && empty($netmask2))
+			elseif (!empty($ip2) && empty($netmask2))
 				$graph .= "</td></tr>";
 		}
 
@@ -394,42 +406,42 @@ function plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$Plu
 	return $graph;
 }
 
-function plugin_archires_Create_Graph($format,$type,$ID,$config=0) {
+function plugin_archires_Create_Graph($format,$type,$ID,$view=0) {
    global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
 	
-   $obj=new $type();
+  $obj=new $type();
 	$obj->getFromDB($ID);
-	$FK_config=$obj->fields["FK_config"];
+	$views_id=$obj->fields["views_id"];
 
-	$PluginArchiresConfig=new PluginArchiresConfig;
-	if ($config!=0){
-		$PluginArchiresConfig->getFromDB($config);
+	$PluginArchiresView=new PluginArchiresView;
+	if ($view!=0){
+		$PluginArchiresView->getFromDB($view);
 	}else{
-		$PluginArchiresConfig->getFromDB($FK_config);
+		$PluginArchiresView->getFromDB($views_id);
 	}
 	$devices = array();
 	$ports = array();
 
-	if (isset($obj->fields["location"])){
-		$devices=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresConfig,true);
-		$ports=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresConfig,false);
-   }elseif (isset($obj->fields["switch"])){
-		$devices=plugin_archires_display_Query_Switch($ID,$obj,$PluginArchiresConfig,true);
-		$ports=plugin_archires_display_Query_Switch($ID,$obj,$PluginArchiresConfig,false);
-   }elseif (isset($obj->fields["applicatifs"])){
-		$devices=plugin_archires_display_Query_Applicatifs($ID,$obj,$PluginArchiresConfig,true);
-		$ports=plugin_archires_display_Query_Applicatifs($ID,$obj,$PluginArchiresConfig,false);
+	if (isset($obj->fields["locations_id"])){
+		$devices=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresView,true);
+		$ports=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresView,false);
+   }elseif (isset($obj->fields["networkequipments_id"])){
+		$devices=plugin_archires_display_Query_NetworkEquipment($ID,$obj,$PluginArchiresView,true);
+		$ports=plugin_archires_display_Query_NetworkEquipment($ID,$obj,$PluginArchiresView,false);
+   }elseif (isset($obj->fields["appliances_id"])){
+		$devices=plugin_archires_display_Query_Appliance($ID,$obj,$PluginArchiresView,true);
+		$ports=plugin_archires_display_Query_Appliance($ID,$obj,$PluginArchiresView,false);
 	}
 	
 	$wires = array();
 
-	$query = "SELECT `ID`, `end1`, `end2`
-	FROM `glpi_networking_wire`";
+	$query = "SELECT `id`, `networkports_id_1`, `networkports_id_2`
+	FROM `glpi_networkports_networkports`";
 
 	if ($result = $DB->query($query)) {
 		while ($data = $DB->fetch_array($result)) {
-			$wires[$data["ID"]]["end1"] = $data["end1"];
-			$wires[$data["ID"]]["end2"] = $data["end2"];
+			$wires[$data["id"]]["networkports_id_1"] = $data["networkports_id_1"];
+			$wires[$data["id"]]["networkports_id_2"] = $data["networkports_id_2"];
 		}
 	}
 
@@ -441,42 +453,42 @@ function plugin_archires_Create_Graph($format,$type,$ID,$config=0) {
 	//items
 	$graph .= "node [shape=polygon, sides=6, fontname=\"Verdana\", fontsize=\"5\"];\n";
 
-	foreach ($devices as $device_type => $typed_devices){
+	foreach ($devices as $itemtype => $typed_devices){
 
 		foreach ($typed_devices as $device_id => $device){
 
-			$image_name = plugin_archires_display_Image_Device($device["type"],$device_type,false);
+			$image_name = plugin_archires_display_Image_Device($device["type"],$itemtype,false);
 
-			$url = $CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$device_type]."?ID=".$device_id;
+			$url = $CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$itemtype]."?id=".$device_id;
 			
-			$graph.=plugin_archires_generate_Graph_Devices($device,$device_id,$device_type,$format,$image_name,$url,$PluginArchiresConfig);
+			$graph.=plugin_archires_generate_Graph_Devices($device,$device_id,$itemtype,$format,$image_name,$url,$PluginArchiresView);
 			
 		}
 	}
     
 	foreach ($wires as $wire) {
-		if (!empty($ports[$wire["end1"]]) && !empty($ports[$wire["end2"]]) && isset($ports[$wire["end1"]]) && isset($ports[$wire["end2"]]) ) {
-			 $graph.=plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$PluginArchiresConfig);
+		if (!empty($ports[$wire["networkports_id_1"]]) && !empty($ports[$wire["networkports_id_2"]]) && isset($ports[$wire["networkports_id_1"]]) && isset($ports[$wire["networkports_id_2"]]) ) {
+			 $graph.=plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$PluginArchiresView);
 		}
 	}
 
 	$graph .= "}\n";
 
-	return plugin_archires_generate_Graphviz($graph,$format,$PluginArchiresConfig);
+	return plugin_archires_generate_Graphviz($graph,$format,$PluginArchiresView);
 }
 
 
-function plugin_archires_generate_Graphviz($graph,$format,$PluginArchiresConfig) {
+function plugin_archires_generate_Graphviz($graph,$format,$PluginArchiresView) {
 	
 	$Path = GLPI_PLUGIN_DOC_DIR."/archires";
 	$graph_name = tempnam($Path, "");
 	$output_name = tempnam($Path, "");
-
+  
 	if ($graph_file = fopen($graph_name, "w")) {
 		fputs($graph_file, $graph);
 		fclose($graph_file);
 
-		if ($PluginArchiresConfig->fields["engine"]!=0) $engine_archires="neato";
+		if ($PluginArchiresView->fields["engine"]!=0) $engine_archires="neato";
 		else $engine_archires="dot";
 
 		//$command = $engine_archires." -T".$format." -o ".$output_name." ".$graph_name;

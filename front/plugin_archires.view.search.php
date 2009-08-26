@@ -47,15 +47,15 @@ else
 if(empty($_GET["start"])) $_GET["start"] = 0;
 if(empty($_GET["order"])) $_GET["order"] = "ASC";
 if(empty($_GET["phrasetype"])) $_GET["phrasetype"] = "contains";
-if (!isset($_GET["deleted"])) $_GET["deleted"] = "0";
+if (!isset($_GET["is_deleted"])) $_GET["is_deleted"] = "0";
 
 if ($plugin->isActivated("network")){
 	$PluginArchiresConfig=new PluginArchiresConfig();
 	$PluginArchiresConfig->title();
 }	
-plugin_archires_config_searchForm($_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["deleted"]);
+plugin_archires_config_searchForm($_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["is_deleted"]);
 
-plugin_archires_config_showList($_SERVER["PHP_SELF"],$_SESSION["glpiname"],$_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["deleted"]);
+plugin_archires_config_showList($_SERVER["PHP_SELF"],$_SESSION["glpiname"],$_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["is_deleted"]);
 
 commonFooter();
 

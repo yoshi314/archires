@@ -42,16 +42,12 @@
 
 define('GLPI_ROOT', '../..');
 include (GLPI_ROOT."/inc/includes.php");
-include_once ("inc/plugin_archires.config.class.php");
-include_once ("inc/plugin_archires.display.function.php");
 
-$PluginArchiresConfig=new PluginArchiresConfig();
-$PluginArchiresConfig->getFromDB('1');
-$format=$PluginArchiresConfig->fields["format"];
+useplugin('archires',true);
 
 $output_data = plugin_archires_test_Graphviz();
 
-header("Content-Type: image/".$format."");
+header("Content-Type: image/png");
 header("Content-Length: " . strlen($output_data));
 echo $output_data;
 

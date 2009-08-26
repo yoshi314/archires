@@ -47,7 +47,7 @@ function plugin_archires_createFirstAccess($ID){
 		$name=$Profile->fields["name"];
 
 		$PluginArchiresProfile->add(array(
-			'ID' => $ID,
+			'id' => $ID,
 			'name' => $name,
 			'archires' => 'w'));
 	}
@@ -62,14 +62,14 @@ function plugin_archires_createAccess($ID){
 	$name=$Profile->fields["name"];
 	
 	$PluginArchiresProfile->add(array(
-		'ID' => $ID,
+		'id' => $ID,
 		'name' => $name));
 }
 
 function plugin_archires_changeProfile()
 {
 	$prof=new PluginArchiresProfile();
-	if($prof->getFromDB($_SESSION['glpiactiveprofile']['ID']))
+	if($prof->getFromDB($_SESSION['glpiactiveprofile']['id']))
 		$_SESSION["glpi_plugin_archires_profile"]=$prof->fields;
 	else
 		unset($_SESSION["glpi_plugin_archires_profile"]);

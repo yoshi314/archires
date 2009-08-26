@@ -40,10 +40,10 @@ function plugin_archires_config_SearchForm($field="",$phrasetype= "",$contains="
 	// Print Search Form
 	GLOBAL $CFG_GLPI,$LANG;
 
-	$option["glpi_plugin_archires_config.ID"]		= $LANG['plugin_archires']['search'][0];
-	$option["glpi_plugin_archires_config.name"]	= $LANG['plugin_archires']['search'][1];
+	$option["glpi_plugin_archires_views.id"]		= $LANG['plugin_archires']['search'][0];
+	$option["glpi_plugin_archires_views.name"]	= $LANG['plugin_archires']['search'][1];
 
-	echo "<form method='get' action=\"./plugin_archires.search.config.php\">";
+	echo "<form method='get' action=\"./plugin_archires.view.search.php\">";
 	echo "<div align='center'><table  width='750' class='tab_cadre'>";
 	echo "<tr><th colspan='4'>".$LANG['search'][0].":</th></tr>";
 	echo "<tr class='tab_bg_1'>";
@@ -73,15 +73,15 @@ function plugin_archires_config_SearchForm($field="",$phrasetype= "",$contains="
 	echo "</select> ";
 
 	echo "<td>";
-	dropdownyesno("deleted",$deleted);
+	dropdownyesno("is_deleted",$deleted);
 
 	echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/showdeleted.png\" alt='".$LANG['common'][3]."' title='".$LANG['common'][3]."'>";
 
 	echo "</td>";
 	// Display Reset search
 	echo "<td align='center'>";
-	echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.index.php?reset_search=reset_search&amp;type='".PLUGIN_ARCHIRES_VIEW_TYPE."' ><img title=\"".$LANG['buttons'][16]."\" alt=\"".$LANG['buttons'][16]."\" src='".$CFG_GLPI["root_doc"]."/pics/reset.png' class='calendrier'></a>";
-	showSaveBookmarkButton(BOOKMARK_SEARCH,PLUGIN_ARCHIRES_VIEW_TYPE);
+	echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.index.php?reset_search=reset_search&amp;type='".PLUGIN_ARCHIRES_VIEWS_TYPE."' ><img title=\"".$LANG['buttons'][16]."\" alt=\"".$LANG['buttons'][16]."\" src='".$CFG_GLPI["root_doc"]."/pics/reset.png' class='calendrier'></a>";
+	showSaveBookmarkButton(BOOKMARK_SEARCH,PLUGIN_ARCHIRES_VIEWS_TYPE);
 
 	echo "</td>";
 
@@ -118,7 +118,7 @@ function plugin_archires_config_ShowList($target,$username,$field,$phrasetype,$c
 	// Build query
 	if($field=="all") {
 		$where = " (";
-		$fields = $DB->list_fields("glpi_plugin_archires_config");
+		$fields = $DB->list_fields("glpi_plugin_archires_views");
 		$columns = count($fields);
 		$i=0;
 		foreach ($fields as $key => $val) {
@@ -126,7 +126,7 @@ function plugin_archires_config_ShowList($target,$username,$field,$phrasetype,$c
 				$where .= " OR ";
 			}
 
-			$where .= "glpi_plugin_archires_config.".$key . " LIKE '%".$contains."%'";
+			$where .= "glpi_plugin_archires_views.".$key . " LIKE '%".$contains."%'";
 
 			$i++;
 		}
@@ -150,17 +150,17 @@ function plugin_archires_config_ShowList($target,$username,$field,$phrasetype,$c
 		$order = "ASC";
 	}
 	$query = "SELECT *
-			FROM glpi_plugin_archires_config ";
+			FROM glpi_plugin_archires_views ";
 	$query .= "WHERE ";
 	if (!empty($where)) $query .= " $where AND";
 
-	$itemtable="glpi_plugin_archires_config";
+	$itemtable="glpi_plugin_archires_views";
 
 	// Add deleted if item have it
 	if (in_array($itemtable,$CFG_GLPI["deleted_tables"])){
 		$LINK= " AND " ;
 		if ($first) {$LINK=" ";$first=false;}
-		$query.= $LINK.$itemtable.".deleted='$deleted' ";
+		$query.= $LINK.$itemtable.".is_deleted='$deleted' ";
 	}
 	// Remove template items
 	if (in_array($itemtable,$CFG_GLPI["template_tables"])){
@@ -199,7 +199,7 @@ function plugin_archires_config_ShowList($target,$username,$field,$phrasetype,$c
 			printPager($start,$numrows,$target,$parameters);
 
 
-			echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"../ajax/massiveactionarchires_config.php\">";
+			echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"../ajax/massiveactionViews.php\">";
 			// Produce headline
 			echo "<div align='center'><table  class='tab_cadrehov'><tr>";
 			// Name
@@ -207,11 +207,11 @@ function plugin_archires_config_ShowList($target,$username,$field,$phrasetype,$c
 				echo "<th></th>";
 
 			echo "<th>";
-			if ($sort=="glpi_plugin_archires_config.name") {
+			if ($sort=="glpi_plugin_archires_views.name") {
 				if ($order=="DESC") echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-down.png\" alt='' title=''>";
 				else echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-up.png\" alt='' title=''>";
 			}
-			echo "<a href=\"$target?field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=glpi_plugin_archires_config.name&amp;order=".($order=="ASC"?"DESC":"ASC")."&amp;start=$start\">";
+			echo "<a href=\"$target?field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=glpi_plugin_archires_views.name&amp;order=".($order=="ASC"?"DESC":"ASC")."&amp;start=$start\">";
 			echo $LANG['plugin_archires']['search'][1]."</a></th>";
 
 			//items
@@ -224,29 +224,29 @@ function plugin_archires_config_ShowList($target,$username,$field,$phrasetype,$c
 
 			//engine
 			echo "<th>";
-			if ($sort=="glpi_plugin_archires_config.engine") {
+			if ($sort=="glpi_plugin_archires_views.engine") {
 				if ($order=="DESC") echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-down.png\" alt='' title=''>";
 				else echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-up.png\" alt='' title=''>";
 			}
-			echo "<a href=\"$target?field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=glpi_plugin_archires_config.engine&amp;order=".($order=="ASC"?"DESC":"ASC")."&amp;start=$start\">";
+			echo "<a href=\"$target?field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=glpi_plugin_archires_views.engine&amp;order=".($order=="ASC"?"DESC":"ASC")."&amp;start=$start\">";
 			echo $LANG['plugin_archires']['setup'][13]."</a></th>";
 
 			//format
 			echo "<th>";
-			if ($sort=="glpi_plugin_archires_config.format") {
+			if ($sort=="glpi_plugin_archires_views.format") {
 				if ($order=="DESC") echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-down.png\" alt='' title=''>";
 				else echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-up.png\" alt='' title=''>";
 			}
-			echo "<a href=\"$target?field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=glpi_plugin_archires_config.format&amp;order=".($order=="ASC"?"DESC":"ASC")."&amp;start=$start\">";
+			echo "<a href=\"$target?field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=glpi_plugin_archires_views.format&amp;order=".($order=="ASC"?"DESC":"ASC")."&amp;start=$start\">";
 			echo $LANG['plugin_archires']['setup'][15]."</a></th>";
 
 			echo "</tr>";
 
 			for ($i=0; $i < $numrows_limit; $i++) {
 
-				$ID = $DB->result($result_limit, $i, "ID");
-				$PluginArchiresConfig = new PluginArchiresConfig;
-				$PluginArchiresConfig->getfromDB($ID);
+				$ID = $DB->result($result_limit, $i, "id");
+				$PluginArchiresView = new PluginArchiresView;
+				$PluginArchiresView->getfromDB($ID);
 
 				$sel="";
 				if (isset($_GET["select"])&&$_GET["select"]=="all") $sel="checked";
@@ -257,82 +257,82 @@ function plugin_archires_config_ShowList($target,$username,$field,$phrasetype,$c
 				if(plugin_archires_haveRight("archires","w"))
 					echo "<td width='5'><input type='checkbox' name='item[$ID]' value='1' $sel></td>";
 				echo "<td>";
-				echo "<a href=\"./plugin_archires.config.form.php?ID=$ID\">";
-				echo $PluginArchiresConfig->fields["name"]."";
-				if ($_SESSION["glpiview_ID"] == 1 ||empty($PluginArchiresConfig->fields["name"])){
+				echo "<a href=\"./plugin_archires.view.form.php?id=$ID\">";
+				echo $PluginArchiresView->fields["name"]."";
+				if ($_SESSION["glpiis_ids_visible"] == 1 ||empty($PluginArchiresView->fields["name"])){
 					echo " (";
-					echo $PluginArchiresConfig->fields["ID"].")";
+					echo $PluginArchiresView->fields["id"].")";
 				}
 				echo "</a></td>";
 
 				echo "<td align='center'>";
-				if ($PluginArchiresConfig->fields["computer"]!=0) echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["computer"]!=0) echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][0];
 				echo "<br>";
 
-				if ($PluginArchiresConfig->fields["networking"]!=0) echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["networking"]!=0) echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][0];
 				echo "<br>";
 
-				if ($PluginArchiresConfig->fields["printer"]!=0) echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["printer"]!=0) echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][0];
 				echo "<br>";
 
-				if ($PluginArchiresConfig->fields["peripheral"]!=0) echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["peripheral"]!=0) echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][0];
 				echo "<br>";
 
-				if ($PluginArchiresConfig->fields["phone"]!=0) echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["phone"]!=0) echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][0];
 				echo "</td>";
 
 				echo "<td align='center'>";
-				if ($PluginArchiresConfig->fields["display_ports"]!=0) echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["display_ports"]!=0) echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][0];
 				echo "<br>";
 
-				if ($PluginArchiresConfig->fields["display_ip"]!=0) echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["display_ip"]!=0) echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][0];
 				echo "<br>";
 
-				if ($PluginArchiresConfig->fields["display_type"]!=0) echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["display_type"]!=0) echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][0];
 				echo "<br>";
 
-				if ($PluginArchiresConfig->fields["display_state"]!=0) echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["display_state"]!=0) echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][0];
 				echo "<br>";
 
-				if ($PluginArchiresConfig->fields["display_location"]!=0) echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["display_location"]!=0) echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][0];
 				echo "<br>";
 
-				if ($PluginArchiresConfig->fields["display_entity"]!=0) echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][1];
+				if ($PluginArchiresView->fields["display_entity"]!=0) echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][1];
 				else
 				echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][0];
 				echo "</td>";
 
 				echo "<td align='center'>";
-				if ($PluginArchiresConfig->fields["engine"]!=0) echo "Neato";
+				if ($PluginArchiresView->fields["engine"]!=0) echo "Neato";
 				else
 				echo "Dot";
 				echo "</td>";
 
 				echo "<td align='center'>";
-				if ($PluginArchiresConfig->fields["format"]=='0') echo "jpeg ";
-				elseif ($PluginArchiresConfig->fields["format"]=='1') echo "png ";
-				elseif ($PluginArchiresConfig->fields["format"]=='2') echo "gif ";
-
+        if ($PluginArchiresView->fields["format"]==PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
+        elseif ($PluginArchiresView->fields["format"]==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
+        elseif ($PluginArchiresView->fields["format"]==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
+        echo $format_graph;
 				echo "</td>";
 
 				echo "</tr>";
@@ -347,7 +347,7 @@ function plugin_archires_config_ShowList($target,$username,$field,$phrasetype,$c
 				 echo "<tr><td><img src=\"".$CFG_GLPI["root_doc"]."/pics/arrow-left.png\" alt=''></td><td align='center'><a onclick= \"if ( markCheckboxes('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all' >".$LANG['buttons'][18]."</a></td>";
 				echo "<td>/</td><td align='center'><a onclick= \"if ( unMarkCheckboxes('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a>";
 				echo "</td><td align='left' width='80%'>";
-				plugin_archires_dropdownMassiveAction_Config($ID,$deleted);
+				plugin_archires_dropdownMassiveActionView($ID,$deleted);
 				echo "</td>";
 				echo "</table>";
 			}

@@ -42,7 +42,7 @@ class PluginArchiresProfile extends CommonDBTM {
 	//if profile deleted
 	function cleanProfiles($ID) {
 	
-		$this->delete(array('ID'=>$ID));
+		$this->delete(array('id'=>$ID));
 	}
 	
 	//profiles modification
@@ -68,7 +68,7 @@ class PluginArchiresProfile extends CommonDBTM {
 		if ($canedit){
 			echo "<tr class='tab_bg_1'>";
 			echo "<td align='center' colspan='2'>";
-			echo "<input type='hidden' name='ID' value=$ID>";
+			echo "<input type='hidden' name='id' value=$ID>";
 			echo "<input type='submit' name='update_user_profile' value=\"".$LANG['buttons'][7]."\" class='submit'>";
 			echo "</td></tr>";
 		}

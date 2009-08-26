@@ -37,19 +37,19 @@
 function plugin_archires_dropdownLocation($object,$ID) {
 	global $DB,$CFG_GLPI,$LANG;
 	
-	$FK_config=0;
 	$obj=new $object();
+	$locations_id=-1;
 	if($obj->getFromDB($ID)){
-		$FK_location=$obj->fields["location"];
+		$locations_id=$obj->fields["locations_id"];
 	}
-	$query0 = "SELECT `FK_entities` 
-				FROM `glpi_dropdown_locations` ";
+	$query0 = "SELECT `entities_id` 
+				FROM `glpi_locations` ";
 	$LINK= " WHERE " ;
-	$query0.=getEntitiesRestrictRequest($LINK,"glpi_dropdown_locations");
-	$query0.=" GROUP BY `FK_entities`
-				ORDER BY `FK_entities`";
+	$query0.=getEntitiesRestrictRequest($LINK,"glpi_locations");
+	$query0.=" GROUP BY `entities_id`
+				ORDER BY `entities_id`";
 
-	echo "<select name=\"location\" size=\"1\"> ";
+	echo "<select name=\"locations_id\" size=\"1\"> ";
 	echo "<option value='0'>-----</option>\n";
 	echo "<option value=\"-1\">".$LANG['plugin_archires'][30]."</option>";
 
@@ -57,11 +57,11 @@ function plugin_archires_dropdownLocation($object,$ID) {
 
 		while($ligne0= mysql_fetch_array($result0)){
 			
-			echo "<optgroup label=\"".getdropdownname("glpi_entities",$ligne0["FK_entities"])."\">";
+			echo "<optgroup label=\"".getdropdownname("glpi_entities",$ligne0["entities_id"])."\">";
 
-			$query = "SELECT `ID`, `completename` 
-			FROM `glpi_dropdown_locations` ";
-			$query.=" WHERE `FK_entities` = '".$ligne0["FK_entities"]."' ";
+			$query = "SELECT `id`, `completename` 
+			FROM `glpi_locations` ";
+			$query.=" WHERE `entities_id` = '".$ligne0["entities_id"]."' ";
 			$query.=" ORDER BY `completename` ASC";
 
 			if($result = $DB->query($query)){
@@ -69,8 +69,8 @@ function plugin_archires_dropdownLocation($object,$ID) {
 				while($ligne= mysql_fetch_array($result)){
 
 					$location=$ligne["completename"];
-					$location_id=$ligne["ID"];
-					echo "<option value='".$location_id."' ".($location_id=="".$FK_location.""?" selected ":"").">".$location."</option>";
+					$location_id=$ligne["id"];
+					echo "<option value='".$location_id."' ".($location_id=="".$locations_id.""?" selected ":"").">".$location."</option>";
 				}
 			}
 			echo "</optgroup>";
@@ -79,26 +79,26 @@ function plugin_archires_dropdownLocation($object,$ID) {
 	echo "</select>";
 }
  	        
-function plugin_archires_dropdownConfig($object,$ID) {
+function plugin_archires_dropdownView($object,$ID) {
 	global $DB,$CFG_GLPI;
 	
-	$FK_config=0;
+	$views_id=-1;
 	$obj=new $object();
 	if($obj->getFromDB($ID)){
-		$FK_config=$obj->fields["FK_config"];
+		$views_id=$obj->fields["views_id"];
 	}
-	$query = "SELECT `ID`, `name` 
-			FROM `glpi_plugin_archires_config` 
-			WHERE `deleted` = '0' 
-			AND `FK_entities` = '" . $_SESSION["glpiactive_entity"] . "' 
+	$query = "SELECT `id`, `name` 
+			FROM `glpi_plugin_archires_views` 
+			WHERE `is_deleted` = '0' 
+			AND `entities_id` = '" . $_SESSION["glpiactive_entity"] . "' 
 			ORDER BY `name` ASC";
-	echo "<select name='FK_config' size=\"1\"> ";
+	echo "<select name='views_id' size=\"1\"> ";
 	echo "<option value='0'>-----</option>\n";
 	if($result = $DB->query($query)){
 		while($ligne= mysql_fetch_array($result)){
-			$config=$ligne["name"];
-			$config_id=$ligne["ID"];
-			echo "<option value='".$config_id."' ".($config_id=="".$FK_config.""?" selected ":"").">".$config."</option>";
+			$view_name=$ligne["name"];
+			$view_id=$ligne["id"];
+			echo "<option value='".$view_id."' ".($view_id=="".$views_id.""?" selected ":"").">".$view_name."</option>";
 		} 
 	} 
 	echo "</select>"; 
@@ -180,7 +180,7 @@ function plugin_archires_getType($device_type,$type)
 	
 		$query="SELECT `name` 
 					FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$device_type]."` 
-					WHERE `ID` = '$type' ";
+					WHERE `id` = '$type' ";
 		$result = $DB->query($query);
 		$number = $DB->numrows($result);
 		if($number !="0")
@@ -189,19 +189,29 @@ function plugin_archires_getType($device_type,$type)
 	return $name;
 }
 
-function plugin_archires_dropdowncolors_Iface() {
+function plugin_archires_dropdownColors_NetworkInterface($used=array()) {
 	global $DB,$LANG,$CFG_GLPI;
 
-	$limit=$_SESSION["glpidropdown_limit"];
-
+	$limit=$_SESSION["glpidropdown_chars_limit"];
+  
+  $where="";
+  
+  if (count($used)) {
+		$where .= "WHERE id NOT IN (0";
+		foreach ($used as $ID)
+			$where .= ",$ID";
+		$where .= ")";
+	}
+	
 	$query="SELECT * 
-			FROM `glpi_dropdown_iface` 
+			FROM `glpi_networkinterfaces`
+			$where
 			ORDER BY `name`";
 	$result=$DB->query($query);
 	$number = $DB->numrows($result);
 
 	if($number>0){
-		echo "<select name='iface'>\n";
+		echo "<select name='networkinterfaces_id'>\n";
 		echo "<option value='0'>-----</option>\n";
 		echo "<option value='-1'>".$LANG['plugin_archires'][21]."</option>\n";
 		while($data= mysql_fetch_array($result)){
@@ -209,51 +219,81 @@ function plugin_archires_dropdowncolors_Iface() {
 			if (utf8_strlen($output)>$limit) {
 				$output=utf8_substr($output,0,$limit)."&hellip;";
 			}
-			echo "<option value='".$data["ID"]."'>".$output."</option>";
+			echo "<option value='".$data["id"]."'>".$output."</option>";
 		}
 		echo "</select>";
 	}	
 }
 
-function plugin_archires_dropdowncolors_Vlan() {
+function plugin_archires_dropdowncolors_Vlan($used=array()) {
 	global $DB,$LANG,$CFG_GLPI;
-
+  
+  $limit=$_SESSION["glpidropdown_chars_limit"];
+  
+  $where="";
+  
+  if (count($used)) {
+		$where .= "WHERE id NOT IN (0";
+		foreach ($used as $ID)
+			$where .= ",$ID";
+		$where .= ")";
+	}
+	
 	$query="SELECT * 
-			FROM `glpi_dropdown_vlan` 
+			FROM `glpi_vlans` 
+			$where
 			ORDER BY `name`";
 	$result=$DB->query($query);
 	$number = $DB->numrows($result);
-	$i = 0;
+
 	if($number !="0"){
-	echo "<select name='vlan'>\n";
+	echo "<select name='vlans_id'>\n";
 	echo "<option value='0'>-----</option>\n";
 	echo "<option value='-1'>".$LANG['plugin_archires'][36]."</option>\n";
 	while($data= mysql_fetch_array($result)){
-		echo "<option value='".$data["ID"]."'>".$data["name"]."</option>";
-	$i++;
+		$output=$data["name"];
+    if (utf8_strlen($output)>$limit) {
+      $output=utf8_substr($output,0,$limit)."&hellip;";
+    }
+    echo "<option value='".$data["id"]."'>".$output."</option>";
 	}
 	echo "</select>";
 
 	}	
 }
 
-
-function plugin_archires_dropdownColors_State() {
+function plugin_archires_dropdownColors_State($used=array()) {
 	global $DB,$LANG,$CFG_GLPI;
-
+  
+  $limit=$_SESSION["glpidropdown_chars_limit"];
+  
+  $where="";
+  
+  if (count($used)) {
+		$where .= "WHERE id NOT IN (0";
+		foreach ($used as $ID)
+			$where .= ",$ID";
+		$where .= ")";
+	}
+	
 	$query="SELECT * 
-			FROM `glpi_dropdown_state` 
+			FROM `glpi_states` 
+			$where
 			ORDER BY `name`";
 	$result=$DB->query($query);
 	$number = $DB->numrows($result);
-	$i = 0;
+
 	if($number !="0"){
-	echo "<select name='state'>\n";
+	echo "<select name='states_id'>\n";
 	echo "<option value='0'>-----</option>\n";
 	echo "<option value='-1'>".$LANG['plugin_archires'][15]."</option>\n";
 	while($data= mysql_fetch_array($result)){
-		echo "<option value='".$data["ID"]."'>".$data["name"]."</option>";
-	$i++;
+		$output=$data["name"];
+    if (utf8_strlen($output)>$limit) {
+      $output=utf8_substr($output,0,$limit)."&hellip;";
+    }
+    echo "<option value='".$data["id"]."'>".$output."</option>";
+
 	}
 	echo "</select>";
 

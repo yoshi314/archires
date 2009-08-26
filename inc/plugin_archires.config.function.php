@@ -36,7 +36,7 @@
 function plugin_archires_config_Display() {
 	global $DB,$LANG,$CFG_GLPI;
 
-	echo "<form method='post'  action=\"./plugin_archires.config.php\">";
+	echo "<form method='post' action=\"./plugin_archires.config.php\">";
 	echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='4'>";
 	echo $LANG['plugin_archires']['setup'][2]." : </th></tr>";
 	echo "<tr class='tab_bg_1'><td>";
@@ -62,8 +62,8 @@ function plugin_archires_config_Display() {
 	echo "</form>";	
 	
 	$query = "SELECT * 
-			FROM `glpi_plugin_archires_image_device` 
-			ORDER BY `device_type`,`type` ASC;";
+			FROM `glpi_plugin_archires_imageitems` 
+			ORDER BY `itemtype`,`type` ASC;";
 	$i=0;
 	if($result = $DB->query($query)){
 		$number = $DB->numrows($result);
@@ -86,16 +86,16 @@ function plugin_archires_config_Display() {
 		
 			while($ligne= mysql_fetch_array($result)){
 			
-			$ID=$ligne["ID"];
+			$ID=$ligne["id"];
 			
 			if($i  % 2==0 && $number>1)
 				echo "<tr class='tab_bg_1'>";
 			
 			if($number==1)
 				echo "<tr class='tab_bg_1'>";						
-			echo "<td>".plugin_archires_getDeviceType($ligne["device_type"])."</td><td>".plugin_archires_getType($ligne["device_type"],$ligne["type"])."</td><td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"]."\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";					
+			echo "<td>".plugin_archires_getDeviceType($ligne["itemtype"])."</td><td>".plugin_archires_getType($ligne["itemtype"],$ligne["type"])."</td><td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"]."\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";					
 			echo "<td>";
-			echo "<input type='hidden' name='ID' value='$ID'>";
+			echo "<input type='hidden' name='id' value='$ID'>";
 			echo "<input type='checkbox' name='item[$ID]' value='1'>";
 			echo "</td>";
 			
@@ -122,33 +122,20 @@ function plugin_archires_config_Display() {
 	}
 }
 
-function plugin_archires_config_Iface() {
+function plugin_archires_config_NetworkInterface() {
 	global $DB,$LANG,$CFG_GLPI;
 
-	echo "<form method='post'  action=\"./plugin_archires.config.php\">";
-	echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
-	echo $LANG['plugin_archires']['setup'][8]." : </th></tr>";
-	echo "<tr class='tab_bg_1'><td>";
-	plugin_archires_dropdownColors_Iface();
-	echo "</td><td>";
-	echo "<input type='text' name=\"color\">";
-	echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";
-	echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_iface')\" onmouseover=\"cleandisplay('comments_iface')\">";
-	echo "</a><span class='over_link' id='comments_iface'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
-	
-	echo "<td>";
-	echo "<div align='center'><input type='submit' name='add_color_iface' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
-	echo "</table>";
-	echo "</form>";	
-
 	$query = "SELECT * 
-			FROM `glpi_plugin_archires_color_iface` 
-			ORDER BY `iface` ASC;";
+			FROM `glpi_plugin_archires_networkinterfacescolors` 
+			ORDER BY `networkinterfaces_id` ASC;";
 	$i=0;
 	if($result = $DB->query($query)){
 		$number = $DB->numrows($result);
+		
+		echo "<form method='post' name='massiveaction_form_iface_color' id='massiveaction_form_iface_color' action=\"./plugin_archires.config.php\">";
+		$used=array();
 		if($number != 0){
-			echo "<form method='post' name='massiveaction_form_iface_color' id='massiveaction_form_iface_color' action=\"./plugin_archires.config.php\">";
+			
 			echo "<div id='liste_color'>";
 			echo "<table class='tab_cadre' cellpadding='5'>";
 			echo "<tr>";
@@ -162,19 +149,20 @@ function plugin_archires_config_Iface() {
 				echo "<th><div align='left'>".$LANG['plugin_archires'][19]."</div></th><th><div align='left'>".$LANG['plugin_archires'][20]."</div></th><th></th>";					
 			}
 			echo "</tr>";
-		
+      
 			while($ligne= mysql_fetch_array($result)){
 			
-				$ID=$ligne["ID"];
-			
+				$ID=$ligne["id"];
+				$networkinterfaces_id=$ligne["networkinterfaces_id"];
+        $used[]=$networkinterfaces_id;
 				if($i  % 2==0 && $number>1)
 					echo "<tr class='tab_bg_1'>";
 				
 				if($number==1)
 					echo "<tr class='tab_bg_1'>";						
-				echo "<td>".getDropdownName("glpi_dropdown_iface",$ligne["iface"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
+				echo "<td>".getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
 				echo "<td>";
-				echo "<input type='hidden' name='ID' value='$ID'>";
+				echo "<input type='hidden' name='id' value='$ID'>";
 				echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
 				echo "</td>";
 				
@@ -195,38 +183,42 @@ function plugin_archires_config_Iface() {
 			echo "<input type='submit' name='delete_color_iface' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
 			echo "</table>";
 			echo "</div>";
-			echo "</form>";	
+				
 		}
+		
+		echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
+    echo $LANG['plugin_archires']['setup'][8]." : </th></tr>";
+    echo "<tr class='tab_bg_1'><td>";
+    plugin_archires_dropdownColors_NetworkInterface($used);
+    echo "</td><td>";
+    echo "<input type='text' name=\"color\">";
+    echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";
+    echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_iface')\" onmouseover=\"cleandisplay('comments_iface')\">";
+    echo "</a><span class='over_link' id='comments_iface'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
+    
+    echo "<td>";
+    echo "<div align='center'><input type='submit' name='add_color_iface' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
+    echo "</table>";
+    echo "</form>";
 	}
 }
 
 function plugin_archires_Config_Vlan() {
 	global $DB,$LANG,$CFG_GLPI;
 
-	echo "<form method='post'  action=\"./plugin_archires.config.php\">";
-	echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
-	echo $LANG['plugin_archires']['setup'][23]." : </th></tr>";
-	echo "<tr class='tab_bg_1'><td>";
-	plugin_archires_dropdownColors_Vlan();
-	echo "</td><td>";
-	echo "<input type='text' name=\"color\">";
-	echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";	
-	echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_vlan')\" onmouseover=\"cleandisplay('comments_vlan')\">";
-	echo "</a><span class='over_link' id='comments_vlan'>".nl2br($LANG['plugin_archires']['setup'][23])."</span>";
-
-	echo "<td>";
-	echo "<div align='center'><input type='submit' name='add_color_vlan' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
-	echo "</table>";
-	echo "</form>";	
-
 	$query = "SELECT * 
-			FROM `glpi_plugin_archires_color_vlan` 
-			ORDER BY `vlan` ASC;";
+			FROM `glpi_plugin_archires_vlanscolors` 
+			ORDER BY `vlans_id` ASC;";
 	$i=0;
+	$used=array();
+	
 	if($result = $DB->query($query)){
 		$number = $DB->numrows($result);
+		
+		echo "<form method='post' name='massiveaction_form_vlan_color' id='massiveaction_form_vlan_color' action=\"./plugin_archires.config.php\">";
+		
 		if($number != 0){
-			echo "<form method='post' name='massiveaction_form_vlan_color' id='massiveaction_form_vlan_color' action=\"./plugin_archires.config.php\">";
+			
 			echo "<div id='liste_vlan'>";
 			echo "<table class='tab_cadre' cellpadding='5'>";
 			echo "<tr>";
@@ -243,16 +235,17 @@ function plugin_archires_Config_Vlan() {
 		
 			while($ligne= mysql_fetch_array($result)){
 			
-				$ID=$ligne["ID"];
-			
+				$ID=$ligne["id"];
+        $vlans_id=$ligne["vlans_id"];
+        $used[]=$vlans_id;
 				if($i  % 2==0 && $number>1)
 					echo "<tr class='tab_bg_1'>";
 				
 				if($number==1)
 					echo "<tr class='tab_bg_1'>";						
-				echo "<td>".getDropdownName("glpi_dropdown_vlan",$ligne["vlan"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
+				echo "<td>".getDropdownName("glpi_vlans", $ligne["vlans_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
 				echo "<td>";
-				echo "<input type='hidden' name='ID' value='$ID'>";
+				echo "<input type='hidden' name='id' value='$ID'>";
 				echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
 				echo "</td>";
 				
@@ -273,38 +266,42 @@ function plugin_archires_Config_Vlan() {
 			echo "<input type='submit' name='delete_color_vlan' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
 			echo "</table>";
 			echo "</div>";
-			echo "</form>";	
+			
 		}
+		
+		echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
+    echo $LANG['plugin_archires']['setup'][23]." : </th></tr>";
+    echo "<tr class='tab_bg_1'><td>";
+    plugin_archires_dropdownColors_Vlan($used);
+    echo "</td><td>";
+    echo "<input type='text' name=\"color\">";
+    echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";	
+    echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_vlan')\" onmouseover=\"cleandisplay('comments_vlan')\">";
+    echo "</a><span class='over_link' id='comments_vlan'>".nl2br($LANG['plugin_archires']['setup'][23])."</span>";
+
+    echo "<td>";
+    echo "<div align='center'><input type='submit' name='add_color_vlan' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
+    echo "</table>";
+    echo "</form>";	
 	}
 }
 
 function plugin_archires_config_State() {
 	global $DB,$LANG,$CFG_GLPI;
 
-	echo "<form method='post'  action=\"./plugin_archires.config.php\">";
-	echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
-	echo $LANG['plugin_archires']['setup'][19]." : </th></tr>";
-	echo "<tr class='tab_bg_1'><td>";
-	plugin_archires_dropdownColors_State();
-	echo "</td><td>";
-	echo "<input type='text' name=\"color\">";
-	echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";	
-	echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_state')\" onmouseover=\"cleandisplay('comments_state')\">";
-	echo "</a><span class='over_link' id='comments_state'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
-
-	echo "<td>";
-	echo "<div align='center'><input type='submit' name='add_color_state' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
-	echo "</table>";
-	echo "</form>";	
-
 	$query = "SELECT * 
-			FROM `glpi_plugin_archires_color_state` 
-			ORDER BY `state` ASC;";
+			FROM `glpi_plugin_archires_statescolors` 
+			ORDER BY `states_id` ASC;";
 	$i=0;
+	$used=array();
+	
 	if($result = $DB->query($query)){
 		$number = $DB->numrows($result);
+		
+		echo "<form method='post' name='massiveaction_form_state_color' id='massiveaction_form_state_color' action=\"./plugin_archires.config.php\">";
+		
 		if($number != 0){
-			echo "<form method='post' name='massiveaction_form_state_color' id='massiveaction_form_state_color' action=\"./plugin_archires.config.php\">";
+			
 			echo "<div id='liste_color'>";
 			echo "<table class='tab_cadre' cellpadding='5'>";
 			echo "<tr>";
@@ -321,16 +318,17 @@ function plugin_archires_config_State() {
 		
 			while($ligne= mysql_fetch_array($result)){
 			
-				$ID=$ligne["ID"];
-			
+				$ID=$ligne["id"];
+        $states_id=$ligne["states_id"];
+        $used[]=$states_id;
 				if($i  % 2==0 && $number>1)
 					echo "<tr class='tab_bg_1'>";
 				
 				if($number==1)
 					echo "<tr class='tab_bg_1'>";						
-				echo "<td>".getDropdownName("glpi_dropdown_state",$ligne["state"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
+				echo "<td>".getDropdownName("glpi_states",$ligne["states_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
 				echo "<td>";
-				echo "<input type='hidden' name='ID' value='$ID'>";
+				echo "<input type='hidden' name='id' value='$ID'>";
 				echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
 				echo "</td>";
 				
@@ -351,8 +349,23 @@ function plugin_archires_config_State() {
 			echo "<input type='submit' name='delete_color_state' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
 			echo "</table>";
 			echo "</div>";
-			echo "</form>";	
+				
 		}
+		
+		echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
+    echo $LANG['plugin_archires']['setup'][19]." : </th></tr>";
+    echo "<tr class='tab_bg_1'><td>";
+    plugin_archires_dropdownColors_State($used);
+    echo "</td><td>";
+    echo "<input type='text' name=\"color\">";
+    echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";	
+    echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_state')\" onmouseover=\"cleandisplay('comments_state')\">";
+    echo "</a><span class='over_link' id='comments_state'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
+
+    echo "<td>";
+    echo "<div align='center'><input type='submit' name='add_color_state' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
+    echo "</table>";
+    echo "</form>";
 	}
 }
 

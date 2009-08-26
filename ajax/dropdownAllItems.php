@@ -45,7 +45,7 @@ if (isset($_POST["idtable"]) && $_POST["idtable"]!=0){
 	//$table=$LINK_ID_TABLE[$_POST["idtable"]];
 	$test= explode(";", $_POST['idtable']);
 	$table= $test[1];
-	$devicetype= $test[0];
+	$itemtype= $test[0];
 	// Link to user for search only > normal users
 	$link="dropdownValue.php";
 
@@ -57,7 +57,7 @@ if (isset($_POST["idtable"]) && $_POST["idtable"]!=0){
 	}
 
         $params=array('searchText'=>'__VALUE__',
-						'devicetype'=>$devicetype,
+						'itemtype'=>$itemtype,
                         'table'=>$table,
                         'rand'=>$rand,
                         'myname'=>$_POST["myname"],

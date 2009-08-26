@@ -42,35 +42,31 @@ header_nocache();
 
 useplugin('archires',true);
 
-if(!isset($_POST["ID"])) {
+if(!isset($_POST["id"])) {
 	exit();
 }
-if(!isset($_POST["sort"])) $_POST["sort"] = "";
-if(!isset($_POST["order"])) $_POST["order"] = "";
-if(!isset($_POST["withtemplate"])) $_POST["withtemplate"] = "";
 
 	plugin_archires_checkRight("archires","r");
 
-	if (empty($_POST["ID"])){
+	if (empty($_POST["id"])){
 		switch($_POST['glpi_tab']){
 			default :
 				break;
 		}
 	}else{
-			
 		switch($_POST['glpi_tab']){
 			case -1 :
-				plugin_archires_query_showTypes(PLUGIN_ARCHIRES_APPLICATIFS_QUERY,$_POST["ID"]);
+				plugin_archires_query_ShowTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
 				break;
 			case 2 :
-				plugin_archires_config_Associated(PLUGIN_ARCHIRES_APPLICATIFS_QUERY,$_POST["ID"]);
-				plugin_archires_query_Test(PLUGIN_ARCHIRES_APPLICATIFS_QUERY,$_POST["ID"]);
+				plugin_archires_view_Associated(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+				plugin_archires_query_Test(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
 				break;
 			case 10 :
-				showNotesForm($_POST['target'],PLUGIN_ARCHIRES_APPLICATIFS_TYPE,$_POST["ID"]);
+				showNotesForm($_POST['target'],PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
 				break;
 			default :
-				plugin_archires_query_ShowTypes(PLUGIN_ARCHIRES_APPLICATIFS_QUERY,$_POST["ID"]);
+				plugin_archires_query_ShowTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
 				break;
 		}
 		ajaxFooter();

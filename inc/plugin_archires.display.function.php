@@ -27,21 +27,21 @@
  ------------------------------------------------------------------------
 */
 
-function plugin_archires_Select($target,$ID,$type,$config){
+function plugin_archires_Select($target,$ID,$querytype,$views_id){
 	GLOBAL  $CFG_GLPI,$LANG,$DB;
 
-	if ($type==PLUGIN_ARCHIRES_LOCATION_QUERY)
-		$table="location";
-	elseif ($type==PLUGIN_ARCHIRES_SWITCH_QUERY)
-		$table="switch";
-	elseif ($type==PLUGIN_ARCHIRES_APPLICATIFS_QUERY)
-		$table="applicatifs";
+	if ($querytype==PLUGIN_ARCHIRES_LOCATIONS_QUERY)
+		$table="locations";
+	elseif ($querytype==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY)
+		$table="networkequipments";
+	elseif ($querytype==PLUGIN_ARCHIRES_APPLIANCES_QUERY)
+		$table="appliances";
 
-	$table_query="glpi_plugin_archires_query_".$table;
+	$table_query="glpi_plugin_archires_".$table."_queries";
 
-	$query = "SELECT `ID`, `name`,`FK_config`
+	$query = "SELECT `id`, `name`,`views_id`
 			FROM `".$table_query."`
-			WHERE `deleted` = '0' ";
+			WHERE `is_deleted` = '0' ";
 	// Add Restrict to current entities
 	if (in_array($table_query,$CFG_GLPI["specif_entities_tables"])){
 		$LINK= " AND " ;
@@ -58,11 +58,11 @@ function plugin_archires_Select($target,$ID,$type,$config){
 
 			//location
 			echo $LANG['plugin_archires'][0]." : ";
-			echo "<select name=\"selectloc\" size=\"1\"> ";
+			echo "<select name=\"selectquery\" size=\"1\"> ";
 
 				while($ligne= mysql_fetch_array($result)){
 					$location=$ligne["name"];
-					$location_id=$ligne["ID"];
+					$location_id=$ligne["id"];
 					if ($location_id==$ID)
 					echo "<option value=\"$location_id\" selected>$location</option>";
 					else
@@ -72,41 +72,41 @@ function plugin_archires_Select($target,$ID,$type,$config){
 			echo "</select></td>";
 
 			//vue
-			$query1 = "SELECT `ID`, `name`
-						FROM `glpi_plugin_archires_config`
-						WHERE `deleted` = '0'";
+			$query1 = "SELECT `id`, `name`
+						FROM `glpi_plugin_archires_views`
+						WHERE `is_deleted` = '0'";
 			// Add Restrict to current entities
-			if (in_array("glpi_plugin_archires_config",$CFG_GLPI["specif_entities_tables"])){
+			if (in_array("glpi_plugin_archires_views",$CFG_GLPI["specif_entities_tables"])){
 				$LINK= " AND " ;
-				$query1.=getEntitiesRestrictRequest($LINK,"glpi_plugin_archires_config");
+				$query1.=getEntitiesRestrictRequest($LINK,"glpi_plugin_archires_views");
 			}
 			$query1.=" ORDER BY `name` ASC";
 
 			if($result1 = $DB->query($query1)){
 			echo "<td align='center'>";
 			echo $LANG['plugin_archires']['title'][3]." : ";
-			echo "<select name=\"selectvue\" size=\"1\"> ";
+			echo "<select name=\"views_id\" size=\"1\"> ";
 
 				while($ligne1= mysql_fetch_array($result1)){
 					$vue=$ligne1["name"];
-					$vue_id=$ligne1["ID"];
-					if ($vue_id==$config)
-					echo "<option value=\"$vue_id\" selected>$vue</option>";
+					$vue_id=$ligne1["id"];
+					if ($vue_id==$views_id)
+            echo "<option value=\"$vue_id\" selected>$vue</option>";
 					else
-					echo "<option value=\"$vue_id\">$vue</option>";
+            echo "<option value=\"$vue_id\">$vue</option>";
 				}
 
 			echo "</select></td>";
 			}
 			echo "<td>";
-			echo "<input type='hidden' name='type' value=\"".$type."\"> ";
+			echo "<input type='hidden' name='querytype' value=\"".$querytype."\"> ";
 			echo "<input type='submit' class='submit'  name='affiche' value=\"".$LANG['buttons'][2]."\"> ";
 			echo "</td>";
 			echo "<td>";
-			if ($config)
-				echo "<a href=\"./svg.php?type=svg&amp;ID=".$ID."&amp;type=".$type."&amp;config=".$config."\">".$LANG['plugin_archires']['setup'][16]."</a>";
+			if ($views_id)
+				echo "<a href=\"./image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."\">".$LANG['plugin_archires']['setup'][16]."</a>";
 			else
-				echo "<a href=\"./svg.php?type=svg&amp;ID=".$ID."&amp;type=".$type."&amp;config=".$vue_id."\">".$LANG['plugin_archires']['setup'][16]."</a>";
+				echo "<a href=\"./image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$vue_id."\">".$LANG['plugin_archires']['setup'][16]."</a>";
 			echo "</td>";
 			echo "</tr>";
 			echo "</table>";
@@ -122,14 +122,14 @@ function  plugin_archires_query_showTypes ($type,$ID) {
 
 	global $CFG_GLPI,$DB,$LANG;
 
-	if ($type==PLUGIN_ARCHIRES_LOCATION_QUERY)
+	if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY)
 		$table="location";
-	elseif ($type==PLUGIN_ARCHIRES_SWITCH_QUERY)
-		$table="switch";
-	elseif ($type==PLUGIN_ARCHIRES_APPLICATIFS_QUERY)
-		$table="applicatif";
+	elseif ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY)
+		$table="networkequipment";
+	elseif ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY)
+		$table="appliance";
 
-	$table_query="glpi_plugin_archires_query_type";
+	$table_query="glpi_plugin_archires_query_types";
 
 	echo "<div align='center'>";
 
@@ -152,9 +152,9 @@ function  plugin_archires_query_showTypes ($type,$ID) {
 
 	$query = "SELECT *
 			FROM `".$table_query."`
-			WHERE `FK_query` = '".$ID."'
-			AND `type_query` = '".$type."'  ";
-		$query.=" ORDER BY `device_type`, `type` ASC;";
+			WHERE `queries_id` = '".$ID."'
+			AND `querytype` = '".$type."'  ";
+		$query.=" ORDER BY `itemtype`, `type` ASC;";
 
 	$i=0;
 	$rand=mt_rand();
@@ -176,16 +176,16 @@ function  plugin_archires_query_showTypes ($type,$ID) {
 
 			while($ligne= mysql_fetch_array($result)){
 
-				$ID=$ligne["ID"];
+				$ID=$ligne["id"];
 
 				if($i  % 2==0 && $number>1)
 					echo "<tr class='tab_bg_1'>";
 
 				if($number==1)
 					echo "<tr class='tab_bg_1'>";
-				echo "<td>".plugin_archires_getDeviceType($ligne["device_type"])."</td><td>".plugin_archires_getType($ligne["device_type"],$ligne["type"])."</td>";
+				echo "<td>".plugin_archires_getDeviceType($ligne["itemtype"])."</td><td>".plugin_archires_getType($ligne["itemtype"],$ligne["type"])."</td>";
 				echo "<td>";
-				echo "<input type='hidden' name='ID' value='$ID'>";
+				echo "<input type='hidden' name='id' value='$ID'>";
 				echo "<input type='checkbox' name='item[$ID]' value='1'>";
 				echo "</td>";
 
@@ -214,27 +214,27 @@ function  plugin_archires_query_showTypes ($type,$ID) {
 	echo "</div>";
 }
 
-function plugin_archires_config_Associated($type,$ID) {
+function plugin_archires_view_Associated($type,$ID) {
 
 	global $CFG_GLPI,$DB,$LANG;
 
-	if ($type==PLUGIN_ARCHIRES_LOCATION_QUERY){
+	if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 		$PluginArchiresQueryLocation=new PluginArchiresQueryLocation();
 		$PluginArchiresQueryLocation->getFromDB($ID);
-		$FK_config=$PluginArchiresQueryLocation->fields["FK_config"];
-	}elseif ($type==PLUGIN_ARCHIRES_SWITCH_QUERY){
-		$PluginArchiresQuerySwitch=new PluginArchiresQuerySwitch();
-		$PluginArchiresQuerySwitch->getFromDB($ID);
-		$FK_config=$PluginArchiresQuerySwitch->fields["FK_config"];
-	}elseif ($type==PLUGIN_ARCHIRES_APPLICATIFS_QUERY){
-		$PluginArchiresQueryApplicatifs=new PluginArchiresQueryApplicatifs();
-		$PluginArchiresQueryApplicatifs->getFromDB($ID);
-		$FK_config=$PluginArchiresQueryApplicatifs->fields["FK_config"];
+		$views_id=$PluginArchiresQueryLocation->fields["views_id"];
+	}elseif ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+		$PluginArchiresQueryNetworkEquipment=new PluginArchiresQueryNetworkEquipment();
+		$PluginArchiresQueryNetworkEquipment->getFromDB($ID);
+		$views_id=$PluginArchiresQueryNetworkEquipment->fields["views_id"];
+	}elseif ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+		$PluginArchiresQueryAppliance=new PluginArchiresQueryAppliance();
+		$PluginArchiresQueryAppliance->getFromDB($ID);
+		$views_id=$PluginArchiresQueryAppliance->fields["views_id"];
 	}
-	$PluginArchiresConfig=new PluginArchiresConfig;
-	$PluginArchiresConfig->getFromDB($FK_config);
+	$PluginArchiresView=new PluginArchiresView;
+	$PluginArchiresView->getFromDB($views_id);
 
-	$name_config=$PluginArchiresConfig->fields["name"];
+	$name_config=$PluginArchiresView->fields["name"];
 
     echo "<div align='center'>";
 	echo "<table class='tab_cadrehov' cellpadding='2'width='75%'>";
@@ -246,27 +246,27 @@ function plugin_archires_config_Associated($type,$ID) {
 	echo "<tr class='tab_bg_2' valign='top'><th>".$LANG['plugin_archires'][3]."</th><th>".$LANG['plugin_archires'][24]."</th><th>".$LANG['plugin_archires']['search'][6]."</th></tr>";
 
 	echo "<tr class='tab_bg_1' valign='top'><td align='center'>";
-	if ($PluginArchiresConfig->fields["computer"]!=0) echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["computer"]!=0) echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][0];
 	echo "<br>";
 
-	if ($PluginArchiresConfig->fields["networking"]!=0) echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["networking"]!=0) echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][0];
 	echo "<br>";
 
-	if ($PluginArchiresConfig->fields["printer"]!=0) echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["printer"]!=0) echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][0];
 	echo "<br>";
 
-	if ($PluginArchiresConfig->fields["peripheral"]!=0) echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["peripheral"]!=0) echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][0];
 	echo "<br>";
 
-	if ($PluginArchiresConfig->fields["phone"]!=0) echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["phone"]!=0) echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][0];
 	echo "</td>";
@@ -274,32 +274,32 @@ function plugin_archires_config_Associated($type,$ID) {
 	//
 
 	echo "<td align='center'>";
-	if ($PluginArchiresConfig->fields["display_ports"]!=0) echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["display_ports"]!=0) echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][0];
 	echo "<br>";
 
-	if ($PluginArchiresConfig->fields["display_ip"]!=0) echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["display_ip"]!=0) echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][0];
 	echo "<br>";
 
-	if ($PluginArchiresConfig->fields["display_type"]!=0) echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["display_type"]!=0) echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][0];
 	echo "<br>";
 
-	if ($PluginArchiresConfig->fields["display_state"]!=0) echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["display_state"]!=0) echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][0];
 	echo "<br>";
 
-	if ($PluginArchiresConfig->fields["display_location"]!=0) echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["display_location"]!=0) echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][0];
 	echo "<br>";
 
-	if ($PluginArchiresConfig->fields["display_entity"]!=0) echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][1];
+	if ($PluginArchiresView->fields["display_entity"]!=0) echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][1];
 	else
 		echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][0];
 	echo "</td>";
@@ -307,14 +307,16 @@ function plugin_archires_config_Associated($type,$ID) {
 	//
 	echo "<td align='center'>".$LANG['plugin_archires']['setup'][11]." : ";
 	echo $LANG['plugin_archires']['setup'][13]." : ";
-	if ($PluginArchiresConfig->fields["engine"]!=0) echo "Neato";
+	if ($PluginArchiresView->fields["engine"]!=0) echo "Neato";
 	else
 		echo "Dot";
 	echo "<br>";
 	echo $LANG['plugin_archires']['setup'][15]." : ";
-	if ($PluginArchiresConfig->fields["format"]=='0') echo "jpeg ";
-	elseif ($PluginArchiresConfig->fields["format"]=='1') echo "png ";
-	elseif ($PluginArchiresConfig->fields["format"]=='2') echo "gif ";
+	if ($PluginArchiresView->fields["format"]==PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
+  elseif ($PluginArchiresView->fields["format"]==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
+  elseif ($PluginArchiresView->fields["format"]==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
+  echo $format_graph;
+
 	echo "</td></tr>";
 
 	echo "</table></div>";
@@ -333,24 +335,24 @@ function plugin_archires_findChilds($DB, $parent){
 	$queryBranch='';
 	// Recherche les enfants
 	if ($parent!="-1"){
-		$queryChilds= "SELECT `ID`
-					FROM `glpi_dropdown_locations`
-					WHERE `parentID` = '$parent' ";
+		$queryChilds= "SELECT `id`
+					FROM `glpi_locations`
+					WHERE `locations_id` = '$parent' ";
 		if ($resultChilds = $DB->query($queryChilds)){
 			while ($dataChilds = $DB->fetch_array($resultChilds)){
-				$child=$dataChilds["ID"];
+				$child=$dataChilds["id"];
 				$queryBranch .= ",$child";
 				// Recherche les petits enfants récursivement
 				$queryBranch .= plugin_archires_findChilds($DB, $child);
 			}
 		}
 	}else{
-		$queryChilds= "SELECT `ID`
-					FROM `glpi_dropdown_locations`
+		$queryChilds= "SELECT `id`
+					FROM `glpi_locations`
 					WHERE `level`= 1";
 		if ($resultChilds = $DB->query($queryChilds)){
 			while ($dataChilds = $DB->fetch_array($resultChilds)){
-				$child=$dataChilds["ID"];
+				$child=$dataChilds["id"];
 				$queryBranch .= ",$child";
 				// Recherche les petits enfants récursivement
 				$queryBranch .= plugin_archires_findChilds($DB, $child);
@@ -364,12 +366,12 @@ function plugin_archires_findLevels($DB,$parent){
 
 	$queryBranch='';
 	// Recherche les enfants
-	$queryLevels= "SELECT `ID`
-				FROM `glpi_dropdown_locations`
+	$queryLevels= "SELECT `id`
+				FROM `glpi_locations`
 				WHERE `level`= 1";
 	if ($resultLevels = $DB->query($queryLevels)){
 		while ($dataLevels = $DB->fetch_array($resultLevels)){
-			$Levels=$dataLevels["ID"];
+			$Levels=$dataLevels["id"];
 			$queryBranch .= ",$Levels";
 		}
 	}
@@ -412,7 +414,7 @@ $engine="dot";
     }
 }
 
-function plugin_archires_display_Image_Device($type,$device_type,$test) {
+function plugin_archires_display_Image_Device($type,$itemtype,$test) {
 
 	global $CFG_GLPI,$DB,$LANG;
 
@@ -422,8 +424,8 @@ function plugin_archires_display_Image_Device($type,$device_type,$test) {
 
 	$image_name = $path."pics/nothing.png";
 	$query = "SELECT *
-			FROM `glpi_plugin_archires_image_device`
-			WHERE `device_type` = '".$device_type."';";
+			FROM `glpi_plugin_archires_imageitems`
+			WHERE `itemtype` = '".$itemtype."';";
 			if($result = $DB->query($query)){
 				while($ligne= mysql_fetch_array($result)){
 					$config_img=$ligne["img"];
@@ -437,28 +439,28 @@ function plugin_archires_display_Image_Device($type,$device_type,$test) {
 
 }
 
-function plugin_archires_display_Type_And_IP($PluginArchiresConfig,$device_type,$device,$generation) {
+function plugin_archires_display_Type_And_IP($PluginArchiresView,$itemtype,$device,$generation) {
 
 		$graph ="";
-		if ($PluginArchiresConfig->fields["display_ip"]!=0 && isset($device["ifaddr"])){
-			if ($PluginArchiresConfig->fields["display_type"]!=0 && !empty($device["type"])){
+		if ($PluginArchiresView->fields["display_ip"]!=0 && isset($device["ip"])){
+			if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])){
 				if (!$generation)
-					$graph = plugin_archires_getType($device_type,$device["type"]) . " " . $device["ifaddr"];
+					$graph = plugin_archires_getType($itemtype,$device["type"]) . " " . $device["ip"];
 				else
-					$graph =" - ".plugin_archires_getType($device_type,$device["type"])."</td></tr><tr><td>".$device["ifaddr"]."</td></tr>";
+					$graph =" - ".plugin_archires_getType($itemtype,$device["type"])."</td></tr><tr><td>".$device["ip"]."</td></tr>";
 
 			}else{
 				if (!$generation)
-					$graph = $device["ifaddr"];
+					$graph = $device["ip"];
 				else
-					$graph ="</td></tr><tr><td>".$device["ifaddr"]."</td></tr>";
+					$graph ="</td></tr><tr><td>".$device["ip"]."</td></tr>";
 			}
 		}else{
-			if ($PluginArchiresConfig->fields["display_type"]!=0 && !empty($device["type"])){
+			if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])){
 				if (!$generation)
-					$graph =plugin_archires_getType($device_type,$device["type"]);
+					$graph =plugin_archires_getType($itemtype,$device["type"]);
 				else
-					$graph ="</td></tr><tr><td>".plugin_archires_getType($device_type,$device["type"])."</td></tr>";
+					$graph ="</td></tr><tr><td>".plugin_archires_getType($itemtype,$device["type"])."</td></tr>";
 			}else{
 				if (!$generation)
 					echo "";
@@ -473,17 +475,17 @@ function plugin_archires_display_Type_And_IP($PluginArchiresConfig,$device_type,
 function plugin_archires_display_Users($url,$device,$generation) {
 
 		$graph ="";
-		if ($device["FK_users"]){
+		if ($device["users_id"]){
 			if ($generation)
-				$graph = "URL=\"".$url."\" tooltip=\"".getusername($device["FK_users"])."\"";
+				$graph = "URL=\"".$url."\" tooltip=\"".getusername($device["users_id"])."\"";
 			else
-				$graph = "<a href='".$url."'>".getusername($device["FK_users"])."</a>";
-		}elseif (!$device["FK_users"] && $device["FK_groups"]){
+				$graph = "<a href='".$url."'>".getusername($device["users_id"])."</a>";
+		}elseif (!$device["users_id"] && $device["groups_id"]){
 			if ($generation)
-				$graph = "URL=\"".$url."\" tooltip=\"".getdropdownname("glpi_groups",$device["FK_groups"])."\"";
+				$graph = "URL=\"".$url."\" tooltip=\"".getdropdownname("glpi_groups",$device["groups_id"])."\"";
 			else
-				$graph = "<a href='".$url."'>".getdropdownname("glpi_groups",$device["FK_groups"])."</a>";
-		}elseif (!$device["FK_users"] && !$device["FK_groups"] && $device["contact"]){
+				$graph = "<a href='".$url."'>".getdropdownname("glpi_groups",$device["groups_id"])."</a>";
+		}elseif (!$device["users_id"] && !$device["groups_id"] && $device["contact"]){
 			if ($generation)
 				$graph = "URL=\"".$url."\" tooltip=\"".$device["contact"]."\"";
 			else
@@ -505,16 +507,16 @@ function plugin_archires_display_Color_State($device) {
 
 		$graph ="";
 		$query_state = "SELECT *
-		FROM `glpi_plugin_archires_color_state`
-		WHERE `state`= '".$device["state"]."';";
+		FROM `glpi_plugin_archires_statescolors`
+		WHERE `states_id`= '".$device["states_id"]."';";
 		$result_state = $DB->query($query_state);
 		$number_state = $DB->numrows($result_state);
 
-		if($number_state != 0 && $device["state"] > 0){
+		if($number_state != 0 && $device["states_id"] > 0){
 			$color_state=$DB->result($result_state,0,"color");
-			$graph ="<font color=\"$color_state\">".getDropdownName("glpi_dropdown_state",$device["state"])."</font>";
-		}elseif($number_state == 0 && $device["state"] > 0){
-			$graph =getDropdownName("glpi_dropdown_state",$device["state"]);
+			$graph ="<font color=\"$color_state\">".getDropdownName("glpi_states",$device["states_id"])."</font>";
+		}elseif($number_state == 0 && $device["states_id"] > 0){
+			$graph =getDropdownName("glpi_states",$device["states_id"]);
 		}
 
 	return $graph;

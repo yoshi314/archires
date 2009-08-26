@@ -41,32 +41,32 @@ header_nocache();
 
 plugin_archires_checkRight("archires","w");
 
-if (isset($_POST["action"])&&isset($_POST["ID"])&&isset($_POST["item"])&&count($_POST["item"])){
+if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($_POST["item"])){
 	
 	$PluginArchiresConfig=new PluginArchiresConfig();
 	
 	switch($_POST["action"]){
 		case "delete":
-			$PluginArchiresConfig->getFromDB($_POST["ID"],-1);
+			$PluginArchiresConfig->getFromDB($_POST["id"],-1);
 			foreach ($_POST["item"] as $key => $val){
 				if ($val==1) {
-					$PluginArchiresConfig->delete(array("ID"=>$key),$force=0);
+					$PluginArchiresConfig->delete(array("id"=>$key),$force=0);
 				}
 			}
 		break;
 		case "purge":
-			$PluginArchiresConfig->getFromDB($_POST["ID"],-1);
+			$PluginArchiresConfig->getFromDB($_POST["id"],-1);
 			foreach ($_POST["item"] as $key => $val){
 				if ($val==1) {
-					$PluginArchiresConfig->delete(array("ID"=>$key),1);
+					$PluginArchiresConfig->delete(array("id"=>$key),1);
 				}
 			}
 		break;
 		case "restore":
-			$PluginArchiresConfig->getFromDB($_POST["ID"],-1);
+			$PluginArchiresConfig->getFromDB($_POST["id"],-1);
 			foreach ($_POST["item"] as $key => $val){
 				if ($val==1) {
-					$PluginArchiresConfig->restore(array("ID"=>$key));
+					$PluginArchiresConfig->restore(array("id"=>$key));
 				}
 			}
 		break;
@@ -74,8 +74,8 @@ if (isset($_POST["action"])&&isset($_POST["ID"])&&isset($_POST["item"])&&count($
 		foreach ($_POST["item"] as $key => $val){
 				if ($val==1){
 					if ($PluginArchiresConfig->getFromDB($key)){
-						unset($PluginArchiresConfig->fields["ID"]);
-						$PluginArchiresConfig->fields["FK_entities"]=$_POST["FK_entities"];
+						unset($PluginArchiresConfig->fields["id"]);
+						$PluginArchiresConfig->fields["entities_id"]=$_POST["entities_id"];
 						$newID=$PluginArchiresConfig->add($PluginArchiresConfig->fields);
 					}
 			}
@@ -84,9 +84,9 @@ if (isset($_POST["action"])&&isset($_POST["ID"])&&isset($_POST["item"])&&count($
 		case "transfert":
 			foreach ($_POST["item"] as $key => $val){
 				if ($val==1){				
-					$query="UPDATE `glpi_plugin_archires_config` 
-							SET `FK_entities` = '".$_POST['FK_entities']."' 
-							WHERE `ID` ='$key'";
+					$query="UPDATE `glpi_plugin_archires_views` 
+							SET `entities_id` = '".$_POST['entities_id']."' 
+							WHERE `id` ='$key'";
 					$DB->query($query);
 				}
 			}

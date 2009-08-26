@@ -58,22 +58,22 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 		echo "<tr><th>".$LANG['plugin_archires']['menu'][1]."</th></tr>";
 
 		echo "<tr class='tab_bg_1'><td>";
-		echo "<a href='front/plugin_archires.config.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
+		echo "<a href='front/plugin_archires.view.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
 		echo "</td></tr>";
 
-		if (countElementsInTable('glpi_plugin_archires_config',"`FK_entities`='".$_SESSION["glpiactive_entity"]."'")>0) {
+		if (countElementsInTable('glpi_plugin_archires_views',"`entities_id`='".$_SESSION["glpiactive_entity"]."'")>0) {
 			
 			echo "<tr class='tab_bg_1'><td>";
 			echo "<a href='front/plugin_archires.location.form.php?new=1'>".$LANG['plugin_archires']['title'][2]."</a>";
 			echo "</td></tr>";
 
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.switch.form.php?new=1'>".$LANG['plugin_archires']['title'][6]."</a>";
+			echo "<a href='front/plugin_archires.networkequipment.form.php?new=1'>".$LANG['plugin_archires']['title'][6]."</a>";
 			echo "</td></tr>";
 
-			if ($plugin->isActivated("applicatifs")){
+			if ($plugin->isActivated("appliances")){
 				echo "<tr class='tab_bg_1'><td>";
-				echo "<a href='front/plugin_archires.applicatif.form.php?new=1'>".$LANG['plugin_archires']['title'][9]."</a>";
+				echo "<a href='front/plugin_archires.appliance.form.php?new=1'>".$LANG['plugin_archires']['title'][9]."</a>";
 				echo "</td></tr>";
 			}
 		}
@@ -88,10 +88,10 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 		echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
 		echo "<tr><th>".$LANG['plugin_archires']['menu'][0]."</th></tr>";
 
-		if (countElementsInTable('glpi_plugin_archires_config',"`FK_entities`='".$_SESSION["glpiactive_entity"]."'")>0) {
+		if (countElementsInTable('glpi_plugin_archires_views',"`entities_id`='".$_SESSION["glpiactive_entity"]."'")>0) {
 
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.config.index.php'>".$LANG['plugin_archires']['title'][3]."</a>";
+			echo "<a href='front/plugin_archires.view.index.php'>".$LANG['plugin_archires']['title'][3]."</a>";
 			echo "</td></tr>";				
 
 			echo "<tr class='tab_bg_1'><td>";
@@ -99,17 +99,17 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 			echo "</td></tr>";
 
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.switch.index.php'>".$LANG['plugin_archires']['title'][5]."</a>";
+			echo "<a href='front/plugin_archires.networkequipment.index.php'>".$LANG['plugin_archires']['title'][5]."</a>";
 			echo "</td></tr>";
 
-			if ($plugin->isActivated("applicatifs")){
+			if ($plugin->isActivated("appliances")){
 				echo "<tr class='tab_bg_1'><td>";
-				echo "<a href='front/plugin_archires.applicatif.index.php'>".$LANG['plugin_archires']['title'][8]."</a>";
+				echo "<a href='front/plugin_archires.appliance.index.php'>".$LANG['plugin_archires']['title'][8]."</a>";
 				echo "</td></tr>";
 			}
 		} else {
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.config.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
+			echo "<a href='front/plugin_archires.view.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
 			echo "</td></tr>";				
 		}
 		echo "</table></div>";

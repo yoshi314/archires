@@ -41,9 +41,9 @@ header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
 
-if (isset($_POST["action"])||isset($_POST["ID"])){
+if (isset($_POST["action"])||isset($_POST["id"])){
 	echo "<input type='hidden' name='action' value='".$_POST["action"]."'>";
-	echo "<input type='hidden' name='ID' value='".$_POST["ID"]."'>";
+	echo "<input type='hidden' name='id' value='".$_POST["id"]."'>";
 	switch($_POST["action"]){
 
 		case "delete":
@@ -52,11 +52,11 @@ if (isset($_POST["action"])||isset($_POST["ID"])){
 			echo "<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 		break;
 		case "duplicate":
-			dropdownValue("glpi_entities", "FK_entities", '');
+			dropdownValue("glpi_entities", "entities_id", '');
 			echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 		break;
 		case "transfert":
-			dropdownValue("glpi_entities", "FK_entities", '');
+			dropdownValue("glpi_entities", "entities_id", '');
 			echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 		break;
 

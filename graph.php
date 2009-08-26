@@ -35,25 +35,24 @@ useplugin('archires',true);
 
 if(isset($_GET)) $tab = $_GET;
 if(empty($tab) && isset($_POST)) $tab = $_POST;
-if(!isset($tab["ID"])) $tab["ID"] = "";
+if(!isset($tab["id"])) $tab["id"] = "";
 
-if ($_GET["type"]==PLUGIN_ARCHIRES_LOCATION_QUERY){
+if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 	$object= "PluginArchiresQueryLocation";
-}elseif ($_GET["type"]==PLUGIN_ARCHIRES_SWITCH_QUERY){
-	$object= "PluginArchiresQuerySwitch";
-}elseif ($_GET["type"]==PLUGIN_ARCHIRES_APPLICATIFS_QUERY){
-	$object= "PluginArchiresQueryApplicatifs";
+}elseif ($_GET["querytype"]==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+	$object= "PluginArchiresQueryNetworkEquipment";
+}elseif ($_GET["querytype"]==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+	$object= "PluginArchiresQueryAppliance";
 }
 
 $obj=new $object();
-$PluginArchiresConfig=new PluginArchiresConfig();
+$PluginArchiresView=new PluginArchiresView();
 $PluginArchires=new PluginArchires();
 
-if (isset($_GET["affiche"]))
-{	
+if (isset($_GET["affiche"])){
 	
-	$obj->getFromDB($_GET["selectloc"]);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/graph.php?ID=".$obj->fields["ID"]."&type=".$_GET["type"]."&config=".$_GET["selectvue"]);
+	$obj->getFromDB($_GET["selectquery"]);
+	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/graph.php?id=".$obj->fields["id"]."&querytype=".$_GET["querytype"]."&views_id=".$_GET["views_id"]);
 } 
 else{
 
@@ -63,42 +62,42 @@ else{
 	else
 		commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
 	
-	$obj->getFromDB($_GET["ID"]);
-	$FK_config=$obj->fields["FK_config"];
-	$FK_entities=$obj->fields["FK_entities"];
+	$obj->getFromDB($_GET["id"]);
+	$views_id=$obj->fields["views_id"];
+	$entities_id=$obj->fields["entities_id"];
 	
 	
-	if($PluginArchiresConfig->getFromDB($obj->fields["FK_config"])&&haveAccessToEntity($FK_entities)){
+	if($PluginArchiresView->getFromDB($obj->fields["views_id"])&&haveAccessToEntity($entities_id)){
 		
-		if(!isset($_GET["config"])) $_GET["config"] = $FK_config;
+		if(!isset($_GET["views_id"])) $_GET["views_id"] = $views_id;
 		
-		$PluginArchiresConfig->getFromDB($_GET["config"]);
-		$format=$PluginArchiresConfig->fields["format"];
+		$PluginArchiresView->getFromDB($_GET["views_id"]);
+		$format=$PluginArchiresView->fields["format"];
 
 		if ($plugin->isActivated("network")){
 			
 			$PluginArchires->titleimg();
 		}
 		echo "<div align=\"center\">";
-		plugin_archires_Select($_SERVER['PHP_SELF'],$_GET["ID"],$_GET["type"],$_GET["config"]);
+		plugin_archires_Select($_SERVER['PHP_SELF'],$_GET["id"],$_GET["querytype"],$_GET["views_id"]);
 		
 		echo "<br>";
 		
-		if(isset($_GET["ID"]) && !empty($_GET["ID"])){
+		if(isset($_GET["id"]) && !empty($_GET["id"])){
 		
-			echo "<img src=\"image.php?ID=".$_GET["ID"]."&amp;type=".$_GET["type"]."&amp;config=".$_GET["config"]."\" alt=\"\" usemap=\"#G\">";
-			echo plugin_archires_Create_Graph("cmapx",$obj,$_GET["ID"],$_GET["config"]);
+			echo "<img src=\"image.php?id=".$_GET["id"]."&amp;querytype=".$_GET["querytype"]."&amp;views_id=".$_GET["views_id"]."\" alt=\"\" usemap=\"#G\">";
+			echo plugin_archires_Create_Graph("cmapx",$obj,$_GET["id"],$_GET["views_id"]);
 			
 		}
 		//legend
-		if(isset($_GET["ID"]) && !empty($_GET["ID"])){
+		if(isset($_GET["id"]) && !empty($_GET["id"])){
 			echo "<table  cellpadding='5' border='0'>";
 			echo "<tr><td valign='top'>";
-			if( $PluginArchiresConfig->fields["color"] == 0 ){
+			if( $PluginArchiresView->fields["color"] == 0 ){
     			//legende color iface		
     			$query = "SELECT * 
-						FROM `glpi_plugin_archires_color_iface` 
-						ORDER BY `iface` ASC ";
+						FROM `glpi_plugin_archires_networkinterfacescolors` 
+						ORDER BY `networkinterfaces_id` ASC ";
     			if($result = $DB->query($query)){
     				$number = $DB->numrows($result);
     				if($number != 0){			
@@ -110,12 +109,12 @@ else{
     					echo "</tr>";
     						while($ligne= mysql_fetch_array($result)){
     			
-    							$ID=$ligne["ID"];
+    							$ID=$ligne["id"];
     							if($i  % 2==0 && $number>1)
     								echo "<tr class='tab_bg_1'>";
     							if($number==1)
     								echo "<tr class='tab_bg_1'>";						
-    							echo "<td>".getDropdownName("glpi_dropdown_iface",$ligne["iface"])."</td><td bgcolor='".$ligne["color"]."'>&nbsp;</td>";					
+    							echo "<td>".getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>&nbsp;</td>";					
     							$i++;
     							if(($i  == $number) && ($number  % 2 !=0) && $number>1)
     								echo "<td>&nbsp;</td><td>&nbsp;</td></tr>";
@@ -126,11 +125,11 @@ else{
     				}
     			}
     			echo "</td><td valign='top'>";
-    		}elseif($PluginArchiresConfig->fields["color"] == 1 ){
+    		}elseif($PluginArchiresView->fields["color"] == 1 ){
     			//legende color vlan		
     			$query = "SELECT * 
-						FROM `glpi_plugin_archires_color_vlan` 
-						ORDER BY `vlan` ASC ";
+						FROM `glpi_plugin_archires_vlanscolors` 
+						ORDER BY `vlans_id` ASC ";
     			if($result = $DB->query($query)){
     				$number = $DB->numrows($result);
     				if($number != 0){			
@@ -142,12 +141,12 @@ else{
     					echo "</tr>";
     						while($ligne= mysql_fetch_array($result)){
     			
-    							$ID=$ligne["ID"];
+    							$ID=$ligne["id"];
     							if($i  % 2==0 && $number>1)
     								echo "<tr class='tab_bg_1'>";
     							if($number==1)
     								echo "<tr class='tab_bg_1'>";						
-    							echo "<td>".getDropdownName("glpi_dropdown_vlan",$ligne["vlan"])."</td><td bgcolor='".$ligne["color"]."'>&nbsp;</td>";					
+    							echo "<td>".getDropdownName("glpi_vlans",$ligne["vlans_id"])."</td><td bgcolor='".$ligne["color"]."'>&nbsp;</td>";					
     							$i++;
     							if(($i  == $number) && ($number  % 2 !=0) && $number>1)
     								echo "<td>&nbsp;</td><td>&nbsp;</td></tr>";
@@ -161,8 +160,8 @@ else{
     		}
 			//legende color state		
 			$query = "SELECT * 
-					FROM `glpi_plugin_archires_color_state` 
-					ORDER BY `state` ASC ";
+					FROM `glpi_plugin_archires_statescolors` 
+					ORDER BY `states_id` ASC ";
 			if($result = $DB->query($query)){
 				$number = $DB->numrows($result);
 				if($number != 0){			
@@ -174,12 +173,12 @@ else{
 					echo "</tr>";
 						while($ligne= mysql_fetch_array($result)){
 			
-							$ID=$ligne["ID"];
+							$ID=$ligne["id"];
 							if($i  % 2==0 && $number>1)
 								echo "<tr class='tab_bg_1'>";
 							if($number==1)
 								echo "<tr class='tab_bg_1'>";						
-							echo "<td>".getDropdownName("glpi_dropdown_state",$ligne["state"])."</td><td bgcolor='".$ligne["color"]."'>&nbsp;</td>";					
+							echo "<td>".getDropdownName("glpi_states",$ligne["states_id"])."</td><td bgcolor='".$ligne["color"]."'>&nbsp;</td>";					
 							$i++;
 							if(($i  == $number) && ($number  % 2 !=0) && $number>1)
 								echo "<td>&nbsp;</td><td>&nbsp;</td></tr>";

@@ -40,7 +40,7 @@ useplugin('archires',true);
 
 if(isset($_GET)) $tab = $_GET;
 if(empty($tab) && isset($_POST)) $tab = $_POST;
-if(!isset($tab["ID"])) $tab["ID"] = "";
+if(!isset($tab["id"])) $tab["id"] = "";
 
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
@@ -81,7 +81,7 @@ else if (isset($_POST["update"]))
 else if (isset($_POST["duplicate"])){
 
 	if(plugin_archires_haveRight("archires","w"))
-		unset($_POST['ID']);
+		unset($_POST['id']);
 		$newID=$PluginArchiresQueryLocation->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 }
@@ -92,10 +92,10 @@ else if (isset($_POST["addtype"])){
 	
 	if (isset($test[0]) && isset($test[1])){
 		$_POST['type']= $test[1];
-		$_POST['device_type']= $test[0];
+		$_POST['itemtype']= $test[0];
 	
 		if(plugin_archires_haveRight("archires","w")){
-				plugin_archires_type_Add(PLUGIN_ARCHIRES_LOCATION_QUERY,$_POST['type'],$_POST['device_type'],$_POST['query']);
+				plugin_archires_type_Add(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST['type'],$_POST['itemtype'],$_POST['query']);
 		}
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
@@ -104,7 +104,7 @@ else if (isset($_POST["addtype"])){
 else if (isset($_POST["deletetype"])){
 
 	if(plugin_archires_haveRight("archires","w"))
-	$PluginArchiresQueryType->getFromDB($_POST["ID"],-1);
+	$PluginArchiresQueryType->getFromDB($_POST["id"],-1);
 	
 	foreach ($_POST["item"] as $key => $val){
 		if ($val==1) {
@@ -128,9 +128,9 @@ else
 	if ($plugin->isActivated("network"))
 		commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
 	else
-		commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","archires","location");
+		commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","archires","locations");
 
-	$PluginArchiresQueryLocation->showForm($_SERVER["PHP_SELF"],$tab["ID"]);
+	$PluginArchiresQueryLocation->showForm($_SERVER["PHP_SELF"],$tab["id"]);
 
 	commonFooter();
 }

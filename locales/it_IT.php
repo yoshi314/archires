@@ -105,7 +105,7 @@ $LANG['plugin_archires']['setup'][16] = "[SVG]";
 $LANG['plugin_archires']['setup'][19] = "Associa colori con lo stato degli elementi";
 $LANG['plugin_archires']['setup'][20] = "Visualizzazione associata";
 $LANG['plugin_archires']['setup'][21] = "Some types of items must be created so that the association can exist";
-$LANG['plugin_archires']['setup'][23] = "Associer des couleurs aux num�ros de VLAN";
+$LANG['plugin_archires']['setup'][23] = "Associer des couleurs aux VLAN";
 $LANG['plugin_archires']['setup'][25] = "Appliquer la couleur sur" ;
 
 $LANG['plugin_archires']['test'][0] = "Test";

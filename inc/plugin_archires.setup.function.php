@@ -55,7 +55,7 @@ function plugin_archires_updatev13() {
 	
 	global $DB;
 
-	$query = "ALTER TABLE `glpi_display` ADD `display_ports` ENUM( '1', '0' ) NOT NULL DEFAULT '0';";		
+	$query = "ALTER TABLE `glpi_plugin_archires_display` ADD `display_ports` ENUM( '1', '0' ) NOT NULL DEFAULT '0';";		
 	$DB->query($query) or die($DB->error());
 				
 }
@@ -79,13 +79,13 @@ function plugin_archires_update($version) {
 	
 }
 
-function plugin_archires_dropdownMassiveAction_Config($ID,$deleted){
+function plugin_archires_dropdownMassiveActionView($ID,$is_deleted){
 	global $LANG,$CFG_GLPI;
 
 	echo "<select name=\"massiveaction\" id='massiveaction'>";
 	echo "<option value=\"-1\" selected>-----</option>";
 	if(plugin_archires_haveRight("archires","w")){
-		if ($deleted=="1"){
+		if ($is_deleted=="1"){
 				echo "<option value=\"purge\">".$LANG['buttons'][22]."</option>";
 				echo "<option value=\"restore\">".$LANG['buttons'][21]."</option>";
 			
@@ -98,11 +98,11 @@ function plugin_archires_dropdownMassiveAction_Config($ID,$deleted){
 	echo "</select>";
 	
 	$params=array('action'=>'__VALUE__',
-			'deleted'=>$deleted,
-			'ID'=>$ID,
+			'is_deleted'=>$is_deleted,
+			'id'=>$ID,
 			);
 	
-		ajaxUpdateItemOnSelectEvent("massiveaction","show_massiveaction",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownMassiveActionarchires_config.php",$params);
+		ajaxUpdateItemOnSelectEvent("massiveaction","show_massiveaction",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownMassiveActionViews.php",$params);
 	
 	echo "<span id='show_massiveaction'>&nbsp;</span>\n";
 

@@ -32,7 +32,7 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 // ----------------------------------------------------------------------
-// Fichier modifiéar Pierre érd pour la socié GRUAU
+// Fichier modifiéar Pierre Bérd pour la socié GRUAU
 // Le 5 mai 2006
 // ----------------------------------------------------------------------
 // modifier par Adrien RAVISE  aravise@citali.com
@@ -40,26 +40,34 @@
 // Pour la societe CITALI
 // ----------------------------------------------------------------------
 
-$NEEDED_ITEMS=array("user","tracking","reservation","document","computer","device","printer","networking","peripheral","monitor","software","infocom","phone","link","ocsng","consumable","cartridge","contract","enterprise","contact","group","profile","search","mailgate","typedoc","setup","admininfo","registry","setup");
-define('GLPI_ROOT', '../..');
+$NEEDED_ITEMS=array("search");
+define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
-useplugin('archires',true);
+$plugin = new Plugin();
+if ($plugin->isActivated("network"))
+	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
+else
+	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","appliances");
 
-if ($_GET["type"]==PLUGIN_ARCHIRES_LOCATION_QUERY){
-	$object= "PluginArchiresQueryLocation";
-}elseif ($_GET["type"]==PLUGIN_ARCHIRES_SWITCH_QUERY){
-	$object= "PluginArchiresQuerySwitch";
-}elseif ($_GET["type"]==PLUGIN_ARCHIRES_APPLICATIFS_QUERY){
-	$object= "PluginArchiresQueryApplicatifs";
+if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
+	
+	if ($plugin->isActivated("network")){
+		$PluginArchires=new PluginArchires();
+		$PluginArchires->title();
+	}
+		
+	manageGetValuesInSearch(PLUGIN_ARCHIRES_APPLIANCES_QUERY);
+			
+	searchForm(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_GET);
+
+	showList(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_GET);
+	
+}else{
+	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
+	echo "<b>".$LANG['login'][5]."</b></div>";
 }
 
-$obj=new $object();
-$output_data = plugin_archires_Create_Graph('svg',$obj,$_GET["ID"],$_GET["config"]);
-
-header("Content-type: image/svg+xml");
-header("Content-Length: " . strlen($output_data));
-header('Content-Disposition: attachment; filename="image.svg"');
-echo $output_data;
+commonFooter();
 
 ?>

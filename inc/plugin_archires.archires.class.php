@@ -42,14 +42,14 @@ class PluginArchires extends CommonDBTM {
 				echo "<div align='center'><table border='0'><tr><td>";
 				echo "<img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/archires.png\" alt='".$LANG['plugin_archires']['title'][0]."' title='".$LANG['plugin_archires']['title'][0]."'></td>";
 				if(plugin_archires_haveRight("archires","w") || haveRight("config","w"))
-				echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/index.php?new=1\"><b>".$LANG['plugin_archires']['title'][7]."</b></a></td>";
+          echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/index.php?new=1\"><b>".$LANG['plugin_archires']['title'][7]."</b></a></td>";
 				else
-				echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/index.php\"><b>".$LANG['plugin_archires']['title'][0]."</b></a></td>";
+          echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/index.php\"><b>".$LANG['plugin_archires']['title'][0]."</b></a></td>";
 				
-				echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.index.php\"><b>".$LANG['plugin_archires']['title'][3]."</b></a></td>";
+				echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.view.index.php\"><b>".$LANG['plugin_archires']['title'][3]."</b></a></td>";
 								
 				if(plugin_archires_haveRight("archires","w") || haveRight("config","w"))
-				echo "<td><a class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.php\">".$LANG['plugin_archires']['profile'][2]."</a></td>";
+          echo "<td><a class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.php\">".$LANG['plugin_archires']['profile'][2]."</a></td>";
 				echo "</tr></table></div>";
 		}
 	
@@ -60,9 +60,9 @@ class PluginArchires extends CommonDBTM {
 				echo "<div align='center'><table border='0'><tr><td>";
 				echo "<img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/archires.png\" alt='".$LANG['plugin_archires']['title'][0]."' title='".$LANG['plugin_archires']['title'][0]."'></td>";
 				echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/index.php\"><b>".$LANG['plugin_archires']['title'][0]."</b></a></td>";
-				echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.index.php\"><b>".$LANG['plugin_archires']['title'][3]."</b></a></td>";
+				echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.view.index.php\"><b>".$LANG['plugin_archires']['title'][3]."</b></a></td>";
 				if(plugin_archires_haveRight("archires","w"))
-				echo "<td><a class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.php\">".$LANG['plugin_archires']['profile'][2]."</a>";
+          echo "<td><a class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.php\">".$LANG['plugin_archires']['profile'][2]."</a>";
 				echo "</td></tr></table></div>";
 		}
 }
@@ -70,16 +70,16 @@ class PluginArchires extends CommonDBTM {
 class PluginArchiresQueryLocation extends CommonDBTM {
 
 	function __construct () {
-		$this->table="glpi_plugin_archires_query_location";
-		$this->type=PLUGIN_ARCHIRES_LOCATION_TYPE;
+		$this->table="glpi_plugin_archires_locations_queries";
+		$this->type=PLUGIN_ARCHIRES_LOCATIONS_QUERY;
 	}
 	
 	function cleanDBonPurge($ID) {
 		global $DB;
 
 		$query = "DELETE FROM 
-				`glpi_plugin_archires_query_type` 
-				WHERE `FK_query` = '$ID'";
+				`glpi_plugin_archires_query_typess` 
+				WHERE `queries_id` = '$ID'";
 		$DB->query($query);
 	}
 
@@ -108,27 +108,21 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 			if($this->getEmpty()) $con_spotted = true;
 			$use_cache=false;
 		} else {
-			if($this->getfromDB($ID)&&haveAccessToEntity($this->fields["FK_entities"])) $con_spotted = true;
+			if($this->getfromDB($ID)&&haveAccessToEntity($this->fields["entities_id"])) $con_spotted = true;
 		}
 
 		if ($con_spotted){
 		
 			$this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
+			$this->showFormHeader($target,$ID,$withtemplate);
 			
-			echo "<form method='post' name=form action=\"$target\">";
-			if (empty($ID)||$ID<0){
-					echo "<input type='hidden' name='FK_entities' value='".$_SESSION["glpiactive_entity"]."'>";
-				}
-			echo "<div class='center' id='tabsbody'>";
-			echo "<table class='tab_cadre_fixe'>";
-			$this->showFormHeader($ID,'');
 			echo "<tr><td class='tab_bg_1' valign='top'>";
 
 			echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
 			echo "<td>";
-			autocompletionTextField("name","glpi_plugin_archires_query_location","name",$this->fields["name"],50,$this->fields["FK_entities"]);		
+			autocompletionTextField("name","glpi_plugin_archires_locations_queries","name",$this->fields["name"],50,$this->fields["entities_id"]);		
 			echo "</td></tr>";
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][2].":	</td><td>";
@@ -143,7 +137,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 			echo "</td></tr>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
-			dropdownValue("glpi_dropdown_network", "network", $this->fields["network"]);
+			dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
 			echo "</td></tr>";
 
 			echo "</table>";
@@ -152,57 +146,28 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 			echo "<table cellpadding='2' cellspacing='2' border='0'>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
-			dropdownValue("glpi_dropdown_state", "state", $this->fields["state"]);
+			dropdownValue("glpi_states", "states_id", $this->fields["states_id"]);
 			echo "</td></tr>";
 			
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['common'][35].": </td><td>";
-			dropdownValue("glpi_groups", "FK_group", $this->fields["FK_group"]);
+			dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"]);
 			echo "</td></tr>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['networking'][56].": </td><td>";
-			dropdownValue("glpi_dropdown_vlan", "FK_vlan", $this->fields["FK_vlan"]);
+			dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"]);
 			echo "</td></tr>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
-			//config
-			plugin_archires_dropdownConfig($this,$ID);
+			//view
+			plugin_archires_dropdownView($this,$ID);
 			echo "</td></tr>";
 			
 			echo "</table>";
 			echo "</td>";
 			echo "</tr>";
 			
-			if (plugin_archires_haveRight("archires","w")){
-				if ($ID=="") {
-						echo "<tr>";
-						echo "<td class='tab_bg_2' valign='top' colspan='2'>";
-						echo "<div align='center'><input type='submit' name='add' value=\"".$LANG['buttons'][8]."\" class='submit'></div>";
-						echo "</td>";
-						echo "</tr>";
-	
-				} else {
-	
-					echo "<tr>";
-					echo "<td class='tab_bg_2'  colspan='2' valign='top'><div align='center'>";
-	
-						echo "<input type='hidden' name='ID' value=\"$ID\">\n";
-						echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-						echo "<input type='submit' name='duplicate' value=\"".$LANG['plugin_archires'][28]."\" class='submit' >";
-						
-						if ($this->fields["deleted"]=='0')
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='delete' value=\"".$LANG['buttons'][6]."\" class='submit'></div>";
-						else {
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='restore' value=\"".$LANG['buttons'][21]."\" class='submit'>";
-	
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='purge' value=\"".$LANG['buttons'][22]."\" class='submit'></div>";
-						}
-					
-					echo "</td>";
-					echo "</tr>";
-				}
-			}
-			echo "</table></div></form>";
+			$this->showFormButtons($ID,$withtemplate);
 			echo "<div id='tabcontent'></div>";
 			echo "<script type='text/javascript'>loadDefaultTab();</script>";
 
@@ -215,11 +180,11 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 	}	
 }
 
-class PluginArchiresQuerySwitch extends CommonDBTM {
+class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 
 	function __construct () {
-		$this->table="glpi_plugin_archires_query_switch";
-		$this->type=PLUGIN_ARCHIRES_SWITCH_TYPE;
+		$this->table="glpi_plugin_archires_networkequipments_queries";
+		$this->type=PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY;
 		$object=$this;
 	}
 	
@@ -227,8 +192,8 @@ class PluginArchiresQuerySwitch extends CommonDBTM {
 		global $DB;
 
 		$query = "DELETE 
-					FROM `glpi_plugin_archires_query_type` 
-					WHERE `FK_query` = '$ID'";
+					FROM `glpi_plugin_archires_query_types` 
+					WHERE `queries_id` = '$ID'";
 		$DB->query($query);
 	}
 
@@ -257,41 +222,34 @@ class PluginArchiresQuerySwitch extends CommonDBTM {
 			if($this->getEmpty()) $con_spotted = true;
 			$use_cache=false;
 		} else {
-			if($this->getfromDB($ID)&&haveAccessToEntity($this->fields["FK_entities"])) $con_spotted = true;
+			if($this->getfromDB($ID)&&haveAccessToEntity($this->fields["entities_id"])) $con_spotted = true;
 		}
 
 		if ($con_spotted){
 		
 			$this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
-			
-			echo "<form method='post' name=form action=\"$target\">";
-			if (empty($ID)||$ID<0){
-					echo "<input type='hidden' name='FK_entities' value='".$_SESSION["glpiactive_entity"]."'>";
-				}
-			echo "<div class='center' id='tabsbody'>";
-			echo "<table class='tab_cadre_fixe'>";
-			$this->showFormHeader($ID,'');
+			$this->showFormHeader($target,$ID,$withtemplate);
 			echo "<tr><td class='tab_bg_1' valign='top'>";
 
 			echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
 			echo "<td>";
-			autocompletionTextField("name","glpi_plugin_archires_query_switch","name",$this->fields["name"],50,$this->fields["FK_entities"]);		
+			autocompletionTextField("name","glpi_plugin_archires_networkequipments_queries","name",$this->fields["name"],50,$this->fields["entities_id"]);		
 			echo "</td></tr>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['help'][26].":	</td><td>";
 			
-			dropdownValue("glpi_networking", "switch", $this->fields["switch"],1,$this->fields["FK_entities"]);
+			dropdownValue("glpi_networkequipments", "networkequipments_id", $this->fields["networkequipments_id"],1,$this->fields["entities_id"]);
 			echo "</td></tr>";	
 				
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
-			dropdownValue("glpi_dropdown_network", "network", $this->fields["network"]);
+			dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
 			echo "</td></tr>";
 
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
-			dropdownValue("glpi_dropdown_state", "state", $this->fields["state"]);
+			dropdownValue("glpi_states", "states_id", $this->fields["states_id"]);
 			echo "</td></tr>";
 			
 			echo "</table>";
@@ -300,52 +258,23 @@ class PluginArchiresQuerySwitch extends CommonDBTM {
 			echo "<table cellpadding='2' cellspacing='2' border='0'>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['common'][35].": </td><td>";
-			dropdownValue("glpi_groups", "FK_group", $this->fields["FK_group"]);
+			dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"]);
 			echo "</td></tr>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['networking'][56].": </td><td>";
-			dropdownValue("glpi_dropdown_vlan", "FK_vlan", $this->fields["FK_vlan"]);
+			dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"]);
 			echo "</td></tr>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
-			//config
-			plugin_archires_dropdownConfig($this,$ID);
+			//View
+			plugin_archires_dropdownView($this,$ID);
 			echo "</td></tr>";
 			
 			echo "</table>";
 			echo "</td>";
 			echo "</tr>";
 			
-			if (plugin_archires_haveRight("archires","w")){
-				if ($ID=="") {
-				
-						echo "<tr>";
-						echo "<td class='tab_bg_2' valign='top' colspan='2'>";
-						echo "<div align='center'><input type='submit' name='add' value=\"".$LANG['buttons'][8]."\" class='submit'></div>";
-						echo "</td>";
-						echo "</tr>";
-	
-				} else {
-	
-					echo "<tr>";
-					echo "<td class='tab_bg_2'  colspan='2' valign='top'><div align='center'>";
-					echo "<input type='hidden' name='ID' value=\"$ID\">\n";
-					echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-					echo "<input type='submit' name='duplicate' value=\"".$LANG['plugin_archires'][28]."\" class='submit' >";
-	
-					if ($this->fields["deleted"]=='0')
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='delete' value=\"".$LANG['buttons'][6]."\" class='submit'></div>";
-					else {
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='restore' value=\"".$LANG['buttons'][21]."\" class='submit'>";
-	
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='purge' value=\"".$LANG['buttons'][22]."\" class='submit'></div>";
-					}
-					
-					echo "</td>";
-					echo "</tr>";
-				}
-			}
-			echo "</table></div></form>";
+			$this->showFormButtons($ID,$withtemplate);
 			echo "<div id='tabcontent'></div>";
 			echo "<script type='text/javascript'>loadDefaultTab();</script>";
 
@@ -358,19 +287,19 @@ class PluginArchiresQuerySwitch extends CommonDBTM {
 	}
 }
 
-class PluginArchiresQueryApplicatifs extends CommonDBTM {
+class PluginArchiresQueryAppliance extends CommonDBTM {
 
 	function __construct () {
-		$this->table="glpi_plugin_archires_query_applicatifs";
-		$this->type=PLUGIN_ARCHIRES_APPLICATIFS_TYPE;
+		$this->table="glpi_plugin_archires_appliances_queries";
+		$this->type=PLUGIN_ARCHIRES_APPLIANCES_QUERY;
 	}
 	
 	function cleanDBonPurge($ID) {
 		global $DB;
 
 		$query = "DELETE 
-					FROM `glpi_plugin_applicatifs_query_location` 
-					WHERE `FK_query` = '$ID'";
+					FROM `glpi_plugin_archires_query_types` 
+					WHERE `queries_id` = '$ID'";
 		$DB->query($query);
 	}
 
@@ -400,41 +329,34 @@ class PluginArchiresQueryApplicatifs extends CommonDBTM {
 			if($this->getEmpty()) $con_spotted = true;
 			$use_cache=false;
 		} else {
-			if($this->getfromDB($ID)&&haveAccessToEntity($this->fields["FK_entities"])) $con_spotted = true;
+			if($this->getfromDB($ID)&&haveAccessToEntity($this->fields["entities_id"])) $con_spotted = true;
 		}
 
 		if ($con_spotted){
 		
 			$this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
-			
-			echo "<form method='post' name=form action=\"$target\">";
-			if (empty($ID)||$ID<0){
-					echo "<input type='hidden' name='FK_entities' value='".$_SESSION["glpiactive_entity"]."'>";
-				}
-			echo "<div class='center' id='tabsbody'>";
-			echo "<table class='tab_cadre_fixe'>";
-			$this->showFormHeader($ID,'');
+			$this->showFormHeader($target,$ID,$withtemplate);
 			echo "<tr><td class='tab_bg_1' valign='top'>";
 
 			echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
 			echo "<td>";
-			autocompletionTextField("name","glpi_plugin_archires_query_applicatifs","name",$this->fields["name"],50,$this->fields["FK_entities"]);		
+			autocompletionTextField("name","glpi_plugin_archires_appliances_queries","name",$this->fields["name"],50,$this->fields["entities_id"]);		
 			echo "</td></tr>";
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][8].":	</td><td>";
- 	      dropdownValue("glpi_plugin_applicatifs", "applicatifs", $this->fields["applicatifs"],1,$this->fields["FK_entities"]);
+ 	      dropdownValue("glpi_plugin_appliances", "appliances_id", $this->fields["appliances_id"],1,$this->fields["entities_id"]);
 			echo "</td></tr>";
 			
 	
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
-			dropdownValue("glpi_dropdown_network", "network", $this->fields["network"],1,$this->fields["FK_entities"]);
+			dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"],1,$this->fields["entities_id"]);
 			echo "</td></tr>";
 
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
-			dropdownValue("glpi_dropdown_state", "state", $this->fields["state"],1,$this->fields["FK_entities"]);
+			dropdownValue("glpi_states", "states_id", $this->fields["states_id"],1,$this->fields["entities_id"]);
 			echo "</td></tr>";
 			
 			echo "</table>";
@@ -443,50 +365,23 @@ class PluginArchiresQueryApplicatifs extends CommonDBTM {
 			echo "<table cellpadding='2' cellspacing='2' border='0'>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['common'][35].": </td><td>";
-			dropdownValue("glpi_groups", "FK_group", $this->fields["FK_group"],1,$this->fields["FK_entities"]);
+			dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"],1,$this->fields["entities_id"]);
 			echo "</td></tr>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['networking'][56].": </td><td>";
-			dropdownValue("glpi_dropdown_vlan", "FK_vlan", $this->fields["FK_vlan"],1,$this->fields["FK_entities"]);
+			dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"],1,$this->fields["entities_id"]);
 			echo "</td></tr>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
-			//config
-			plugin_archires_dropdownConfig($this,$ID);
+			//View
+			plugin_archires_dropdownView($this,$ID);
 			echo "</td></tr>";
 			
 			echo "</table>";
 			echo "</td>";
 			echo "</tr>";
 			
-			if (plugin_archires_haveRight("archires","w")){
-				if ($ID=="") {
-						echo "<tr>";
-						echo "<td class='tab_bg_2' valign='top' colspan='2'>";
-						echo "<div align='center'><input type='submit' name='add' value=\"".$LANG['buttons'][8]."\" class='submit'></div>";
-						echo "</td>";
-						echo "</tr>";
-
-				} else {
-	
-					echo "<tr>";
-					echo "<td class='tab_bg_2'  colspan='2' valign='top'><div align='center'>";	
-					echo "<input type='hidden' name='ID' value=\"$ID\">\n";
-					echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-					echo "<input type='submit' name='duplicate' value=\"".$LANG['plugin_archires'][28]."\" class='submit' >";
-					if ($this->fields["deleted"]=='0')
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='delete' value=\"".$LANG['buttons'][6]."\" class='submit'></div>";
-					else {
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='restore' value=\"".$LANG['buttons'][21]."\" class='submit'>";
-	
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='purge' value=\"".$LANG['buttons'][22]."\" class='submit'></div>";
-					}
-					
-					echo "</td>";
-					echo "</tr>";
-				}
-			}
-			echo "</table></div></form>";
+			$this->showFormButtons($ID,$withtemplate);
 			echo "<div id='tabcontent'></div>";
 			echo "<script type='text/javascript'>loadDefaultTab();</script>";
 

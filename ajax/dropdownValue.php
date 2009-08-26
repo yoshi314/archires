@@ -57,19 +57,19 @@ if (! TableExists($_POST['table']) ){
 }
 
 // Make a select box with preselected values
-if (!isset($_POST["limit"])) $_POST["limit"]=$CFG_GLPI["dropdown_limit"];
+if (!isset($_POST["limit"])) $_POST["limit"]=$CFG_GLPI["dropdown_chars_limit"];
 $first=true;
 $where="WHERE ";
 
 if (in_array($_POST['table'],$CFG_GLPI["deleted_tables"])){
 	if (!$first) $where.=" AND ";
 	else $first=false;
-	$where.=" deleted='0' ";
+	$where.=" `is_deleted` = '0' ";
 }
 if (in_array($_POST['table'],$CFG_GLPI["template_tables"])){
 	if (!$first) $where.=" AND ";
 	else $first=false;
-	$where.=" is_template='0' ";
+	$where.=" `is_template` = '0' ";
 }
 
 
@@ -90,13 +90,13 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 	// Manage multiple Entities dropdowns
 	$add_order="";
 	if (in_array($_POST['table'],$CFG_GLPI["specif_entities_tables"])){
-		$add_order=" FK_entities, ";
+		$add_order=" entities_id, ";
 
 		if (!$first) $where.=" AND ";
 		else $first=false;
 
 		if (isset($_POST["entity_restrict"])&&$_POST["entity_restrict"]>=0){
-			$where.= $_POST['table'].".FK_entities='".$_POST["entity_restrict"]."'";
+			$where.= $_POST['table'].".entities_id='".$_POST["entity_restrict"]."'";
 		} else {
 			$where.=getEntitiesRestrictRequest("",$_POST['table']);
 		}
@@ -136,7 +136,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 	if ($DB->numrows($result)) {
 		while ($data =$DB->fetch_array($result)) {
 
-			$ID = $data['ID'];
+			$ID = $data['id'];
 			$level = $data['level'];
 
 			if (empty($data['name'])) $output="($ID)";
@@ -161,11 +161,11 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 } else {
 	if (!$first) $where.=" AND ";
 	else $first=false;
-	$where .=" ID <> '".$_POST['value']."' ";
+	$where .=" id <> '".$_POST['value']."' ";
 
 	if (in_array($_POST['table'],$CFG_GLPI["specif_entities_tables"])){
 		if (isset($_POST["entity_restrict"])&&$_POST["entity_restrict"]>=0){
-			$where.= " AND ".$_POST['table'].".FK_entities='".$_POST["entity_restrict"]."'";
+			$where.= " AND ".$_POST['table'].".entities_id='".$_POST["entity_restrict"]."'";
 		} else {
 			$where.=getEntitiesRestrictRequest("AND",$_POST['table']);
 		}
@@ -180,7 +180,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 
 	switch ($_POST['table']){
 		case "glpi_contacts":
-			$query = "SELECT CONCAT(name,' ',firstname) AS $field, `".$_POST['table']."`.`comments`, `".$_POST['table']."`.`ID`
+			$query = "SELECT CONCAT(name,' ',firstname) AS $field, `".$_POST['table']."`.`comment`, `".$_POST['table']."`.`id`
 					FROM `".$_POST['table']."`
 					$where
 					ORDER BY $field $LIMIT";
@@ -204,7 +204,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 	echo "<option value=\"0\">-----</option>";
 	$number = $DB->numrows($result);
 	if($number != 0)
-	echo "<option value=\"".$_POST['devicetype'].";-1\">".$LANG['plugin_archires'][18]."</option>";
+	echo "<option value=\"".$_POST['itemtype'].";-1\">".$LANG['plugin_archires'][18]."</option>";
 	$output=getDropdownName($_POST['table'],$_POST['value']);
 	if (!empty($output)&&$output!="&nbsp;"){
 		echo "<option selected value='".$_POST['value']."'>".$output."</option>";
@@ -213,13 +213,13 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 	if ($DB->numrows($result)) {
 		while ($data =$DB->fetch_array($result)) {
 			$output = $data[$field];
-			$ID = $data['ID'];
+			$ID = $data['id'];
 			$addcomment="";
-			if (isset($data["comments"])) $addcomment=" - ".$data["comments"];
+			if (isset($data["comment"])) $addcomment=" - ".$data["comment"];
 
 			if (empty($output)) $output="($ID)";
 
-			echo "<option value=\"".$_POST['devicetype'].";$ID\" title=\"$output$addcomment\">".substr($output,0,$_POST["limit"])."</option>";
+			echo "<option value=\"".$_POST['itemtype'].";$ID\" title=\"$output$addcomment\">".substr($output,0,$_POST["limit"])."</option>";
 		}
 	}
 	echo "</select>";

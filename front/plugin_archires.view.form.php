@@ -35,50 +35,51 @@
 $NEEDED_ITEMS=array("user","tracking","reservation","document","computer","device","printer","networking","peripheral","monitor","software","infocom","phone","link","ocsng","consumable","cartridge","contract","enterprise","contact","group","profile","search","mailgate","typedoc","setup","admininfo","registry","setup");
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
+
 if(isset($_GET)) $tab = $_GET;
 if(empty($tab) && isset($_POST)) $tab = $_POST;
-if(!isset($tab["ID"])) $tab["ID"] = "";
+if(!isset($tab["id"])) $tab["id"] = "";
 
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
 
-$PluginArchiresConfig=new PluginArchiresConfig();
+$PluginArchiresView=new PluginArchiresView();
 
 if (isset($_POST["add"]))
 {
 	if(plugin_archires_haveRight("archires","w"))
-		$newID=$PluginArchiresConfig->add($_POST);
+		$newID=$PluginArchiresView->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 } 
 else if (isset($_POST["delete"]))
 {
 	if(plugin_archires_haveRight("archires","w"))
-		$PluginArchiresConfig->delete($_POST);
+		$PluginArchiresView->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 }
 else if (isset($_POST["restore"]))
 {
 	if(plugin_archires_haveRight("archires","w"))
-		$PluginArchiresConfig->restore($_POST);
+		$PluginArchiresView->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 }
 else if (isset($_POST["purge"]))
 {
 	if(plugin_archires_haveRight("archires","w"))
-		$PluginArchiresConfig->delete($_POST,1);
+		$PluginArchiresView->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 }
 else if (isset($_POST["update"]))
 {
 	if(plugin_archires_haveRight("archires","w"))
-		$PluginArchiresConfig->update($_POST);
+		$PluginArchiresView->update($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 }else if (isset($_POST["duplicate"])){
 
 	if(plugin_archires_haveRight("archires","w"))
-		unset($_POST['ID']);
-		$newID=$PluginArchiresConfig->add($_POST);
+		unset($_POST['id']);
+		$newID=$PluginArchiresView->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 }
 
@@ -99,7 +100,7 @@ else
 	else
 		commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
-	$PluginArchiresConfig->showForm($_SERVER["PHP_SELF"],$tab["ID"]);
+	$PluginArchiresView->showForm($_SERVER["PHP_SELF"],$tab["id"]);
 
 	commonFooter();
 }

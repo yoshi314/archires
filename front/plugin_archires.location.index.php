@@ -48,7 +48,7 @@ $plugin = new Plugin();
 if ($plugin->isActivated("network"))
 	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
 else
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","location");
+	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","locations");
 
 if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 	
@@ -57,11 +57,11 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 		$PluginArchires->title();
 	}
 		
-	manageGetValuesInSearch(PLUGIN_ARCHIRES_LOCATION_TYPE);
+	manageGetValuesInSearch(PLUGIN_ARCHIRES_LOCATIONS_QUERY);
 			
-	searchForm(PLUGIN_ARCHIRES_LOCATION_TYPE,$_GET);
+	searchForm(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_GET);
 
-	showList(PLUGIN_ARCHIRES_LOCATION_TYPE,$_GET);
+	showList(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_GET);
 	
 }else{
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";

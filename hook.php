@@ -41,9 +41,9 @@ function plugin_archires_install(){
 
 		include_once (GLPI_ROOT."/inc/profile.class.php");
 
-		if(!TableExists("glpi_plugin_archires_config")) {
+		if(!TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
 
-			plugin_archires_installing("1.7.2");
+			plugin_archires_installing("1.8.0");
 
 		}elseif(!TableExists("glpi_plugin_archires_color_vlan")){
 
@@ -54,6 +54,7 @@ function plugin_archires_install(){
 				plugin_archires_update("1.5");
 				plugin_archires_update("1.7.0");
 				plugin_archires_update("1.7.2");
+				plugin_archires_update("1.8.0");
 
 			}elseif(!TableExists("glpi_plugin_archires_color") && !TableExists("glpi_plugin_archires_profiles")){
 
@@ -61,42 +62,50 @@ function plugin_archires_install(){
 				plugin_archires_update("1.5");
 				plugin_archires_update("1.7.0");
 				plugin_archires_update("1.7.2");
+				plugin_archires_update("1.8.0");
 
 			}elseif(!TableExists("glpi_plugin_archires_image_device")){
 
 				plugin_archires_update("1.5");
 				plugin_archires_update("1.7.0");
 				plugin_archires_update("1.7.2");
+				plugin_archires_update("1.8.0");
 
 			}elseif(TableExists("glpi_plugin_archires_profiles") && FieldExists("glpi_plugin_archires_profiles","interface")) {
 
 				plugin_archires_update("1.7.0");
 				plugin_archires_update("1.7.2");
+				plugin_archires_update("1.8.0");
 
 			}elseif(TableExists("glpi_plugin_archires_config") && FieldExists("glpi_plugin_archires_config","system")) {
 
 				plugin_archires_update("1.7.2");
+				plugin_archires_update("1.8.0");
 
 			}
-		}
+		}elseif(!TableExists("glpi_plugin_archires_views")) {
 
-		plugin_archires_createFirstAccess($_SESSION['glpiactiveprofile']['ID']);
+				plugin_archires_update("1.8.0");
+
+			}
+
+		plugin_archires_createFirstAccess($_SESSION['glpiactiveprofile']['id']);
 		return true;
 }
 
 function plugin_archires_uninstall(){
 	global $DB;
 
-	$tables = array("glpi_plugin_archires_image_device",
-					"glpi_plugin_archires_config",
-					"glpi_plugin_archires_color_iface",
-					"glpi_plugin_archires_color_vlan",
-					"glpi_plugin_archires_color_state",
+	$tables = array("glpi_plugin_archires_imageitems",
+					"glpi_plugin_archires_views",
+					"glpi_plugin_archires_networkinterfacescolors",
+					"glpi_plugin_archires_vlanscolors",
+					"glpi_plugin_archires_statescolors",
 					"glpi_plugin_archires_profiles",
-					"glpi_plugin_archires_query_location",
-					"glpi_plugin_archires_query_switch",
-					"glpi_plugin_archires_query_applicatifs",
-					"glpi_plugin_archires_query_type");
+					"glpi_plugin_archires_locations_queries",
+					"glpi_plugin_archires_networkequipments_queries",
+					"glpi_plugin_archires_appliances_queries",
+					"glpi_plugin_archires_query_types");
 
 	foreach($tables as $table)
 		$DB->query("DROP TABLE `$table`;");
@@ -104,21 +113,16 @@ function plugin_archires_uninstall(){
 	$rep_files_archires = GLPI_PLUGIN_DOC_DIR."/archires";
 
 	deleteDir($rep_files_archires);
+  
+  $tables_glpi = array("glpi_displayprefs",
+					"glpi_documents_items",
+					"glpi_bookmarks",
+					"glpi_logs");
 
-	$query="DELETE FROM `glpi_display`
-			WHERE `type`= '".PLUGIN_ARCHIRES_LOCATION_TYPE."'
-			OR `type` = '".PLUGIN_ARCHIRES_SWITCH_TYPE."'
-			OR `type`= '".PLUGIN_ARCHIRES_APPLICATIFS_TYPE."';";
-	$DB->query($query);
-
-	$query="DELETE FROM glpi_bookmark
-			WHERE `device_type` = '".PLUGIN_ARCHIRES_LOCATION_TYPE."'
-			OR `device_type` = '".PLUGIN_ARCHIRES_SWITCH_TYPE."'
-			OR `device_type` = '".PLUGIN_ARCHIRES_APPLICATIFS_TYPE."';";
-	$DB->query($query);
+	foreach($tables_glpi as $table_glpi)
+		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = '".PLUGIN_ARCHIRES_LOCATIONS_QUERY."' OR `itemtype` = '".PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY."' OR `itemtype` = '".PLUGIN_ARCHIRES_APPLIANCES_QUERY."';");
 
 	plugin_init_archires();
-	cleanCache("GLPI_HEADER_".$_SESSION["glpiID"]);
 
 	return true;
 }
@@ -129,10 +133,10 @@ function plugin_archires_getDatabaseRelations(){
 	if ($plugin->isActivated("archires"))
 
 		return array(
-		"glpi_entities"=>array("glpi_plugin_archires_query_location"=>"FK_entities",
-								"glpi_plugin_archires_query_switch"=>"FK_entities",
-								"glpi_plugin_archires_query_applicatifs"=>"FK_entities",
-								"glpi_plugin_archires_config"=>"FK_entities"));
+		"glpi_entities"=>array("glpi_plugin_archires_locations_queries"=>"entities_id",
+								"glpi_plugin_archires_networkequipments_queries"=>"entities_id",
+								"glpi_plugin_archires_appliances_queries"=>"entities_id",
+								"glpi_plugin_archires_views"=>"entities_id"));
 	else
 		return array();
 
@@ -146,170 +150,170 @@ function plugin_archires_getSearchOption(){
 	$sopt=array();
 
 	// Part header
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE]['common']=$LANG['plugin_archires']['title'][4];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY]['common']=$LANG['plugin_archires']['title'][4];
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][1]['table']='glpi_plugin_archires_query_location';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][1]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][1]['linkfield']='name';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][1]['name']=$LANG['plugin_archires']['search'][1];
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][1]['datatype']='itemlink';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][1]['table']='glpi_plugin_archires_locations_queries';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][1]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][1]['linkfield']='name';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][1]['name']=$LANG['plugin_archires']['search'][1];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][1]['datatype']='itemlink';
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][2]['table']='glpi_plugin_archires_query_location';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][2]['field']='child';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][2]['linkfield']='child';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][2]['name']=$LANG['plugin_archires']['search'][3];
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][2]['datatype']='bool';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][2]['table']='glpi_plugin_archires_locations_queries';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][2]['field']='child';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][2]['linkfield']='child';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][2]['name']=$LANG['plugin_archires']['search'][3];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][2]['datatype']='bool';
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][3]['table']='glpi_dropdown_locations';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][3]['field']='completename';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][3]['linkfield']='location';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][3]['name']=$LANG['plugin_archires']['search'][2];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][3]['table']='glpi_locations';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][3]['field']='completename';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][3]['linkfield']='locations_id';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][3]['name']=$LANG['plugin_archires']['search'][2];
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][4]['table']='glpi_dropdown_network';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][4]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][4]['linkfield']='network';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][4]['name']=$LANG['plugin_archires']['search'][4];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][4]['table']='glpi_networks';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][4]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][4]['linkfield']='networks_id';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][4]['name']=$LANG['plugin_archires']['search'][4];
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][5]['table']='glpi_dropdown_state';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][5]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][5]['linkfield']='state';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][5]['name']=$LANG['plugin_archires']['search'][5];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][5]['table']='glpi_states';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][5]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][5]['linkfield']='states_id';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][5]['name']=$LANG['plugin_archires']['search'][5];
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][6]['table']='glpi_groups';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][6]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][6]['linkfield']='FK_group';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][6]['name']=$LANG['common'][35];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][6]['table']='glpi_groups';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][6]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][6]['linkfield']='groups_id';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][6]['name']=$LANG['common'][35];
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][7]['table']='glpi_dropdown_vlan';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][7]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][7]['linkfield']='FK_vlan';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][7]['name']=$LANG['networking'][56];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][7]['table']='glpi_vlans';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][7]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][7]['linkfield']='vlans_id';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][7]['name']=$LANG['networking'][56];
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][8]['table']='glpi_plugin_archires_config';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][8]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][8]['linkfield']='FK_config';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][8]['name']=$LANG['plugin_archires']['setup'][20];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][8]['table']='glpi_plugin_archires_views';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][8]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][8]['linkfield']='views_id';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][8]['name']=$LANG['plugin_archires']['setup'][20];
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][9]['table']='glpi_plugin_archires_query_location';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][9]['field']='link';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][9]['linkfield']='';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][9]['name']=$LANG['plugin_archires'][0];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][9]['table']='glpi_plugin_archires_locations_queries';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][9]['field']='link';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][9]['linkfield']='';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][9]['name']=$LANG['plugin_archires'][0];
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][30]['table']='glpi_plugin_archires_query_location';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][30]['field']='ID';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][30]['linkfield']='';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][30]['name']=$LANG['common'][2];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][30]['table']='glpi_plugin_archires_locations_queries';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][30]['field']='id';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][30]['linkfield']='';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][30]['name']=$LANG['common'][2];
 
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][80]['table']='glpi_entities';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][80]['field']='completename';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][80]['linkfield']='FK_entities';
-	$sopt[PLUGIN_ARCHIRES_LOCATION_TYPE][80]['name']=$LANG['entity'][0];
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][80]['table']='glpi_entities';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][80]['field']='completename';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][80]['linkfield']='entities_id';
+	$sopt[PLUGIN_ARCHIRES_LOCATIONS_QUERY][80]['name']=$LANG['entity'][0];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE]['common']=$LANG['plugin_archires']['title'][5];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY]['common']=$LANG['plugin_archires']['title'][5];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][1]['table']='glpi_plugin_archires_query_switch';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][1]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][1]['linkfield']='name';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][1]['name']=$LANG['plugin_archires']['search'][1];
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][1]['datatype']='itemlink';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][1]['table']='glpi_plugin_archires_networkequipments_queries';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][1]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][1]['linkfield']='name';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][1]['name']=$LANG['plugin_archires']['search'][1];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][1]['datatype']='itemlink';
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][2]['table']='glpi_networking';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][2]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][2]['linkfield']='switch';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][2]['name']=$LANG['help'][26];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][2]['table']='glpi_networkequipments';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][2]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][2]['linkfield']='networkequipments_id';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][2]['name']=$LANG['help'][26];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][3]['table']='glpi_dropdown_network';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][3]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][3]['linkfield']='network';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][3]['name']=$LANG['plugin_archires']['search'][4];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][3]['table']='glpi_networks';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][3]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][3]['linkfield']='networks_id';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][3]['name']=$LANG['plugin_archires']['search'][4];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][4]['table']='glpi_dropdown_state';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][4]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][4]['linkfield']='state';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][4]['name']=$LANG['plugin_archires']['search'][5];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][4]['table']='glpi_states';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][4]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][4]['linkfield']='states_id';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][4]['name']=$LANG['plugin_archires']['search'][5];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][5]['table']='glpi_groups';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][5]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][5]['linkfield']='FK_group';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][5]['name']=$LANG['common'][35];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][5]['table']='glpi_groups';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][5]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][5]['linkfield']='groups_id';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][5]['name']=$LANG['common'][35];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][6]['table']='glpi_dropdown_vlan';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][6]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][6]['linkfield']='FK_vlan';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][6]['name']=$LANG['networking'][56];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][6]['table']='glpi_vlans';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][6]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][6]['linkfield']='vlans_id';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][6]['name']=$LANG['networking'][56];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][7]['table']='glpi_plugin_archires_config';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][7]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][7]['linkfield']='FK_config';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][7]['name']=$LANG['plugin_archires']['setup'][20];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][7]['table']='glpi_plugin_archires_views';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][7]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][7]['linkfield']='views_id';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][7]['name']=$LANG['plugin_archires']['setup'][20];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][8]['table']='glpi_plugin_archires_query_switch';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][8]['field']='link';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][8]['linkfield']='';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][8]['name']=$LANG['plugin_archires'][0];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][8]['table']='glpi_plugin_archires_networkequipments_queries';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][8]['field']='link';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][8]['linkfield']='';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][8]['name']=$LANG['plugin_archires'][0];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][30]['table']='glpi_plugin_archires_query_switch';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][30]['field']='ID';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][30]['linkfield']='';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][30]['name']=$LANG['common'][2];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][30]['table']='glpi_plugin_archires_networkequipments_queries';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][30]['field']='id';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][30]['linkfield']='';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][30]['name']=$LANG['common'][2];
 
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][80]['table']='glpi_entities';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][80]['field']='completename';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][80]['linkfield']='FK_entities';
-	$sopt[PLUGIN_ARCHIRES_SWITCH_TYPE][80]['name']=$LANG['entity'][0];
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][80]['table']='glpi_entities';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][80]['field']='completename';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][80]['linkfield']='entities_id';
+	$sopt[PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY][80]['name']=$LANG['entity'][0];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE]['common']=$LANG['plugin_archires']['title'][8];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY]['common']=$LANG['plugin_archires']['title'][8];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][1]['table']='glpi_plugin_archires_query_applicatifs';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][1]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][1]['linkfield']='name';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][1]['name']=$LANG['plugin_archires']['search'][1];
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][1]['datatype']='itemlink';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][1]['table']='glpi_plugin_archires_appliances_queries';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][1]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][1]['linkfield']='name';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][1]['name']=$LANG['plugin_archires']['search'][1];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][1]['datatype']='itemlink';
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][2]['table']='glpi_plugin_applicatifs';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][2]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][2]['linkfield']='applicatifs';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][2]['name']=$LANG['plugin_archires']['search'][8];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][2]['table']='glpi_plugin_appliances';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][2]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][2]['linkfield']='appliances_id';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][2]['name']=$LANG['plugin_archires']['search'][8];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][3]['table']='glpi_dropdown_network';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][3]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][3]['linkfield']='network';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][3]['name']=$LANG['plugin_archires']['search'][4];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][3]['table']='glpi_networks';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][3]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][3]['linkfield']='networks_id';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][3]['name']=$LANG['plugin_archires']['search'][4];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][4]['table']='glpi_dropdown_state';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][4]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][4]['linkfield']='state';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][4]['name']=$LANG['plugin_archires']['search'][5];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][4]['table']='glpi_states';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][4]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][4]['linkfield']='states_id';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][4]['name']=$LANG['plugin_archires']['search'][5];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][5]['table']='glpi_groups';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][5]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][5]['linkfield']='FK_group';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][5]['name']=$LANG['common'][35];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][5]['table']='glpi_groups';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][5]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][5]['linkfield']='groups_id';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][5]['name']=$LANG['common'][35];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][6]['table']='glpi_dropdown_vlan';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][6]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][6]['linkfield']='FK_vlan';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][6]['name']=$LANG['networking'][56];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][6]['table']='glpi_vlans';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][6]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][6]['linkfield']='vlans_id';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][6]['name']=$LANG['networking'][56];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][7]['table']='glpi_plugin_archires_config';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][7]['field']='name';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][7]['linkfield']='FK_config';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][7]['name']=$LANG['plugin_archires']['setup'][20];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][7]['table']='glpi_plugin_archires_views';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][7]['field']='name';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][7]['linkfield']='views_id';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][7]['name']=$LANG['plugin_archires']['setup'][20];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][8]['table']='glpi_plugin_archires_query_applicatifs';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][8]['field']='link';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][8]['linkfield']='';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][8]['name']=$LANG['plugin_archires'][0];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][8]['table']='glpi_plugin_archires_appliances_queries';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][8]['field']='link';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][8]['linkfield']='';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][8]['name']=$LANG['plugin_archires'][0];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][30]['table']='glpi_plugin_archires_query_applicatifs';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][30]['field']='ID';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][30]['linkfield']='';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][30]['name']=$LANG['common'][2];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][30]['table']='glpi_plugin_archires_appliances_queries';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][30]['field']='id';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][30]['linkfield']='';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][30]['name']=$LANG['common'][2];
 
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][80]['table']='glpi_entities';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][80]['field']='completename';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][80]['linkfield']='FK_entities';
-	$sopt[PLUGIN_ARCHIRES_APPLICATIFS_TYPE][80]['name']=$LANG['entity'][0];
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][80]['table']='glpi_entities';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][80]['field']='completename';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][80]['linkfield']='entities_id';
+	$sopt[PLUGIN_ARCHIRES_APPLIANCES_QUERY][80]['name']=$LANG['entity'][0];
 
 	return $sopt;
 }
@@ -321,112 +325,112 @@ function plugin_archires_giveItem($type,$ID,$data,$num){
 	$field=$SEARCH_OPTION[$type][$ID]["field"];
 
 	switch ($type){
-		case PLUGIN_ARCHIRES_LOCATION_TYPE :
+		case PLUGIN_ARCHIRES_LOCATIONS_QUERY :
 			switch ($table.'.'.$field){
-				case "glpi_dropdown_locations.completename" :
+				case "glpi_locations.completename" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][30];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_dropdown_network.name" :
+				case "glpi_networks.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_dropdown_state.name" :
+				case "glpi_states.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_dropdown_vlan.name" :
+				case "glpi_vlans.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_plugin_archires_query_location.link" :
-					$out= "<a href=\"../graph.php?ID=".$data["ID"]."&type=".PLUGIN_ARCHIRES_LOCATION_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
+				case "glpi_plugin_archires_locations_queries.link" :
+					$out= "<a href=\"../graph.php?id=".$data["id"]."&querytype=".PLUGIN_ARCHIRES_LOCATIONS_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
 				return $out;
 				break;
 			}
 			return "";
 		break;
 
-		case PLUGIN_ARCHIRES_SWITCH_TYPE :
+		case PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY :
 			switch ($table.'.'.$field){
-				case "glpi_networking.name" :
+				case "glpi_networkequipments.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][32];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_dropdown_network.name" :
+				case "glpi_networks.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_dropdown_state.name" :
+				case "glpi_states.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_dropdown_vlan.name" :
+				case "glpi_vlans.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_plugin_archires_query_switch.link" :
-					$out= "<a href=\"../graph.php?ID=".$data["ID"]."&type=".PLUGIN_ARCHIRES_SWITCH_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
+				case "glpi_plugin_archires_networkequipments_queries.link" :
+					$out= "<a href=\"../graph.php?id=".$data["id"]."&querytype=".PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
 				return $out;
 				break;
 				break;
 			}
-		case PLUGIN_ARCHIRES_APPLICATIFS_TYPE :
+		case PLUGIN_ARCHIRES_APPLIANCES_QUERY :
 			switch ($table.'.'.$field){
-				case "glpi_plugin_applicatifs.name" :
+				case "glpi_plugin_appliances.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][32];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_dropdown_network.name" :
+				case "glpi_networks.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_dropdown_state.name" :
+				case "glpi_states.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_dropdown_vlan.name" :
+				case "glpi_vlans.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
 				return $out;
 				break;
-				case "glpi_plugin_archires_query_applicatifs.link" :
-					$out= "<a href=\"../graph.php?ID=".$data["ID"]."&type=".PLUGIN_ARCHIRES_APPLICATIFS_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
+				case "glpi_plugin_archires_appliances_queries.link" :
+					$out= "<a href=\"../graph.php?id=".$data["id"]."&querytype=".PLUGIN_ARCHIRES_APPLIANCES_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
 				return $out;
 				break;
 			}
@@ -444,7 +448,7 @@ function plugin_pre_item_delete_archires($input){
 			case PROFILE_TYPE :
 				// Manipulate data if needed
 				$PluginArchiresProfile=new PluginArchiresProfile;
-				$PluginArchiresProfile->cleanProfiles($input["ID"]);
+				$PluginArchiresProfile->cleanProfiles($input["id"]);
 				break;
 		}
 	return $input;
@@ -455,30 +459,24 @@ function plugin_pre_item_delete_archires($input){
 function plugin_archires_MassiveActions($type){
 	global $LANG;
 	switch ($type){
-		case PLUGIN_ARCHIRES_LOCATION_TYPE:
+		case PLUGIN_ARCHIRES_LOCATIONS_QUERY:
 			return array(
-				// GLPI core one
-				//"add_document"=>$LANG['document'][16],
 				// Specific one
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
 				"plugin_archires_transfert"=>$LANG['buttons'][48],
 				);
 		break;
 
-		case PLUGIN_ARCHIRES_SWITCH_TYPE:
+		case PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY:
 			return array(
-				// GLPI core one
-				//"add_document"=>$LANG['document'][16],
 				// Specific one
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
 				"plugin_archires_transfert"=>$LANG['buttons'][48],
 				);
 		break;
 
-		case PLUGIN_ARCHIRES_APPLICATIFS_TYPE:
+		case PLUGIN_ARCHIRES_APPLIANCES_QUERY:
 			return array(
-				// GLPI core one
-				//"add_document"=>$LANG['document'][16],
 				// Specific one
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
 				"plugin_archires_transfert"=>$LANG['buttons'][48],
@@ -492,41 +490,41 @@ function plugin_archires_MassiveActions($type){
 function plugin_archires_MassiveActionsDisplay($type,$action){
 	global $LANG;
 	switch ($type){
-		case PLUGIN_ARCHIRES_LOCATION_TYPE:
+		case PLUGIN_ARCHIRES_LOCATIONS_QUERY:
 			switch ($action){
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					dropdownValue("glpi_entities", "FK_entities", '');
+					dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 				break;
 				case "plugin_archires_transfert":
-					dropdownValue("glpi_entities", "FK_entities", '');
+					dropdownValue("glpi_entities", "entities_id", '');
 				echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 				break;
 			}
 		break;
-		case PLUGIN_ARCHIRES_SWITCH_TYPE:
+		case PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY:
 			switch ($action){
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					dropdownValue("glpi_entities", "FK_entities", '');
+					dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 				break;
 				case "plugin_archires_transfert":
-					dropdownValue("glpi_entities", "FK_entities", '');
+					dropdownValue("glpi_entities", "entities_id", '');
 				echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 				break;
 			}
 		break;
-		case PLUGIN_ARCHIRES_APPLICATIFS_TYPE:
+		case PLUGIN_ARCHIRES_APPLIANCES_QUERY:
 			switch ($action){
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					dropdownValue("glpi_entities", "FK_entities", '');
+					dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 				break;
 				case "plugin_archires_transfert":
-					dropdownValue("glpi_entities", "FK_entities", '');
+					dropdownValue("glpi_entities", "entities_id", '');
 				echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 				break;
 			}
@@ -541,37 +539,37 @@ function plugin_archires_MassiveActionsProcess($data){
 
 	switch ($data['action']){
 		case 'plugin_archires_duplicate':
-			if ($data['device_type']==PLUGIN_ARCHIRES_LOCATION_TYPE){
+			if ($data['itemtype']==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 
 				$PluginArchiresQueryLocation=new PluginArchiresQueryLocation();
 				foreach ($data['item'] as $key => $val){
 					if ($val==1) {
 						if ($PluginArchiresQueryLocation->getFromDB($key)){
-							unset($PluginArchiresQueryLocation->fields["ID"]);
-							$PluginArchiresQueryLocation->fields["FK_entities"]=$data["FK_entities"];
+							unset($PluginArchiresQueryLocation->fields["id"]);
+							$PluginArchiresQueryLocation->fields["entities_id"]=$data["entities_id"];
 							$newID=$PluginArchiresQueryLocation->add($PluginArchiresQueryLocation->fields);
 						}
 					}
 				}
-			}elseif ($data['device_type']==PLUGIN_ARCHIRES_SWITCH_TYPE){
-				$PluginArchiresQuerySwitch=new PluginArchiresQuerySwitch();
+			}elseif ($data['itemtype']==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+				$PluginArchiresQueryNetworkEquipment=new PluginArchiresQueryNetworkEquipment();
 				foreach ($data['item'] as $key => $val){
 					if ($val==1) {
-						if ($PluginArchiresQuerySwitch->getFromDB($key)){
-							unset($PluginArchiresQuerySwitch->fields["ID"]);
-							$PluginArchiresQuerySwitch->fields["FK_entities"]=$data["FK_entities"];
-							$newID=$PluginArchiresQuerySwitch->add($PluginArchiresQuerySwitch->fields);
+						if ($PluginArchiresQueryNetworkEquipment->getFromDB($key)){
+							unset($PluginArchiresQueryNetworkEquipment->fields["id"]);
+							$PluginArchiresQueryNetworkEquipment->fields["entities_id"]=$data["entities_id"];
+							$newID=$PluginArchiresQueryNetworkEquipment->add($PluginArchiresQueryNetworkEquipment->fields);
 						}
 					}
 				}
-			}elseif ($data['device_type']==PLUGIN_ARCHIRES_APPLICATIFS_TYPE){
-				$PluginArchiresQueryApplicatifs=new PluginArchiresQueryApplicatifs();
+			}elseif ($data['itemtype']==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+				$PluginArchiresQueryAppliance=new PluginArchiresQueryAppliance();
 				foreach ($data['item'] as $key => $val){
 					if ($val==1) {
-						if ($PluginArchiresQueryApplicatifs->getFromDB($key)){
-							unset($PluginArchiresQueryApplicatifs->fields["ID"]);
-							$PluginArchiresQueryApplicatifs->fields["FK_entities"]=$data["FK_entities"];
-							$newID=$PluginArchiresQueryApplicatifs->add($PluginArchiresQueryApplicatifs->fields);
+						if ($PluginArchiresQueryAppliance->getFromDB($key)){
+							unset($PluginArchiresQueryAppliance->fields["id"]);
+							$PluginArchiresQueryAppliance->fields["entities_id"]=$data["entities_id"];
+							$newID=$PluginArchiresQueryAppliance->add($PluginArchiresQueryAppliance->fields);
 						}
 					}
 				}
@@ -579,33 +577,33 @@ function plugin_archires_MassiveActionsProcess($data){
 
 		break;
 		case "plugin_archires_transfert":
-		if ($data['device_type']==PLUGIN_ARCHIRES_LOCATION_TYPE){
+		if ($data['itemtype']==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 			foreach ($data["item"] as $key => $val){
 				if ($val==1){
 
-					$query="UPDATE `glpi_plugin_archires_query_location`
-							SET `FK_entities` = '".$data['FK_entities']."'
-							WHERE `ID` = '$key'";
+					$query="UPDATE `glpi_plugin_archires_locations_queries`
+							SET `entities_id` = '".$data['entities_id']."'
+							WHERE `id` = '$key'";
 					$DB->query($query);
 				}
 			}
-		}elseif ($data['device_type']==PLUGIN_ARCHIRES_SWITCH_TYPE){
+		}elseif ($data['itemtype']==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
 			foreach ($data["item"] as $key => $val){
 				if ($val==1){
 
-					$query="UPDATE `glpi_plugin_archires_query_switch`
-							SET `FK_entities` = '".$data['FK_entities']."'
-							WHERE `ID` = '$key'";
+					$query="UPDATE `glpi_plugin_archires_networkequipments_queries`
+							SET `entities_id` = '".$data['entities_id']."'
+							WHERE `id` = '$key'";
 					$DB->query($query);
 				}
 			}
-		}elseif ($data['device_type']==PLUGIN_ARCHIRES_APPLICATIFS_TYPE){
+		}elseif ($data['itemtype']==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
 			foreach ($data["item"] as $key => $val){
 				if ($val==1){
 
-					$query="UPDATE `glpi_plugin_archires_query_applicatifs`
-							SET `FK_entities` = '".$data['FK_entities']."'
-							WHERE `ID` = '$key'";
+					$query="UPDATE `glpi_plugin_archires_appliances_queries`
+							SET `entities_id` = '".$data['entities_id']."'
+							WHERE `id` = '$key'";
 					$DB->query($query);
 				}
 			}
