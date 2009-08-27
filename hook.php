@@ -45,49 +45,46 @@ function plugin_archires_install(){
 
 			plugin_archires_installing("1.8.0");
 
-		}elseif(!TableExists("glpi_plugin_archires_color_vlan")){
+		}elseif(TableExists("glpi_plugin_archires_display") &&  !FieldExists("glpi_plugin_archires_display","display_ports")){
 
-			if(TableExists("glpi_plugin_archires_display") && !TableExists("glpi_plugin_archires_config")){
+      plugin_archires_updatev13();
+      plugin_archires_update("1.4");
+      plugin_archires_update("1.5");
+      plugin_archires_update("1.7.0");
+      plugin_archires_update("1.7.2");
+      plugin_archires_update("1.8.0");
 
-				plugin_archires_updatev13();
-				plugin_archires_update("1.4");
-				plugin_archires_update("1.5");
-				plugin_archires_update("1.7.0");
-				plugin_archires_update("1.7.2");
-				plugin_archires_update("1.8.0");
+    }elseif(TableExists("glpi_plugin_archires_display") && !TableExists("glpi_plugin_archires_profiles")){
 
-			}elseif(!TableExists("glpi_plugin_archires_color") && !TableExists("glpi_plugin_archires_profiles")){
+      plugin_archires_update("1.4");
+      plugin_archires_update("1.5");
+      plugin_archires_update("1.7.0");
+      plugin_archires_update("1.7.2");
+      plugin_archires_update("1.8.0");
 
-				plugin_archires_update("1.4");
-				plugin_archires_update("1.5");
-				plugin_archires_update("1.7.0");
-				plugin_archires_update("1.7.2");
-				plugin_archires_update("1.8.0");
+    }elseif(TableExists("glpi_plugin_archires_display") && !TableExists("glpi_plugin_archires_image_device")){
 
-			}elseif(!TableExists("glpi_plugin_archires_image_device")){
+      plugin_archires_update("1.5");
+      plugin_archires_update("1.7.0");
+      plugin_archires_update("1.7.2");
+      plugin_archires_update("1.8.0");
 
-				plugin_archires_update("1.5");
-				plugin_archires_update("1.7.0");
-				plugin_archires_update("1.7.2");
-				plugin_archires_update("1.8.0");
+    }elseif(TableExists("glpi_plugin_archires_profiles") && FieldExists("glpi_plugin_archires_profiles","interface")) {
 
-			}elseif(TableExists("glpi_plugin_archires_profiles") && FieldExists("glpi_plugin_archires_profiles","interface")) {
+      plugin_archires_update("1.7.0");
+      plugin_archires_update("1.7.2");
+      plugin_archires_update("1.8.0");
 
-				plugin_archires_update("1.7.0");
-				plugin_archires_update("1.7.2");
-				plugin_archires_update("1.8.0");
+    }elseif(TableExists("glpi_plugin_archires_config") && FieldExists("glpi_plugin_archires_config","system")) {
 
-			}elseif(TableExists("glpi_plugin_archires_config") && FieldExists("glpi_plugin_archires_config","system")) {
+      plugin_archires_update("1.7.2");
+      plugin_archires_update("1.8.0");
 
-				plugin_archires_update("1.7.2");
-				plugin_archires_update("1.8.0");
-
-			}
 		}elseif(!TableExists("glpi_plugin_archires_views")) {
 
-				plugin_archires_update("1.8.0");
+			plugin_archires_update("1.8.0");
 
-			}
+		}
 
 		plugin_archires_createFirstAccess($_SESSION['glpiactiveprofile']['id']);
 		return true;
