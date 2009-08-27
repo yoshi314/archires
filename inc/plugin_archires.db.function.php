@@ -125,14 +125,14 @@ function plugin_archires_image_Device_Delete($ID){
 		
 }
 
-function plugin_archires_color_Iface_Add($iface,$color){
+function plugin_archires_color_NetworkInterface_Add($networkinterfaces_id,$color){
 	
 	GLOBAL $DB;
 	
 	$obj=new PluginArchiresNetworkInterfaceColor();
 	
-	if ($iface!='-1'){
-		if ($obj->GetfromDBbyIface($iface)){
+	if ($networkinterfaces_id!='-1'){
+		if ($obj->getFromDBbyNetworkInterface($networkinterfaces_id)){
 
 			$obj->update(array(
 			'id'=>$obj->fields['id'],
@@ -140,7 +140,7 @@ function plugin_archires_color_Iface_Add($iface,$color){
 		} else {
 
 			$obj->add(array(
-			'networkinterfaces_id'=>$iface,
+			'networkinterfaces_id'=>$networkinterfaces_id,
 			'color'=>$color));
 		}
 	}else{
@@ -150,8 +150,8 @@ function plugin_archires_color_Iface_Add($iface,$color){
 		$number = $DB->numrows($result);
 		$i = 0;
 		while($i < $number){
-			$iface_table=$DB->result($result, $i, "id");
-			if ($obj->GetfromDBbyIface($iface_table)){
+			$networkinterface_table=$DB->result($result, $i, "id");
+			if ($obj->getFromDBbyNetworkInterface($networkinterface_table)){
 
 				$obj->update(array(
 				'id'=>$obj->fields['id'],
@@ -159,7 +159,7 @@ function plugin_archires_color_Iface_Add($iface,$color){
 			} else {
 
 				$obj->add(array(
-				'networkinterfaces_id'=>$iface_table,
+				'networkinterfaces_id'=>$networkinterface_table,
 				'color'=>$color));
 			}
 			$i++;
@@ -167,7 +167,7 @@ function plugin_archires_color_Iface_Add($iface,$color){
 	}
 }
 
-function plugin_archires_color_Iface_Delete($ID){
+function plugin_archires_color_NetworkInterface_Delete($ID){
 	
 	$obj = new PluginArchiresNetworkInterfaceColor();
 	$obj->delete(array('id'=>$ID));

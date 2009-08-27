@@ -94,7 +94,7 @@ else{
 			echo "<table  cellpadding='5' border='0'>";
 			echo "<tr><td valign='top'>";
 			if( $PluginArchiresView->fields["color"] == 0 ){
-    			//legende color iface		
+    			//legende color networkinterface		
     			$query = "SELECT * 
 						FROM `glpi_plugin_archires_networkinterfacescolors` 
 						ORDER BY `networkinterfaces_id` ASC ";

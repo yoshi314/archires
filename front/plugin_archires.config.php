@@ -77,10 +77,10 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
 
-}elseif (isset($_POST["add_color_iface"]) && isset($_POST['networkinterfaces_id'])){
+}elseif (isset($_POST["add_color_networkinterface"]) && isset($_POST['networkinterfaces_id'])){
 	
 	if(plugin_archires_haveRight("archires","w")){
-		plugin_archires_color_Iface_Add($_POST['networkinterfaces_id'],$_POST['color']);
+		plugin_archires_color_NetworkOnterface_Add($_POST['networkinterfaces_id'],$_POST['color']);
 	}
 	
 	glpi_header($_SERVER['HTTP_REFERER']);
@@ -112,14 +112,14 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
 
-}elseif (isset($_POST["delete_color_iface"])) {
+}elseif (isset($_POST["delete_color_networkinterface"])) {
 	checkRight("config","w");
 	
 	$PluginArchiresNetworkInterfaceColor->getFromDB($_POST["id"],-1);
 	
 	foreach ($_POST["item_color"] as $key => $val){
 		if ($val==1) {
-			plugin_archires_color_iface_delete($key);
+			plugin_archires_color_NetworkInterface_Delete($key);
 		}
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);

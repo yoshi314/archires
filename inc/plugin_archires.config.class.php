@@ -65,10 +65,10 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
 		$this->table="glpi_plugin_archires_networkinterfacescolors";
 	}
 
-	function getFromDBbyIface($iface) {
+	function getFromDBbyNetworkInterface($networkinterfaces_id) {
 		global $DB;
 		$query = "SELECT * FROM `".$this->table."`
-					WHERE `networkinterfaces_id` = '" . $iface . "' ";
+					WHERE `networkinterfaces_id` = '" . $networkinterfaces_id . "' ";
 		if ($result = $DB->query($query)) {
 			if ($DB->numrows($result) != 1) {
 				return false;

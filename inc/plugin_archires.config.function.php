@@ -132,7 +132,7 @@ function plugin_archires_config_NetworkInterface() {
 	if($result = $DB->query($query)){
 		$number = $DB->numrows($result);
 		
-		echo "<form method='post' name='massiveaction_form_iface_color' id='massiveaction_form_iface_color' action=\"./plugin_archires.config.php\">";
+		echo "<form method='post' name='massiveaction_form_networkinterface_color' id='massiveaction_form_networkinterface_color' action=\"./plugin_archires.config.php\">";
 		$used=array();
 		if($number != 0){
 			
@@ -178,9 +178,9 @@ function plugin_archires_config_NetworkInterface() {
 			else
 				echo "<td colspan='4'>";
 				
-			echo "<div align='center'><a onclick= \"if ( markCheckboxes ('massiveaction_form_iface_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
-			echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form_iface_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
-			echo "<input type='submit' name='delete_color_iface' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
+			echo "<div align='center'><a onclick= \"if ( markCheckboxes ('massiveaction_form_networkinterface_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
+			echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form_networkinterface_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
+			echo "<input type='submit' name='delete_color_networkinterface' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
 			echo "</table>";
 			echo "</div>";
 				
@@ -193,11 +193,11 @@ function plugin_archires_config_NetworkInterface() {
     echo "</td><td>";
     echo "<input type='text' name=\"color\">";
     echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";
-    echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_iface')\" onmouseover=\"cleandisplay('comments_iface')\">";
-    echo "</a><span class='over_link' id='comments_iface'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
+    echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_networkinterface')\" onmouseover=\"cleandisplay('comments_networkinterface')\">";
+    echo "</a><span class='over_link' id='comments_networkinterface'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
     
     echo "<td>";
-    echo "<div align='center'><input type='submit' name='add_color_iface' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
+    echo "<div align='center'><input type='submit' name='add_color_networkinterface' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
     echo "</table>";
     echo "</form>";
 	}

@@ -306,13 +306,13 @@ function plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$Plu
 			$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
 		}elseif (!empty($networkinterfaces_id1)){
 			
-			if ($PluginArchiresNetworkInterfaceColor->getFromDBbyIface($networkinterfaces_id1)){
+			if ($PluginArchiresNetworkInterfaceColor->getFromDBbyNetworkInterface($networkinterfaces_id1)){
 				$graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
 			}else{
 				$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";			
 			}
 		}else{
-			if ($PluginArchiresNetworkInterfaceColor->getFromDBbyIface($networkinterfaces_id2)){
+			if ($PluginArchiresNetworkInterfaceColor->getFromDBbyNetworkInterface($networkinterfaces_id2)){
 				$graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
 			}else{
 				$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";			
