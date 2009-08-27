@@ -165,7 +165,7 @@ global $LANG;
 	return array (
 		'name' => $LANG['plugin_archires']['title'][0],
 		'version' => '1.8.0',
-		'author'=>'Pierre érd, Adrien Ravise, Sébastien Prud homme, Xavier Caillaud',
+		'author'=>'Xavier Caillaud',
 		'homepage'=>'https://forge.indepnet.net/projects/show/archires',
 		'minGlpiVersion' => '0.80',// For compatibility / no install in version < 0.80
 	);
@@ -196,6 +196,9 @@ function plugin_archires_haveTypeRight($type,$right){
 			return plugin_archires_haveRight("archires",$right);
 			break;
 		case PLUGIN_ARCHIRES_APPLIANCES_QUERY :
+			return plugin_archires_haveRight("archires",$right);
+			break;
+		case PLUGIN_ARCHIRES_VIEWS_TYPE :
 			return plugin_archires_haveRight("archires",$right);
 			break;
 	}

@@ -218,19 +218,12 @@ function plugin_archires_view_Associated($type,$ID) {
 
 	global $CFG_GLPI,$DB,$LANG;
 
-	if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
-		$PluginArchiresQueryLocation=new PluginArchiresQueryLocation();
-		$PluginArchiresQueryLocation->getFromDB($ID);
-		$views_id=$PluginArchiresQueryLocation->fields["views_id"];
-	}elseif ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
-		$PluginArchiresQueryNetworkEquipment=new PluginArchiresQueryNetworkEquipment();
-		$PluginArchiresQueryNetworkEquipment->getFromDB($ID);
-		$views_id=$PluginArchiresQueryNetworkEquipment->fields["views_id"];
-	}elseif ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
-		$PluginArchiresQueryAppliance=new PluginArchiresQueryAppliance();
-		$PluginArchiresQueryAppliance->getFromDB($ID);
-		$views_id=$PluginArchiresQueryAppliance->fields["views_id"];
-	}
+	$object= plugin_archires_getClassType();
+	
+  $obj=new $object();
+	$obj->getFromDB($ID);
+	$views_id=$obj->fields["views_id"];
+
 	$PluginArchiresView=new PluginArchiresView;
 	$PluginArchiresView->getFromDB($views_id);
 

@@ -33,7 +33,6 @@
 // ----------------------------------------------------------------------
 
 
-//location
 function plugin_archires_dropdownLocation($object,$ID) {
 	global $DB,$CFG_GLPI,$LANG;
 	
@@ -144,6 +143,20 @@ function plugin_archires_dropdownAllItems($myname,$value_type=0,$value=0,$entity
 		
 	}
 	return $rand;
+}
+
+function plugin_archires_getClassType ($type){
+	
+		if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
+      $object= "PluginArchiresQueryLocation";
+     }elseif ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+      $object= "PluginArchiresQueryNetworkEquipment";
+     }elseif ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+      $object= "PluginArchiresQueryAppliance";
+    }
+    
+  return $object;
+
 }
 
 function plugin_archires_getDeviceType ($devicetype){
@@ -298,6 +311,24 @@ function plugin_archires_dropdownColors_State($used=array()) {
 	echo "</select>";
 
 	}	
+}
+
+function plugin_archires_getVlanbyNetworkPort ($ID){
+	global $DB;
+	
+		$q = "SELECT `glpi_vlans`.`id` 
+		FROM `glpi_vlans`, `glpi_networkports_vlans` 
+		WHERE `glpi_networkports_vlans`.`vlans_id` = `glpi_vlans`.`id` 
+		AND `glpi_networkports_vlans`.`networkports_id` = '$ID' " ;
+		$r=$DB->query($q);
+		$nb = $DB->numrows($r);
+		if( $r = $DB->query($q)){
+			$data_vlan = $DB->fetch_array($r) ;
+			$vlan= $data_vlan["id"] ;
+		}
+    
+  return $vlan;
+
 }
 
 ?>

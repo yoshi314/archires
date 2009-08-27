@@ -82,28 +82,13 @@ class PluginArchiresView extends CommonDBTM {
 		}
 
 		if ($con_spotted){
-
+      
+      $canedit=$this->can($ID,'w');
+			$canrecu=$this->can($ID,'recursive');
+			
 			$this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
-
-			echo "<form method='post' name=form action=\"$target\">";
-			if (empty($ID)||$ID<0){
-					echo "<input type='hidden' name='entities_id' value='".$_SESSION["glpiactive_entity"]."'>";
-				}
-			echo "<div class='center' id='tabsbody'>";
-			echo "<table class='tab_cadre_fixe'>";
-			echo "<tr><th><div align='left'>";
-			echo "<a href=\"./plugin_archires.view.index.php\">".$LANG['buttons'][13]."</a>";
-			echo "</div></th>";
-			echo "<th colspan='3'><div align='left'>";
-			if (empty($ID)) {
-				echo $LANG['plugin_archires']['title'][1].":";
-
-			} else {
-				echo $LANG['plugin_archires']['title'][3]." ID $ID:";
-			}
-			echo "</div></th></tr>";
-
-
+      $this->showFormHeader($target,$ID, $withtemplate,2);
+			
 			echo "<tr class='tab_bg_1' valign='top'><td colspan='1'>".$LANG['plugin_archires']['search'][1].":	</td>";
 			echo "<td colspan='3'>";
 			autocompletionTextField("name","glpi_plugin_archires_views","name",$this->fields["name"],20,$this->fields["entities_id"]);
@@ -143,7 +128,17 @@ class PluginArchiresView extends CommonDBTM {
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires'][16].": </td>";
 			echo "<td>";
-			dropdownyesno("display_ports",$this->fields["display_ports"]);
+			echo "<select name=\"display_ports\" size=\"1\"> ";
+			echo "<option ";
+			if ($this->fields["display_ports"]=='0') echo "selected ";
+			echo "value=\"0\">".$LANG['choice'][0]."</option>";
+			echo "<option ";
+			if ($this->fields["display_ports"]=='1') echo "selected ";
+			echo "value=\"1\">".$LANG['plugin_archires'][29]."</option>";
+			echo "<option ";
+			if ($this->fields["display_ports"]=='2') echo "selected ";
+			echo "value=\"2\">".$LANG['plugin_archires'][33]."</option>";
+			echo "</select> ";
 			echo "</td>";
 
 			echo "<td>".$LANG['plugin_archires'][23].": </td>";
@@ -192,13 +187,13 @@ class PluginArchiresView extends CommonDBTM {
 			echo "<td>";
 			echo "<select name=\"format\" size=\"1\"> ";
 			echo "<option ";
-			if ($this->fields["format"]=='0') echo "selected ";
+			if ($this->fields["format"]==PLUGIN_ARCHIRES_JPEG_FORMAT) echo "selected ";
 			echo "value=\"0\">jpeg</option>";
 			echo "<option ";
-			if ($this->fields["format"]=='1') echo "selected ";
+			if ($this->fields["format"]==PLUGIN_ARCHIRES_PNG_FORMAT) echo "selected ";
 			echo "value=\"1\">png</option>";
 			echo "<option ";
-			if ($this->fields["format"]=='2') echo "selected ";
+			if ($this->fields["format"]==PLUGIN_ARCHIRES_GIF_FORMAT) echo "selected ";
 			echo "value=\"2\">gif</option>";
 			echo "</select>";
 			echo "</td>";
@@ -215,40 +210,7 @@ class PluginArchiresView extends CommonDBTM {
 			echo "</select>";
 			echo "</td><td colspan='2'></td></tr>";
 
-			if ($ID=="") {
-				if (plugin_archires_haveRight("archires","w")){
-					echo "<tr>";
-					echo "<td class='tab_bg_2' valign='top' colspan='4'>";
-					echo "<div align='center'><input type='submit' name='add' value=\"".$LANG['buttons'][8]."\" class='submit'></div>";
-					echo "</td>";
-					echo "</tr>";
-				}
-
-			} else {
-
-				echo "<tr>";
-				echo "<td class='tab_bg_2'  colspan='4' valign='top'><div align='center'>";
-				if (plugin_archires_haveRight("archires","w")){
-
-					echo "<input type='hidden' name='id' value=\"$ID\">\n";
-					echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-					echo "<input type='submit' name='duplicate' value=\"".$LANG['plugin_archires'][28]."\" class='submit' >";
-				}
-
-				if (plugin_archires_haveRight("archires","w")){
-
-					if ($this->fields["is_deleted"]=='0')
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='delete' value=\"".$LANG['buttons'][6]."\" class='submit'></div>";
-					else {
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='restore' value=\"".$LANG['buttons'][21]."\" class='submit'>";
-
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='purge' value=\"".$LANG['buttons'][22]."\" class='submit'></div>";
-					}
-				}
-				echo "</td>";
-				echo "</tr>";
-			}
-			echo "</table></div></form>";
+			$this->showFormButtons($ID,$withtemplate,2);
 			echo "<div id='tabcontent'></div>";
 			echo "<script type='text/javascript'>loadDefaultTab();</script>";
 

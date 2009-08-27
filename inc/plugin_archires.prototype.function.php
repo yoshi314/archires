@@ -69,13 +69,7 @@ function plugin_archires_query_Test($type,$ID) {
 	
 	global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
    
-   if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
-		$object= "PluginArchiresQueryLocation";
-   }elseif ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
-		$object= "PluginArchiresQueryNetworkEquipment";
-   }elseif ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
-		$object= "PluginArchiresQueryAppliance";
-	}
+	$object= plugin_archires_getClassType();
 	
    $obj=new $object();
 	$obj->getFromDB($ID);
@@ -236,11 +230,11 @@ function plugin_archires_generate_Graph_Devices($device,$device_id,$itemtype,$fo
 	$graph .= "<<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
 	
 	//img
-	if ($format!='svg')
+	if ($format!='svg'){
 		$graph .= "<tr><td><img src=\"".$image_name."\"/></td></tr>";
-	else
+	}else{
 		$graph .= "<tr><td><img src=\"".realpath(GLPI_ROOT)."/plugins/archires/".$image_name. "\"/></td></tr>";
-
+  }
 	$graph .= "<tr><td> </td></tr><tr><td>".$device["name"];
 	//ip / type
 	$graph .= plugin_archires_display_Type_And_IP($PluginArchiresView,$itemtype,$device,true);
@@ -320,28 +314,10 @@ function plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$Plu
 		}
 	}elseif($PluginArchiresView->fields["color"] == PLUGIN_ARCHIRES_VLAN_COLOR ) {
 		
-		$q = "SELECT `glpi_vlans`.`id` 
-		FROM `glpi_vlans`, `glpi_networkports_vlans` 
-		WHERE `glpi_networkports_vlans`.`vlans_id` = `glpi_vlans`.`id` 
-		AND `glpi_networkports_vlans`.`networkports_id` = '$ID1' " ;
-		$r=$DB->query($q);
-		$nb = $DB->numrows($r);
-		if( $r = $DB->query($q)){
-			$data_vlan = $DB->fetch_array($r) ;
-			$vlan1= $data_vlan["id"] ;
-		}
-
-		$q = "SELECT `glpi_vlans`.`id` 
-		FROM `glpi_vlans`, `glpi_networkports_vlans` 
-		WHERE `glpi_networkports_vlans`.`vlans_id` = `glpi_vlans`.`id` 
-		AND `glpi_networkports_vlans`.`networkports_id` = '$ID2' " ;
-		$r=$DB->query($q);
-		$nb = $DB->numrows($r);
-		if( $r = $DB->query($q)){
-			$data_vlan = $DB->fetch_array($r) ;
-			$vlan2= $data_vlan["id"] ;
-		}
-
+		$vlan1=plugin_archires_getVlanbyNetworkPort($ID1);
+		
+    $vlan2=plugin_archires_getVlanbyNetworkPort($ID2);
+    
 		if (empty($vlan1) && empty($vlan2)) {
 			$graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
 		}elseif (!empty($vlan1)){
@@ -365,7 +341,7 @@ function plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$Plu
 		$graph .= "\"".$device_unique_name1."\"";		
 		$graph .= " -- \"".$device_unique_name2."\"[label=";
 		$graph .= "<<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\">";
-
+    //display ip ports
 		if ($PluginArchiresView->fields["display_ip"]!=0){
 
 			if (!empty($ip1))
@@ -376,15 +352,36 @@ function plugin_archires_generate_Graph_Ports($devices,$ports,$wire,$format,$Plu
 			elseif (!empty($ip1) && empty($netmask1))
 				$graph .= "</td></tr>";
 		}
-		$graph .= "<tr><td HREF=\"".$url_ports.$ID1."\" tooltip=\"".$name1."\">".$LANG['plugin_archires'][17]." ".$logical_number1."</td></tr>";
-
-		if ($format!='svg')
-			$graph .= "<tr><td><img src= \"pics/socket.png\" /></td></tr>";
-		else
-			$graph .= "<tr><td><img src=\"".realpath(GLPI_ROOT)."/plugins/archires/pics/socket.png\" /></td></tr>";
-
-		$graph .= "<tr><td HREF=\"".$url_ports.$ID2."\" tooltip=\"".$name2."\">".$LANG['plugin_archires'][17]." ".$logical_number2."</td></tr>";
+		$graph .= "<tr><td HREF=\"".$url_ports.$ID1."\" tooltip=\"".$name1;
+		if($_SESSION["glpiis_ids_visible"]||empty($name1)) $graph.= "_".$ID1."_";
+		$graph .= "\">";
+    
+    if ($PluginArchiresView->fields["display_ports"]==1){
+      $graph .= $LANG['plugin_archires'][17]." ".$logical_number1;
+		}elseif ($PluginArchiresView->fields["display_ports"]==2){
+      $graph .= $name1;
+      if($_SESSION["glpiis_ids_visible"]||empty($name1)) $graph.= " (".$ID1.")";
+		}
+		$graph .= "</td></tr>";
 		
+		if ($format!='svg'){
+			$graph .= "<tr><td><img src= \"pics/socket.png\" /></td></tr>";
+		}else{
+			$graph .= "<tr><td><img src=\"".realpath(GLPI_ROOT)."/plugins/archires/pics/socket.png\" /></td></tr>";
+    }
+		$graph .= "<tr><td HREF=\"".$url_ports.$ID2."\" tooltip=\"".$name2;
+		if($_SESSION["glpiis_ids_visible"]||empty($name2)) $graph.= "_".$ID2."_";
+		$graph .= "\">";
+		
+		if ($PluginArchiresView->fields["display_ports"]==1){
+      $graph .= $LANG['plugin_archires'][17]." ".$logical_number2;
+		}elseif ($PluginArchiresView->fields["display_ports"]==2){
+      $graph .= $name2;
+      if($_SESSION["glpiis_ids_visible"]||empty($name2)) $graph.= " (".$ID2.")";
+		}
+		$graph .= "</td></tr>";
+		
+		//display ip ports
 		if ($PluginArchiresView->fields["display_ip"]!=0){
 
 			if (!empty($ip2))
@@ -421,18 +418,17 @@ function plugin_archires_Create_Graph($format,$type,$ID,$view=0) {
 	}
 	$devices = array();
 	$ports = array();
-
-	if (isset($obj->fields["locations_id"])){
+	
+	if ($type->type==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 		$devices=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresView,true);
 		$ports=plugin_archires_display_Query_Location($ID,$obj,$PluginArchiresView,false);
-   }elseif (isset($obj->fields["networkequipments_id"])){
+   }elseif ($type->type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
 		$devices=plugin_archires_display_Query_NetworkEquipment($ID,$obj,$PluginArchiresView,true);
 		$ports=plugin_archires_display_Query_NetworkEquipment($ID,$obj,$PluginArchiresView,false);
-   }elseif (isset($obj->fields["appliances_id"])){
+   }elseif ($type->type==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
 		$devices=plugin_archires_display_Query_Appliance($ID,$obj,$PluginArchiresView,true);
 		$ports=plugin_archires_display_Query_Appliance($ID,$obj,$PluginArchiresView,false);
 	}
-	
 	$wires = array();
 
 	$query = "SELECT `id`, `networkports_id_1`, `networkports_id_2`
