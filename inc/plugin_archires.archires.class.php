@@ -122,7 +122,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
 			echo "<td>";
-			autocompletionTextField("name","glpi_plugin_archires_locations_queries","name",$this->fields["name"],50,$this->fields["entities_id"]);		
+			autocompletionTextField("name",$this->table,"name",$this->fields["name"],50,$this->fields["entities_id"]);		
 			echo "</td></tr>";
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][2].":	</td><td>";
@@ -235,7 +235,7 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
 			echo "<td>";
-			autocompletionTextField("name","glpi_plugin_archires_networkequipments_queries","name",$this->fields["name"],50,$this->fields["entities_id"]);		
+			autocompletionTextField("name",$this->table,"name",$this->fields["name"],50,$this->fields["entities_id"]);		
 			echo "</td></tr>";
 			
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['help'][26].":	</td><td>";
@@ -342,7 +342,7 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
 			echo "<td>";
-			autocompletionTextField("name","glpi_plugin_archires_appliances_queries","name",$this->fields["name"],50,$this->fields["entities_id"]);		
+			autocompletionTextField("name",$this->table,"name",$this->fields["name"],50,$this->fields["entities_id"]);		
 			echo "</td></tr>";
 
 			echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][8].":	</td><td>";
