@@ -57,6 +57,54 @@ class PluginArchiresItemImage extends CommonDBTM {
 		}
 		return false;
 	}
+	
+	function addItemImage($type,$itemtype,$img){
+    GLOBAL  $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
+    
+    if ($type!='-1'){
+      if ($this->GetfromDBbyType($itemtype,$type)){
+
+        $this->update(array(
+          'id'=>$this->fields['id'],
+          'img'=>$img));
+      } else {
+
+        $this->add(array(
+          'itemtype'=>$itemtype,
+          'type'=>$type,
+          'img'=>$img));
+      }
+    }else{
+      $query="SELECT * 
+          FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$itemtype]."` ";	    
+      $result = $DB->query($query);
+      $number = $DB->numrows($result);
+      $i = 0;
+      while($i < $number){
+        $type_table=$DB->result($result, $i, "id");
+        if ($this->GetfromDBbyType($itemtype,$type_table)){
+
+          $this->update(array(
+            'id'=>$this->fields['id'],
+            'img'=>$img));
+        } else {
+
+          $this->add(array(
+            'itemtype'=>$itemtype,
+            'type'=>$type_table,
+            'img'=>$img));
+        }
+        $i++;
+      }			
+    }
+  }
+
+  function deleteItemImage($ID){
+    
+    $this->delete(array('id'=>$ID));
+      
+  }
+
 }
 
 class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
@@ -82,6 +130,52 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
 		}
 		return false;
 	}
+	
+	function addNetworkInterfaceColor($networkinterfaces_id,$color){
+	
+	GLOBAL $DB;
+    
+    if ($networkinterfaces_id!='-1'){
+      if ($this->getFromDBbyNetworkInterface($networkinterfaces_id)){
+
+        $this->update(array(
+        'id'=>$this->fields['id'],
+        'color'=>$color));
+      } else {
+
+        $this->add(array(
+        'networkinterfaces_id'=>$networkinterfaces_id,
+        'color'=>$color));
+      }
+    }else{
+      $query="SELECT * 
+          FROM `glpi_networkinterfaces` ";	    
+      $result = $DB->query($query);
+      $number = $DB->numrows($result);
+      $i = 0;
+      while($i < $number){
+        $networkinterface_table=$DB->result($result, $i, "id");
+        if ($this->getFromDBbyNetworkInterface($networkinterface_table)){
+
+          $this->update(array(
+          'id'=>$this->fields['id'],
+          'color'=>$color));
+        } else {
+
+          $this->add(array(
+          'networkinterfaces_id'=>$networkinterface_table,
+          'color'=>$color));
+        }
+        $i++;
+      }			
+    }
+  }
+
+  function deleteNetworkInterfaceColor($ID){
+    
+    $this->delete(array('id'=>$ID));
+      
+  }
 }
 
 class PluginArchiresVlanColor extends CommonDBTM {
@@ -107,6 +201,52 @@ class PluginArchiresVlanColor extends CommonDBTM {
 		}
 		return false;
 	}
+	
+	function addVlanColor($vlan,$color){
+	
+    GLOBAL $DB;
+    
+    if ($vlan!='-1'){
+      if ($this->GetfromDBbyVlan($vlan)){
+
+        $this->update(array(
+        'id'=>$this->fields['id'],
+        'color'=>$color));
+      } else {
+
+        $this->add(array(
+        'vlans_id'=>$vlan,
+        'color'=>$color));
+      }
+    }else{
+      $query="SELECT * 
+          FROM `glpi_vlans` ";	    
+      $result = $DB->query($query);
+      $number = $DB->numrows($result);
+      $i = 0;
+      while($i < $number){
+        $vlan_table=$DB->result($result, $i, "id");
+        if ($this->GetfromDBbyVlan($vlan_table)){
+
+          $this->update(array(
+          'id'=>$this->fields['id'],
+          'color'=>$color));
+        } else {
+
+          $this->add(array(
+        'vlans_id'=>$vlan_table,
+        'color'=>$color));
+        }
+        $i++;
+      }			
+    }
+  }
+
+  function deleteVlanColor($ID){
+    
+    $this->delete(array('id'=>$ID));
+      
+  }
 }
 
 class PluginArchiresStateColor extends CommonDBTM {
@@ -132,6 +272,52 @@ class PluginArchiresStateColor extends CommonDBTM {
 		}
 		return false;
 	}
+	
+	function addStateColor($state,$color){
+	
+    GLOBAL $DB;
+    
+    if ($state!='-1'){
+      if ($this->GetfromDBbyState($state)){
+
+        $this->update(array(
+        'id'=>$this->fields['id'],
+        'color'=>$color));
+      } else {
+
+        $this->add(array(
+        'states_id'=>$state,
+        'color'=>$color));
+      }
+    }else{
+      $query="SELECT * 
+          FROM `glpi_states` ";	    
+      $result = $DB->query($query);
+      $number = $DB->numrows($result);
+      $i = 0;
+      while($i < $number){
+        $state_table=$DB->result($result, $i, "id");
+        if ($this->GetfromDBbyState($state_table)){
+
+          $this->update(array(
+          'id'=>$this->fields['id'],
+          'color'=>$color));
+        } else {
+
+          $this->add(array(
+        'states_id'=>$state_table,
+        'color'=>$color));
+        }
+        $i++;
+      }			
+    }
+  }
+
+  function deleteStateColor($ID){
+    
+    $this->delete(array('id'=>$ID));
+      
+  }
 }
 
 
@@ -161,6 +347,45 @@ class PluginArchiresQueryType extends CommonDBTM {
 		}
 		return false;
 	}
+	
+	function plugin_archires_type_Add($querytype,$type,$itemtype,$queries_id){
+    GLOBAL  $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
+    
+    if ($type!='-1'){
+      if (!$this->GetfromDBbyType($itemtype,$type,$querytype,$queries_id)){
+
+        $this->add(array(
+          'itemtype'=>$itemtype,
+          'type'=>$type,
+          'querytype'=>$querytype,
+          'queries_id'=>$queries_id));
+      }
+    }else{
+        
+      $query="SELECT * 
+          FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$itemtype]."` ";	    
+      $result = $DB->query($query);
+      $number = $DB->numrows($result);
+      $i = 0;
+      while($i < $number){
+        $type_table=$DB->result($result, $i, "id");
+        if (!$this->GetfromDBbyType($itemtype,$type_table,$querytype,$queries_id)){
+          $this->add(array(
+          'itemtype'=>$itemtype,
+          'type'=>$type_table,
+          'querytype'=>$querytype,
+          'queries_id'=>$queries_id));
+        }
+        $i++;
+      }			
+    }
+  }
+
+  function plugin_archires_type_Delete($ID){
+    
+    $this->delete(array('id'=>$ID));
+        
+  }
 
 }
 

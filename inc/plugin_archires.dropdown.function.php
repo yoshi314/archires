@@ -165,7 +165,7 @@ function plugin_archires_getDeviceType ($devicetype){
 		switch ($devicetype){
 			
 			case COMPUTER_TYPE :	
-				return $LANG['computers'][44];
+				return $LANG['Menu'][0];
 				break;
 			case NETWORKING_TYPE :
 				return $LANG['help'][26];

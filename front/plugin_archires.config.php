@@ -72,31 +72,8 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 		$_POST['itemtype']= $test[0];
 	
 		if(plugin_archires_haveRight("archires","w")){
-				plugin_archires_image_Device_Add($_POST['type'],$_POST['itemtype'],$_POST['img']);
+				$PluginArchiresItemImage->addItemImage($_POST['type'],$_POST['itemtype'],$_POST['img']);
 		}
-	}
-	glpi_header($_SERVER['HTTP_REFERER']);
-
-}elseif (isset($_POST["add_color_networkinterface"]) && isset($_POST['networkinterfaces_id'])){
-	
-	if(plugin_archires_haveRight("archires","w")){
-		plugin_archires_color_NetworkOnterface_Add($_POST['networkinterfaces_id'],$_POST['color']);
-	}
-	
-	glpi_header($_SERVER['HTTP_REFERER']);
-
-}elseif (isset($_POST["add_color_state"]) && isset($_POST['states_id'])){
-	
-	if(plugin_archires_haveRight("archires","w")){
-		plugin_archires_color_State_Add($_POST['states_id'],$_POST['color']);
-	}
-	
-	glpi_header($_SERVER['HTTP_REFERER']);
-
-}elseif (isset($_POST["add_color_vlan"]) && isset($_POST['vlans_id'])){
-	
-	if(plugin_archires_haveRight("archires","w")){
-		plugin_archires_color_Vlan_Add($_POST['vlans_id'],$_POST['color']);
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
 
@@ -107,9 +84,17 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 	
 	foreach ($_POST["item"] as $key => $val){
 		if ($val==1) {
-			plugin_archires_image_Device_Delete($key);
+			$PluginArchiresItemImage->deleteItemImage($key);
 		}
 	}
+	glpi_header($_SERVER['HTTP_REFERER']);
+
+}elseif (isset($_POST["add_color_networkinterface"]) && isset($_POST['networkinterfaces_id'])){
+	
+	if(plugin_archires_haveRight("archires","w")){
+		$PluginArchiresNetworkInterfaceColor->addNetworkInterfaceColor($_POST['networkinterfaces_id'],$_POST['color']);
+	}
+	
 	glpi_header($_SERVER['HTTP_REFERER']);
 
 }elseif (isset($_POST["delete_color_networkinterface"])) {
@@ -119,8 +104,35 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 	
 	foreach ($_POST["item_color"] as $key => $val){
 		if ($val==1) {
-			plugin_archires_color_NetworkInterface_Delete($key);
+			$PluginArchiresNetworkInterfaceColor->deleteNetworkInterfaceColor($key);
 		}
+	}
+	glpi_header($_SERVER['HTTP_REFERER']);
+
+}elseif (isset($_POST["add_color_state"]) && isset($_POST['states_id'])){
+	
+	if(plugin_archires_haveRight("archires","w")){
+		$PluginArchiresStateColor->addStateColor($_POST['states_id'],$_POST['color']);
+	}
+	
+	glpi_header($_SERVER['HTTP_REFERER']);
+
+}elseif (isset($_POST["delete_color_state"])) {
+	checkRight("config","w");
+
+	$PluginArchiresStateColor->getFromDB($_POST["id"],-1);
+	
+	foreach ($_POST["item_color"] as $key => $val){
+		if ($val==1) {
+			$PluginArchiresStateColor->deleteStateColor($key);
+		}
+	}
+	glpi_header($_SERVER['HTTP_REFERER']);
+
+}elseif (isset($_POST["add_color_vlan"]) && isset($_POST['vlans_id'])){
+	
+	if(plugin_archires_haveRight("archires","w")){
+		$PluginArchiresVlanColor->addVlanColor($_POST['vlans_id'],$_POST['color']);
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
 
@@ -131,19 +143,7 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 	
 	foreach ($_POST["item_color"] as $key => $val){
 		if ($val==1) {
-			plugin_archires_color_vlan_delete($key);
-		}
-	}
-	glpi_header($_SERVER['HTTP_REFERER']);
-
-}elseif (isset($_POST["delete_color_state"])) {
-	checkRight("config","w");
-
-	$PluginArchiresStateColor->getFromDB($_POST["id"],-1);
-	
-	foreach ($_POST["item_color"] as $key => $val){
-		if ($val==1) {
-			plugin_archires_color_state_delete($key);
+			$PluginArchiresVlanColor->deleteVlanColor($key);
 		}
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);

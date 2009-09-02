@@ -36,7 +36,6 @@ inc/plugin_archires.archires.class.php -text
 inc/plugin_archires.auth.function.php -text
 inc/plugin_archires.config.class.php -text
 inc/plugin_archires.config.function.php -text
-inc/plugin_archires.db.function.php -text
 inc/plugin_archires.display.function.php -text
 inc/plugin_archires.dropdown.function.php -text
 inc/plugin_archires.location.query.function.php -text
