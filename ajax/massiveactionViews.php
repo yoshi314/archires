@@ -41,6 +41,8 @@ header_nocache();
 
 plugin_archires_checkRight("archires","w");
 
+commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
+
 if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($_POST["item"])){
 	
 	$PluginArchiresConfig=new PluginArchiresConfig();
