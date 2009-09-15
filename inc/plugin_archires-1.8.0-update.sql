@@ -111,7 +111,6 @@ ALTER TABLE `glpi_plugin_archires_statescolors` CHANGE `ID` `id` int(11) NOT NUL
 ALTER TABLE `glpi_plugin_archires_statescolors` CHANGE `state` `states_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_states (id)';
 ALTER TABLE `glpi_plugin_archires_statescolors` ADD INDEX (`states_id`);
 
-ALTER TABLE `glpi_plugin_archires_vlanscolors` DROP INDEX `vlan`;
 ALTER TABLE `glpi_plugin_archires_vlanscolors` CHANGE `ID` `id` int(11) NOT NULL auto_increment;
 ALTER TABLE `glpi_plugin_archires_vlanscolors` CHANGE `vlan` `vlans_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_vlans (id)';
 ALTER TABLE `glpi_plugin_archires_vlanscolors` ADD INDEX (`vlans_id`);
