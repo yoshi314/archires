@@ -70,7 +70,7 @@ class PluginArchires extends CommonDBTM {
 class PluginArchiresQueryLocation extends CommonDBTM {
 
 	function __construct () {
-		$this->table="glpi_plugin_archires_locations_queries";
+		$this->table="glpi_plugin_archires_locationsqueries";
 		$this->type=PLUGIN_ARCHIRES_LOCATIONS_QUERY;
 	}
 	
@@ -78,7 +78,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 		global $DB;
 
 		$query = "DELETE FROM 
-				`glpi_plugin_archires_query_types` 
+				`glpi_plugin_archires_queriestypes` 
 				WHERE `queries_id` = '$ID'";
 		$DB->query($query);
 	}
@@ -174,7 +174,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 
 	function __construct () {
-		$this->table="glpi_plugin_archires_networkequipments_queries";
+		$this->table="glpi_plugin_archires_networkequipmentsqueries";
 		$this->type=PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY;
 		$object=$this;
 	}
@@ -183,7 +183,7 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 		global $DB;
 
 		$query = "DELETE 
-					FROM `glpi_plugin_archires_query_types` 
+					FROM `glpi_plugin_archires_queriestypes` 
 					WHERE `queries_id` = '$ID'";
 		$DB->query($query);
 	}
@@ -272,7 +272,7 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 class PluginArchiresQueryAppliance extends CommonDBTM {
 
 	function __construct () {
-		$this->table="glpi_plugin_archires_appliances_queries";
+		$this->table="glpi_plugin_archires_appliancesqueries";
 		$this->type=PLUGIN_ARCHIRES_APPLIANCES_QUERY;
 	}
 	
@@ -280,7 +280,7 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
 		global $DB;
 
 		$query = "DELETE 
-					FROM `glpi_plugin_archires_query_types` 
+					FROM `glpi_plugin_archires_queriestypes` 
 					WHERE `queries_id` = '$ID'";
 		$DB->query($query);
 	}

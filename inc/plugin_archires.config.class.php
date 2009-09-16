@@ -324,7 +324,7 @@ class PluginArchiresStateColor extends CommonDBTM {
 class PluginArchiresQueryType extends CommonDBTM {
 
 	function __construct () {
-		$this->table="glpi_plugin_archires_query_types";
+		$this->table="glpi_plugin_archires_queriestypes";
 	}
 
 	function getFromDBbyType($itemtype, $type,$type_query,$query_ID) {

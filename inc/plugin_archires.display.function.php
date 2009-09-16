@@ -37,7 +37,7 @@ function plugin_archires_Select($target,$ID,$querytype,$views_id){
 	elseif ($querytype==PLUGIN_ARCHIRES_APPLIANCES_QUERY)
 		$table="appliances";
 
-	$table_query="glpi_plugin_archires_".$table."_queries";
+	$table_query="glpi_plugin_archires_".$table."queries";
 
 	$query = "SELECT `id`, `name`,`views_id`
 			FROM `".$table_query."`
@@ -129,7 +129,7 @@ function  plugin_archires_query_showTypes ($type,$ID) {
 	elseif ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY)
 		$table="appliance";
 
-	$table_query="glpi_plugin_archires_query_types";
+	$table_query="glpi_plugin_archires_queriestypes";
 
 	echo "<div align='center'>";
 
@@ -218,7 +218,7 @@ function plugin_archires_view_Associated($type,$ID) {
 
 	global $CFG_GLPI,$DB,$LANG;
 
-	$object= plugin_archires_getClassType();
+	$object= plugin_archires_getClassType($type);
 	
   $obj=new $object();
 	$obj->getFromDB($ID);

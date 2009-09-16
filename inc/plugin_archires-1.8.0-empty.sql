@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `glpi_plugin_archires_locations_queries`;
-CREATE TABLE `glpi_plugin_archires_locations_queries` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_locationsqueries`;
+CREATE TABLE `glpi_plugin_archires_locationsqueries` (
 	`id` int(11) NOT NULL auto_increment,
 	`entities_id` int(11) NOT NULL default '0',
 	`name` varchar(255) collate utf8_unicode_ci default NULL,
@@ -25,8 +25,8 @@ CREATE TABLE `glpi_plugin_archires_locations_queries` (
 	KEY `is_deleted` (`is_deleted`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `glpi_plugin_archires_networkequipments_queries`;
-CREATE TABLE `glpi_plugin_archires_networkequipments_queries` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_networkequipmentsqueries`;
+CREATE TABLE `glpi_plugin_archires_networkequipmentsqueries` (
 	`id` int(11) NOT NULL auto_increment,
 	`entities_id` int(11) NOT NULL default '0',
 	`name` varchar(255) collate utf8_unicode_ci default NULL,
@@ -51,8 +51,8 @@ CREATE TABLE `glpi_plugin_archires_networkequipments_queries` (
 	KEY `is_deleted` (`is_deleted`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `glpi_plugin_archires_appliances_queries`;
-CREATE TABLE `glpi_plugin_archires_appliances_queries` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_appliancesqueries`;
+CREATE TABLE `glpi_plugin_archires_appliancesqueries` (
 	`id` int(11) NOT NULL auto_increment,
 	`entities_id` int(11) NOT NULL default '0',
 	`name` varchar(255) collate utf8_unicode_ci default NULL,
@@ -86,8 +86,8 @@ CREATE TABLE `glpi_plugin_archires_imageitems` (
 	PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `glpi_plugin_archires_query_types`;
-CREATE TABLE `glpi_plugin_archires_query_types` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_queriestypes`;
+CREATE TABLE `glpi_plugin_archires_queriestypes` (
 	`id` int(11) NOT NULL auto_increment,
 	`querytype` int(11) NOT NULL default '0' COMMENT 'RELATION to the 3 type of archires (type)',
 	`type` int(11) NOT NULL default '0',

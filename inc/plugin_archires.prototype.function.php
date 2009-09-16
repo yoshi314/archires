@@ -32,7 +32,7 @@ function plugin_archires_Query_Type_check($querytype,$views_id,$val) {
 	global $DB,$LINK_ID_TABLE;
 	
 	$query0="SELECT * 
-				FROM `glpi_plugin_archires_query_types` 
+				FROM `glpi_plugin_archires_queriestypes` 
 				WHERE `querytype` = '".$querytype."' 
 				AND `queries_id` = '".$views_id."' 
 				AND `itemtype` = '" . $val . "';";
@@ -69,7 +69,7 @@ function plugin_archires_query_Test($type,$ID) {
 	
 	global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
    
-	$object= plugin_archires_getClassType();
+	$object= plugin_archires_getClassType($type);
 	
    $obj=new $object();
 	$obj->getFromDB($ID);
