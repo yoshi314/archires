@@ -1,9 +1,9 @@
 <?php
 /*
- * @version $Id: dropdownValue.php 3825 2006-08-25 16:01:22Z moyo $
+ * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2008 by the INDEPNET Development Team.
+ Copyright (C) 2003-2009 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -26,12 +26,12 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
+ 
+// ----------------------------------------------------------------------
+// Original Author of file: CAILLAUD Xavier
+// Purpose of file: plugin archires v1.8.0 - GLPI 0.80
+// ----------------------------------------------------------------------
  */
-
-// ----------------------------------------------------------------------
-// Original Author of file: Julien Dombre
-// Purpose of file:
-// ----------------------------------------------------------------------
 
 // Direct access to file
 if(strpos($_SERVER['PHP_SELF'],"dropdownValue.php")){
