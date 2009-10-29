@@ -38,11 +38,14 @@ include (GLPI_ROOT."/inc/includes.php");
 
 useplugin('archires',true);
 
+$ci = new CommonItem();
+$ci->setType(PLUGIN_ARCHIRES_VIEWS_TYPE,true);
+
 $plugin = new Plugin();
 if ($plugin->isActivated("network"))
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
+	commonHeader($ci->getType(),$_SERVER['PHP_SELF'],"plugins","network");
 else
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
+	commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
 if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 	

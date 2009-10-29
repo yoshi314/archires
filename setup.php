@@ -66,7 +66,8 @@ function plugin_init_archires() {
 		'formpage'   => 'front/plugin_archires.location.form.php',
 		'searchpage' => 'front/plugin_archires.location.index.php',
 		'deleted_tables' => true,
-		'specif_entities_tables' => true
+		'specif_entities_tables' => true,
+		'typename'   => $LANG['plugin_archires']['title'][4]
 		));
 
 	registerPluginType('archires', 'PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY', 3001, array(
@@ -75,7 +76,8 @@ function plugin_init_archires() {
 		'formpage'   => 'front/plugin_archires.networkequipment.form.php',
 		'searchpage' => 'front/plugin_archires.networkequipment.index.php',
 		'deleted_tables' => true,
-		'specif_entities_tables' => true
+		'specif_entities_tables' => true,
+		'typename'   => $LANG['plugin_archires']['title'][5]
 		));
 
 	registerPluginType('archires', 'PLUGIN_ARCHIRES_APPLIANCES_QUERY', 3002, array(
@@ -84,7 +86,8 @@ function plugin_init_archires() {
 		'formpage'   => 'front/plugin_archires.appliance.form.php',
 		'searchpage' => 'front/plugin_archires.appliance.index.php',
 		'deleted_tables' => true,
-		'specif_entities_tables' => true
+		'specif_entities_tables' => true,
+		'typename'   => $LANG['plugin_archires']['title'][8]
 		));
 
 	registerPluginType('archires', 'PLUGIN_ARCHIRES_VIEWS_TYPE', 3003, array(
@@ -92,12 +95,12 @@ function plugin_init_archires() {
 		'tablename'  => 'glpi_plugin_archires_views',
 		'formpage'   => 'front/plugin_archires.view.form.php',
 		'deleted_tables' => true,
-		'specif_entities_tables' => true
+		'specif_entities_tables' => true,
+		'typename'   => $LANG['plugin_archires']['title'][3]
 		));
 
 	if (isset($_SESSION["glpiID"])){
 
-		//archires
 		if ((isset($_SESSION["glpi_plugin_network_installed"]) && $_SESSION["glpi_plugin_network_installed"]==1)){
 
 			$_SESSION["glpi_plugin_network_archires"]=1;
@@ -110,36 +113,47 @@ function plugin_init_archires() {
 
 			if (plugin_archires_haveRight("archires","r")){
 				$PLUGIN_HOOKS['menu_entry']['archires'] = true;
-
+				
+				//summary
 				$PLUGIN_HOOKS['submenu_entry']['archires']['search']['summary'] = 'index.php';
-
+				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_showall.png' title='".$LANG['plugin_archires']["title"][3]."' alt='".$LANG['plugin_archires']["title"][3]."'>"]['summary'] = 'front/plugin_archires.view.index.php';
+				
+				//locations
 				$PLUGIN_HOOKS['submenu_entry']['archires']['search']['locations'] = 'front/plugin_archires.location.index.php';
 				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_showall.png' title='".$LANG['plugin_archires']["title"][3]."' alt='".$LANG['plugin_archires']["title"][3]."'>"]['locations'] = 'front/plugin_archires.view.index.php';
-
+				
+				//networkequipments
 				$PLUGIN_HOOKS['submenu_entry']['archires']['search']['networkequipments'] = 'front/plugin_archires.networkequipment.index.php';
 				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_showall.png' title='".$LANG['plugin_archires']["title"][3]."' alt='".$LANG['plugin_archires']["title"][3]."'>"]['networkequipments'] = 'front/plugin_archires.view.index.php';
-
+				
+				//appliances
 				$PLUGIN_HOOKS['submenu_entry']['archires']['search']['appliances'] = 'front/plugin_archires.appliance.index.php';
 				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_showall.png' title='".$LANG['plugin_archires']["title"][3]."' alt='".$LANG['plugin_archires']["title"][3]."'>"]['appliances'] = 'front/plugin_archires.view.index.php';
 
-				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_showall.png' title='".$LANG['plugin_archires']["title"][3]."' alt='".$LANG['plugin_archires']["title"][3]."'>"]['summary'] = 'front/plugin_archires.view.index.php';
+				
 
 			}
 
 			if (plugin_archires_haveRight("archires","w")){
+				
+				//summary
+				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_addtemplate.png' title='".$LANG['plugin_archires']["title"][1]."' alt='".$LANG['plugin_archires']["title"][1]."'>"]['summary'] = 'front/plugin_archires.view.form.php?new=1';
+				
+				//locations
 				$PLUGIN_HOOKS['submenu_entry']['archires']['add']['locations'] = 'front/plugin_archires.location.form.php?new=1';
 				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_addtemplate.png' title='".$LANG['plugin_archires']["title"][1]."' alt='".$LANG['plugin_archires']["title"][1]."'>"]['locations'] = 'front/plugin_archires.view.form.php?new=1';
-
+				
+				//networkequipments
 				$PLUGIN_HOOKS['submenu_entry']['archires']['add']['networkequipments'] = 'front/plugin_archires.networkequipment.form.php?new=1';
 				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_addtemplate.png' title='".$LANG['plugin_archires']["title"][1]."' alt='".$LANG['plugin_archires']["title"][1]."'>"]['networkequipments'] = 'front/plugin_archire.view.form.php?new=1';
-
+				
+				//appliances
 				$PLUGIN_HOOKS['submenu_entry']['archires']['add']['appliances'] = 'front/plugin_archires.appliance.form.php?new=1';
 				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_addtemplate.png' title='".$LANG['plugin_archires']["title"][1]."' alt='".$LANG['plugin_archires']["title"][1]."'>"]['appliances'] = 'front/plugin_archires.view.form.php?new=1';
 
-				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_addtemplate.png' title='".$LANG['plugin_archires']["title"][1]."' alt='".$LANG['plugin_archires']["title"][1]."'>"]['summary'] = 'front/plugin_archires.view.form.php?new=1';
-
 				if (haveRight("config","w"))
-          $PLUGIN_HOOKS['submenu_entry']['archires']['config'] = 'front/plugin_archires.config.php';
+					$PLUGIN_HOOKS['submenu_entry']['archires']['config'] = 'front/plugin_archires.config.php';
+					
 				$PLUGIN_HOOKS['use_massive_action']['archires']=1;
 			}
 		}

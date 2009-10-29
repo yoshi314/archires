@@ -41,7 +41,7 @@ $plugin = new Plugin();
 if ($plugin->isActivated("network"))
 	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
 else
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
+	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
 if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 
