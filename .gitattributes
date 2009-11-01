@@ -31,6 +31,7 @@ inc/plugin_archires-1.7.2-empty.sql -text
 inc/plugin_archires-1.7.2-update.sql -text
 inc/plugin_archires-1.8.0-empty.sql -text
 inc/plugin_archires-1.8.0-update.sql -text
+inc/plugin_archires.appliance.query.class.php -text
 inc/plugin_archires.appliance.query.function.php -text
 inc/plugin_archires.archires.class.php -text
 inc/plugin_archires.auth.function.php -text
@@ -38,7 +39,9 @@ inc/plugin_archires.config.class.php -text
 inc/plugin_archires.config.function.php -text
 inc/plugin_archires.display.function.php -text
 inc/plugin_archires.dropdown.function.php -text
+inc/plugin_archires.location.query.class.php -text
 inc/plugin_archires.location.query.function.php -text
+inc/plugin_archires.networkequipment.query.class.php -text
 inc/plugin_archires.networkequipment.query.function.php -text
 inc/plugin_archires.profile.class.php -text
 inc/plugin_archires.prototype.function.php -text
