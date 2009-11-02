@@ -96,7 +96,7 @@ else if (isset($_POST["addtype"])){
 		$_POST['itemtype']= $test[0];
 	
 		if(plugin_archires_haveRight("archires","w")){
-				plugin_archires_type_Add(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST['type'],$_POST['itemtype'],$_POST['query']);
+				$PluginArchiresQueryType->addType(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST['type'],$_POST['itemtype'],$_POST['query']);
 		}
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
@@ -109,7 +109,7 @@ else if (isset($_POST["deletetype"])){
 	
 	foreach ($_POST["item"] as $key => $val){
 		if ($val==1) {
-			plugin_archires_type_Delete($key);
+			$PluginArchiresQueryType->deleteType($key);
 		}
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);

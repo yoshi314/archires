@@ -37,6 +37,8 @@ $NEEDED_ITEMS=array("user","tracking","reservation","document","computer","devic
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
+useplugin('archires',true);
+
 if(isset($_GET)) $tab = $_GET;
 if(empty($tab) && isset($_POST)) $tab = $_POST;
 if(!isset($tab["id"])) $tab["id"] = "";

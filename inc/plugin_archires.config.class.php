@@ -348,7 +348,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 		return false;
 	}
 	
-	function plugin_archires_type_Add($querytype,$type,$itemtype,$queries_id){
+	function addType($querytype,$type,$itemtype,$queries_id){
     GLOBAL  $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
     
     if ($type!='-1'){
@@ -381,7 +381,7 @@ class PluginArchiresQueryType extends CommonDBTM {
     }
   }
 
-  function plugin_archires_type_Delete($ID){
+  function deleteType($ID){
     
     $this->delete(array('id'=>$ID));
         
