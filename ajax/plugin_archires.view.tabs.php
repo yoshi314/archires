@@ -47,12 +47,12 @@ if(!isset($_POST["id"])) {
 	plugin_archires_checkRight("archires","r");
 
 	if (empty($_POST["id"])){
-		switch($_POST['glpi_tab']){
+		switch($_REQUEST['glpi_tab']) {
 			default :
 				break;
 		}
 	}else{
-		switch($_POST['glpi_tab']){
+		switch($_REQUEST['glpi_tab']) {
 			default :
 				break;
 		}

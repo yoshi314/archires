@@ -49,12 +49,12 @@ if(!isset($_POST["id"])) {
 	plugin_archires_checkRight("archires","r");
 
 	if (empty($_POST["id"])){
-		switch($_POST['glpi_tab']){
+		switch($_REQUEST['glpi_tab']) {
 			default :
 				break;
 		}
 	}else{
-		switch($_POST['glpi_tab']){
+		switch($_REQUEST['glpi_tab']) {
 			case -1 :
 				plugin_archires_query_ShowTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
 				break;
