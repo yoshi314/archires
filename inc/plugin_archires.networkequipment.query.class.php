@@ -57,7 +57,7 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 
       $tab['common'] = $LANG['plugin_archires']['title'][5];
 
-      $tab[1]['table']='glpi_plugin_archires_networkequipmentsqueries';
+      $tab[1]['table']=$this->table;
       $tab[1]['field']='name';
       $tab[1]['linkfield']='name';
       $tab[1]['name']=$LANG['plugin_archires']['search'][1];
@@ -93,12 +93,12 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
       $tab[7]['linkfield']='views_id';
       $tab[7]['name']=$LANG['plugin_archires']['setup'][20];
 
-      $tab[8]['table']='glpi_plugin_archires_networkequipmentsqueries';
+      $tab[8]['table']=$this->table;
       $tab[8]['field']='link';
       $tab[8]['linkfield']='';
       $tab[8]['name']=$LANG['plugin_archires'][0];
 
-      $tab[30]['table']='glpi_plugin_archires_networkequipmentsqueries';
+      $tab[30]['table']=$this->table;
       $tab[30]['field']='id';
       $tab[30]['linkfield']='';
       $tab[30]['name']=$LANG['common'][2];
