@@ -46,7 +46,12 @@ if(!isset($_POST["id"])) {
 	exit();
 }
 
-	plugin_archires_checkRight("archires","r");
+	$PluginArchiresProfile=new PluginArchiresProfile();
+  $PluginArchiresProfile->checkRight("archires","r");
+  
+  $PluginArchiresQueryType=new PluginArchiresQueryType();
+  $PluginArchiresView=new PluginArchiresView();
+  $PluginArchiresPrototype=new PluginArchiresPrototype();
 
 	if (empty($_POST["id"])){
 		switch($_REQUEST['glpi_tab']) {
@@ -56,17 +61,17 @@ if(!isset($_POST["id"])) {
 	}else{
 		switch($_REQUEST['glpi_tab']) {
 			case -1 :
-				plugin_archires_query_ShowTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+				$PluginArchiresQueryType->showTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
 				break;
 			case 2 :
-				plugin_archires_view_Associated(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
-				plugin_archires_query_Test(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+				$PluginArchiresView->showView(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+				$PluginArchiresPrototype->test(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
 				break;
 			case 10 :
 				showNotesForm($_POST['target'],PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
 				break;
 			default :
-				plugin_archires_query_ShowTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+				$PluginArchiresQueryType->showTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
 				break;
 		}
 		ajaxFooter();

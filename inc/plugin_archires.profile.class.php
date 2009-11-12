@@ -46,6 +46,54 @@ class PluginArchiresProfile extends CommonDBTM {
 		$this->delete(array('id'=>$ID));
 	}
 	
+	function createFirstAccess($ID){
+
+    if (!$this->GetfromDB($ID)){
+      
+      $Profile=new Profile();
+      $Profile->GetfromDB($ID);
+      $name=$Profile->fields["name"];
+
+      $this->add(array(
+        'id' => $ID,
+        'name' => $name,
+        'archires' => 'w'));
+    } 
+  }
+
+  function createAccess($ID){
+
+    $Profile=new Profile();
+    $Profile->GetfromDB($ID);
+    $name=$Profile->fields["name"];
+    
+    $this->add(array(
+      'id' => $ID,
+      'name' => $name));
+  }
+  
+  function changeProfile(){
+   
+    if($this->getFromDB($_SESSION['glpiactiveprofile']['id']))
+      $_SESSION["glpi_plugin_archires_profile"]=$this->fields;
+    else
+      unset($_SESSION["glpi_plugin_archires_profile"]);
+  }
+  
+  function checkRight($module, $right) {
+    global $CFG_GLPI;
+
+    if (!plugin_archires_haveRight($module, $right)) {
+      // Gestion timeout session
+      if (!isset ($_SESSION["glpiID"])) {
+        glpi_header($CFG_GLPI["root_doc"] . "/index.php");
+        exit ();
+      }
+
+      displayRightError();
+    }
+  }
+
 	//profiles modification
 	function showForm($target,$ID){
 		global $LANG;

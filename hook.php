@@ -85,8 +85,9 @@ function plugin_archires_install(){
 			plugin_archires_update("1.8.0");
 
 		}
-
-		plugin_archires_createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+    
+    $PluginArchiresProfile=new PluginArchiresProfile();
+		$PluginArchiresProfile->createFirstAccess($_SESSION['glpiactiveprofile']['id']);
 		return true;
 }
 
@@ -468,13 +469,14 @@ function plugin_headings_actions_archires($type){
 // action heading
 function plugin_headings_archires($type,$ID,$withtemplate=0){
 	global $CFG_GLPI,$LANG;
-
+  
+  $PluginArchiresProfile=new PluginArchiresProfile();
+  
 	switch ($type){
 		case PROFILE_TYPE :
-				$prof=new PluginArchiresProfile();
-				if (!$prof->GetfromDB($ID))
-					plugin_archires_createAccess($ID);
-				$prof->showForm($CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.profile.php",$ID);
+				if (!$PluginArchiresProfile->GetfromDB($ID))
+          $PluginArchiresProfile->createAccess($ID);
+				$PluginArchiresProfile->showForm($CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.profile.php",$ID);
 		break;
 	}
 }

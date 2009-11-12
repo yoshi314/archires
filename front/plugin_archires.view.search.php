@@ -37,7 +37,7 @@ $NEEDED_ITEMS=array("search");
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-plugin_archires_checkRight("archires","r");
+useplugin('archires',true);
 
 $plugin = new Plugin();
 if ($plugin->isActivated("network"))
@@ -50,13 +50,18 @@ if(empty($_GET["order"])) $_GET["order"] = "ASC";
 if(empty($_GET["phrasetype"])) $_GET["phrasetype"] = "contains";
 if (!isset($_GET["is_deleted"])) $_GET["is_deleted"] = "0";
 
-if ($plugin->isActivated("network")){
-	$PluginArchiresConfig=new PluginArchiresConfig();
-	$PluginArchiresConfig->title();
-}	
-plugin_archires_config_searchForm($_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["is_deleted"]);
+$PluginArchiresProfile=new PluginArchiresProfile();
+$PluginArchiresProfile->checkRight("archires","r");
 
-plugin_archires_config_showList($_SERVER["PHP_SELF"],$_SESSION["glpiname"],$_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["is_deleted"]);
+$PluginArchiresView=new PluginArchiresView();
+
+if ($plugin->isActivated("network")){
+	$PluginArchiresView->title();
+}
+
+$PluginArchiresView->searchForm($_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["is_deleted"]);
+
+$PluginArchiresView->showList($_SERVER["PHP_SELF"],$_SESSION["glpiname"],$_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["is_deleted"]);
 
 commonFooter();
 

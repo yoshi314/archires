@@ -41,7 +41,6 @@ define ("PLUGIN_ARCHIRES_PNG_FORMAT",1);
 define ("PLUGIN_ARCHIRES_GIF_FORMAT",2);
 define ("PLUGIN_ARCHIRES_SVG_FORMAT",3);
 
-include_once ("inc/plugin_archires.auth.function.php");
 include_once ("inc/plugin_archires.profile.class.php");
 
 // Init the hooks of the plugins -Needed
@@ -216,6 +215,25 @@ function plugin_archires_haveTypeRight($type,$right){
 			return plugin_archires_haveRight("archires",$right);
 			break;
 	}
+}
+
+function plugin_archires_changeProfile()
+{
+	$PluginArchiresProfile=new PluginArchiresProfile();
+	$PluginArchiresProfile->changeProfile();
+}
+
+function plugin_archires_haveRight($module,$right){
+	$matches=array(
+			""  => array("","r","w"), // ne doit pas arriver normalement
+			"r" => array("r","w"),
+			"w" => array("w"),
+			"1" => array("1"),
+			"0" => array("0","1"), // ne doit pas arriver non plus
+		      );
+	if (isset($_SESSION["glpi_plugin_archires_profile"][$module])&&in_array($_SESSION["glpi_plugin_archires_profile"][$module],$matches[$right]))
+		return true;
+	else return false;
 }
 
 ?>

@@ -44,7 +44,8 @@ if(!isset($_POST["id"])) {
 	exit();
 }
 
-	plugin_archires_checkRight("archires","r");
+	$PluginArchiresProfile=new PluginArchiresProfile();
+  $PluginArchiresProfile->checkRight("archires","r");
 
 	if (empty($_POST["id"])){
 		switch($_REQUEST['glpi_tab']) {

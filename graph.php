@@ -54,6 +54,7 @@ if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 $obj=new $object();
 $PluginArchiresView=new PluginArchiresView();
 $PluginArchires=new PluginArchires();
+$PluginArchiresPrototype=new PluginArchiresPrototype();
 
 if (isset($_GET["affiche"])){
 	
@@ -85,14 +86,14 @@ else{
 			$PluginArchires->titleimg();
 		}
 		echo "<div align=\"center\">";
-		plugin_archires_Select($_SERVER['PHP_SELF'],$_GET["id"],$_GET["querytype"],$_GET["views_id"]);
+		$PluginArchiresView->viewSelect($_SERVER['PHP_SELF'],$_GET["id"],$_GET["querytype"],$_GET["views_id"]);
 		
 		echo "<br>";
 		
 		if(isset($_GET["id"]) && !empty($_GET["id"])){
 		
 			echo "<img src=\"image.php?id=".$_GET["id"]."&amp;querytype=".$_GET["querytype"]."&amp;views_id=".$_GET["views_id"]."\" alt=\"\" usemap=\"#G\">";
-			echo plugin_archires_Create_Graph("cmapx",$obj,$_GET["id"],$_GET["views_id"]);
+			echo $PluginArchiresPrototype->createGraph("cmapx",$obj,$_GET["id"],$_GET["views_id"]);
 			
 		}
 		//legend

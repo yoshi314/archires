@@ -154,13 +154,13 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 
 	checkRight("config","w");
 					
-	plugin_archires_config_Display();
+	$PluginArchiresItemImage->showForm();
 	
-	plugin_archires_config_NetworkInterface();
+	$PluginArchiresNetworkInterfaceColor->showForm();
 		
-	plugin_archires_config_Vlan();
+	$PluginArchiresVlanColor->showForm();
 		
-	plugin_archires_config_State();
+	$PluginArchiresStateColor->showForm();
 }
 
 	

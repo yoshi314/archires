@@ -65,4 +65,101 @@ class PluginArchires extends CommonDBTM {
           echo "<td><a class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.php\">".$LANG['plugin_archires']['profile'][2]."</a>";
 				echo "</td></tr></table></div>";
 		}
+	
+	function dropdownAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1,$types='') {
+    global $DB,$LANG,$CFG_GLPI,$PLUGIN_ARCHIRES_TYPE_TABLES;
+          
+    $rand=mt_rand();
+    $ci=new CommonItem();
+
+    echo "<table border='0'><tr><td>\n";
+
+    echo "<select name='type' id='item_type$rand'>\n";
+    echo "<option value='0;0'>-----</option>\n";
+    
+    echo "<option value='".COMPUTER_TYPE.";".$PLUGIN_ARCHIRES_TYPE_TABLES[COMPUTER_TYPE]."'>".$LANG['Menu'][0]."</option>\n";
+    echo "<option value='".NETWORKING_TYPE.";".$PLUGIN_ARCHIRES_TYPE_TABLES[NETWORKING_TYPE]."'>".$LANG['Menu'][1]."</option>\n";
+    echo "<option value='".PRINTER_TYPE.";".$PLUGIN_ARCHIRES_TYPE_TABLES[PRINTER_TYPE]."'>".$LANG['Menu'][2]."</option>\n";
+    echo "<option value='".PERIPHERAL_TYPE.";".$PLUGIN_ARCHIRES_TYPE_TABLES[PERIPHERAL_TYPE]."'>".$LANG['Menu'][16]."</option>\n";
+    echo "<option value='".PHONE_TYPE.";".$PLUGIN_ARCHIRES_TYPE_TABLES[PHONE_TYPE]."'>".$LANG['Menu'][34]."</option>\n";
+    echo "</select>";
+
+    $params=array('idtable'=>'__VALUE__',
+      'value'=>$value,
+      'myname'=>$myname,
+      'entity_restrict'=>$entity_restrict,
+      );
+    ajaxUpdateItemOnSelectEvent("item_type$rand","show_$myname$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",$params);
+
+    echo "</td><td>\n"	;
+    echo "<span id='show_$myname$rand'>&nbsp;</span>\n";
+    echo "</td></tr></table>\n";
+
+    if ($value>0){
+      echo "<script type='text/javascript' >\n";
+      echo "document.getElementById('item_type$rand').value='".$value_type."';";
+      echo "</script>\n";
+
+      $params["idtable"]=$value_type;
+      ajaxUpdateItem("show_$myname$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",$params);
+      
+    }
+    return $rand;
+  }
+  
+  function getItemType($devicetype){
+    global $LANG;
+    
+      switch ($devicetype){
+        
+        case COMPUTER_TYPE :	
+          return $LANG['Menu'][0];
+          break;
+        case NETWORKING_TYPE :
+          return $LANG['help'][26];
+          break;
+        case PRINTER_TYPE :
+          return $LANG['help'][27];
+          break;
+        case PERIPHERAL_TYPE : 
+          return $LANG['help'][29];
+          break;				
+        case PHONE_TYPE : 
+          return $LANG['help'][35];
+          break;				
+        
+      }
+  }
+
+  function getType($device_type,$type)
+  {
+    global $DB,$PLUGIN_ARCHIRES_TYPE_TABLES;
+    
+    $name="";
+    if(isset($PLUGIN_ARCHIRES_TYPE_TABLES[$device_type])){
+    
+      $query="SELECT `name` 
+            FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$device_type]."` 
+            WHERE `id` = '$type' ";
+      $result = $DB->query($query);
+      $number = $DB->numrows($result);
+      if($number !="0")
+        $name=$DB->result($result, 0, "name");
+    }
+    return $name;
+  }
+  
+  function getClassType ($type){
+	
+      if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
+        $object= "PluginArchiresQueryLocation";
+       }elseif ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+        $object= "PluginArchiresQueryNetworkEquipment";
+       }elseif ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+        $object= "PluginArchiresQueryAppliance";
+      }
+      
+    return $object;
+
+  }
 }

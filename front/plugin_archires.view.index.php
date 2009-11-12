@@ -57,13 +57,18 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 	if (!isset($_GET["sort"])) $_GET["sort"] = "glpi_plugin_archires_views.name";
 	if (!isset($_GET["is_deleted"])) $_GET["is_deleted"] = "0";
 	
+	$PluginArchiresProfile=new PluginArchiresProfile();
+  $PluginArchiresProfile->checkRight("archires","r");
+  
+  $PluginArchiresView=new PluginArchiresView();
+  
 	if ($plugin->isActivated("network")){
-		$PluginArchiresConfig=new PluginArchiresConfig();
-		$PluginArchiresConfig->title();
+		$PluginArchiresView->title();
 	}
-	plugin_archires_config_searchForm();
+	
+	$PluginArchiresView->searchForm();
 
-	plugin_archires_config_showList($_SERVER["PHP_SELF"],$_SESSION["glpiname"],$_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["is_deleted"]);
+	$PluginArchiresView->showList($_SERVER["PHP_SELF"],$_SESSION["glpiname"],$_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["is_deleted"]);
 
 	
 }else{

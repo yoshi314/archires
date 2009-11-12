@@ -40,6 +40,8 @@ include (GLPI_ROOT."/inc/includes.php");
 useplugin('archires',true);
 
 $PluginArchiresView=new PluginArchiresView();
+$PluginArchiresPrototype=new PluginArchiresPrototype();
+
 $PluginArchiresView->getFromDB($_GET["views_id"]);
 if (isset($_GET["format"])) $format=$_GET["format"];
 else $format=$PluginArchiresView->fields["format"];
@@ -58,7 +60,7 @@ if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 }
 			
 $obj=new $object();
-$output_data = plugin_archires_Create_Graph($format_graph,$obj,$_GET["id"],$_GET["views_id"]);
+$output_data = $PluginArchiresPrototype->createGraph($format_graph,$obj,$_GET["id"],$_GET["views_id"]);
 
 if ($format==PLUGIN_ARCHIRES_SVG_FORMAT){
   header("Content-type: image/svg+xml");

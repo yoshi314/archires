@@ -117,7 +117,8 @@ else if (isset($_POST["deletetype"])){
 }
 else
 {
-	plugin_archires_checkRight("archires","r");
+  $PluginArchiresProfile=new PluginArchiresProfile();
+	$PluginArchiresProfile->checkRight("archires","r");
 
 	if (!isset($_SESSION['glpi_tab'])) $_SESSION['glpi_tab']=1;
 	if (isset($_GET['onglet'])) {

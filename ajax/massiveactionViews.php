@@ -39,46 +39,49 @@ include (GLPI_ROOT."/inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
-plugin_archires_checkRight("archires","w");
+useplugin('archires',true);
+
+$PluginArchiresProfile=new PluginArchiresProfile();
+$PluginArchiresProfile->checkRight("archires","w");
 
 commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
 
 if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($_POST["item"])){
 	
-	$PluginArchiresConfig=new PluginArchiresConfig();
+	$PluginArchiresView=new PluginArchiresView();
 	
 	switch($_POST["action"]){
 		case "delete":
-			$PluginArchiresConfig->getFromDB($_POST["id"],-1);
+			$PluginArchiresView->getFromDB($_POST["id"],-1);
 			foreach ($_POST["item"] as $key => $val){
 				if ($val==1) {
-					$PluginArchiresConfig->delete(array("id"=>$key),$force=0);
+					$PluginArchiresView->delete(array("id"=>$key),$force=0);
 				}
 			}
 		break;
 		case "purge":
-			$PluginArchiresConfig->getFromDB($_POST["id"],-1);
+			$PluginArchiresView->getFromDB($_POST["id"],-1);
 			foreach ($_POST["item"] as $key => $val){
 				if ($val==1) {
-					$PluginArchiresConfig->delete(array("id"=>$key),1);
+					$PluginArchiresView->delete(array("id"=>$key),1);
 				}
 			}
 		break;
 		case "restore":
-			$PluginArchiresConfig->getFromDB($_POST["id"],-1);
+			$PluginArchiresView->getFromDB($_POST["id"],-1);
 			foreach ($_POST["item"] as $key => $val){
 				if ($val==1) {
-					$PluginArchiresConfig->restore(array("id"=>$key));
+					$PluginArchiresView->restore(array("id"=>$key));
 				}
 			}
 		break;
 		case "duplicate":
 		foreach ($_POST["item"] as $key => $val){
 				if ($val==1){
-					if ($PluginArchiresConfig->getFromDB($key)){
-						unset($PluginArchiresConfig->fields["id"]);
-						$PluginArchiresConfig->fields["entities_id"]=$_POST["entities_id"];
-						$newID=$PluginArchiresConfig->add($PluginArchiresConfig->fields);
+					if ($PluginArchiresView->getFromDB($key)){
+						unset($PluginArchiresView->fields["id"]);
+						$PluginArchiresView->fields["entities_id"]=$_POST["entities_id"];
+						$newID=$PluginArchiresView->add($PluginArchiresView->fields);
 					}
 			}
 		}

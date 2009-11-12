@@ -38,7 +38,8 @@ include (GLPI_ROOT."/inc/includes.php");
 
 useplugin('archires',true);
 
-$output_data = plugin_archires_test_Graphviz();
+$PluginArchiresPrototype=new PluginArchiresPrototype();
+$output_data = $PluginArchiresPrototype->testGraphviz();
 
 header("Content-Type: image/png");
 header("Content-Length: " . strlen($output_data));
