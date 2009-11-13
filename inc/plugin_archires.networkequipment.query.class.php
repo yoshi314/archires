@@ -138,43 +138,43 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 		
     $this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
     $this->showFormHeader($target,$ID,$withtemplate);
-    echo "<tr><td class='tab_bg_1' valign='top'>";
+    echo "<tr><td class='tab_bg_1 top'>";
 
     echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
 
-    echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
+    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
     echo "<td>";
     autocompletionTextField("name",$this->table,"name",$this->fields["name"],50,$this->fields["entities_id"]);		
     echo "</td></tr>";
     
-    echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['help'][26].":	</td><td>";
+    echo "<tr class='tab_bg_1 top'><td>".$LANG['help'][26].":	</td><td>";
     
     dropdownValue("glpi_networkequipments", "networkequipments_id", $this->fields["networkequipments_id"],1,$this->fields["entities_id"]);
     echo "</td></tr>";	
       
-    echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
+    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
     dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
     echo "</td></tr>";
 
 
-    echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
+    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
     dropdownValue("glpi_states", "states_id", $this->fields["states_id"]);
     echo "</td></tr>";
     
     echo "</table>";
     echo "</td>";	
-    echo "<td class='tab_bg_1' valign='top'>";
+    echo "<td class='tab_bg_1 top'>";
     echo "<table cellpadding='2' cellspacing='2' border='0'>";
     
-    echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['common'][35].": </td><td>";
+    echo "<tr class='tab_bg_1 top'><td>".$LANG['common'][35].": </td><td>";
     dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"]);
     echo "</td></tr>";
     
-    echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['networking'][56].": </td><td>";
+    echo "<tr class='tab_bg_1 top'><td>".$LANG['networking'][56].": </td><td>";
     dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"]);
     echo "</td></tr>";
     
-    echo "<tr class='tab_bg_1' valign='top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
+    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
     //View
     $PluginArchiresView=new PluginArchiresView();
     $PluginArchiresView->dropdownView($this,$ID);

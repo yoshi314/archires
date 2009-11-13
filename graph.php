@@ -99,7 +99,7 @@ else{
 		//legend
 		if(isset($_GET["id"]) && !empty($_GET["id"])){
 			echo "<table  cellpadding='5' border='0'>";
-			echo "<tr><td valign='top'>";
+			echo "<tr><td class='top'>";
 			if( $PluginArchiresView->fields["color"] == 0 ){
     			//legende color networkinterface		
     			$query = "SELECT * 
@@ -131,7 +131,7 @@ else{
     					echo "</div>";
     				}
     			}
-    			echo "</td><td valign='top'>";
+    			echo "</td><td class='top'>";
     		}elseif($PluginArchiresView->fields["color"] == 1 ){
     			//legende color vlan		
     			$query = "SELECT * 
@@ -163,7 +163,7 @@ else{
     					echo "</div>";
     				}
     			}
-    			echo "</td><td valign='top'>";										 
+    			echo "</td><td class='top'>";										 
     		}
 			//legende color state		
 			$query = "SELECT * 
