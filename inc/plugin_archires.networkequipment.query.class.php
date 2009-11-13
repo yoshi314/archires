@@ -51,7 +51,7 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 	}
   
   function getSearchOptions() {
-      global $LANG;
+    global $LANG;
 
       $tab = array();
 
@@ -124,8 +124,7 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 	}
 		
 	function showForm ($target,$ID,$withtemplate='') {
-
-		GLOBAL $CFG_GLPI,$DB, $LANG;
+    global $CFG_GLPI,$DB,$LANG;
 
 		if (!plugin_archires_haveRight("archires","r")) return false;
 

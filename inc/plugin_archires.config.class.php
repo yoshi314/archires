@@ -59,7 +59,7 @@ class PluginArchiresItemImage extends CommonDBTM {
 	}
 	
 	function addItemImage($type,$itemtype,$img){
-    GLOBAL  $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
+    global $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
     
     if ($type!='-1'){
       if ($this->GetfromDBbyType($itemtype,$type)){
@@ -246,8 +246,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
 	}
 	
 	function addNetworkInterfaceColor($networkinterfaces_id,$color){
-	
-	GLOBAL $DB;
+    global $DB;
     
     if ($networkinterfaces_id!='-1'){
       if ($this->getFromDBbyNetworkInterface($networkinterfaces_id)){
@@ -434,8 +433,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
 	}
 	
 	function addVlanColor($vlan,$color){
-	
-    GLOBAL $DB;
+    global $DB;
     
     if ($vlan!='-1'){
       if ($this->GetfromDBbyVlan($vlan)){
@@ -643,8 +641,7 @@ class PluginArchiresStateColor extends CommonDBTM {
 	}
 	
 	function addStateColor($state,$color){
-	
-    GLOBAL $DB;
+    global $DB;
     
     if ($state!='-1'){
       if ($this->GetfromDBbyState($state)){
@@ -858,7 +855,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 	}
 	
 	function addType($querytype,$type,$itemtype,$queries_id){
-    GLOBAL  $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
+    global $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
     
     if ($type!='-1'){
       if (!$this->GetfromDBbyType($itemtype,$type,$querytype,$queries_id)){

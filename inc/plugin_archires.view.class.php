@@ -41,8 +41,7 @@ class PluginArchiresView extends CommonDBTM {
 	}
 
 	function title(){
-
-		GLOBAL $CFG_GLPI, $LANG;
+    global $CFG_GLPI, $LANG;
 
 		echo "<div align='center'><table border='0'><tr><td>";
 		echo "<img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/archires.png\" alt='".$LANG['plugin_archires']['title'][0]."' title='".$LANG['plugin_archires']['title'][0]."'></td>";
@@ -157,8 +156,7 @@ class PluginArchiresView extends CommonDBTM {
 	}
 
 	function showForm ($target,$ID, $withtemplate='') {
-
-		GLOBAL $CFG_GLPI,$DB, $LANG;
+    global $CFG_GLPI,$DB,$LANG;
 
 		if (!plugin_archires_haveRight("archires","r")) return false;
 
@@ -414,8 +412,7 @@ class PluginArchiresView extends CommonDBTM {
    *
    **/
   function showList($target,$username,$field,$phrasetype,$contains,$sort,$order,$start,$deleted) {
-
-    GLOBAL $DB,$CFG_GLPI,$LANG;
+    global $DB,$CFG_GLPI,$LANG;
 
     $first=true;
     // Build query

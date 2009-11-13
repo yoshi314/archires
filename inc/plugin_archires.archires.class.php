@@ -35,9 +35,8 @@
 
 class PluginArchires extends CommonDBTM {
 
-	function title(){
-			
-				GLOBAL $CFG_GLPI, $LANG;
+	function title(){	
+		global $CFG_GLPI,$LANG;
 				
 				echo "<div align='center'><table border='0'><tr><td>";
 				echo "<img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/archires.png\" alt='".$LANG['plugin_archires']['title'][0]."' title='".$LANG['plugin_archires']['title'][0]."'></td>";
@@ -54,8 +53,7 @@ class PluginArchires extends CommonDBTM {
 		}
 	
 	function titleimg(){
-			
-				GLOBAL $CFG_GLPI, $LANG;
+    global $CFG_GLPI,$LANG;
 				
 				echo "<div align='center'><table border='0'><tr><td>";
 				echo "<img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/archires.png\" alt='".$LANG['plugin_archires']['title'][0]."' title='".$LANG['plugin_archires']['title'][0]."'></td>";
@@ -131,8 +129,7 @@ class PluginArchires extends CommonDBTM {
       }
   }
 
-  function getType($device_type,$type)
-  {
+  function getType($device_type,$type){
     global $DB,$PLUGIN_ARCHIRES_TYPE_TABLES;
     
     $name="";
