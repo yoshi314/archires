@@ -85,7 +85,7 @@ class PluginArchiresView extends CommonDBTM {
       if($DB->numrows($result) >0){
         echo "<form method='get' name='selecting' action=\"$target\">";
         echo "<table class='tab_cadre' cellpadding='5'>";
-        echo "<tr class='tab_bg_1'><td align='center'>";
+        echo "<tr class='tab_bg_1'><td class='center'>";
 
         //location
         echo $LANG['plugin_archires'][0]." : ";
@@ -114,7 +114,7 @@ class PluginArchiresView extends CommonDBTM {
         $query1.=" ORDER BY `name` ASC";
 
         if($result1 = $DB->query($query1)){
-        echo "<td align='center'>";
+        echo "<td class='center'>";
         echo $LANG['plugin_archires']['title'][3]." : ";
         echo "<select name=\"views_id\" size=\"1\"> ";
 
@@ -348,7 +348,7 @@ class PluginArchiresView extends CommonDBTM {
     echo "<div align='center'><table  width='750' class='tab_cadre'>";
     echo "<tr><th colspan='4'>".$LANG['search'][0].":</th></tr>";
     echo "<tr class='tab_bg_1'>";
-    echo "<td align='center'>";
+    echo "<td class='center'>";
     echo "<input type='text' size='15' name=\"contains\" value=\"". $contains ."\" >";
     echo "&nbsp;";
     echo $LANG['search'][10]."&nbsp;<select name=\"field\" size='1'>";
@@ -380,13 +380,13 @@ class PluginArchiresView extends CommonDBTM {
 
     echo "</td>";
     // Display Reset search
-    echo "<td align='center'>";
+    echo "<td class='center'>";
     echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.index.php?reset_search=reset_search&amp;type='".$this->type."' ><img title=\"".$LANG['buttons'][16]."\" alt=\"".$LANG['buttons'][16]."\" src='".$CFG_GLPI["root_doc"]."/pics/reset.png' class='calendrier'></a>";
     Bookmark::showSaveButton(BOOKMARK_SEARCH,$this->type);
 
     echo "</td>";
 
-    echo "<td width='80' align='center' class='tab_bg_2'>";
+    echo "<td width='80' class='center' class='tab_bg_2'>";
     echo "<input type='submit' value=\"".$LANG['buttons'][0]."\" class='submit'>";
     echo "</td></tr></table></div></form>";
   }
@@ -565,7 +565,7 @@ class PluginArchiresView extends CommonDBTM {
           }
           echo "</a></td>";
 
-          echo "<td align='center'>";
+          echo "<td class='center'>";
           if ($this->fields["computer"]!=0) echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][1];
           else
           echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][0];
@@ -591,7 +591,7 @@ class PluginArchiresView extends CommonDBTM {
           echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][0];
           echo "</td>";
 
-          echo "<td align='center'>";
+          echo "<td class='center'>";
           if ($this->fields["display_ports"]!=0) echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][1];
           else
           echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][0];
@@ -622,13 +622,13 @@ class PluginArchiresView extends CommonDBTM {
           echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][0];
           echo "</td>";
 
-          echo "<td align='center'>";
+          echo "<td class='center'>";
           if ($this->fields["engine"]!=0) echo "Neato";
           else
           echo "Dot";
           echo "</td>";
 
-          echo "<td align='center'>";
+          echo "<td class='center'>";
           if ($this->fields["format"]==PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
           elseif ($this->fields["format"]==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
           elseif ($this->fields["format"]==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
@@ -644,9 +644,9 @@ class PluginArchiresView extends CommonDBTM {
         if(plugin_archires_haveRight("archires","w")){
           echo "<div align='center'>";
           echo "<table width='80%'>";
-           echo "<tr><td><img src=\"".$CFG_GLPI["root_doc"]."/pics/arrow-left.png\" alt=''></td><td align='center'><a onclick= \"if ( markCheckboxes('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all' >".$LANG['buttons'][18]."</a></td>";
-          echo "<td>/</td><td align='center'><a onclick= \"if ( unMarkCheckboxes('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a>";
-          echo "</td><td align='left' width='80%'>";
+           echo "<tr><td><img src=\"".$CFG_GLPI["root_doc"]."/pics/arrow-left.png\" alt=''></td><td class='center'><a onclick= \"if ( markCheckboxes('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all' >".$LANG['buttons'][18]."</a></td>";
+          echo "<td>/</td><td class='center'><a onclick= \"if ( unMarkCheckboxes('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a>";
+          echo "</td><td class='left' width='80%'>";
           $this->dropdownMassiveAction($ID,$deleted);
           echo "</td>";
           echo "</table>";
@@ -715,7 +715,7 @@ class PluginArchiresView extends CommonDBTM {
 
     echo "<tr class='tab_bg_2 top'><th>".$LANG['plugin_archires'][3]."</th><th>".$LANG['plugin_archires'][24]."</th><th>".$LANG['plugin_archires']['search'][6]."</th></tr>";
 
-    echo "<tr class='tab_bg_1 top'><td align='center'>";
+    echo "<tr class='tab_bg_1 top'><td class='center'>";
     if ($this->fields["computer"]!=0) echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][1];
     else
       echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][0];
@@ -741,7 +741,7 @@ class PluginArchiresView extends CommonDBTM {
       echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][0];
     echo "</td>";
 
-    echo "<td align='center'>";
+    echo "<td class='center'>";
     if ($this->fields["display_ports"]!=0) echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][1];
     else
       echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][0];
@@ -773,7 +773,7 @@ class PluginArchiresView extends CommonDBTM {
     echo "</td>";
 
     //
-    echo "<td align='center'>".$LANG['plugin_archires']['setup'][11]." : ";
+    echo "<td class='center'>".$LANG['plugin_archires']['setup'][11]." : ";
     echo $LANG['plugin_archires']['setup'][13]." : ";
     if ($this->fields["engine"]!=0) echo "Neato";
     else

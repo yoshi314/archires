@@ -85,7 +85,7 @@ else{
 			
 			$PluginArchires->titleimg();
 		}
-		echo "<div align=\"center\">";
+		echo "<div align='center'>";
 		$PluginArchiresView->viewSelect($_SERVER['PHP_SELF'],$_GET["id"],$_GET["querytype"],$_GET["views_id"]);
 		
 		echo "<br>";
