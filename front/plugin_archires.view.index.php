@@ -47,7 +47,7 @@ if ($plugin->isActivated("network"))
 else
 	commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
-if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
+if(plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 	
 	if(!isset($_GET["start"])) $_GET["start"] = 0;
 	if (!isset($_GET["order"])) $_GET["order"] = "ASC";
@@ -62,7 +62,7 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
   
   $PluginArchiresView=new PluginArchiresView();
   
-	if ($plugin->isActivated("network")){
+	if ($plugin->isActivated("network")) {
 		$PluginArchiresView->title();
 	}
 	
@@ -71,7 +71,7 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 	$PluginArchiresView->showList($_SERVER["PHP_SELF"],$_SESSION["glpiname"],$_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["is_deleted"]);
 
 	
-}else{
+} else {
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
 	echo "<b>".$LANG['login'][5]."</b></div>";
 }

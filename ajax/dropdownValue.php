@@ -34,7 +34,7 @@
  */
 
 // Direct access to file
-if(strpos($_SERVER['PHP_SELF'],"dropdownValue.php")){
+if(strpos($_SERVER['PHP_SELF'],"dropdownValue.php")) {
 	define('GLPI_ROOT', '../../..');
 	$AJAX_INCLUDE=1;
 	include (GLPI_ROOT."/inc/includes.php");
@@ -43,7 +43,7 @@ if(strpos($_SERVER['PHP_SELF'],"dropdownValue.php")){
 	header_nocache();
 };
 
-if (!defined('GLPI_ROOT')){
+if (!defined('GLPI_ROOT')) {
 	die("Can not acces directly to this file");
 	}
 
@@ -52,7 +52,7 @@ include_once (GLPI_ROOT."/plugins/archires/locales/".$_SESSION["glpilanguage"]."
 checkLoginUser();
 
 // Security
-if (! TableExists($_POST['table']) ){
+if (! TableExists($_POST['table'])) {
 	exit();
 }
 
@@ -61,12 +61,12 @@ if (!isset($_POST["limit"])) $_POST["limit"]=$CFG_GLPI["dropdown_chars_limit"];
 $first=true;
 $where="WHERE ";
 
-if (in_array($_POST['table'],$CFG_GLPI["deleted_tables"])){
+if (in_array($_POST['table'],$CFG_GLPI["deleted_tables"])) {
 	if (!$first) $where.=" AND ";
 	else $first=false;
 	$where.=" `is_deleted` = '0' ";
 }
-if (in_array($_POST['table'],$CFG_GLPI["template_tables"])){
+if (in_array($_POST['table'],$CFG_GLPI["template_tables"])) {
 	if (!$first) $where.=" AND ";
 	else $first=false;
 	$where.=" `is_template` = '0' ";
@@ -78,9 +78,9 @@ $LIMIT="LIMIT 0,$NBMAX";
 if ($_POST['searchText']==$CFG_GLPI["ajax_wildcard"]) $LIMIT="";
 
 
-if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
+if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])) {
 
-	if ($_POST['searchText']!=$CFG_GLPI["ajax_wildcard"]){
+	if ($_POST['searchText']!=$CFG_GLPI["ajax_wildcard"]) {
 		if (!$first) $where.=" AND ";
 		else $first=false;
 		$where.=" completename ".makeTextSearch($_POST['searchText']);
@@ -89,13 +89,13 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 
 	// Manage multiple Entities dropdowns
 	$add_order="";
-	if (in_array($_POST['table'],$CFG_GLPI["specif_entities_tables"])){
+	if (in_array($_POST['table'],$CFG_GLPI["specif_entities_tables"])) {
 		$add_order=" entities_id, ";
 
 		if (!$first) $where.=" AND ";
 		else $first=false;
 
-		if (isset($_POST["entity_restrict"])&&$_POST["entity_restrict"]>=0){
+		if (isset($_POST["entity_restrict"])&&$_POST["entity_restrict"]>=0) {
 			$where.= $_POST['table'].".entities_id='".$_POST["entity_restrict"]."'";
 		} else {
 			$where.=getEntitiesRestrictRequest("",$_POST['table']);
@@ -117,7 +117,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 	if ($_POST['searchText']!=$CFG_GLPI["ajax_wildcard"]&&$DB->numrows($result)==$NBMAX)
 		echo "<option class='tree' value=\"0\">--".$LANG['common'][11]."--</option>";
 
-	switch ($_POST["table"]){
+	switch ($_POST["table"]) {
 		case "glpi_dropdown_kbcategories" :
 			echo "<option class='tree' value=\"0\">--".$LANG['knowbase'][12]."--</option>";
 			break;
@@ -163,7 +163,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 	else $first=false;
 	$where .=" id <> '".$_POST['value']."' ";
 
-	if (in_array($_POST['table'],$CFG_GLPI["specif_entities_tables"])){
+	if (in_array($_POST['table'],$CFG_GLPI["specif_entities_tables"])) {
 		if (isset($_POST["entity_restrict"])&&$_POST["entity_restrict"]>=0){
 			$where.= " AND ".$_POST['table'].".entities_id='".$_POST["entity_restrict"]."'";
 		} else {
@@ -178,7 +178,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 		$where.=" AND $field ".makeTextSearch($_POST['searchText']);
 
 
-	switch ($_POST['table']){
+	switch ($_POST['table']) {
 		case "glpi_contacts":
 			$query = "SELECT CONCAT(name,' ',firstname) AS $field, `".$_POST['table']."`.`comment`, `".$_POST['table']."`.`id`
 					FROM `".$_POST['table']."`
@@ -206,7 +206,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 	if($number != 0)
 	echo "<option value=\"".$_POST['itemtype'].";-1\">".$LANG['plugin_archires'][18]."</option>";
 	$output=getDropdownName($_POST['table'],$_POST['value']);
-	if (!empty($output)&&$output!="&nbsp;"){
+	if (!empty($output)&&$output!="&nbsp;") {
 		echo "<option selected value='".$_POST['value']."'>".$output."</option>";
 	}
 
@@ -225,7 +225,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])){
 	echo "</select>";
 }
 
-if (isset($_POST["comments"])&&$_POST["comments"]){
+if (isset($_POST["comments"])&&$_POST["comments"]) {
 	$params=array('value'=>'__VALUE__','table'=>$_POST["table"]);
 	ajaxUpdateItemOnSelectEvent("dropdown_".$_POST["myname"].$_POST["rand"],"comments_".$_POST["myname"].$_POST["rand"],$CFG_GLPI["root_doc"]."/ajax/comments.php",$params,false);
 }

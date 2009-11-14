@@ -49,81 +49,79 @@ else $start=0;
 $PluginArchiresQueryLocation=new PluginArchiresQueryLocation();
 $PluginArchiresQueryType=new PluginArchiresQueryType();
 
-if (isset($_POST["add"]))
-{
+if (isset($_POST["add"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$newID=$PluginArchiresQueryLocation->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
-} 
-else if (isset($_POST["delete"]))
-{
+	
+} else if (isset($_POST["delete"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryLocation->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
-}
-else if (isset($_POST["restore"]))
-{
+	
+} else if (isset($_POST["restore"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryLocation->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
-}
-else if (isset($_POST["purge"]))
-{
+	
+} else if (isset($_POST["purge"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryLocation->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
-}
-else if (isset($_POST["update"]))
-{
+	
+} else if (isset($_POST["update"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryLocation->update($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
-}
-else if (isset($_POST["duplicate"])){
+	
+} else if (isset($_POST["duplicate"])) {
 
-	if(plugin_archires_haveRight("archires","w"))
+	if(plugin_archires_haveRight("archires","w")) {
 		unset($_POST['id']);
 		$newID=$PluginArchiresQueryLocation->add($_POST);
+	}
 	glpi_header($_SERVER['HTTP_REFERER']);
-}
-//type
-else if (isset($_POST["addtype"])){
+	
+} else if (isset($_POST["addtype"])) {
 	
 	$test= explode(";", $_POST['type']);
 	
-	if (isset($test[0]) && isset($test[1])){
+	if (isset($test[0]) && isset($test[1])) {
 		$_POST['type']= $test[1];
 		$_POST['itemtype']= $test[0];
 	
-		if(plugin_archires_haveRight("archires","w")){
-				$PluginArchiresQueryType->addType(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST['type'],$_POST['itemtype'],$_POST['query']);
+		if(plugin_archires_haveRight("archires","w")) {
+			$PluginArchiresQueryType->addType(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST['type'],$_POST['itemtype'],$_POST['query']);
 		}
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
-}
-else if (isset($_POST["deletetype"])){
+} else if (isset($_POST["deletetype"])) {
 
-	if(plugin_archires_haveRight("archires","w"))
-	$PluginArchiresQueryType->getFromDB($_POST["id"],-1);
+	if(plugin_archires_haveRight("archires","w")) {
+      $PluginArchiresQueryType->getFromDB($_POST["id"],-1);
 	
-	foreach ($_POST["item"] as $key => $val){
-		if ($val==1) {
-			$PluginArchiresQueryType->deleteType($key);
-		}
-	}
+      foreach ($_POST["item"] as $key => $val) {
+         if ($val==1) {
+            $PluginArchiresQueryType->deleteType($key);
+         }
+      }
+   }
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
-}
-else
-{
+} else {
+
 	$PluginArchiresProfile=new PluginArchiresProfile();
 	$PluginArchiresProfile->checkRight("archires","r");
 	
 	if (!isset($_SESSION['glpi_tab'])) $_SESSION['glpi_tab']=1;
 	if (isset($_GET['onglet'])) {
-		$_SESSION['glpi_tab']=$_GET['onglet'];
-		//		glpi_header($_SERVER['HTTP_REFERER']);
+		$_SESSION['glpi_tab']=$_GET['onglet'];;
 	}
 
 	$plugin = new Plugin();

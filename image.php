@@ -47,26 +47,26 @@ if (isset($_GET["format"])) $format=$_GET["format"];
 else $format=$PluginArchiresView->fields["format"];
 
 if ($format==PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
-elseif ($format==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
-elseif ($format==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
-elseif ($format==PLUGIN_ARCHIRES_SVG_FORMAT) $format_graph="svg";
+else if ($format==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
+else if ($format==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
+else if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) $format_graph="svg";
 
-if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
+if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
 	$object= "PluginArchiresQueryLocation";
-}elseif ($_GET["querytype"]==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
 	$object= "PluginArchiresQueryNetworkEquipment";
-}elseif ($_GET["querytype"]==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
 	$object= "PluginArchiresQueryAppliance";
 }
-			
+
 $obj=new $object();
 $output_data = $PluginArchiresPrototype->createGraph($format_graph,$obj,$_GET["id"],$_GET["views_id"]);
 
-if ($format==PLUGIN_ARCHIRES_SVG_FORMAT){
-  header("Content-type: image/svg+xml");
-  header('Content-Disposition: attachment; filename="image.svg"');
-}else{
-  header("Content-Type: image/".$format_graph."");
+if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) {
+   header("Content-type: image/svg+xml");
+   header('Content-Disposition: attachment; filename="image.svg"');
+} else {
+   header("Content-Type: image/".$format_graph."");
 }
 header("Content-Length: ".strlen($output_data));
 

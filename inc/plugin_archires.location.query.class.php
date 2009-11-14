@@ -50,7 +50,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 	}
   
   function getSearchOptions() {
-    global $LANG;
+      global $LANG;
 
       $tab = array();
 
@@ -113,11 +113,12 @@ class PluginArchiresQueryLocation extends CommonDBTM {
       $tab[80]['linkfield']='entities_id';
       $tab[80]['name']=$LANG['entity'][0];
 		
-		 return $tab;
+		return $tab;
    }
    
-	function defineTabs($ID,$withtemplate){
+	function defineTabs($ID,$withtemplate) {
 		global $LANG;
+		
 		$ong[1]=$LANG['title'][26];
 		if ($ID > 0){
 			$ong[2]=$LANG['plugin_archires']['test'][0];
@@ -135,291 +136,290 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 
 		if ($ID > 0) {
        $this->check($ID,'r');
-    } else {
+      } else {
        // Create item
        $this->check(-1,'w');
        $this->getEmpty();
-    }
+      }
 		
-    $this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
-    $this->showFormHeader($target,$ID,$withtemplate);
-    
-    echo "<tr><td class='tab_bg_1 top'>";
+      $this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
+      $this->showFormHeader($target,$ID,$withtemplate);
 
-    echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
+      echo "<tr><td class='tab_bg_1 top'>";
 
-    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
-    echo "<td>";
-    autocompletionTextField("name",$this->table,"name",$this->fields["name"],50,$this->fields["entities_id"]);		
-    echo "</td></tr>";
+      echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
 
-    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][2].":	</td><td>";
-    
-    $this->dropdownLocation($this,$ID);
+      echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
+      echo "<td>";
+      autocompletionTextField("name",$this->table,"name",$this->fields["name"],50,$this->fields["entities_id"]);		
+      echo "</td></tr>";
 
-    echo "</td></tr>";
-    
-    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][3].":	</td>";
-    echo "<td>";
-    dropdownyesno("child",$this->fields["child"]);
-    echo "</td></tr>";
-    
-    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
-    dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
-    echo "</td></tr>";
+      echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][2].":	</td><td>";
 
-    echo "</table>";
-    echo "</td>";	
-    echo "<td class='tab_bg_1 top'>";
-    echo "<table cellpadding='2' cellspacing='2' border='0'>";
-    
-    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
-    dropdownValue("glpi_states", "states_id", $this->fields["states_id"]);
-    echo "</td></tr>";
-    
-    
-    echo "<tr class='tab_bg_1 top'><td>".$LANG['common'][35].": </td><td>";
-    dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"]);
-    echo "</td></tr>";
-    
-    echo "<tr class='tab_bg_1 top'><td>".$LANG['networking'][56].": </td><td>";
-    dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"]);
-    echo "</td></tr>";
-    
-    echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
-    //view
-    $PluginArchiresView=new PluginArchiresView();
-    $PluginArchiresView->dropdownView($this,$ID);
-    echo "</td></tr>";
-    
-    echo "</table>";
-    echo "</td>";
-    echo "</tr>";
-    
-    $this->showFormButtons($ID,$withtemplate);
-    echo "<div id='tabcontent'></div>";
-    echo "<script type='text/javascript'>loadDefaultTab();</script>";
+      $this->dropdownLocation($this,$ID);
+
+      echo "</td></tr>";
+
+      echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][3].":	</td>";
+      echo "<td>";
+      dropdownyesno("child",$this->fields["child"]);
+      echo "</td></tr>";
+
+      echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
+      dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
+      echo "</td></tr>";
+
+      echo "</table>";
+      echo "</td>";	
+      echo "<td class='tab_bg_1 top'>";
+      echo "<table cellpadding='2' cellspacing='2' border='0'>";
+
+      echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
+      dropdownValue("glpi_states", "states_id", $this->fields["states_id"]);
+      echo "</td></tr>";
+
+
+      echo "<tr class='tab_bg_1 top'><td>".$LANG['common'][35].": </td><td>";
+      dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"]);
+      echo "</td></tr>";
+
+      echo "<tr class='tab_bg_1 top'><td>".$LANG['networking'][56].": </td><td>";
+      dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"]);
+      echo "</td></tr>";
+
+      echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
+      //view
+      $PluginArchiresView=new PluginArchiresView();
+      $PluginArchiresView->dropdownView($this,$ID);
+      echo "</td></tr>";
+
+      echo "</table>";
+      echo "</td>";
+      echo "</tr>";
+
+      $this->showFormButtons($ID,$withtemplate);
+      echo "<div id='tabcontent'></div>";
+      echo "<script type='text/javascript'>loadDefaultTab();</script>";
 
 		return true;
 	}
 	
 	function dropdownLocation($object,$ID) {
-    global $DB,$CFG_GLPI,$LANG;
+      global $DB,$CFG_GLPI,$LANG;
     
-    $obj=new $object();
-    $locations_id=-1;
-    if($obj->getFromDB($ID)){
-      $locations_id=$obj->fields["locations_id"];
-    }
-    $query0 = "SELECT `entities_id` 
-          FROM `glpi_locations` ";
-    $LINK= " WHERE " ;
-    $query0.=getEntitiesRestrictRequest($LINK,"glpi_locations");
-    $query0.=" GROUP BY `entities_id`
-          ORDER BY `entities_id`";
-
-    echo "<select name=\"locations_id\" size=\"1\"> ";
-    echo "<option value='0'>-----</option>\n";
-    echo "<option value=\"-1\">".$LANG['plugin_archires'][30]."</option>";
-
-    if($result0 = $DB->query($query0)){
-
-      while($ligne0= mysql_fetch_array($result0)){
-        
-        echo "<optgroup label=\"".getdropdownname("glpi_entities",$ligne0["entities_id"])."\">";
-
-        $query = "SELECT `id`, `completename` 
-        FROM `glpi_locations` ";
-        $query.=" WHERE `entities_id` = '".$ligne0["entities_id"]."' ";
-        $query.=" ORDER BY `completename` ASC";
-
-        if($result = $DB->query($query)){
-
-          while($ligne= mysql_fetch_array($result)){
-
-            $location=$ligne["completename"];
-            $location_id=$ligne["id"];
-            echo "<option value='".$location_id."' ".($location_id=="".$locations_id.""?" selected ":"").">".$location."</option>";
-          }
-        }
-        echo "</optgroup>";
+      $obj=new $object();
+      $locations_id=-1;
+      if($obj->getFromDB($ID)) {
+         $locations_id=$obj->fields["locations_id"];
       }
-    } 
-    echo "</select>";
+      $query0 = "SELECT `entities_id` 
+             FROM `glpi_locations` ";
+      $LINK= " WHERE " ;
+      $query0.=getEntitiesRestrictRequest($LINK,"glpi_locations");
+      $query0.=" GROUP BY `entities_id`
+             ORDER BY `entities_id`";
+
+      echo "<select name=\"locations_id\" size=\"1\"> ";
+      echo "<option value='0'>-----</option>\n";
+      echo "<option value=\"-1\">".$LANG['plugin_archires'][30]."</option>";
+
+      if($result0 = $DB->query($query0)) {
+
+         while($ligne0= mysql_fetch_array($result0)) {
+           
+            echo "<optgroup label=\"".getdropdownname("glpi_entities",$ligne0["entities_id"])."\">";
+
+            $query = "SELECT `id`, `completename` 
+           FROM `glpi_locations` ";
+            $query.=" WHERE `entities_id` = '".$ligne0["entities_id"]."' ";
+            $query.=" ORDER BY `completename` ASC";
+
+            if($result = $DB->query($query)){
+
+               while($ligne= mysql_fetch_array($result)) {
+
+                  $location=$ligne["completename"];
+                  $location_id=$ligne["id"];
+                  echo "<option value='".$location_id."' ".($location_id=="".$locations_id.""?" selected ":"").">".$location."</option>";
+               }
+            }
+            echo "</optgroup>";
+         }
+      } 
+      echo "</select>";
   }
   
   function findChilds($DB, $parent){
 
-    $queryBranch='';
-    // Recherche les enfants
-    if ($parent!="-1"){
-      $queryChilds= "SELECT `id`
-            FROM `glpi_locations`
-            WHERE `locations_id` = '$parent' ";
-      if ($resultChilds = $DB->query($queryChilds)){
-        while ($dataChilds = $DB->fetch_array($resultChilds)){
-          $child=$dataChilds["id"];
-          $queryBranch .= ",$child";
-          // Recherche les petits enfants récursivement
-          $queryBranch .= $this->findChilds($DB, $child);
-        }
+      $queryBranch='';
+      // Recherche les enfants
+      if ($parent!="-1") {
+         $queryChilds= "SELECT `id`
+         FROM `glpi_locations`
+         WHERE `locations_id` = '$parent' ";
+         if ($resultChilds = $DB->query($queryChilds)) {
+            while ($dataChilds = $DB->fetch_array($resultChilds)) {
+               $child=$dataChilds["id"];
+               $queryBranch .= ",$child";
+               // Recherche les petits enfants récursivement
+               $queryBranch .= $this->findChilds($DB, $child);
+            }
+         }
+      } else {
+         $queryChilds= "SELECT `id`
+         FROM `glpi_locations`
+         WHERE `level`= 1";
+         if ($resultChilds = $DB->query($queryChilds)) {
+            while ($dataChilds = $DB->fetch_array($resultChilds)) {
+               $child=$dataChilds["id"];
+               $queryBranch .= ",$child";
+               // Recherche les petits enfants récursivement
+               $queryBranch .= $this->findChilds($DB, $child);
+            }
+         }
       }
-    }else{
-      $queryChilds= "SELECT `id`
-            FROM `glpi_locations`
-            WHERE `level`= 1";
-      if ($resultChilds = $DB->query($queryChilds)){
-        while ($dataChilds = $DB->fetch_array($resultChilds)){
-          $child=$dataChilds["id"];
-          $queryBranch .= ",$child";
-          // Recherche les petits enfants récursivement
-          $queryBranch .= $this->findChilds($DB, $child);
-        }
-      }
-    }
       return $queryBranch;
-  }
+   }
   
-  function findLevels($DB,$parent){
+  function findLevels($DB,$parent) {
 
-    $queryBranch='';
-    // Recherche les enfants
-    $queryLevels= "SELECT `id`
+      $queryBranch='';
+      // Recherche les enfants
+      $queryLevels= "SELECT `id`
           FROM `glpi_locations`
           WHERE `level`= 1";
-    if ($resultLevels = $DB->query($queryLevels)){
-      while ($dataLevels = $DB->fetch_array($resultLevels)){
-        $Levels=$dataLevels["id"];
-        $queryBranch .= ",$Levels";
+      if ($resultLevels = $DB->query($queryLevels)) {
+         while ($dataLevels = $DB->fetch_array($resultLevels)) {
+            $Levels=$dataLevels["id"];
+            $queryBranch .= ",$Levels";
+         }
       }
-    }
 
       return $queryBranch;
-  }
+   }
 
-	function Query ($ID,$PluginArchiresView,$for){
-    global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
+	function Query ($ID,$PluginArchiresView,$for) {
+      global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
     
-    $this->getFromDB($ID);
+      $this->getFromDB($ID);
     
-    $types = array();
-    $devices = array();
-    $ports = array();
+      $types = array();
+      $devices = array();
+      $ports = array();
     
-    if ($PluginArchiresView->fields["computer"]!=0)
-      $types[]=COMPUTER_TYPE;
-    if ($PluginArchiresView->fields["printer"]!=0)
-      $types[]=PRINTER_TYPE;
-    if ($PluginArchiresView->fields["peripheral"]!=0)
-      $types[]=PERIPHERAL_TYPE;
-    if ($PluginArchiresView->fields["phone"]!=0)
-      $types[]=PHONE_TYPE;
-    if ($PluginArchiresView->fields["networking"]!=0)
-      $types[]=NETWORKING_TYPE;
+      if ($PluginArchiresView->fields["computer"]!=0)
+         $types[]=COMPUTER_TYPE;
+      if ($PluginArchiresView->fields["printer"]!=0)
+         $types[]=PRINTER_TYPE;
+      if ($PluginArchiresView->fields["peripheral"]!=0)
+         $types[]=PERIPHERAL_TYPE;
+      if ($PluginArchiresView->fields["phone"]!=0)
+         $types[]=PHONE_TYPE;
+      if ($PluginArchiresView->fields["networking"]!=0)
+         $types[]=NETWORKING_TYPE;
     
-     foreach ($types as $key => $val){
+      foreach ($types as $key => $val) {
       
-      if ($val == COMPUTER_TYPE) {
-        $typefield = "computerstypes_id";
-      }elseif ($val == NETWORKING_TYPE) {
-        $typefield = "networkequipmentstypes_id";
-      }elseif ($val == PERIPHERAL_TYPE) {
-        $typefield = "peripheralstypes_id";
-      }elseif ($val == PRINTER_TYPE) {
-        $typefield = "printerstypes_id";
-      }elseif ($val == PHONE_TYPE) {
-        $typefield = "phonestypes_id";
-      }
+         if ($val == COMPUTER_TYPE) {
+            $typefield = "computerstypes_id";
+         } else if ($val == NETWORKING_TYPE) {
+            $typefield = "networkequipmentstypes_id";
+         } else if ($val == PERIPHERAL_TYPE) {
+            $typefield = "peripheralstypes_id";
+         } else if ($val == PRINTER_TYPE) {
+            $typefield = "printerstypes_id";
+         } else if ($val == PHONE_TYPE) {
+            $typefield = "phonestypes_id";
+         }
       
-      $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`networkinterfaces_id`,`np`.`ip`,`np`.`netmask`, `np`.`name` AS namep";
+         $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`networkinterfaces_id`,`np`.`ip`,`np`.`netmask`, `np`.`name` AS namep";
       
-      $query = "SELECT `$LINK_ID_TABLE[$val]`.`id` AS idc, $fieldsnp , `$LINK_ID_TABLE[$val]`.`name`, `$LINK_ID_TABLE[$val]`.`$typefield` AS `type`, `$LINK_ID_TABLE[$val]`.`users_id`, `$LINK_ID_TABLE[$val]`.`groups_id`, `$LINK_ID_TABLE[$val]`.`contact`, `$LINK_ID_TABLE[$val]`.`states_id` ";
+         $query = "SELECT `$LINK_ID_TABLE[$val]`.`id` AS idc, $fieldsnp , `$LINK_ID_TABLE[$val]`.`name`, `$LINK_ID_TABLE[$val]`.`$typefield` AS `type`, `$LINK_ID_TABLE[$val]`.`users_id`, `$LINK_ID_TABLE[$val]`.`groups_id`, `$LINK_ID_TABLE[$val]`.`contact`, `$LINK_ID_TABLE[$val]`.`states_id` ";
       
-      $query .= ", `$LINK_ID_TABLE[$val]`.`entities_id`,`$LINK_ID_TABLE[$val]`.`locations_id` ";
+         $query .= ", `$LINK_ID_TABLE[$val]`.`entities_id`,`$LINK_ID_TABLE[$val]`.`locations_id` ";
 
-      $query .= " FROM `glpi_networkports` np, `$LINK_ID_TABLE[$val]`";
-      if ($this->fields["vlans_id"] > "0")
-        $query .= ", `glpi_networkports_vlans` nv";
+         $query .= " FROM `glpi_networkports` np, `$LINK_ID_TABLE[$val]`";
+         if ($this->fields["vlans_id"] > "0")
+         $query .= ", `glpi_networkports_vlans` nv";
 
-      $query .= ", `glpi_locations` lc";
-      $query .= " WHERE `np`.`itemtype` = " . $val . " 
+         $query .= ", `glpi_locations` lc";
+         $query .= " WHERE `np`.`itemtype` = " . $val . " 
             AND `np`.`items_id` = `$LINK_ID_TABLE[$val]`.`id` ";
-      $query .= " AND `$LINK_ID_TABLE[$val]`.`is_deleted` = '0' 
+         $query .= " AND `$LINK_ID_TABLE[$val]`.`is_deleted` = '0' 
             AND `$LINK_ID_TABLE[$val]`.`is_template` = '0'";
-      $LINK= " AND " ;
-      $query.=getEntitiesRestrictRequest($LINK,$LINK_ID_TABLE[$val]);
+         $LINK= " AND " ;
+         $query.=getEntitiesRestrictRequest($LINK,$LINK_ID_TABLE[$val]);
       
-      if ($this->fields["vlans_id"] > "0")
-        $query .= " AND `nv`.`networkports_id` = `np`.`id` 
+         if ($this->fields["vlans_id"] > "0")
+         $query .= " AND `nv`.`networkports_id` = `np`.`id` 
             AND `vlans_id` = '".$this->fields["vlans_id"]."'";
             
-      if ($this->fields["networks_id"] > "0" && $val != PHONE_TYPE && $val != PERIPHERAL_TYPE)
-        $query .= " AND `$LINK_ID_TABLE[$val]`.`networks_id` = '".$this->fields["networks_id"]."'";
-      if ($this->fields["states_id"] > "0")
-        $query .= " AND `$LINK_ID_TABLE[$val]`.`states_id` = '".$this->fields["states_id"]."'";
-      if ($this->fields["groups_id"] > "0")
-        $query .= " AND `$LINK_ID_TABLE[$val]`.`groups_id` = '".$this->fields["groups_id"]."'";
-      if ($this->fields["locations_id"]!="-1"){
-        $query .= " AND `lc`.`id` = `$LINK_ID_TABLE[$val]`.`locations_id` 
+         if ($this->fields["networks_id"] > "0" && $val != PHONE_TYPE && $val != PERIPHERAL_TYPE)
+            $query .= " AND `$LINK_ID_TABLE[$val]`.`networks_id` = '".$this->fields["networks_id"]."'";
+         if ($this->fields["states_id"] > "0")
+            $query .= " AND `$LINK_ID_TABLE[$val]`.`states_id` = '".$this->fields["states_id"]."'";
+         if ($this->fields["groups_id"] > "0")
+            $query .= " AND `$LINK_ID_TABLE[$val]`.`groups_id` = '".$this->fields["groups_id"]."'";
+         if ($this->fields["locations_id"]!="-1"){
+            $query .= " AND `lc`.`id` = `$LINK_ID_TABLE[$val]`.`locations_id` 
               AND `lc`.`id` IN ('".$this->fields["locations_id"]."'";
-        if ($this->fields["child"]!='0')
-          $query .= $this->findChilds($DB, $this->fields["locations_id"]);
-        $query .= ") ";
-       }else{
-        $query .= " AND `lc`.`id` = `$LINK_ID_TABLE[$val]`.`locations_id` 
+            if ($this->fields["child"]!='0')
+               $query .= $this->findChilds($DB, $this->fields["locations_id"]);
+         $query .= ") ";
+         } else {
+            $query .= " AND `lc`.`id` = `$LINK_ID_TABLE[$val]`.`locations_id` 
             AND `lc`.`id` IN (0";
-        $query .= $this->findLevels($DB, $this->fields["locations_id"]);
-        if ($this->fields["child"]!='0')
-          $query .= $this->findChilds($DB, $this->fields["locations_id"]);
-        $query .= ") ";
-      }
-      //types
-      $PluginArchiresQueryType=new PluginArchiresQueryType();
-      $query .= $PluginArchiresQueryType->queryTypeCheck($this->type,$ID,$val);
+            $query .= $this->findLevels($DB, $this->fields["locations_id"]);
+            if ($this->fields["child"]!='0')
+               $query .= $this->findChilds($DB, $this->fields["locations_id"]);
+            $query .= ") ";
+         }
+         //types
+         $PluginArchiresQueryType=new PluginArchiresQueryType();
+         $query .= $PluginArchiresQueryType->queryTypeCheck($this->type,$ID,$val);
         
-      $query .= "ORDER BY `np`.`ip` ASC ";	
+         $query .= "ORDER BY `np`.`ip` ASC ";	
     
-      if ($result = $DB->query($query)) {
-        while ($data = $DB->fetch_array($result)) {
+         if ($result = $DB->query($query)) {
+            while ($data = $DB->fetch_array($result)) {
 
-          if ($PluginArchiresView->fields["display_state"]!=0)
-            $devices[$val][$data["items_id"]]["states_id"] = $data["states_id"];
+               if ($PluginArchiresView->fields["display_state"]!=0)
+                  $devices[$val][$data["items_id"]]["states_id"] = $data["states_id"];
 
-          $devices[$val][$data["items_id"]]["type"] = $data["type"];
-          $devices[$val][$data["items_id"]]["name"] = $data["name"];
-          $devices[$val][$data["items_id"]]["users_id"] = $data["users_id"];
-          $devices[$val][$data["items_id"]]["groups_id"] = $data["groups_id"];
-          $devices[$val][$data["items_id"]]["contact"] = $data["contact"];
-          $devices[$val][$data["items_id"]]["entity"] = $data["entities_id"];
-          $devices[$val][$data["items_id"]]["locations_id"] = $data["locations_id"];
+                  $devices[$val][$data["items_id"]]["type"] = $data["type"];
+                  $devices[$val][$data["items_id"]]["name"] = $data["name"];
+                  $devices[$val][$data["items_id"]]["users_id"] = $data["users_id"];
+                  $devices[$val][$data["items_id"]]["groups_id"] = $data["groups_id"];
+                  $devices[$val][$data["items_id"]]["contact"] = $data["contact"];
+                  $devices[$val][$data["items_id"]]["entity"] = $data["entities_id"];
+                  $devices[$val][$data["items_id"]]["locations_id"] = $data["locations_id"];
           
-          if ($data["ip"]){
-            if (!empty($devices[$val][$data["items_id"]]["ip"])){
-              $devices[$val][$data["items_id"]]["ip"]  .= " - ";
-              $devices[$val][$data["items_id"]]["ip"]  .= $data["ip"];
-            }else{
-              $devices[$val][$data["items_id"]]["ip"]  = $data["ip"];
+               if ($data["ip"]) {
+                  if (!empty($devices[$val][$data["items_id"]]["ip"])) {
+                     $devices[$val][$data["items_id"]]["ip"]  .= " - ";
+                     $devices[$val][$data["items_id"]]["ip"]  .= $data["ip"];
+                  } else {
+                     $devices[$val][$data["items_id"]]["ip"]  = $data["ip"];
+                  }
+               }
+          
+               $ports[$data["id"]]["items_id"] = $data["items_id"];
+               $ports[$data["id"]]["logical_number"] = $data["logical_number"];
+               $ports[$data["id"]]["networkinterfaces_id"] = $data["networkinterfaces_id"];
+               $ports[$data["id"]]["ip"] = $data["ip"];
+               $ports[$data["id"]]["netmask"] = $data["netmask"];
+               $ports[$data["id"]]["namep"] = $data["namep"];
+               $ports[$data["id"]]["idp"] = $data["id"];
+               $ports[$data["id"]]["itemtype"] = $val;
+          
             }
-          }
-          
-          $ports[$data["id"]]["items_id"] = $data["items_id"];
-          $ports[$data["id"]]["logical_number"] = $data["logical_number"];
-          $ports[$data["id"]]["networkinterfaces_id"] = $data["networkinterfaces_id"];
-          $ports[$data["id"]]["ip"] = $data["ip"];
-          $ports[$data["id"]]["netmask"] = $data["netmask"];
-          $ports[$data["id"]]["namep"] = $data["namep"];
-          $ports[$data["id"]]["idp"] = $data["id"];
-          $ports[$data["id"]]["itemtype"] = $val;
-          
-        }
-      } 
-    }
-    if ($for)
-      return $devices;
-    else
-      return $ports;
-  }
-
+         } 
+      }
+      if ($for)
+         return $devices;
+      else
+         return $ports;
+   }
 }
 
 ?>

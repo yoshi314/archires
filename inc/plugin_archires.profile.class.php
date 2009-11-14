@@ -35,7 +35,7 @@
 
 class PluginArchiresProfile extends CommonDBTM {
 
-	function __construct () {
+	function __construct() {
 		$this->table="glpi_plugin_archires_profiles";
 		$this->type=-1;
 	}
@@ -46,56 +46,56 @@ class PluginArchiresProfile extends CommonDBTM {
 		$this->delete(array('id'=>$ID));
 	}
 	
-	function createFirstAccess($ID){
+	function createFirstAccess($ID) {
 
-    if (!$this->GetfromDB($ID)){
+      if (!$this->GetfromDB($ID)){
       
-      $Profile=new Profile();
-      $Profile->GetfromDB($ID);
-      $name=$Profile->fields["name"];
+         $Profile=new Profile();
+         $Profile->GetfromDB($ID);
+         $name=$Profile->fields["name"];
 
-      $this->add(array(
+         $this->add(array(
         'id' => $ID,
         'name' => $name,
         'archires' => 'w'));
-    } 
-  }
+      } 
+   }
 
-  function createAccess($ID){
+   function createAccess($ID) {
 
-    $Profile=new Profile();
-    $Profile->GetfromDB($ID);
-    $name=$Profile->fields["name"];
+      $Profile=new Profile();
+      $Profile->GetfromDB($ID);
+      $name=$Profile->fields["name"];
     
-    $this->add(array(
+      $this->add(array(
       'id' => $ID,
       'name' => $name));
-  }
+   }
   
-  function changeProfile(){
+   function changeProfile() {
    
-    if($this->getFromDB($_SESSION['glpiactiveprofile']['id']))
-      $_SESSION["glpi_plugin_archires_profile"]=$this->fields;
-    else
-      unset($_SESSION["glpi_plugin_archires_profile"]);
-  }
+      if($this->getFromDB($_SESSION['glpiactiveprofile']['id']))
+         $_SESSION["glpi_plugin_archires_profile"]=$this->fields;
+      else
+         unset($_SESSION["glpi_plugin_archires_profile"]);
+   }
   
-  function checkRight($module, $right) {
-    global $CFG_GLPI;
+   function checkRight($module, $right) {
+      global $CFG_GLPI;
 
-    if (!plugin_archires_haveRight($module, $right)) {
-      // Gestion timeout session
-      if (!isset ($_SESSION["glpiID"])) {
-        glpi_header($CFG_GLPI["root_doc"] . "/index.php");
-        exit ();
+      if (!plugin_archires_haveRight($module, $right)) {
+         // Gestion timeout session
+         if (!isset ($_SESSION["glpiID"])) {
+            glpi_header($CFG_GLPI["root_doc"] . "/index.php");
+            exit ();
+         }
+
+         displayRightError();
       }
-
-      displayRightError();
-    }
-  }
+   }
 
 	//profiles modification
-	function showForm($target,$ID){
+	function showForm($target,$ID) {
 		global $LANG;
 
 		if (!haveRight("profile","r")) return false;
@@ -114,7 +114,7 @@ class PluginArchiresProfile extends CommonDBTM {
 		echo "</td>";
 		echo "</tr>";
 
-		if ($canedit){
+		if ($canedit) {
 			echo "<tr class='tab_bg_1'>";
 			echo "<td class='center' colspan='2'>";
 			echo "<input type='hidden' name='id' value=$ID>";

@@ -46,35 +46,36 @@ if(!isset($_POST["id"])) {
 	exit();
 }
 
-	$PluginArchiresProfile=new PluginArchiresProfile();
-  $PluginArchiresProfile->checkRight("archires","r");
-  
-  $PluginArchiresQueryType=new PluginArchiresQueryType();
-  $PluginArchiresView=new PluginArchiresView();
-  $PluginArchiresPrototype=new PluginArchiresPrototype();
+$PluginArchiresProfile=new PluginArchiresProfile();
+$PluginArchiresProfile->checkRight("archires","r");
 
-	if (empty($_POST["id"])){
-		switch($_REQUEST['glpi_tab']) {
-			default :
-				break;
-		}
-	}else{
-		switch($_REQUEST['glpi_tab']) {
-			case -1 :
-				$PluginArchiresQueryType->showTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
-				break;
-			case 2 :
-				$PluginArchiresView->showView(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
-				$PluginArchiresPrototype->test(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
-				break;
-			case 10 :
-				showNotesForm($_POST['target'],PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
-				break;
-			default :
-				$PluginArchiresQueryType->showTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
-				break;
-		}
-		ajaxFooter();
-	}
+$PluginArchiresQueryType=new PluginArchiresQueryType();
+$PluginArchiresView=new PluginArchiresView();
+$PluginArchiresPrototype=new PluginArchiresPrototype();
+
+if (empty($_POST["id"])) {
+   switch($_REQUEST['glpi_tab']) {
+      default :
+         break;
+   }
+} else {
+   switch($_REQUEST['glpi_tab']) {
+      case -1 :
+         $PluginArchiresQueryType->showTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+         break;
+      case 2 :
+         $PluginArchiresView->showView(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+         $PluginArchiresPrototype->test(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+         break;
+      case 10 :
+         showNotesForm($_POST['target'],PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+         break;
+      default :
+         $PluginArchiresQueryType->showTypes(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+         break;
+   }
+}
+
+ajaxFooter();
 
 ?>

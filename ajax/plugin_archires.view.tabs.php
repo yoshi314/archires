@@ -44,20 +44,21 @@ if(!isset($_POST["id"])) {
 	exit();
 }
 
-	$PluginArchiresProfile=new PluginArchiresProfile();
-  $PluginArchiresProfile->checkRight("archires","r");
+$PluginArchiresProfile=new PluginArchiresProfile();
+$PluginArchiresProfile->checkRight("archires","r");
 
-	if (empty($_POST["id"])){
-		switch($_REQUEST['glpi_tab']) {
-			default :
-				break;
-		}
-	}else{
-		switch($_REQUEST['glpi_tab']) {
-			default :
-				break;
-		}
-		ajaxFooter();
-	}
+if (empty($_POST["id"])) {
+   switch($_REQUEST['glpi_tab']) {
+      default :
+         break;
+   }
+} else {
+   switch($_REQUEST['glpi_tab']) {
+      default :
+         break;
+   }
+}
+
+ajaxFooter();
 
 ?>

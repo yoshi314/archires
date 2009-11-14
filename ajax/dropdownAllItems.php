@@ -41,7 +41,7 @@ header_nocache();
 
 // Make a select box
 
-if (isset($_POST["idtable"]) && $_POST["idtable"]!=0){
+if (isset($_POST["idtable"]) && $_POST["idtable"]!=0) {
 	//$table=$LINK_ID_TABLE[$_POST["idtable"]];
 	$test= explode(";", $_POST['idtable']);
 	$table= $test[1];
@@ -52,16 +52,16 @@ if (isset($_POST["idtable"]) && $_POST["idtable"]!=0){
 	$rand=mt_rand();
 
 	$use_ajax=false;
-	if ($CFG_GLPI["use_ajax"]&&countElementsInTable($table)>$CFG_GLPI["ajax_limit_count"]){
+	if ($CFG_GLPI["use_ajax"]&&countElementsInTable($table)>$CFG_GLPI["ajax_limit_count"]) {
 		$use_ajax=true;
 	}
 
-        $params=array('searchText'=>'__VALUE__',
-						'itemtype'=>$itemtype,
-                        'table'=>$table,
-                        'rand'=>$rand,
-                        'myname'=>$_POST["myname"],
-                        );
+     $params=array('searchText'=>'__VALUE__',
+               'itemtype'=>$itemtype,
+                     'table'=>$table,
+                     'rand'=>$rand,
+                     'myname'=>$_POST["myname"],
+                     );
 
 	if(isset($_POST['value'])) {
 		$params['value']=$_POST['value'];
@@ -73,7 +73,7 @@ if (isset($_POST["idtable"]) && $_POST["idtable"]!=0){
 	$default="<select name='".$_POST["myname"]."'><option value='0'>------</option></select>";
 	ajaxDropdown($use_ajax,"/plugins/archires/ajax/$link",$params,$default,$rand);
 
-	if(isset($_POST['value'])&&$_POST['value']>0){
+	if(isset($_POST['value'])&&$_POST['value']>0) {
 		$params['searchText']=$CFG_GLPI["ajax_wildcard"];
 		echo "<script type='text/javascript' >\n";
 		echo "document.getElementById('search_$rand').value='".$CFG_GLPI["ajax_wildcard"]."';";

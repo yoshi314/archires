@@ -48,7 +48,7 @@ function plugin_archires_installing($version) {
 	
 	$rep_files_archires = GLPI_PLUGIN_DOC_DIR."/archires";
 	if (!is_dir($rep_files_archires))
-	mkdir($rep_files_archires);	
+      mkdir($rep_files_archires);	
 	
 }
 
@@ -58,7 +58,7 @@ function plugin_archires_updatev13() {
 
 	$query = "ALTER TABLE `glpi_plugin_archires_display` ADD `display_ports` ENUM( '1', '0' ) NOT NULL DEFAULT '0';";		
 	$DB->query($query) or die($DB->error());
-				
+
 }
 
 function plugin_archires_update($version) {
@@ -76,8 +76,7 @@ function plugin_archires_update($version) {
 	
 	$rep_files_archires = GLPI_PLUGIN_DOC_DIR."/archires";
 	if (!is_dir($rep_files_archires))
-	mkdir($rep_files_archires);
-	
+      mkdir($rep_files_archires);
 }
 
 ?>

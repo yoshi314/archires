@@ -43,9 +43,9 @@ if ($plugin->isActivated("network"))
 else
 	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
-if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
+if(plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 
-	if(isset($_GET['new'])){
+	if(isset($_GET['new'])) {
 			
 		echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
 		echo "<tr><th>".$LANG['plugin_archires']['menu'][1]."</th></tr>";
@@ -64,7 +64,7 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 			echo "<a href='front/plugin_archires.networkequipment.form.php?new=1'>".$LANG['plugin_archires']['title'][6]."</a>";
 			echo "</td></tr>";
 
-			if ($plugin->isActivated("appliances")){
+			if ($plugin->isActivated("appliances")) {
 				echo "<tr class='tab_bg_1'><td>";
 				echo "<a href='front/plugin_archires.appliance.form.php?new=1'>".$LANG['plugin_archires']['title'][9]."</a>";
 				echo "</td></tr>";
@@ -72,9 +72,9 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 		}
 		echo "</table></div>";
 
-	}else{
+	} else {
 		
-		if ($plugin->isActivated("network")){
+		if ($plugin->isActivated("network")) {
 			$PluginArchires=new PluginArchires();
 			$PluginArchires->title();
 		}
@@ -95,7 +95,7 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 			echo "<a href='front/plugin_archires.networkequipment.index.php'>".$LANG['plugin_archires']['title'][5]."</a>";
 			echo "</td></tr>";
 
-			if ($plugin->isActivated("appliances")){
+			if ($plugin->isActivated("appliances")) {
 				echo "<tr class='tab_bg_1'><td>";
 				echo "<a href='front/plugin_archires.appliance.index.php'>".$LANG['plugin_archires']['title'][8]."</a>";
 				echo "</td></tr>";
@@ -108,7 +108,7 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 		echo "</table></div>";
 		
 	}
-}else{
+} else {
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
 	echo "<b>".$LANG['login'][5]."</b></div>";
 }

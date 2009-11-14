@@ -48,18 +48,18 @@ else
 
 if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 	
-	if ($plugin->isActivated("network")){
+	if ($plugin->isActivated("network")) {
 		$PluginArchires=new PluginArchires();
 		$PluginArchires->title();
 	}
 		
 	manageGetValuesInSearch(PLUGIN_ARCHIRES_APPLIANCES_QUERY);
-			
+
 	searchForm(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_GET);
 
 	showList(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_GET);
 	
-}else{
+} else {
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
 	echo "<b>".$LANG['login'][5]."</b></div>";
 }

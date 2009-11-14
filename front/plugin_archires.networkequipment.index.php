@@ -46,9 +46,9 @@ if ($plugin->isActivated("network"))
 else
 	commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","networkequipments");
 
-if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
+if(plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 	
-	if ($plugin->isActivated("network")){
+	if ($plugin->isActivated("network")) {
 		$PluginArchires=new PluginArchires();
 		$PluginArchires->title();
 	}
@@ -59,7 +59,7 @@ if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 
 	showList(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_GET);
 	
-}else{
+} else {
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
 	echo "<b>".$LANG['login'][5]."</b></div>";
 }

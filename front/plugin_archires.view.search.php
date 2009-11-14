@@ -55,7 +55,7 @@ $PluginArchiresProfile->checkRight("archires","r");
 
 $PluginArchiresView=new PluginArchiresView();
 
-if ($plugin->isActivated("network")){
+if ($plugin->isActivated("network")) {
 	$PluginArchiresView->title();
 }
 

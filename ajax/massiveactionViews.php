@@ -46,14 +46,14 @@ $PluginArchiresProfile->checkRight("archires","w");
 
 commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
 
-if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($_POST["item"])){
+if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($_POST["item"])) {
 	
 	$PluginArchiresView=new PluginArchiresView();
 	
-	switch($_POST["action"]){
+	switch($_POST["action"]) {
 		case "delete":
 			$PluginArchiresView->getFromDB($_POST["id"],-1);
-			foreach ($_POST["item"] as $key => $val){
+			foreach ($_POST["item"] as $key => $val) {
 				if ($val==1) {
 					$PluginArchiresView->delete(array("id"=>$key),$force=0);
 				}
@@ -61,7 +61,7 @@ if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($
 		break;
 		case "purge":
 			$PluginArchiresView->getFromDB($_POST["id"],-1);
-			foreach ($_POST["item"] as $key => $val){
+			foreach ($_POST["item"] as $key => $val) {
 				if ($val==1) {
 					$PluginArchiresView->delete(array("id"=>$key),1);
 				}
@@ -69,26 +69,26 @@ if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($
 		break;
 		case "restore":
 			$PluginArchiresView->getFromDB($_POST["id"],-1);
-			foreach ($_POST["item"] as $key => $val){
+			foreach ($_POST["item"] as $key => $val) {
 				if ($val==1) {
 					$PluginArchiresView->restore(array("id"=>$key));
 				}
 			}
 		break;
 		case "duplicate":
-		foreach ($_POST["item"] as $key => $val){
-				if ($val==1){
-					if ($PluginArchiresView->getFromDB($key)){
-						unset($PluginArchiresView->fields["id"]);
-						$PluginArchiresView->fields["entities_id"]=$_POST["entities_id"];
-						$newID=$PluginArchiresView->add($PluginArchiresView->fields);
-					}
+		foreach ($_POST["item"] as $key => $val) {
+         if ($val==1) {
+            if ($PluginArchiresView->getFromDB($key)) {
+               unset($PluginArchiresView->fields["id"]);
+               $PluginArchiresView->fields["entities_id"]=$_POST["entities_id"];
+               $newID=$PluginArchiresView->add($PluginArchiresView->fields);
+            }
 			}
 		}
 		break;
 		case "transfert":
-			foreach ($_POST["item"] as $key => $val){
-				if ($val==1){				
+			foreach ($_POST["item"] as $key => $val) {
+				if ($val==1) {				
 					$query="UPDATE `glpi_plugin_archires_views` 
 							SET `entities_id` = '".$_POST['entities_id']."' 
 							WHERE `id` ='$key'";

@@ -49,73 +49,73 @@ else $start=0;
 $PluginArchiresQueryNetworkEquipment=new PluginArchiresQueryNetworkEquipment();
 $PluginArchiresQueryType=new PluginArchiresQueryType();
 
-if (isset($_POST["add"]))
-{
+if (isset($_POST["add"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$newID=$PluginArchiresQueryNetworkEquipment->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
-} 
-else if (isset($_POST["delete"]))
-{
+	
+} else if (isset($_POST["delete"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryNetworkEquipment->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
-}
-else if (isset($_POST["restore"]))
-{
+	
+} else if (isset($_POST["restore"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryNetworkEquipment->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
-}
-else if (isset($_POST["purge"]))
-{
+	
+} else if (isset($_POST["purge"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryNetworkEquipment->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
-}
-else if (isset($_POST["update"]))
-{
+	
+} else if (isset($_POST["update"])) {
+
 	if(plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryNetworkEquipment->update($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
-}
-else if (isset($_POST["duplicate"])){
+	
+} else if (isset($_POST["duplicate"])) {
 
-	if(plugin_archires_haveRight("archires","w"))
+	if(plugin_archires_haveRight("archires","w")) {
 		unset($_POST['id']);
 		$newID=$PluginArchiresQueryNetworkEquipment->add($_POST);
+	}
 	glpi_header($_SERVER['HTTP_REFERER']);
-}
-//type
-else if (isset($_POST["addtype"])){
+	
+} else if (isset($_POST["addtype"])) {
 		
 	$test= explode(";", $_POST['type']);
 	
-	if (isset($test[0]) && isset($test[1])){
+	if (isset($test[0]) && isset($test[1])) {
 		$_POST['type']= $test[1];
 		$_POST['itemtype']= $test[0];
 	
-		if(plugin_archires_haveRight("archires","w")){
-				$PluginArchiresQueryType->addType(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST['type'],$_POST['itemtype'],$_POST['query']);
+		if(plugin_archires_haveRight("archires","w")) {
+			$PluginArchiresQueryType->addType(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST['type'],$_POST['itemtype'],$_POST['query']);
 		}
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
-}
-else if (isset($_POST["deletetype"])){
+	
+} else if (isset($_POST["deletetype"])) {
 
-	if(plugin_archires_haveRight("archires","w"))
-	$PluginArchiresQueryType->getFromDB($_POST["id"],-1);
-	
-	foreach ($_POST["item"] as $key => $val){
-		if ($val==1) {
-			$PluginArchiresQueryType->deleteType($key);
-		}
-	}
+	if(plugin_archires_haveRight("archires","w")) {
+      $PluginArchiresQueryType->getFromDB($_POST["id"],-1);
+      
+      foreach ($_POST["item"] as $key => $val){
+         if ($val==1) {
+            $PluginArchiresQueryType->deleteType($key);
+         }
+      }
+   }
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
-}
-else
-{
+} else {
+
 	$PluginArchiresProfile=new PluginArchiresProfile();
 	$PluginArchiresProfile->checkRight("archires","r");
 	

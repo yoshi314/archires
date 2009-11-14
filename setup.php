@@ -98,19 +98,19 @@ function plugin_init_archires() {
 		'typename'   => $LANG['plugin_archires']['title'][3]
 		));
 
-	if (isset($_SESSION["glpiID"])){
+	if (isset($_SESSION["glpiID"])) {
 
-		if ((isset($_SESSION["glpi_plugin_network_installed"]) && $_SESSION["glpi_plugin_network_installed"]==1)){
+		if ((isset($_SESSION["glpi_plugin_network_installed"]) && $_SESSION["glpi_plugin_network_installed"]==1)) {
 
 			$_SESSION["glpi_plugin_network_archires"]=1;
 
-			if (plugin_archires_haveRight("archires","r")){
+			if (plugin_archires_haveRight("archires","r")) {
 				$PLUGIN_HOOKS['menu_entry']['archires'] = false;
 				$PLUGIN_HOOKS['use_massive_action']['archires']=1;
 			}
-		}else{
+		} else {
 
-			if (plugin_archires_haveRight("archires","r")){
+			if (plugin_archires_haveRight("archires","r")) {
 				$PLUGIN_HOOKS['menu_entry']['archires'] = true;
 				
 				//summary
@@ -129,11 +129,9 @@ function plugin_init_archires() {
 				$PLUGIN_HOOKS['submenu_entry']['archires']['search']['appliances'] = 'front/plugin_archires.appliance.index.php';
 				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_showall.png' title='".$LANG['plugin_archires']["title"][3]."' alt='".$LANG['plugin_archires']["title"][3]."'>"]['appliances'] = 'front/plugin_archires.view.index.php';
 
-				
-
 			}
 
-			if (plugin_archires_haveRight("archires","w")){
+			if (plugin_archires_haveRight("archires","w")) {
 				
 				//summary
 				$PLUGIN_HOOKS['submenu_entry']['archires']["<img  src='".$CFG_GLPI["root_doc"]."/pics/menu_addtemplate.png' title='".$LANG['plugin_archires']["title"][1]."' alt='".$LANG['plugin_archires']["title"][1]."'>"]['summary'] = 'front/plugin_archires.view.form.php?new=1';
@@ -157,22 +155,21 @@ function plugin_init_archires() {
 			}
 		}
 		// Headings
-		if (plugin_archires_haveRight("archires","r")){
+		if (plugin_archires_haveRight("archires","r")) {
 			$PLUGIN_HOOKS['headings']['archires'] = 'plugin_get_headings_archires';
 			$PLUGIN_HOOKS['headings_action']['archires'] = 'plugin_headings_actions_archires';
 		}
 		// Config page
 			if (plugin_archires_haveRight("archires","w") || haveRight("config","w"))
-        $PLUGIN_HOOKS['config_page']['archires'] = 'front/plugin_archires.config.php';
+            $PLUGIN_HOOKS['config_page']['archires'] = 'front/plugin_archires.config.php';
 
 		$PLUGIN_HOOKS['pre_item_delete']['archires'] = 'plugin_pre_item_delete_archires';
 
 	}
-
 }
 
 // Get the name and the version of the plugin - Needed
-function plugin_version_archires(){
+function plugin_version_archires() {
 global $LANG;
 
 	return array (
@@ -185,8 +182,8 @@ global $LANG;
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
-function plugin_archires_check_prerequisites(){
-	if (GLPI_VERSION>=0.80){
+function plugin_archires_check_prerequisites() {
+	if (GLPI_VERSION>=0.80) {
 		return true;
 	} else {
 		echo "GLPI version not compatible need 0.80";
@@ -194,14 +191,14 @@ function plugin_archires_check_prerequisites(){
 }
 
 // Uninstall process for plugin : need to return true if succeeded : may display messages or add to message after redirect
-function plugin_archires_check_config(){
+function plugin_archires_check_config() {
 	return true;
 }
 
 //////////////////////////////// Define rights for the plugin types
 
-function plugin_archires_haveTypeRight($type,$right){
-	switch ($type){
+function plugin_archires_haveTypeRight($type,$right) {
+	switch ($type) {
 		case PLUGIN_ARCHIRES_LOCATIONS_QUERY :
 			return plugin_archires_haveRight("archires",$right);
 			break;
@@ -217,13 +214,12 @@ function plugin_archires_haveTypeRight($type,$right){
 	}
 }
 
-function plugin_archires_changeProfile()
-{
+function plugin_archires_changeProfile() {
 	$PluginArchiresProfile=new PluginArchiresProfile();
 	$PluginArchiresProfile->changeProfile();
 }
 
-function plugin_archires_haveRight($module,$right){
+function plugin_archires_haveRight($module,$right) {
 	$matches=array(
 			""  => array("","r","w"), // ne doit pas arriver normalement
 			"r" => array("r","w"),

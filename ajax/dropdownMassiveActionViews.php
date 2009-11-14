@@ -41,14 +41,14 @@ header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
 
-if (isset($_POST["action"])||isset($_POST["id"])){
+if (isset($_POST["action"])||isset($_POST["id"])) {
 	echo "<input type='hidden' name='action' value='".$_POST["action"]."'>";
 	echo "<input type='hidden' name='id' value='".$_POST["id"]."'>";
-	switch($_POST["action"]){
+	switch($_POST["action"]) {
 
 		case "delete":
-			case "purge":
-			case "restore":
+		case "purge":
+		case "restore":
 			echo "<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 		break;
 		case "duplicate":
