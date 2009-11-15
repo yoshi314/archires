@@ -48,7 +48,7 @@ class PluginArchiresProfile extends CommonDBTM {
 	
 	function createFirstAccess($ID) {
 
-      if (!$this->GetfromDB($ID)){
+      if (!$this->GetfromDB($ID)) {
       
          $Profile=new Profile();
          $Profile->GetfromDB($ID);
@@ -100,7 +100,7 @@ class PluginArchiresProfile extends CommonDBTM {
 
 		if (!haveRight("profile","r")) return false;
 		$canedit=haveRight("profile","w");
-		if ($ID){
+		if ($ID) {
 			$this->getFromDB($ID);
 		}
 		echo "<form action='".$target."' method='post'>";

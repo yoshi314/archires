@@ -111,7 +111,7 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 		return $tab;
    }
    
-	function defineTabs($ID,$withtemplate){
+	function defineTabs($ID,$withtemplate) {
 		global $LANG;
 		
 		$ong[1]=$LANG['title'][26];
@@ -192,7 +192,7 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
 		return true;
 	}
 	
-	function Query ($ID,$PluginArchiresView,$for){
+	function Query ($ID,$PluginArchiresView,$for) {
       global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
     
       $this->getFromDB($ID);

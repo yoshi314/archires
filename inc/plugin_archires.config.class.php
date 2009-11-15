@@ -103,7 +103,7 @@ class PluginArchiresItemImage extends CommonDBTM {
       }
    }
 
-   function deleteItemImage($ID){
+   function deleteItemImage($ID) {
     
     $this->delete(array('id'=>$ID));
       
@@ -286,7 +286,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
       }
    }
 
-   function deleteNetworkInterfaceColor($ID){
+   function deleteNetworkInterfaceColor($ID) {
     
       $this->delete(array('id'=>$ID));
       
@@ -317,7 +317,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             }
             echo "</tr>";
         
-            while($ligne= mysql_fetch_array($result)){
+            while($ligne= mysql_fetch_array($result)) {
         
                $ID=$ligne["id"];
                $networkinterfaces_id=$ligne["networkinterfaces_id"];
@@ -432,7 +432,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
 		return false;
 	}
 	
-	function addVlanColor($vlan,$color){
+	function addVlanColor($vlan,$color) {
       global $DB;
     
       if ($vlan!='-1') {
@@ -453,7 +453,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
          $result = $DB->query($query);
          $number = $DB->numrows($result);
          $i = 0;
-         while($i < $number){
+         while($i < $number) {
             $vlan_table=$DB->result($result, $i, "id");
             if ($this->GetfromDBbyVlan($vlan_table)) {
 
@@ -471,7 +471,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
       }
    }
 
-   function deleteVlanColor($ID){
+   function deleteVlanColor($ID) {
     
       $this->delete(array('id'=>$ID));
       
@@ -661,7 +661,7 @@ class PluginArchiresStateColor extends CommonDBTM {
          $i = 0;
          while($i < $number) {
             $state_table=$DB->result($result, $i, "id");
-            if ($this->GetfromDBbyState($state_table)){
+            if ($this->GetfromDBbyState($state_table)) {
 
                $this->update(array(
              'id'=>$this->fields['id'],
@@ -677,7 +677,7 @@ class PluginArchiresStateColor extends CommonDBTM {
       }
    }
 
-   function deleteStateColor($ID){
+   function deleteStateColor($ID) {
     
       $this->delete(array('id'=>$ID));
       
@@ -849,7 +849,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 		return false;
 	}
 	
-	function addType($querytype,$type,$itemtype,$queries_id){
+	function addType($querytype,$type,$itemtype,$queries_id) {
       global $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
     
       if ($type!='-1') {

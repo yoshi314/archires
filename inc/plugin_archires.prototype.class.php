@@ -96,7 +96,7 @@ class PluginArchiresPrototype extends CommonDBTM {
                $graph ="</td></tr><tr><td>".$device["ip"]."</td></tr>";
          }
       } else {
-         if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])){
+         if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
             if (!$generation)
                $graph =$PluginArchires->getType($itemtype,$device["type"]);
             else
@@ -171,13 +171,13 @@ class PluginArchiresPrototype extends CommonDBTM {
       echo "<th>".$LANG['plugin_archires']['test'][8]."</th>";
       echo "<th>".$LANG['plugin_archires']['test'][9]."</th></tr>";
 
-      if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
+      if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
          $devices=$PluginArchiresQueryLocation->Query($ID,$PluginArchiresView,true);
          $ports=$PluginArchiresQueryLocation->Query($ID,$PluginArchiresView,false);
-      } else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+      } else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
          $devices=$PluginArchiresQueryNetworkEquipment->Query($ID,$PluginArchiresView,true);
          $ports=$PluginArchiresQueryNetworkEquipment->Query($ID,$PluginArchiresView,false);
-      } else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+      } else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
          $devices=$PluginArchiresQueryAppliance->Query($ID,$PluginArchiresView,true);
          $ports=$PluginArchiresQueryAppliance->Query($ID,$PluginArchiresView,false);
       }
@@ -497,7 +497,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $PluginArchiresQueryNetworkEquipment=new PluginArchiresQueryNetworkEquipment;
       $PluginArchiresItemImage=new PluginArchiresItemImage;
 
-      if ($view!=0){
+      if ($view!=0) {
          $PluginArchiresView->getFromDB($view);
       } else {
          $PluginArchiresView->getFromDB($views_id);

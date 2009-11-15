@@ -106,7 +106,7 @@ if (isset($_POST["add"])) {
 	if (plugin_archires_haveRight("archires","w")) {
       $PluginArchiresQueryType->getFromDB($_POST["id"],-1);
       
-      foreach ($_POST["item"] as $key => $val){
+      foreach ($_POST["item"] as $key => $val) {
          if ($val==1) {
             $PluginArchiresQueryType->deleteType($key);
          }

@@ -140,7 +140,7 @@ function plugin_archires_getDatabaseRelations() {
 
 }
 
-////// SEARCH FUNCTIONS ///////(){
+////// SEARCH FUNCTIONS ///////() {
 
 function plugin_archires_giveItem($type,$ID,$data,$num) {
 	global $CFG_GLPI, $INFOFORM_PAGES, $LANG;
@@ -150,7 +150,7 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 	$table=$searchopt[$ID]["table"];
 	$field=$searchopt[$ID]["field"];
 
-	switch ($type){
+	switch ($type) {
 		case PLUGIN_ARCHIRES_LOCATIONS_QUERY :
 			switch ($table.'.'.$field) {
 				case "glpi_locations.completename" :
@@ -158,33 +158,33 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 						$out=$LANG['plugin_archires'][30];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_networks.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_states.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_vlans.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_plugin_archires_locationsqueries.link" :
 					$out= "<a href=\"../graph.php?id=".$data["id"]."&querytype=".PLUGIN_ARCHIRES_LOCATIONS_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
-				return $out;
-				break;
+               return $out;
+               break;
 			}
 			return "";
 		break;
@@ -196,33 +196,33 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 						$out=$LANG['plugin_archires'][32];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_networks.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_states.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_vlans.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_plugin_archires_networkequipmentsqueries.link" :
 					$out= "<a href=\"../graph.php?id=".$data["id"]."&querytype=".PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
-				return $out;
-				break;
+               return $out;
+               break;
 			}
 		case PLUGIN_ARCHIRES_APPLIANCES_QUERY :
 			switch ($table.'.'.$field) {
@@ -231,33 +231,33 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 						$out=$LANG['plugin_archires'][32];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_networks.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_states.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_vlans.name" :
 					if (empty($data["ITEM_$num"]))
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-				return $out;
-				break;
+               return $out;
+               break;
 				case "glpi_plugin_archires_appliancesqueries.link" :
 					$out= "<a href=\"../graph.php?id=".$data["id"]."&querytype=".PLUGIN_ARCHIRES_APPLIANCES_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
-				return $out;
-				break;
+               return $out;
+               break;
 			}
 			return "";
 		break;
@@ -284,14 +284,14 @@ function plugin_pre_item_delete_archires($input) {
 function plugin_archires_MassiveActions($type) {
 	global $LANG;
 	
-	switch ($type){
+	switch ($type) {
 		case PLUGIN_ARCHIRES_LOCATIONS_QUERY:
 			return array(
 				// Specific one
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
 				"plugin_archires_transfert"=>$LANG['buttons'][48],
 				);
-		break;
+         break;
 
 		case PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY:
 			return array(
@@ -299,7 +299,7 @@ function plugin_archires_MassiveActions($type) {
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
 				"plugin_archires_transfert"=>$LANG['buttons'][48],
 				);
-		break;
+         break;
 
 		case PLUGIN_ARCHIRES_APPLIANCES_QUERY:
 			return array(
@@ -307,7 +307,7 @@ function plugin_archires_MassiveActions($type) {
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
 				"plugin_archires_transfert"=>$LANG['buttons'][48],
 				);
-		break;
+         break;
 	}
 	return array();
 }
@@ -323,39 +323,39 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 				case "plugin_archires_duplicate":
 					dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
-				break;
+               break;
 				case "plugin_archires_transfert":
 					dropdownValue("glpi_entities", "entities_id", '');
-				echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
-				break;
+               echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
+               break;
 			}
-		break;
+         break;
 		case PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY:
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
 					dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
-				break;
+               break;
 				case "plugin_archires_transfert":
 					dropdownValue("glpi_entities", "entities_id", '');
-				echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
-				break;
+               echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
+               break;
 			}
-		break;
+         break;
 		case PLUGIN_ARCHIRES_APPLIANCES_QUERY:
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
 					dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
-				break;
+               break;
 				case "plugin_archires_transfert":
 					dropdownValue("glpi_entities", "entities_id", '');
-				echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
-				break;
+               echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
+               break;
 			}
-		break;
+         break;
 	}
 	return "";
 }
@@ -402,7 +402,7 @@ function plugin_archires_MassiveActionsProcess($data) {
 				}
 			}
 
-		break;
+         break;
 		case "plugin_archires_transfert":
 		if ($data['itemtype']==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
 			foreach ($data["item"] as $key => $val) {
@@ -435,14 +435,13 @@ function plugin_archires_MassiveActionsProcess($data) {
 				}
 			}
 		}
-		break;
+         break;
 	}
 }
 
 
 // Define headings added by the plugin
 function plugin_get_headings_archires($type,$ID,$withtemplate) {
-
 	global $LANG;
 
 	if ($type==PROFILE_TYPE) {
@@ -471,14 +470,14 @@ function plugin_headings_actions_archires($type) {
 function plugin_headings_archires($type,$ID,$withtemplate=0) {
 	global $CFG_GLPI,$LANG;
   
-  $PluginArchiresProfile=new PluginArchiresProfile();
+   $PluginArchiresProfile=new PluginArchiresProfile();
   
 	switch ($type) {
 		case PROFILE_TYPE :
 			if (!$PluginArchiresProfile->GetfromDB($ID))
             $PluginArchiresProfile->createAccess($ID);
 			$PluginArchiresProfile->showForm($CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.profile.php",$ID);
-		break;
+         break;
 	}
 }
 

@@ -120,7 +120,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
 		global $LANG;
 		
 		$ong[1]=$LANG['title'][26];
-		if ($ID > 0){
+		if ($ID > 0) {
 			$ong[2]=$LANG['plugin_archires']['test'][0];
 			if (haveRight("notes","r"))	
 				$ong[10]=$LANG['title'][37];
@@ -234,7 +234,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
             $query.=" WHERE `entities_id` = '".$ligne0["entities_id"]."' ";
             $query.=" ORDER BY `completename` ASC";
 
-            if ($result = $DB->query($query)){
+            if ($result = $DB->query($query)) {
 
                while($ligne= mysql_fetch_array($result)) {
 
@@ -249,7 +249,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
       echo "</select>";
   }
   
-  function findChilds($DB, $parent){
+  function findChilds($DB, $parent) {
 
       $queryBranch='';
       // Recherche les enfants
@@ -360,7 +360,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
             $query .= " AND `$LINK_ID_TABLE[$val]`.`states_id` = '".$this->fields["states_id"]."'";
          if ($this->fields["groups_id"] > "0")
             $query .= " AND `$LINK_ID_TABLE[$val]`.`groups_id` = '".$this->fields["groups_id"]."'";
-         if ($this->fields["locations_id"]!="-1"){
+         if ($this->fields["locations_id"]!="-1") {
             $query .= " AND `lc`.`id` = `$LINK_ID_TABLE[$val]`.`locations_id` 
               AND `lc`.`id` IN ('".$this->fields["locations_id"]."'";
             if ($this->fields["child"]!='0')

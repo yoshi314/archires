@@ -45,7 +45,7 @@ if (strpos($_SERVER['PHP_SELF'],"dropdownValue.php")) {
 
 if (!defined('GLPI_ROOT')) {
 	die("Can not acces directly to this file");
-	}
+}
 
 include_once (GLPI_ROOT."/plugins/archires/locales/".$_SESSION["glpilanguage"].".php");
 
@@ -144,7 +144,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])) {
 
 			$class=" class='tree' ";
 			$raquo="&raquo;";
-			if ($level==1){
+			if ($level==1) {
 				$class=" class='treeroot' ";
 				$raquo="";
 			}
@@ -164,7 +164,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])) {
 	$where .=" id <> '".$_POST['value']."' ";
 
 	if (in_array($_POST['table'],$CFG_GLPI["specif_entities_tables"])) {
-		if (isset($_POST["entity_restrict"])&&$_POST["entity_restrict"]>=0){
+		if (isset($_POST["entity_restrict"])&&$_POST["entity_restrict"]>=0) {
 			$where.= " AND ".$_POST['table'].".entities_id='".$_POST["entity_restrict"]."'";
 		} else {
 			$where.=getEntitiesRestrictRequest("AND",$_POST['table']);

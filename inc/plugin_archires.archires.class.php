@@ -107,7 +107,7 @@ class PluginArchires extends CommonDBTM {
    function getItemType($devicetype) {
       global $LANG;
     
-      switch ($devicetype){
+      switch ($devicetype) {
         
         case COMPUTER_TYPE :	
             return $LANG['Menu'][0];
@@ -145,7 +145,7 @@ class PluginArchires extends CommonDBTM {
       return $name;
    }
   
-   function getClassType ($type){
+   function getClassType ($type) {
 	
       if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
          $object= "PluginArchiresQueryLocation";

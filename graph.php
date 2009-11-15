@@ -43,11 +43,11 @@ if (isset($_GET)) $tab = $_GET;
 if (empty($tab) && isset($_POST)) $tab = $_POST;
 if (!isset($tab["id"])) $tab["id"] = "";
 
-if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
+if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
 	$object= "PluginArchiresQueryLocation";
-} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY){
+} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
 	$object= "PluginArchiresQueryNetworkEquipment";
-} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_APPLIANCES_QUERY){
+} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
 	$object= "PluginArchiresQueryAppliance";
 }
 
@@ -114,7 +114,7 @@ if (isset($_GET["affiche"])) {
     					echo "<tr>";
     					echo "<th colspan='4'>".$LANG['plugin_archires'][22]." ".$LANG['plugin_archires'][19]."</th>";
     					echo "</tr>";
-                  while($ligne= mysql_fetch_array($result)){
+                  while($ligne= mysql_fetch_array($result)) {
          
                      $ID=$ligne["id"];
                      if ($i  % 2==0 && $number>1)
@@ -137,9 +137,9 @@ if (isset($_GET["affiche"])) {
     			$query = "SELECT * 
 						FROM `glpi_plugin_archires_vlanscolors` 
 						ORDER BY `vlans_id` ASC ";
-    			if ($result = $DB->query($query)){
+    			if ($result = $DB->query($query)) {
     				$number = $DB->numrows($result);
-    				if ($number != 0){			
+    				if ($number != 0) {			
     					$i=0;
     					echo "<div align='center'>";
     					echo "<table class='tab_cadre' cellpadding='5'>";
@@ -171,7 +171,7 @@ if (isset($_GET["affiche"])) {
 					ORDER BY `states_id` ASC ";
 			if ($result = $DB->query($query)) {
 				$number = $DB->numrows($result);
-				if ($number != 0){			
+				if ($number != 0) {			
 					$i=0;
 					echo "<div align='center'>";
 					echo "<table class='tab_cadre' cellpadding='5'>";
