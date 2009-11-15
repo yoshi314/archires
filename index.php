@@ -43,9 +43,9 @@ if ($plugin->isActivated("network"))
 else
 	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
-if(plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
+if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 
-	if(isset($_GET['new'])) {
+	if (isset($_GET['new'])) {
 			
 		echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
 		echo "<tr><th>".$LANG['plugin_archires']['menu'][1]."</th></tr>";

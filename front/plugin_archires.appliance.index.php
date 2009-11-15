@@ -46,7 +46,7 @@ if ($plugin->isActivated("network"))
 else
 	commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","appliances");
 
-if(plugin_archires_haveRight("archires","r") || haveRight("config","w")){
+if (plugin_archires_haveRight("archires","r") || haveRight("config","w")){
 	
 	if ($plugin->isActivated("network")) {
 		$PluginArchires=new PluginArchires();

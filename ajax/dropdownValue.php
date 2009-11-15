@@ -34,7 +34,7 @@
  */
 
 // Direct access to file
-if(strpos($_SERVER['PHP_SELF'],"dropdownValue.php")) {
+if (strpos($_SERVER['PHP_SELF'],"dropdownValue.php")) {
 	define('GLPI_ROOT', '../../..');
 	$AJAX_INCLUDE=1;
 	include (GLPI_ROOT."/inc/includes.php");
@@ -203,7 +203,7 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])) {
 
 	echo "<option value=\"0\">-----</option>";
 	$number = $DB->numrows($result);
-	if($number != 0)
+	if ($number != 0)
 	echo "<option value=\"".$_POST['itemtype'].";-1\">".$LANG['plugin_archires'][18]."</option>";
 	$output=getDropdownName($_POST['table'],$_POST['value']);
 	if (!empty($output)&&$output!="&nbsp;") {

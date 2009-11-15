@@ -376,7 +376,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       $graph="";
 
-      if($PluginArchiresView->fields["color"] == PLUGIN_ARCHIRES_NETWORK_COLOR ) {
+      if ($PluginArchiresView->fields["color"] == PLUGIN_ARCHIRES_NETWORK_COLOR ) {
          if (empty($networkinterfaces_id1) && empty($networkinterfaces_id2)) {
             $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
          } else if (!empty($networkinterfaces_id1)) {
@@ -434,14 +434,14 @@ class PluginArchiresPrototype extends CommonDBTM {
                $graph .= "</td></tr>";
          }
          $graph .= "<tr><td HREF=\"".$url_ports.$ID1."\" tooltip=\"".$name1;
-         if($_SESSION["glpiis_ids_visible"]||empty($name1)) $graph.= "_".$ID1."_";
+         if ($_SESSION["glpiis_ids_visible"]||empty($name1)) $graph.= "_".$ID1."_";
          $graph .= "\">";
       
          if ($PluginArchiresView->fields["display_ports"]==1) {
             $graph .= $LANG['plugin_archires'][17]." ".$logical_number1;
          } else if ($PluginArchiresView->fields["display_ports"]==2) {
             $graph .= $name1;
-         if($_SESSION["glpiis_ids_visible"]||empty($name1)) $graph.= " (".$ID1.")";
+         if ($_SESSION["glpiis_ids_visible"]||empty($name1)) $graph.= " (".$ID1.")";
          }
          $graph .= "</td></tr>";
       
@@ -451,14 +451,14 @@ class PluginArchiresPrototype extends CommonDBTM {
             $graph .= "<tr><td><img src=\"".realpath(GLPI_ROOT)."/plugins/archires/pics/socket.png\" /></td></tr>";
          }
          $graph .= "<tr><td HREF=\"".$url_ports.$ID2."\" tooltip=\"".$name2;
-         if($_SESSION["glpiis_ids_visible"]||empty($name2)) $graph.= "_".$ID2."_";
+         if ($_SESSION["glpiis_ids_visible"]||empty($name2)) $graph.= "_".$ID2."_";
          $graph .= "\">";
       
          if ($PluginArchiresView->fields["display_ports"]==1) {
             $graph .= $LANG['plugin_archires'][17]." ".$logical_number2;
          } else if ($PluginArchiresView->fields["display_ports"]==2) {
             $graph .= $name2;
-            if($_SESSION["glpiis_ids_visible"]||empty($name2)) $graph.= " (".$ID2.")";
+            if ($_SESSION["glpiis_ids_visible"]||empty($name2)) $graph.= " (".$ID2.")";
          }
          $graph .= "</td></tr>";
       

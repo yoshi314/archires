@@ -40,14 +40,14 @@ class PluginArchires extends CommonDBTM {
 				
       echo "<div align='center'><table border='0'><tr><td>";
       echo "<img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/archires.png\" alt='".$LANG['plugin_archires']['title'][0]."' title='".$LANG['plugin_archires']['title'][0]."'></td>";
-      if(plugin_archires_haveRight("archires","w") || haveRight("config","w"))
+      if (plugin_archires_haveRight("archires","w") || haveRight("config","w"))
          echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/index.php?new=1\"><b>".$LANG['plugin_archires']['title'][7]."</b></a></td>";
       else
          echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/index.php\"><b>".$LANG['plugin_archires']['title'][0]."</b></a></td>";
 
       echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.view.index.php\"><b>".$LANG['plugin_archires']['title'][3]."</b></a></td>";
 
-      if(plugin_archires_haveRight("archires","w") || haveRight("config","w"))
+      if (plugin_archires_haveRight("archires","w") || haveRight("config","w"))
          echo "<td><a class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.php\">".$LANG['plugin_archires']['profile'][2]."</a></td>";
       echo "</tr></table></div>";
    }
@@ -59,7 +59,7 @@ class PluginArchires extends CommonDBTM {
       echo "<img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/archires.png\" alt='".$LANG['plugin_archires']['title'][0]."' title='".$LANG['plugin_archires']['title'][0]."'></td>";
       echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/index.php\"><b>".$LANG['plugin_archires']['title'][0]."</b></a></td>";
       echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.view.index.php\"><b>".$LANG['plugin_archires']['title'][3]."</b></a></td>";
-      if(plugin_archires_haveRight("archires","w"))
+      if (plugin_archires_haveRight("archires","w"))
       echo "<td><a class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.php\">".$LANG['plugin_archires']['profile'][2]."</a>";
       echo "</td></tr></table></div>";
 	}
@@ -132,14 +132,14 @@ class PluginArchires extends CommonDBTM {
       global $DB,$PLUGIN_ARCHIRES_TYPE_TABLES;
     
       $name="";
-      if(isset($PLUGIN_ARCHIRES_TYPE_TABLES[$device_type])) {
+      if (isset($PLUGIN_ARCHIRES_TYPE_TABLES[$device_type])) {
     
          $query="SELECT `name` 
             FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$device_type]."` 
             WHERE `id` = '$type' ";
          $result = $DB->query($query);
          $number = $DB->numrows($result);
-         if($number !="0")
+         if ($number !="0")
          $name=$DB->result($result, 0, "name");
       }
       return $name;

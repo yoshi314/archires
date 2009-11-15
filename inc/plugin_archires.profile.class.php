@@ -74,7 +74,7 @@ class PluginArchiresProfile extends CommonDBTM {
   
    function changeProfile() {
    
-      if($this->getFromDB($_SESSION['glpiactiveprofile']['id']))
+      if ($this->getFromDB($_SESSION['glpiactiveprofile']['id']))
          $_SESSION["glpi_plugin_archires_profile"]=$this->fields;
       else
          unset($_SESSION["glpi_plugin_archires_profile"]);

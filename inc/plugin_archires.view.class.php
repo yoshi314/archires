@@ -45,14 +45,14 @@ class PluginArchiresView extends CommonDBTM {
 
       echo "<div align='center'><table border='0'><tr><td>";
       echo "<img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/archires.png\" alt='".$LANG['plugin_archires']['title'][0]."' title='".$LANG['plugin_archires']['title'][0]."'></td>";
-      if(plugin_archires_haveRight("archires","w") || haveRight("config","w")) {
+      if (plugin_archires_haveRight("archires","w") || haveRight("config","w")) {
          echo "<td><a  class='icon_consol' href=\"./plugin_archires.view.form.php?new=1\"><b>".$LANG['plugin_archires']['title'][1]."</b></a></td>";
       } else {
          echo "<td><a  class='icon_consol' href=\"index.php\"><b>".$LANG['plugin_archires']['title'][3]."</b></a></td>";
       }
       echo "<td><a  class='icon_consol' href=\"../index.php\"><b>".$LANG['plugin_archires']['title'][0]."</b></a></td>";
 
-      if(plugin_archires_haveRight("archires","w") || haveRight("config","w")) {
+      if (plugin_archires_haveRight("archires","w") || haveRight("config","w")) {
          echo "<td><a class='icon_consol' href=\"plugin_archires.config.php\">".$LANG['plugin_archires']['profile'][2]."</a></td>";
       }
       echo "</tr></table></div>";
@@ -80,9 +80,9 @@ class PluginArchiresView extends CommonDBTM {
       }
       $query.=" ORDER BY `name` ASC";
 
-      if($result = $DB->query($query)) {
+      if ($result = $DB->query($query)) {
 
-         if($DB->numrows($result) >0) {
+         if ($DB->numrows($result) >0) {
             echo "<form method='get' name='selecting' action=\"$target\">";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr class='tab_bg_1'><td class='center'>";
@@ -113,7 +113,7 @@ class PluginArchiresView extends CommonDBTM {
             }
             $query1.=" ORDER BY `name` ASC";
 
-            if($result1 = $DB->query($query1)) {
+            if ($result1 = $DB->query($query1)) {
                echo "<td class='center'>";
                echo $LANG['plugin_archires']['title'][3]." : ";
                echo "<select name=\"views_id\" size=\"1\"> ";
@@ -163,10 +163,10 @@ class PluginArchiresView extends CommonDBTM {
 
 		if (empty($ID) ||$ID==-1) {
 
-			if($this->getEmpty()) $con_spotted = true;
+			if ($this->getEmpty()) $con_spotted = true;
 			$use_cache=false;
 		} else {
-			if($this->getfromDB($ID)&&haveAccessToEntity($this->fields["entities_id"])) $con_spotted = true;
+			if ($this->getfromDB($ID)&&haveAccessToEntity($this->fields["entities_id"])) $con_spotted = true;
 		}
 
 		if ($con_spotted) {
@@ -314,7 +314,7 @@ class PluginArchiresView extends CommonDBTM {
     
       $views_id=-1;
       $obj=new $object();
-      if($obj->getFromDB($ID)) {
+      if ($obj->getFromDB($ID)) {
          $views_id=$obj->fields["views_id"];
       }
       $query = "SELECT `id`, `name` 
@@ -324,7 +324,7 @@ class PluginArchiresView extends CommonDBTM {
         ORDER BY `name` ASC";
       echo "<select name='views_id' size=\"1\"> ";
       echo "<option value='0'>-----</option>\n";
-      if($result = $DB->query($query)) {
+      if ($result = $DB->query($query)) {
          while($ligne= mysql_fetch_array($result)) {
             $view_name=$ligne["name"];
             $view_id=$ligne["id"];
@@ -350,12 +350,12 @@ class PluginArchiresView extends CommonDBTM {
       echo "&nbsp;";
       echo $LANG['search'][10]."&nbsp;<select name=\"field\" size='1'>";
       echo "<option value='all' ";
-      if($field == "all") echo "selected";
+      if ($field == "all") echo "selected";
       echo ">".$LANG['common'][66]."</option>";
       reset($option);
       foreach ($option as $key => $val) {
          echo "<option value=\"".$key."\"";
-         if($key == $field) echo "selected";
+         if ($key == $field) echo "selected";
          echo ">". substr($val, 0, 18) ."</option>\n";
       }
       echo "</select>&nbsp;";
@@ -365,7 +365,7 @@ class PluginArchiresView extends CommonDBTM {
       reset($option);
       foreach ($option as $key => $val) {
          echo "<option value=\"".$key."\"";
-         if($key == $sort) echo "selected";
+         if ($key == $sort) echo "selected";
          echo ">".$val."</option>\n";
       }
       echo "</select> ";
@@ -413,13 +413,13 @@ class PluginArchiresView extends CommonDBTM {
 
       $first=true;
       // Build query
-      if($field=="all") {
+      if ($field=="all") {
          $where = " (";
          $fields = $DB->list_fields($this->table);
          $columns = count($fields);
          $i=0;
          foreach ($fields as $key => $val) {
-            if($i != 0) {
+            if ($i != 0) {
                $where .= " OR ";
             }
 
@@ -494,7 +494,7 @@ class PluginArchiresView extends CommonDBTM {
             // Produce headline
             echo "<div align='center'><table  class='tab_cadrehov'><tr>";
             // Name
-            if(plugin_archires_haveRight("archires","w"))
+            if (plugin_archires_haveRight("archires","w"))
                echo "<th></th>";
 
             echo "<th>";
@@ -545,7 +545,7 @@ class PluginArchiresView extends CommonDBTM {
                echo displaySearchNewLine(HTML_OUTPUT,$i%2);
                //	echo "<td>";
 
-               if(plugin_archires_haveRight("archires","w"))
+               if (plugin_archires_haveRight("archires","w"))
                   echo "<td width='5'><input type='checkbox' name='item[$ID]' value='1' $sel></td>";
                echo "<td>";
                echo "<a href=\"./plugin_archires.view.form.php?id=$ID\">";
@@ -632,7 +632,7 @@ class PluginArchiresView extends CommonDBTM {
             // Close Table
             echo "</table></div>";
             //massive action
-            if(plugin_archires_haveRight("archires","w")) {
+            if (plugin_archires_haveRight("archires","w")) {
                echo "<div align='center'>";
                echo "<table width='80%'>";
                echo "<tr><td><img src=\"".$CFG_GLPI["root_doc"]."/pics/arrow-left.png\" alt=''></td><td class='center'><a onclick= \"if ( markCheckboxes('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all' >".$LANG['buttons'][18]."</a></td>";
@@ -659,7 +659,7 @@ class PluginArchiresView extends CommonDBTM {
 
       echo "<select name=\"massiveaction\" id='massiveaction'>";
       echo "<option value=\"-1\" selected>-----</option>";
-      if(plugin_archires_haveRight("archires","w")) {
+      if (plugin_archires_haveRight("archires","w")) {
          if ($is_deleted=="1") {
             echo "<option value=\"purge\">".$LANG['buttons'][22]."</option>";
             echo "<option value=\"restore\">".$LANG['buttons'][21]."</option>";

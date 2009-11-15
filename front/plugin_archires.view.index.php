@@ -47,9 +47,9 @@ if ($plugin->isActivated("network"))
 else
 	commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
-if(plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
+if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 	
-	if(!isset($_GET["start"])) $_GET["start"] = 0;
+	if (!isset($_GET["start"])) $_GET["start"] = 0;
 	if (!isset($_GET["order"])) $_GET["order"] = "ASC";
 	if (!isset($_GET["field"])) $_GET["field"] = "glpi_plugin_archires_views.name";
 	if (!isset($_GET["phrasetype"])) $_GET["phrasetype"] = "contains";

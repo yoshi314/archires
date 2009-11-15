@@ -209,7 +209,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
     
       $obj=new $object();
       $locations_id=-1;
-      if($obj->getFromDB($ID)) {
+      if ($obj->getFromDB($ID)) {
          $locations_id=$obj->fields["locations_id"];
       }
       $query0 = "SELECT `entities_id` 
@@ -223,7 +223,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
       echo "<option value='0'>-----</option>\n";
       echo "<option value=\"-1\">".$LANG['plugin_archires'][30]."</option>";
 
-      if($result0 = $DB->query($query0)) {
+      if ($result0 = $DB->query($query0)) {
 
          while($ligne0= mysql_fetch_array($result0)) {
            
@@ -234,7 +234,7 @@ class PluginArchiresQueryLocation extends CommonDBTM {
             $query.=" WHERE `entities_id` = '".$ligne0["entities_id"]."' ";
             $query.=" ORDER BY `completename` ASC";
 
-            if($result = $DB->query($query)){
+            if ($result = $DB->query($query)){
 
                while($ligne= mysql_fetch_array($result)) {
 

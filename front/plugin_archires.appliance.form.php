@@ -39,9 +39,9 @@ include (GLPI_ROOT."/inc/includes.php");
 
 useplugin('archires',true);
 
-if(isset($_GET)) $tab = $_GET;
-if(empty($tab) && isset($_POST)) $tab = $_POST;
-if(!isset($tab["id"])) $tab["id"] = "";
+if (isset($_GET)) $tab = $_GET;
+if (empty($tab) && isset($_POST)) $tab = $_POST;
+if (!isset($tab["id"])) $tab["id"] = "";
 
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
@@ -51,37 +51,37 @@ $PluginArchiresQueryType=new PluginArchiresQueryType();
 
 if (isset($_POST["add"])) {
 
-	if(plugin_archires_haveRight("archires","w"))
+	if (plugin_archires_haveRight("archires","w"))
 		$newID=$PluginArchiresQueryAppliance->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["delete"])) {
 
-	if(plugin_archires_haveRight("archires","w"))
+	if (plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryAppliance->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 	
 } else if (isset($_POST["restore"])) {
 
-	if(plugin_archires_haveRight("archires","w"))
+	if (plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryAppliance->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 	
 } else if (isset($_POST["purge"])) {
 
-	if(plugin_archires_haveRight("archires","w"))
+	if (plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryAppliance->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 	
 } else if (isset($_POST["update"])) {
 
-	if(plugin_archires_haveRight("archires","w"))
+	if (plugin_archires_haveRight("archires","w"))
 		$PluginArchiresQueryAppliance->update($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["duplicate"])) {
 
-	if(plugin_archires_haveRight("archires","w")) {
+	if (plugin_archires_haveRight("archires","w")) {
 		unset($_POST['id']);
 		$newID=$PluginArchiresQueryAppliance->add($_POST);
 	}
@@ -95,7 +95,7 @@ if (isset($_POST["add"])) {
 		$_POST['type']= $test[1];
 		$_POST['itemtype']= $test[0];
 	
-		if(plugin_archires_haveRight("archires","w")) {
+		if (plugin_archires_haveRight("archires","w")) {
 				$PluginArchiresQueryType->addType(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_POST['type'],$_POST['itemtype'],$_POST['query']);
 		}
 	}
@@ -103,7 +103,7 @@ if (isset($_POST["add"])) {
 	
 } else if (isset($_POST["deletetype"])) {
 
-	if(plugin_archires_haveRight("archires","w")) {
+	if (plugin_archires_haveRight("archires","w")) {
       $PluginArchiresQueryType->getFromDB($_POST["id"],-1);
 	
       foreach ($_POST["item"] as $key => $val) {

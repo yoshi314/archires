@@ -39,9 +39,9 @@ include (GLPI_ROOT."/inc/includes.php");
 
 useplugin('archires',true);
 
-if(isset($_GET)) $tab = $_GET;
-if(empty($tab) && isset($_POST)) $tab = $_POST;
-if(!isset($tab["id"])) $tab["id"] = "";
+if (isset($_GET)) $tab = $_GET;
+if (empty($tab) && isset($_POST)) $tab = $_POST;
+if (!isset($tab["id"])) $tab["id"] = "";
 
 if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY){
 	$object= "PluginArchiresQueryLocation";
@@ -74,9 +74,9 @@ if (isset($_GET["affiche"])) {
 	$entities_id=$obj->fields["entities_id"];
 	
 	
-	if($PluginArchiresView->getFromDB($obj->fields["views_id"])&&haveAccessToEntity($entities_id)) {
+	if ($PluginArchiresView->getFromDB($obj->fields["views_id"])&&haveAccessToEntity($entities_id)) {
 		
-		if(!isset($_GET["views_id"])) $_GET["views_id"] = $views_id;
+		if (!isset($_GET["views_id"])) $_GET["views_id"] = $views_id;
 		
 		$PluginArchiresView->getFromDB($_GET["views_id"]);
 		$format=$PluginArchiresView->fields["format"];
@@ -90,24 +90,24 @@ if (isset($_GET["affiche"])) {
 		
 		echo "<br>";
 		
-		if(isset($_GET["id"]) && !empty($_GET["id"])) {
+		if (isset($_GET["id"]) && !empty($_GET["id"])) {
 		
 			echo "<img src=\"image.php?id=".$_GET["id"]."&amp;querytype=".$_GET["querytype"]."&amp;views_id=".$_GET["views_id"]."\" alt=\"\" usemap=\"#G\">";
 			echo $PluginArchiresPrototype->createGraph("cmapx",$obj,$_GET["id"],$_GET["views_id"]);
 			
 		}
 		//legend
-		if(isset($_GET["id"]) && !empty($_GET["id"])) {
+		if (isset($_GET["id"]) && !empty($_GET["id"])) {
 			echo "<table  cellpadding='5' border='0'>";
 			echo "<tr><td class='top'>";
-			if( $PluginArchiresView->fields["color"] == 0 ) {
+			if ( $PluginArchiresView->fields["color"] == 0 ) {
     			//legende color networkinterface		
     			$query = "SELECT * 
 						FROM `glpi_plugin_archires_networkinterfacescolors` 
 						ORDER BY `networkinterfaces_id` ASC ";
-    			if($result = $DB->query($query)) {
+    			if ($result = $DB->query($query)) {
     				$number = $DB->numrows($result);
-    				if($number != 0) {			
+    				if ($number != 0) {			
     					$i=0;
     					echo "<div align='center'>";
     					echo "<table class='tab_cadre' cellpadding='5'>";
@@ -117,13 +117,13 @@ if (isset($_GET["affiche"])) {
                   while($ligne= mysql_fetch_array($result)){
          
                      $ID=$ligne["id"];
-                     if($i  % 2==0 && $number>1)
+                     if ($i  % 2==0 && $number>1)
                         echo "<tr class='tab_bg_1'>";
-                     if($number==1)
+                     if ($number==1)
                         echo "<tr class='tab_bg_1'>";						
                      echo "<td>".getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>&nbsp;</td>";					
                      $i++;
-                     if(($i  == $number) && ($number  % 2 !=0) && $number>1)
+                     if (($i  == $number) && ($number  % 2 !=0) && $number>1)
                         echo "<td>&nbsp;</td><td>&nbsp;</td></tr>";
                   }
     			
@@ -137,9 +137,9 @@ if (isset($_GET["affiche"])) {
     			$query = "SELECT * 
 						FROM `glpi_plugin_archires_vlanscolors` 
 						ORDER BY `vlans_id` ASC ";
-    			if($result = $DB->query($query)){
+    			if ($result = $DB->query($query)){
     				$number = $DB->numrows($result);
-    				if($number != 0){			
+    				if ($number != 0){			
     					$i=0;
     					echo "<div align='center'>";
     					echo "<table class='tab_cadre' cellpadding='5'>";
@@ -149,13 +149,13 @@ if (isset($_GET["affiche"])) {
                   while($ligne= mysql_fetch_array($result)) {
          
                      $ID=$ligne["id"];
-                     if($i  % 2==0 && $number>1)
+                     if ($i  % 2==0 && $number>1)
                         echo "<tr class='tab_bg_1'>";
-                     if($number==1)
+                     if ($number==1)
                         echo "<tr class='tab_bg_1'>";						
                      echo "<td>".getDropdownName("glpi_vlans",$ligne["vlans_id"])."</td><td bgcolor='".$ligne["color"]."'>&nbsp;</td>";					
                      $i++;
-                     if(($i  == $number) && ($number  % 2 !=0) && $number>1)
+                     if (($i  == $number) && ($number  % 2 !=0) && $number>1)
                         echo "<td>&nbsp;</td><td>&nbsp;</td></tr>";
                   }
     			
@@ -169,9 +169,9 @@ if (isset($_GET["affiche"])) {
 			$query = "SELECT * 
 					FROM `glpi_plugin_archires_statescolors` 
 					ORDER BY `states_id` ASC ";
-			if($result = $DB->query($query)) {
+			if ($result = $DB->query($query)) {
 				$number = $DB->numrows($result);
-				if($number != 0){			
+				if ($number != 0){			
 					$i=0;
 					echo "<div align='center'>";
 					echo "<table class='tab_cadre' cellpadding='5'>";
@@ -181,13 +181,13 @@ if (isset($_GET["affiche"])) {
                while($ligne= mysql_fetch_array($result)) {
       
                   $ID=$ligne["id"];
-                  if($i  % 2==0 && $number>1)
+                  if ($i  % 2==0 && $number>1)
                      echo "<tr class='tab_bg_1'>";
-                  if($number==1)
+                  if ($number==1)
                      echo "<tr class='tab_bg_1'>";						
                   echo "<td>".getDropdownName("glpi_states",$ligne["states_id"])."</td><td bgcolor='".$ligne["color"]."'>&nbsp;</td>";					
                   $i++;
-                  if(($i  == $number) && ($number  % 2 !=0) && $number>1)
+                  if (($i  == $number) && ($number  % 2 !=0) && $number>1)
                      echo "<td>&nbsp;</td><td>&nbsp;</td></tr>";
                }
 			

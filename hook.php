@@ -41,7 +41,7 @@ function plugin_archires_install() {
 
    include_once (GLPI_ROOT."/inc/profile.class.php");
 
-   if(!TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
+   if (!TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
 
       plugin_archires_installing("1.8.0");
 

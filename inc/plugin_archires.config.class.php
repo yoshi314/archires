@@ -125,7 +125,7 @@ class PluginArchiresItemImage extends CommonDBTM {
       $dir = opendir($rep); 
       echo "<select name=\"img\">";
       while ($f = readdir($dir)) {
-         if(is_file($rep.$f)) {
+         if (is_file($rep.$f)) {
             echo "<option value='".$f."'>".$f."</option>";
          }   
       }
@@ -142,9 +142,9 @@ class PluginArchiresItemImage extends CommonDBTM {
         FROM `".$this->table."` 
         ORDER BY `itemtype`,`type` ASC;";
       $i=0;
-      if($result = $DB->query($query)) {
+      if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
-         if($number != 0) {
+         if ($number != 0) {
       
             echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"./plugin_archires.config.php\">";
             echo "<div id='liste'>";
@@ -162,10 +162,10 @@ class PluginArchiresItemImage extends CommonDBTM {
         
                $ID=$ligne["id"];
         
-               if($i  % 2==0 && $number>1)
+               if ($i  % 2==0 && $number>1)
                   echo "<tr class='tab_bg_1'>";
         
-               if($number==1)
+               if ($number==1)
                   echo "<tr class='tab_bg_1'>";
                   
                $PluginArchires=new PluginArchires();
@@ -176,7 +176,7 @@ class PluginArchiresItemImage extends CommonDBTM {
                echo "</td>";
         
                $i++;
-               if(($i  == $number) && ($number  % 2 !=0) && $number>1)
+               if (($i  == $number) && ($number  % 2 !=0) && $number>1)
                echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
         
             }
@@ -209,7 +209,7 @@ class PluginArchiresItemImage extends CommonDBTM {
       $query = "SELECT *
         FROM `glpi_plugin_archires_imageitems`
         WHERE `itemtype` = '".$itemtype."';";
-      if($result = $DB->query($query)) {
+      if ($result = $DB->query($query)) {
          while($ligne= mysql_fetch_array($result)) {
             $config_img=$ligne["img"];
 
@@ -299,12 +299,12 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
         FROM `".$this->table."` 
         ORDER BY `networkinterfaces_id` ASC;";
       $i=0;
-      if($result = $DB->query($query)) {
+      if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
       
          echo "<form method='post' name='massiveaction_form_networkinterface_color' id='massiveaction_form_networkinterface_color' action=\"./plugin_archires.config.php\">";
          $used=array();
-         if($number != 0) {
+         if ($number != 0) {
         
             echo "<div id='liste_color'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
@@ -322,10 +322,10 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                $ID=$ligne["id"];
                $networkinterfaces_id=$ligne["networkinterfaces_id"];
                $used[]=$networkinterfaces_id;
-               if($i  % 2==0 && $number>1)
+               if ($i  % 2==0 && $number>1)
                   echo "<tr class='tab_bg_1'>";
           
-               if($number==1)
+               if ($number==1)
                   echo "<tr class='tab_bg_1'>";						
                echo "<td>".getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
@@ -334,7 +334,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                echo "</td>";
           
                $i++;
-               if(($i  == $number) && ($number  % 2 !=0) && $number>1)
+               if (($i  == $number) && ($number  % 2 !=0) && $number>1)
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
         
             }
@@ -391,7 +391,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
       $result=$DB->query($query);
       $number = $DB->numrows($result);
 
-      if($number>0) {
+      if ($number>0) {
          echo "<select name='networkinterfaces_id'>\n";
          echo "<option value='0'>-----</option>\n";
          echo "<option value='-1'>".$LANG['plugin_archires'][21]."</option>\n";
@@ -486,12 +486,12 @@ class PluginArchiresVlanColor extends CommonDBTM {
       $i=0;
       $used=array();
     
-      if($result = $DB->query($query)) {
+      if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
       
          echo "<form method='post' name='massiveaction_form_vlan_color' id='massiveaction_form_vlan_color' action=\"./plugin_archires.config.php\">";
       
-         if($number != 0) {
+         if ($number != 0) {
         
             echo "<div id='liste_vlan'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
@@ -509,10 +509,10 @@ class PluginArchiresVlanColor extends CommonDBTM {
                $ID=$ligne["id"];
                $vlans_id=$ligne["vlans_id"];
                $used[]=$vlans_id;
-               if($i  % 2==0 && $number>1)
+               if ($i  % 2==0 && $number>1)
                   echo "<tr class='tab_bg_1'>";
 
-               if($number==1)
+               if ($number==1)
                   echo "<tr class='tab_bg_1'>";						
                echo "<td>".getDropdownName("glpi_vlans", $ligne["vlans_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
@@ -521,7 +521,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
                echo "</td>";
 
                $i++;
-               if(($i  == $number) && ($number  % 2 !=0) && $number>1)
+               if (($i  == $number) && ($number  % 2 !=0) && $number>1)
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
            
             }
@@ -578,7 +578,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
       $result=$DB->query($query);
       $number = $DB->numrows($result);
 
-      if($number !="0") {
+      if ($number !="0") {
          echo "<select name='vlans_id'>\n";
          echo "<option value='0'>-----</option>\n";
          echo "<option value='-1'>".$LANG['plugin_archires'][36]."</option>\n";
@@ -603,7 +603,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
       AND `glpi_networkports_vlans`.`networkports_id` = '$ID' " ;
       $r=$DB->query($q);
       $nb = $DB->numrows($r);
-      if( $r = $DB->query($q)) {
+      if ( $r = $DB->query($q)) {
         $data_vlan = $DB->fetch_array($r) ;
         $vlan= $data_vlan["id"] ;
       }
@@ -692,12 +692,12 @@ class PluginArchiresStateColor extends CommonDBTM {
       $i=0;
       $used=array();
     
-      if($result = $DB->query($query)) {
+      if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
       
          echo "<form method='post' name='massiveaction_form_state_color' id='massiveaction_form_state_color' action=\"./plugin_archires.config.php\">";
       
-         if($number != 0) {
+         if ($number != 0) {
         
             echo "<div id='liste_color'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
@@ -715,10 +715,10 @@ class PluginArchiresStateColor extends CommonDBTM {
                $ID=$ligne["id"];
                $states_id=$ligne["states_id"];
                $used[]=$states_id;
-               if($i  % 2==0 && $number>1)
+               if ($i  % 2==0 && $number>1)
                   echo "<tr class='tab_bg_1'>";
 
-               if($number==1)
+               if ($number==1)
                   echo "<tr class='tab_bg_1'>";						
                echo "<td>".getDropdownName("glpi_states",$ligne["states_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
@@ -727,7 +727,7 @@ class PluginArchiresStateColor extends CommonDBTM {
                echo "</td>";
 
                $i++;
-               if(($i  == $number) && ($number  % 2 !=0) && $number>1)
+               if (($i  == $number) && ($number  % 2 !=0) && $number>1)
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
            
             }
@@ -784,7 +784,7 @@ class PluginArchiresStateColor extends CommonDBTM {
       $result=$DB->query($query);
       $number = $DB->numrows($result);
 
-      if($number !="0") {
+      if ($number !="0") {
          echo "<select name='states_id'>\n";
          echo "<option value='0'>-----</option>\n";
          echo "<option value='-1'>".$LANG['plugin_archires'][15]."</option>\n";
@@ -809,7 +809,7 @@ class PluginArchiresStateColor extends CommonDBTM {
       $result_state = $DB->query($query_state);
       $number_state = $DB->numrows($result_state);
 
-      if($number_state != 0 && $device["states_id"] > 0) {
+      if ($number_state != 0 && $device["states_id"] > 0) {
          $color_state=$DB->result($result_state,0,"color");
          $graph ="<font color=\"$color_state\">".getDropdownName("glpi_states",$device["states_id"])."</font>";
       } else if ($number_state == 0 && $device["states_id"] > 0) {
@@ -937,7 +937,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 
       echo "<div align='center'>";
 
-      if(plugin_archires_haveRight("archires","w")) {
+      if (plugin_archires_haveRight("archires","w")) {
 
          echo "<form method='post'  action=\"./plugin_archires.".$table.".form.php\">";
          echo "<table class='tab_cadre' cellpadding='5' width='34%'><tr><th colspan='2'>";
@@ -963,9 +963,9 @@ class PluginArchiresQueryType extends CommonDBTM {
 
       $i=0;
       $rand=mt_rand();
-      if($result = $DB->query($query)) {
+      if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
-         if($number != 0) {
+         if ($number != 0) {
 
             echo "<form method='post' name='massiveaction_form$rand' id='massiveaction_form$rand' action=\"./plugin_archires.".$table.".form.php\">";
             echo "<div id='liste'>";
@@ -983,10 +983,10 @@ class PluginArchiresQueryType extends CommonDBTM {
 
                $ID=$ligne["id"];
 
-               if($i  % 2==0 && $number>1)
+               if ($i  % 2==0 && $number>1)
                   echo "<tr class='tab_bg_1'>";
 
-               if($number==1)
+               if ($number==1)
                   echo "<tr class='tab_bg_1'>";
                $PluginArchires=new PluginArchires();
                echo "<td>".$PluginArchires->getItemType($ligne["itemtype"])."</td><td>".$PluginArchires->getType($ligne["itemtype"],$ligne["type"])."</td>";
@@ -996,11 +996,11 @@ class PluginArchiresQueryType extends CommonDBTM {
                echo "</td>";
 
                $i++;
-               if(($i  == $number) && ($number  % 2 !=0) && $number>1)
+               if (($i  == $number) && ($number  % 2 !=0) && $number>1)
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
             }
 
-            if(plugin_archires_haveRight("archires","w")) {
+            if (plugin_archires_haveRight("archires","w")) {
                echo "<tr class='tab_bg_1'>";
                if ($number > 1)
                   echo "<td colspan='6'>";

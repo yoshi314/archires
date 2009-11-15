@@ -45,9 +45,9 @@ if ($plugin->isActivated("network"))
 else
 	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
-if(empty($_GET["start"])) $_GET["start"] = 0;
-if(empty($_GET["order"])) $_GET["order"] = "ASC";
-if(empty($_GET["phrasetype"])) $_GET["phrasetype"] = "contains";
+if (empty($_GET["start"])) $_GET["start"] = 0;
+if (empty($_GET["order"])) $_GET["order"] = "ASC";
+if (empty($_GET["phrasetype"])) $_GET["phrasetype"] = "contains";
 if (!isset($_GET["is_deleted"])) $_GET["is_deleted"] = "0";
 
 $PluginArchiresProfile=new PluginArchiresProfile();

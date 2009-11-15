@@ -42,7 +42,7 @@ header_nocache();
 
 useplugin('archires',true);
 
-if(!isset($_POST["id"])) {
+if (!isset($_POST["id"])) {
 	exit();
 }
 

@@ -33,7 +33,7 @@
 // ----------------------------------------------------------------------
  */
 
-if(!defined('GLPI_ROOT')){
+if (!defined('GLPI_ROOT')){
 	define('GLPI_ROOT', '../../..');
 	$NEEDED_ITEMS=array("setup");
 	include (GLPI_ROOT . "/inc/includes.php");
@@ -72,7 +72,7 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 		$_POST['type']= $test[1];
 		$_POST['itemtype']= $test[0];
 	
-		if(plugin_archires_haveRight("archires","w")) {
+		if (plugin_archires_haveRight("archires","w")) {
 			$PluginArchiresItemImage->addItemImage($_POST['type'],$_POST['itemtype'],$_POST['img']);
 		}
 	}
@@ -92,7 +92,7 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 
 } else if (isset($_POST["add_color_networkinterface"]) && isset($_POST['networkinterfaces_id'])) {
 	
-	if(plugin_archires_haveRight("archires","w")) {
+	if (plugin_archires_haveRight("archires","w")) {
 		$PluginArchiresNetworkInterfaceColor->addNetworkInterfaceColor($_POST['networkinterfaces_id'],$_POST['color']);
 	}
 	
@@ -112,7 +112,7 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 
 } else if (isset($_POST["add_color_state"]) && isset($_POST['states_id'])) {
 	
-	if(plugin_archires_haveRight("archires","w")) {
+	if (plugin_archires_haveRight("archires","w")) {
 		$PluginArchiresStateColor->addStateColor($_POST['states_id'],$_POST['color']);
 	}
 	
@@ -132,7 +132,7 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 
 } else if (isset($_POST["add_color_vlan"]) && isset($_POST['vlans_id'])) {
 	
-	if(plugin_archires_haveRight("archires","w")) {
+	if (plugin_archires_haveRight("archires","w")) {
 		$PluginArchiresVlanColor->addVlanColor($_POST['vlans_id'],$_POST['color']);
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
