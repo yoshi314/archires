@@ -32,7 +32,11 @@
 // Purpose of file: plugin archires v1.8.0 - GLPI 0.80
 // ----------------------------------------------------------------------
  */
-		
+
+if (!defined('GLPI_ROOT')) {
+	die("Sorry. You can't access directly to this file");
+}
+
 class PluginArchiresQueryLocation extends CommonDBTM {
 
 	function __construct () {

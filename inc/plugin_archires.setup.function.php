@@ -33,6 +33,10 @@
 // ----------------------------------------------------------------------
  */
 
+if (!defined('GLPI_ROOT')) {
+	die("Sorry. You can't access directly to this file");
+}
+
 function plugin_archires_installing($version) {
 	
 	global $DB;
