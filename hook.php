@@ -37,7 +37,6 @@ foreach (glob(GLPI_ROOT . '/plugins/archires/inc/*.php') as $file)
 	include_once ($file);
 
 function plugin_archires_install() {
-	global $DB, $LANG, $CFG_GLPI;
 
    include_once (GLPI_ROOT."/inc/profile.class.php");
 
@@ -127,6 +126,7 @@ function plugin_archires_uninstall() {
 
 // Define dropdown relations
 function plugin_archires_getDatabaseRelations() {
+
 	$plugin = new Plugin();
 	if ($plugin->isActivated("archires"))
 
@@ -143,7 +143,7 @@ function plugin_archires_getDatabaseRelations() {
 ////// SEARCH FUNCTIONS ///////() {
 
 function plugin_archires_giveItem($type,$ID,$data,$num) {
-	global $CFG_GLPI, $INFOFORM_PAGES, $LANG;
+	global $LANG;
   
    $searchopt=&getSearchOptions($type);
   
@@ -268,6 +268,7 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 // Hook done on delete item case
 
 function plugin_pre_item_delete_archires($input) {
+
 	if (isset($input["_item_type_"]))
 		switch ($input["_item_type_"]) {
 			case PROFILE_TYPE :
@@ -362,7 +363,7 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 
 // How to process specific actions ?
 function plugin_archires_MassiveActionsProcess($data) {
-	global $DB,$LANG;
+	global $DB;
 
 	switch ($data['action']) {
 		case 'plugin_archires_duplicate':
@@ -468,7 +469,7 @@ function plugin_headings_actions_archires($type) {
 
 // action heading
 function plugin_headings_archires($type,$ID,$withtemplate=0) {
-	global $CFG_GLPI,$LANG;
+	global $CFG_GLPI;
   
    $PluginArchiresProfile=new PluginArchiresProfile();
   
