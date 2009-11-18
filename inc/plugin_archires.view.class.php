@@ -637,13 +637,9 @@ class PluginArchiresView extends CommonDBTM {
             echo "</table></div>";
             //massive action
             if (plugin_archires_haveRight("archires","w")) {
-               echo "<div align='center'>";
-               echo "<table width='80%'>";
-               echo "<tr><td><img src=\"".$CFG_GLPI["root_doc"]."/pics/arrow-left.png\" alt=''></td><td class='center'><a onclick= \"if ( markCheckboxes('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all' >".$LANG['buttons'][18]."</a></td>";
-               echo "<td>/</td><td class='center'><a onclick= \"if ( unMarkCheckboxes('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a>";
-               echo "</td><td class='left' width='80%'>";
+               openArrowMassive("massiveaction_form");
                $this->dropdownMassiveAction($ID,$deleted);
-               echo "</td>";
+               echo "</td></tr>";
                echo "</table>";
             }
             echo "</div></form>";
