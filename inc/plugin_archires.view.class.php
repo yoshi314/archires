@@ -639,8 +639,7 @@ class PluginArchiresView extends CommonDBTM {
             if (plugin_archires_haveRight("archires","w")) {
                openArrowMassive("massiveaction_form");
                $this->dropdownMassiveAction($ID,$deleted);
-               echo "</td></tr>";
-               echo "</table>";
+               closeArrowMassive();
             }
             echo "</div></form>";
 
