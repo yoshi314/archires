@@ -58,7 +58,7 @@ if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($
 					$PluginArchiresView->delete(array("id"=>$key),$force=0);
 				}
 			}
-		break;
+         break;
 		case "purge":
 			$PluginArchiresView->getFromDB($_POST["id"],-1);
 			foreach ($_POST["item"] as $key => $val) {
@@ -66,7 +66,7 @@ if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($
 					$PluginArchiresView->delete(array("id"=>$key),1);
 				}
 			}
-		break;
+         break;
 		case "restore":
 			$PluginArchiresView->getFromDB($_POST["id"],-1);
 			foreach ($_POST["item"] as $key => $val) {
@@ -74,18 +74,18 @@ if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($
 					$PluginArchiresView->restore(array("id"=>$key));
 				}
 			}
-		break;
+         break;
 		case "duplicate":
-		foreach ($_POST["item"] as $key => $val) {
-         if ($val==1) {
-            if ($PluginArchiresView->getFromDB($key)) {
-               unset($PluginArchiresView->fields["id"]);
-               $PluginArchiresView->fields["entities_id"]=$_POST["entities_id"];
-               $newID=$PluginArchiresView->add($PluginArchiresView->fields);
+         foreach ($_POST["item"] as $key => $val) {
+            if ($val==1) {
+               if ($PluginArchiresView->getFromDB($key)) {
+                  unset($PluginArchiresView->fields["id"]);
+                  $PluginArchiresView->fields["entities_id"]=$_POST["entities_id"];
+                  $newID=$PluginArchiresView->add($PluginArchiresView->fields);
+               }
             }
-			}
-		}
-		break;
+         }
+         break;
 		case "transfert":
 			foreach ($_POST["item"] as $key => $val) {
 				if ($val==1) {				
@@ -95,7 +95,7 @@ if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($
 					$DB->query($query);
 				}
 			}
-		break;
+         break;
 	}
 
 	addMessageAfterRedirect($LANG['common'][23]);

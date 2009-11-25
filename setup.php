@@ -51,11 +51,11 @@ function plugin_init_archires() {
 	$PLUGIN_HOOKS['change_profile']['archires'] = 'plugin_archires_changeProfile';
 
 	$PLUGIN_ARCHIRES_TYPE_TABLES = array (
-		COMPUTER_TYPE => "glpi_computerstypes",
-		PRINTER_TYPE => "glpi_printerstypes",
-		NETWORKING_TYPE => "glpi_networkequipmentstypes",
-		PERIPHERAL_TYPE => "glpi_peripheralstypes",
-		PHONE_TYPE => "glpi_phonestypes"
+		COMPUTER_TYPE => "glpi_computertypes",
+		PRINTER_TYPE => "glpi_printertypes",
+		NETWORKING_TYPE => "glpi_networkequipmenttypes",
+		PERIPHERAL_TYPE => "glpi_peripheraltypes",
+		PHONE_TYPE => "glpi_phonetypes"
 	);
 
 	// Params : plugin name - string type - number - tabke - form page

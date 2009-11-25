@@ -218,15 +218,15 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
       foreach ($types as $key => $val) {
        
          if ($val == COMPUTER_TYPE) {
-            $typefield = "computerstypes_id";
+            $typefield = "computertypes_id";
          } else if ($val == NETWORKING_TYPE) {
-            $typefield = "networkequipmentstypes_id";
+            $typefield = "networkequipmenttypes_id";
          } else if ($val == PERIPHERAL_TYPE) {
-            $typefield = "peripheralstypes_id";
+            $typefield = "peripheraltypes_id";
          } else if ($val == PRINTER_TYPE) {
-            $typefield = "printerstypes_id";
+            $typefield = "printertypes_id";
          } else if ($val == PHONE_TYPE) {
-            $typefield = "phonestypes_id";
+            $typefield = "phonetypes_id";
          }
       
          $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`networkinterfaces_id`,`np`.`ip`,`np`.`netmask`, `np`.`name` AS namep";

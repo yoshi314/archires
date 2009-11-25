@@ -118,12 +118,6 @@ if (in_array($_POST['table'],$CFG_GLPI["dropdowntree_tables"])) {
 		echo "<option class='tree' value=\"0\">--".$LANG['common'][11]."--</option>";
 
 	switch ($_POST["table"]) {
-		case "glpi_dropdown_kbcategories" :
-			echo "<option class='tree' value=\"0\">--".$LANG['knowbase'][12]."--</option>";
-			break;
-		case "glpi_entities" :
-			echo "<option class='tree' value=\"0\">--".$LANG['entity'][2]."--</option>";
-			break;
 		default :
 			echo "<option class='tree' value=\"0\">-----</option>";
 			break;

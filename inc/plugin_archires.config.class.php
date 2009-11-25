@@ -905,15 +905,15 @@ class PluginArchiresQueryType extends CommonDBTM {
       $query="";
     
       if ($val == COMPUTER_TYPE) {
-         $typefield = "computerstypes_id";
+         $typefield = "computertypes_id";
       } else if ($val == NETWORKING_TYPE) {
-         $typefield = "networkequipmentstypes_id";
+         $typefield = "networkequipmenttypes_id";
       } else if ($val == PERIPHERAL_TYPE) {
-         $typefield = "peripheralstypes_id";
+         $typefield = "peripheraltypes_id";
       } else if ($val == PRINTER_TYPE) {
-         $typefield = "printerstypes_id";
+         $typefield = "printertypes_id";
       } else if ($val == PHONE_TYPE) {
-         $typefield = "phonestypes_id";
+         $typefield = "phonetypes_id";
       }
       
       if ($DB->numrows($result0)>0) {
