@@ -66,7 +66,7 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
       $tab[1]['name']=$LANG['plugin_archires']['search'][1];
       $tab[1]['datatype']='itemlink';
 
-      $tab[2]['table']='glpi_plugin_appliances';
+      $tab[2]['table']='glpi_plugin_appliances_appliances';
       $tab[2]['field']='name';
       $tab[2]['linkfield']='appliances_id';
       $tab[2]['name']=$LANG['plugin_archires']['search'][8];
@@ -152,7 +152,7 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][8].":	</td><td>";
-      dropdownValue("glpi_plugin_appliances", "appliances_id", $this->fields["appliances_id"],1,$this->fields["entities_id"]);
+      dropdownValue("glpi_plugin_appliances_appliances", "appliances_id", $this->fields["appliances_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
 
@@ -238,7 +238,7 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
          if ($this->fields["vlans_id"] > "0")
             $query .= ", `glpi_networkports_vlans` nv";
 
-         $query .= ", `glpi_plugin_appliances_items` app";
+         $query .= ", `glpi_plugin_appliances_appliances_items` app";
          $query .= " WHERE `np`.`itemtype` = " . $val . " 
             AND `np`.`items_id` = `$LINK_ID_TABLE[$val]`.`id` 
             AND `app`.`items_id` = `$LINK_ID_TABLE[$val]`.`id` ";
@@ -256,7 +256,7 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
          if ($this->fields["groups_id"] > "0")
             $query .= " AND `$LINK_ID_TABLE[$val]`.`groups_id` = '".$this->fields["groups_id"]."'";
       
-         $query .= " AND `app`.`appliances_id` = '" . $PluginArchiresQueryAppliance->fields["appliances"] . "' 
+         $query .= " AND `app`.`appliances_id` = '" . $this->fields["appliances_id"] . "' 
             AND `app`.`itemtype` = " . $val . " ";
       
          $PluginArchiresQueryType=new PluginArchiresQueryType();
