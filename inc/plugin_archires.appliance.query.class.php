@@ -252,15 +252,15 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
             while ($data = $DB->fetch_array($result)) {
 
                if ($PluginArchiresView->fields["display_state"]!=0)
-                  $devices[$val][$data["items_id"]]["state"] = $data["state"];
+                  $devices[$val][$data["items_id"]]["states_id"] = $data["states_id"];
 
-                  $devices[$val][$data["items_id"]]["type"] = $data["type"];
-                  $devices[$val][$data["items_id"]]["name"] = $data["name"];
-                  $devices[$val][$data["items_id"]]["users_id"] = $data["users_id"];
-                  $devices[$val][$data["items_id"]]["groups_id"] = $data["groups_id"];
-                  $devices[$val][$data["items_id"]]["contact"] = $data["contact"];
-                  $devices[$val][$data["items_id"]]["entity"] = $data["entities_id"];
-                  $devices[$val][$data["items_id"]]["locations_id"] = $data["locations_id"];
+               $devices[$val][$data["items_id"]]["type"] = $data["type"];
+               $devices[$val][$data["items_id"]]["name"] = $data["name"];
+               $devices[$val][$data["items_id"]]["users_id"] = $data["users_id"];
+               $devices[$val][$data["items_id"]]["groups_id"] = $data["groups_id"];
+               $devices[$val][$data["items_id"]]["contact"] = $data["contact"];
+               $devices[$val][$data["items_id"]]["entity"] = $data["entities_id"];
+               $devices[$val][$data["items_id"]]["locations_id"] = $data["locations_id"];
              
                if ($data["ip"]) {
                   if (!empty($devices[$val][$data["items_id"]]["ip"])) {
