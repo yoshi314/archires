@@ -114,15 +114,14 @@ class PluginArchiresItemImage extends CommonDBTM {
    }
   
    function showForm() {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB,$LANG,$CFG_GLPI,$PLUGIN_ARCHIRES_TYPE_NAME;
 
       echo "<form method='post' action=\"./plugin_archires.config.php\">";
       echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='4'>";
       echo $LANG['plugin_archires']['setup'][2]." : </th></tr>";
       echo "<tr class='tab_bg_1'><td>";
-      $types=$CFG_GLPI["state_types"];
       $PluginArchires=new PluginArchires();
-      $PluginArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"],$types);
+      $PluginArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
       echo "</td><td>";
       //file
       $rep = "../pics/";
@@ -173,7 +172,7 @@ class PluginArchiresItemImage extends CommonDBTM {
                   echo "<tr class='tab_bg_1'>";
                   
                $PluginArchires=new PluginArchires();
-               echo "<td>".$PluginArchires->getItemType($ligne["itemtype"])."</td><td>".$PluginArchires->getType($ligne["itemtype"],$ligne["type"])."</td><td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"]."\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";					
+               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchires->getType($ligne["itemtype"],$ligne["type"])."</td><td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"]."\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                echo "<input type='checkbox' name='item[$ID]' value='1'>";
@@ -296,7 +295,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
       
    }
   
-   function showForm() {
+   function showForm($canupdate=false) {
       global $DB,$LANG,$CFG_GLPI;
 
       $query = "SELECT * 
@@ -305,8 +304,9 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
       $i=0;
       if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
-      
-         echo "<form method='post' name='massiveaction_form_networkinterface_color' id='massiveaction_form_networkinterface_color' action=\"./plugin_archires.config.php\">";
+           
+         if ($canupdate)
+            echo "<form method='post' name='massiveaction_form_networkinterface_color' id='massiveaction_form_networkinterface_color' action=\"./plugin_archires.config.php\">";
          $used=array();
          if ($number != 0) {
         
@@ -334,7 +334,8 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                echo "<td>".getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
-               echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
+               if ($canupdate)
+                  echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
                echo "</td>";
           
                $i++;
@@ -342,35 +343,38 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
         
             }
-        
-            echo "<tr class='tab_bg_1'>";
-            if ($number > 1)
-               echo "<td colspan='8'>";
-            else
-               echo "<td colspan='4'>";
-          
-            echo "<div align='center'><a onclick= \"if ( markCheckboxes ('massiveaction_form_networkinterface_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
-            echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form_networkinterface_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
-            echo "<input type='submit' name='delete_color_networkinterface' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
+            
+            if ($canupdate) {
+               echo "<tr class='tab_bg_1'>";
+               if ($number > 1)
+                  echo "<td colspan='8'>";
+               else
+                  echo "<td colspan='4'>";
+             
+               echo "<div align='center'><a onclick= \"if ( markCheckboxes ('massiveaction_form_networkinterface_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
+               echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form_networkinterface_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
+               echo "<input type='submit' name='delete_color_networkinterface' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
+            }
             echo "</table>";
             echo "</div>";
-          
          }
-      
-         echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
-         echo $LANG['plugin_archires']['setup'][8]." : </th></tr>";
-         echo "<tr class='tab_bg_1'><td>";
-         $this->dropdownNetworkInterface($used);
-         echo "</td><td>";
-         echo "<input type='text' name=\"color\">";
-         echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";
-         echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_networkinterface')\" onmouseover=\"cleandisplay('comments_networkinterface')\">";
-         echo "</a><span class='over_link' id='comments_networkinterface'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
+         
+         if ($canupdate) {
+            echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
+            echo $LANG['plugin_archires']['setup'][8]." : </th></tr>";
+            echo "<tr class='tab_bg_1'><td>";
+            $this->dropdownNetworkInterface($used);
+            echo "</td><td>";
+            echo "<input type='text' name=\"color\">";
+            echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";
+            echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_networkinterface')\" onmouseover=\"cleandisplay('comments_networkinterface')\">";
+            echo "</a><span class='over_link' id='comments_networkinterface'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
 
-         echo "<td>";
-         echo "<div align='center'><input type='submit' name='add_color_networkinterface' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
-         echo "</table>";
-         echo "</form>";
+            echo "<td>";
+            echo "<div align='center'><input type='submit' name='add_color_networkinterface' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
+            echo "</table>";
+            echo "</form>";
+         }
       }
    }
   
@@ -481,7 +485,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
       
    }
   
-   function showForm() {
+   function showForm($canupdate=false) {
     global $DB,$LANG,$CFG_GLPI;
 
       $query = "SELECT * 
@@ -492,8 +496,9 @@ class PluginArchiresVlanColor extends CommonDBTM {
     
       if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
-      
-         echo "<form method='post' name='massiveaction_form_vlan_color' id='massiveaction_form_vlan_color' action=\"./plugin_archires.config.php\">";
+         
+         if ($canupdate)
+            echo "<form method='post' name='massiveaction_form_vlan_color' id='massiveaction_form_vlan_color' action=\"./plugin_archires.config.php\">";
       
          if ($number != 0) {
         
@@ -521,7 +526,8 @@ class PluginArchiresVlanColor extends CommonDBTM {
                echo "<td>".getDropdownName("glpi_vlans", $ligne["vlans_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
-               echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
+               if ($canupdate)
+                  echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
                echo "</td>";
 
                $i++;
@@ -529,35 +535,39 @@ class PluginArchiresVlanColor extends CommonDBTM {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
            
             }
-           
-            echo "<tr class='tab_bg_1'>";
-            if ($number > 1)
-               echo "<td colspan='8'>";
-            else
-               echo "<td colspan='4'>";
-             
-            echo "<div align='center'><a onclick= \"if ( markCheckboxes ('massiveaction_form_vlan_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
-            echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form_vlan_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
-            echo "<input type='submit' name='delete_color_vlan' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
+            
+            if ($canupdate) {
+               echo "<tr class='tab_bg_1'>";
+               if ($number > 1)
+                  echo "<td colspan='8'>";
+               else
+                  echo "<td colspan='4'>";
+                
+               echo "<div align='center'><a onclick= \"if ( markCheckboxes ('massiveaction_form_vlan_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
+               echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form_vlan_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
+               echo "<input type='submit' name='delete_color_vlan' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
+            }
             echo "</table>";
             echo "</div>";
         
          }
-      
-         echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
-         echo $LANG['plugin_archires']['setup'][23]." : </th></tr>";
-         echo "<tr class='tab_bg_1'><td>";
-         $this->dropdownVlan($used);
-         echo "</td><td>";
-         echo "<input type='text' name=\"color\">";
-         echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";	
-         echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_vlan')\" onmouseover=\"cleandisplay('comments_vlan')\">";
-         echo "</a><span class='over_link' id='comments_vlan'>".nl2br($LANG['plugin_archires']['setup'][23])."</span>";
+         
+         if ($canupdate) {
+            echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
+            echo $LANG['plugin_archires']['setup'][23]." : </th></tr>";
+            echo "<tr class='tab_bg_1'><td>";
+            $this->dropdownVlan($used);
+            echo "</td><td>";
+            echo "<input type='text' name=\"color\">";
+            echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";	
+            echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_vlan')\" onmouseover=\"cleandisplay('comments_vlan')\">";
+            echo "</a><span class='over_link' id='comments_vlan'>".nl2br($LANG['plugin_archires']['setup'][23])."</span>";
 
-         echo "<td>";
-         echo "<div align='center'><input type='submit' name='add_color_vlan' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
-         echo "</table>";
-         echo "</form>";	
+            echo "<td>";
+            echo "<div align='center'><input type='submit' name='add_color_vlan' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
+            echo "</table>";
+            echo "</form>";
+         }
       }
    }
   
@@ -687,7 +697,7 @@ class PluginArchiresStateColor extends CommonDBTM {
       
    }
   
-   function showForm() {
+   function showForm($canupdate=false) {
       global $DB,$LANG,$CFG_GLPI;
 
       $query = "SELECT * 
@@ -698,8 +708,9 @@ class PluginArchiresStateColor extends CommonDBTM {
     
       if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
-      
-         echo "<form method='post' name='massiveaction_form_state_color' id='massiveaction_form_state_color' action=\"./plugin_archires.config.php\">";
+         
+         if ($canupdate)
+            echo "<form method='post' name='massiveaction_form_state_color' id='massiveaction_form_state_color' action=\"./plugin_archires.config.php\">";
       
          if ($number != 0) {
         
@@ -727,7 +738,8 @@ class PluginArchiresStateColor extends CommonDBTM {
                echo "<td>".getDropdownName("glpi_states",$ligne["states_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
-               echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
+               if ($canupdate)
+                  echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
                echo "</td>";
 
                $i++;
@@ -735,35 +747,39 @@ class PluginArchiresStateColor extends CommonDBTM {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
            
             }
-        
-            echo "<tr class='tab_bg_1'>";
-            if ($number > 1)
-               echo "<td colspan='8'>";
-            else
-               echo "<td colspan='4'>";
-             
-            echo "<div align='center'><a onclick= \"if ( markCheckboxes ('massiveaction_form_state_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
-            echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form_state_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
-            echo "<input type='submit' name='delete_color_state' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
+            
+            if ($canupdate) {
+               echo "<tr class='tab_bg_1'>";
+               if ($number > 1)
+                  echo "<td colspan='8'>";
+               else
+                  echo "<td colspan='4'>";
+
+               echo "<div align='center'><a onclick= \"if ( markCheckboxes ('massiveaction_form_state_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
+               echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form_state_color') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
+               echo "<input type='submit' name='delete_color_state' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
+            }
             echo "</table>";
             echo "</div>";
           
          }
-      
-         echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
-         echo $LANG['plugin_archires']['setup'][19]." : </th></tr>";
-         echo "<tr class='tab_bg_1'><td>";
-         $this->dropdownState($used);
-         echo "</td><td>";
-         echo "<input type='text' name=\"color\">";
-         echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";	
-         echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_state')\" onmouseover=\"cleandisplay('comments_state')\">";
-         echo "</a><span class='over_link' id='comments_state'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
+         
+         if ($canupdate) {
+            echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
+            echo $LANG['plugin_archires']['setup'][19]." : </th></tr>";
+            echo "<tr class='tab_bg_1'><td>";
+            $this->dropdownState($used);
+            echo "</td><td>";
+            echo "<input type='text' name=\"color\">";
+            echo " <a href=\"http://www.graphviz.org/doc/info/colors.html\" target='_blank'>";	
+            echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('comments_state')\" onmouseover=\"cleandisplay('comments_state')\">";
+            echo "</a><span class='over_link' id='comments_state'>".nl2br($LANG['plugin_archires']['setup'][12])."</span>";
 
-         echo "<td>";
-         echo "<div align='center'><input type='submit' name='add_color_state' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
-         echo "</table>";
-         echo "</form>";
+            echo "<td>";
+            echo "<div align='center'><input type='submit' name='add_color_state' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
+            echo "</table>";
+            echo "</form>";
+         }
       }
    }
   
@@ -893,7 +909,7 @@ class PluginArchiresQueryType extends CommonDBTM {
    }
   
    function queryTypeCheck($querytype,$views_id,$val) {
-      global $DB,$LINK_ID_TABLE;
+      global $DB,$LINK_ID_TABLE,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
     
       $query0="SELECT * 
           FROM `".$this->table."` 
@@ -903,22 +919,10 @@ class PluginArchiresQueryType extends CommonDBTM {
       $result0=$DB->query($query0);
     
       $query="";
-    
-      if ($val == COMPUTER_TYPE) {
-         $typefield = "computertypes_id";
-      } else if ($val == NETWORKING_TYPE) {
-         $typefield = "networkequipmenttypes_id";
-      } else if ($val == PERIPHERAL_TYPE) {
-         $typefield = "peripheraltypes_id";
-      } else if ($val == PRINTER_TYPE) {
-         $typefield = "printertypes_id";
-      } else if ($val == PHONE_TYPE) {
-         $typefield = "phonetypes_id";
-      }
       
       if ($DB->numrows($result0)>0) {
         
-        $query = "AND `$LINK_ID_TABLE[$val]`.`$typefield` IN (0 ";	
+        $query = "AND `$LINK_ID_TABLE[$val]`.`$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES[$val]` IN (0 ";	
          while ($data0=$DB->fetch_array($result0)) {
             $type_where=",'".$data0["type"]."' ";
             $query .= " $type_where ";
@@ -930,26 +934,26 @@ class PluginArchiresQueryType extends CommonDBTM {
    }
   
    function showTypes($type,$ID) {
-      global $CFG_GLPI,$DB,$LANG;
+      global $CFG_GLPI,$DB,$LANG,$PLUGIN_ARCHIRES_TYPE_NAME;
 
       if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY)
-         $table="location";
+         $page="location";
       else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY)
-         $table="networkequipment";
+         $page="networkequipment";
       else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY)
-         $table="appliance";
+         $page="appliance";
 
       echo "<div align='center'>";
 
       if (plugin_archires_haveRight("archires","w")) {
 
-         echo "<form method='post'  action=\"./plugin_archires.".$table.".form.php\">";
+         echo "<form method='post'  action=\"./plugin_archires.".$page.".form.php\">";
          echo "<table class='tab_cadre' cellpadding='5' width='34%'><tr><th colspan='2'>";
          echo $LANG['plugin_archires'][2]." : </th></tr>";
          echo "<tr class='tab_bg_1'><td>";
-         $types=$CFG_GLPI["state_types"];
+
          $PluginArchires=new PluginArchires();
-         $PluginArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"],$types);
+         $PluginArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
 
          echo "</td>";
          echo "<td>";
@@ -971,7 +975,7 @@ class PluginArchiresQueryType extends CommonDBTM {
          $number = $DB->numrows($result);
          if ($number != 0) {
 
-            echo "<form method='post' name='massiveaction_form$rand' id='massiveaction_form$rand' action=\"./plugin_archires.".$table.".form.php\">";
+            echo "<form method='post' name='massiveaction_form$rand' id='massiveaction_form$rand' action=\"./plugin_archires.".$page.".form.php\">";
             echo "<div id='liste'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
@@ -993,7 +997,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                if ($number==1)
                   echo "<tr class='tab_bg_1'>";
                $PluginArchires=new PluginArchires();
-               echo "<td>".$PluginArchires->getItemType($ligne["itemtype"])."</td><td>".$PluginArchires->getType($ligne["itemtype"],$ligne["type"])."</td>";
+               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchires->getType($ligne["itemtype"],$ligne["type"])."</td>";
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                echo "<input type='checkbox' name='item[$ID]' value='1'>";

@@ -67,6 +67,9 @@ if (empty($_POST["id"])) {
          $PluginArchiresView->showView(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
          $PluginArchiresPrototype->test(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
          break;
+      case 3 :
+         $PluginArchiresPrototype->linkGenerate(PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
+         break;
       case 10 :
          showNotesForm($_POST['target'],PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY,$_POST["id"]);
          break;

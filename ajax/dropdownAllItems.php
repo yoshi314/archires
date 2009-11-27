@@ -57,7 +57,7 @@ if (isset($_POST["idtable"]) && $_POST["idtable"]!=0) {
 	}
 
      $params=array('searchText'=>'__VALUE__',
-               'itemtype'=>$itemtype,
+                     'itemtype'=>$itemtype,
                      'table'=>$table,
                      'rand'=>$rand,
                      'myname'=>$_POST["myname"],

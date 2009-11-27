@@ -66,9 +66,9 @@ if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 		$PluginArchiresView->title();
 	}
 	
-	$PluginArchiresView->searchForm();
+	$PluginArchiresView->searchForm($_GET);
 
-	$PluginArchiresView->showList($_SERVER["PHP_SELF"],$_SESSION["glpiname"],$_GET["field"],$_GET["phrasetype"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["is_deleted"]);
+	$PluginArchiresView->showList($_GET);
 
 	
 } else {

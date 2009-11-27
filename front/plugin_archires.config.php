@@ -155,11 +155,11 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 
 	$PluginArchiresItemImage->showForm();
 	
-	$PluginArchiresNetworkInterfaceColor->showForm();
+	$PluginArchiresNetworkInterfaceColor->showForm(true);
 
-	$PluginArchiresVlanColor->showForm();
+	$PluginArchiresVlanColor->showForm(true);
 
-	$PluginArchiresStateColor->showForm();
+	$PluginArchiresStateColor->showForm(true);
 }
 	
 commonFooter();

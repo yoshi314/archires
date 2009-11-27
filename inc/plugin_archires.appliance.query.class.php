@@ -96,11 +96,6 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
       $tab[7]['linkfield']='views_id';
       $tab[7]['name']=$LANG['plugin_archires']['setup'][20];
 
-      $tab[8]['table']=$this->table;
-      $tab[8]['field']='link';
-      $tab[8]['linkfield']='';
-      $tab[8]['name']=$LANG['plugin_archires'][0];
-
       $tab[30]['table']=$this->table;
       $tab[30]['field']='id';
       $tab[30]['linkfield']='';
@@ -120,6 +115,7 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
 		$ong[1]=$LANG['title'][26];
 		if ($ID > 0) {
 			$ong[2]=$LANG['plugin_archires']['test'][0];
+			$ong[3]=$LANG['plugin_archires']['search'][6];
 			if (haveRight("notes","r"))	
 				$ong[10]=$LANG['title'][37];
 		}
@@ -181,13 +177,13 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
       //View
       $PluginArchiresView=new PluginArchiresView();
-      $PluginArchiresView->dropdownView($this,$ID);
+      $PluginArchiresView->dropdownView($this,-1);
       echo "</td></tr>";
 
       echo "</table>";
       echo "</td>";
       echo "</tr>";
-
+      
       $this->showFormButtons($ID,$withtemplate);
       echo "<div id='tabcontent'></div>";
       echo "<script type='text/javascript'>loadDefaultTab();</script>";
@@ -196,7 +192,7 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
 	}
 	
 	function Query ($ID,$PluginArchiresView,$for) {
-      global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
+      global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
     
       $this->getFromDB($ID);
     
@@ -216,22 +212,10 @@ class PluginArchiresQueryAppliance extends CommonDBTM {
          $types[]=NETWORKING_TYPE;
     
       foreach ($types as $key => $val) {
-       
-         if ($val == COMPUTER_TYPE) {
-            $typefield = "computertypes_id";
-         } else if ($val == NETWORKING_TYPE) {
-            $typefield = "networkequipmenttypes_id";
-         } else if ($val == PERIPHERAL_TYPE) {
-            $typefield = "peripheraltypes_id";
-         } else if ($val == PRINTER_TYPE) {
-            $typefield = "printertypes_id";
-         } else if ($val == PHONE_TYPE) {
-            $typefield = "phonetypes_id";
-         }
       
          $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`networkinterfaces_id`,`np`.`ip`,`np`.`netmask`, `np`.`name` AS namep";
       
-         $query = "SELECT `$LINK_ID_TABLE[$val]`.`id` AS idc, $fieldsnp , `$LINK_ID_TABLE[$val]`.`name`, `$LINK_ID_TABLE[$val]`.`$typefield` AS `type`, `$LINK_ID_TABLE[$val]`.`users_id`, `$LINK_ID_TABLE[$val]`.`groups_id`, `$LINK_ID_TABLE[$val]`.`contact`, `$LINK_ID_TABLE[$val]`.`states_id`";
+         $query = "SELECT `$LINK_ID_TABLE[$val]`.`id` AS idc, $fieldsnp , `$LINK_ID_TABLE[$val]`.`name`, `$LINK_ID_TABLE[$val]`.`$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES[$val]` AS `type`, `$LINK_ID_TABLE[$val]`.`users_id`, `$LINK_ID_TABLE[$val]`.`groups_id`, `$LINK_ID_TABLE[$val]`.`contact`, `$LINK_ID_TABLE[$val]`.`states_id`";
          //en +
          $query .= ", `$LINK_ID_TABLE[$val]`.`entities_id`,`$LINK_ID_TABLE[$val]`.`locations_id` ";
          $query .= " FROM `glpi_networkports` np, `$LINK_ID_TABLE[$val]` ";

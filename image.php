@@ -60,7 +60,12 @@ if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
 }
 
 $obj=new $object();
-$output_data = $PluginArchiresPrototype->createGraph($format_graph,$obj,$_GET["id"],$_GET["views_id"]);
+$obj->getFromDB($_GET["id"]);
+$object_view=$obj->fields["views_id"];
+if (!isset($_GET["views_id"])) $views_id = $object_view;
+else $views_id = $_GET["views_id"];
+
+$output_data = $PluginArchiresPrototype->createGraph($format_graph,$obj,$views_id);
 
 if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) {
    header("Content-type: image/svg+xml");

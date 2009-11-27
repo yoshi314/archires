@@ -127,3 +127,7 @@ ALTER TABLE `glpi_plugin_archires_views` ADD INDEX (`is_deleted`);
 ALTER TABLE `glpi_plugin_archires_profiles` CHANGE `ID` `id` int(11) NOT NULL auto_increment;
 ALTER TABLE `glpi_plugin_archires_profiles` CHANGE `name` `name` varchar(255) collate utf8_unicode_ci default NULL;
 ALTER TABLE `glpi_plugin_archires_profiles` CHANGE `archires` `archires` char(1) collate utf8_unicode_ci default NULL;
+
+DELETE FROM `glpi_displayprefs` WHERE `itemtype` = 3000 AND `num` = 9;
+DELETE FROM `glpi_displayprefs` WHERE `itemtype` = 3001 AND `num` = 8;
+DELETE FROM `glpi_displayprefs` WHERE `itemtype` = 3002 AND `num` = 8;

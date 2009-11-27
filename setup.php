@@ -46,7 +46,7 @@ include_once ("inc/plugin_archires.profile.class.php");
 // Init the hooks of the plugins -Needed
 function plugin_init_archires() {
 
-	global $PLUGIN_HOOKS,$CFG_GLPI,$LANG,$PLUGIN_ARCHIRES_TYPE_TABLES;
+	global $PLUGIN_HOOKS,$CFG_GLPI,$LANG,$PLUGIN_ARCHIRES_TYPE_TABLES,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES,$PLUGIN_ARCHIRES_TYPE_NAME;
 
 	$PLUGIN_HOOKS['change_profile']['archires'] = 'plugin_archires_changeProfile';
 
@@ -56,6 +56,22 @@ function plugin_init_archires() {
 		NETWORKING_TYPE => "glpi_networkequipmenttypes",
 		PERIPHERAL_TYPE => "glpi_peripheraltypes",
 		PHONE_TYPE => "glpi_phonetypes"
+	);
+   
+   $PLUGIN_ARCHIRES_TYPE_FIELD_TABLES = array (
+		COMPUTER_TYPE => "computertypes_id",
+		PRINTER_TYPE => "printertypes_id",
+		NETWORKING_TYPE => "networkequipmenttypes_id",
+		PERIPHERAL_TYPE => "peripheraltypes_id",
+		PHONE_TYPE => "phonetypes_id"
+	);
+	
+	$PLUGIN_ARCHIRES_TYPE_NAME = array (
+		COMPUTER_TYPE => $LANG['Menu'][0],
+		PRINTER_TYPE => $LANG['Menu'][2],
+		NETWORKING_TYPE => $LANG['Menu'][1],
+		PERIPHERAL_TYPE => $LANG['Menu'][16],
+		PHONE_TYPE => $LANG['Menu'][34]
 	);
 
 	// Params : plugin name - string type - number - tabke - form page

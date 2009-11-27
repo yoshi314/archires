@@ -50,15 +50,15 @@ if (isset($_POST["action"])||isset($_POST["id"])) {
 		case "purge":
 		case "restore":
 			echo "<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
-		break;
+         break;
 		case "duplicate":
 			dropdownValue("glpi_entities", "entities_id", '');
 			echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
-		break;
+         break;
 		case "transfert":
 			dropdownValue("glpi_entities", "entities_id", '');
 			echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
-		break;
+         break;
 
 	}
 }

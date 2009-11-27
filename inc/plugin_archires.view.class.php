@@ -61,93 +61,93 @@ class PluginArchiresView extends CommonDBTM {
       }
       echo "</tr></table></div>";
 	}
-  
-   function viewSelect($target,$ID,$querytype,$views_id) {
-      global $CFG_GLPI,$LANG,$DB;
-
-      if ($querytype==PLUGIN_ARCHIRES_LOCATIONS_QUERY)
-         $table="locations";
-      else if ($querytype==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY)
-         $table="networkequipments";
-      else if ($querytype==PLUGIN_ARCHIRES_APPLIANCES_QUERY)
-         $table="appliances";
-
-      $table_query="glpi_plugin_archires_".$table."queries";
-
-      $query = "SELECT `id`, `name`,`views_id`
-        FROM `".$table_query."`
-        WHERE `is_deleted` = '0' ";
+   
+   function dropdownObject($obj) {
+      global $LANG,$DB,$CFG_GLPI;
+      
+      $ID=$obj->fields["id"];
+      
+      $query = "SELECT `id`, `name`
+               FROM `".$obj->table."`
+               WHERE `is_deleted` = '0' ";
       // Add Restrict to current entities
-      if (in_array($table_query,$CFG_GLPI["specif_entities_tables"])) {
+      if (in_array($obj->table,$CFG_GLPI["specif_entities_tables"])) {
          $LINK= " AND " ;
-         $query.=getEntitiesRestrictRequest($LINK,$table_query);
+         $query.=getEntitiesRestrictRequest($LINK,$obj->table);
       }
       $query.=" ORDER BY `name` ASC";
 
       if ($result = $DB->query($query)) {
 
          if ($DB->numrows($result) >0) {
-            echo "<form method='get' name='selecting' action=\"$target\">";
-            echo "<table class='tab_cadre' cellpadding='5'>";
-            echo "<tr class='tab_bg_1'><td class='center'>";
 
-            //location
-            echo $LANG['plugin_archires'][0]." : ";
-            echo "<select name=\"selectquery\" size=\"1\"> ";
-
+            echo "<select name=\"queries_id\" size=\"1\"> ";
             while($ligne= mysql_fetch_array($result)) {
-               $location=$ligne["name"];
-               $location_id=$ligne["id"];
-               if ($location_id==$ID)
-                  echo "<option value=\"$location_id\" selected>$location</option>";
-               else
-                  echo "<option value=\"$location_id\">$location</option>";
+               echo "<option value='".$ligne["id"]."' ".($ligne["id"]=="".$ID.""?" selected ":"").">".$ligne["name"]."</option>";
             }
-
-            echo "</select></td>";
-
-            //vue
-            $query1 = "SELECT `id`, `name`
-              FROM `".$this->table."`
-              WHERE `is_deleted` = '0'";
-            // Add Restrict to current entities
-            if (in_array($this->table,$CFG_GLPI["specif_entities_tables"])) {
-               $LINK= " AND " ;
-               $query1.=getEntitiesRestrictRequest($LINK,$this->table);
-            }
-            $query1.=" ORDER BY `name` ASC";
-
-            if ($result1 = $DB->query($query1)) {
-               echo "<td class='center'>";
-               echo $LANG['plugin_archires']['title'][3]." : ";
-               echo "<select name=\"views_id\" size=\"1\"> ";
-
-               while($ligne1= mysql_fetch_array($result1)) {
-                  $vue=$ligne1["name"];
-                  $vue_id=$ligne1["id"];
-                  if ($vue_id==$views_id)
-                     echo "<option value=\"$vue_id\" selected>$vue</option>";
-                  else
-                     echo "<option value=\"$vue_id\">$vue</option>";
-               }
-
-               echo "</select></td>";
-            }
-            echo "<td>";
-            echo "<input type='hidden' name='querytype' value=\"".$querytype."\"> ";
-            echo "<input type='submit' class='submit'  name='affiche' value=\"".$LANG['buttons'][2]."\"> ";
-            echo "</td>";
-            echo "<td>";
-            if ($views_id)
-               echo "<a href=\"./image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."\">".$LANG['plugin_archires']['setup'][16]."</a>";
-            else
-               echo "<a href=\"./image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$vue_id."\">".$LANG['plugin_archires']['setup'][16]."</a>";
-            echo "</td>";
-            echo "</tr>";
-            echo "</table>";
-            echo "</form> ";
+            echo "</select>";
          }
       }
+	}
+	
+	function dropdownView($obj,$default) {
+      global $DB,$CFG_GLPI;
+    
+      if (isset($obj->fields["id"])) {
+         $default=$obj->fields["views_id"];
+      }
+      $query = "SELECT `id`, `name` 
+        FROM `".$this->table."` 
+        WHERE `is_deleted` = '0' 
+        AND `entities_id` = '" . $_SESSION["glpiactive_entity"] . "' 
+        ORDER BY `name` ASC";
+      echo "<select name='views_id' size=\"1\"> ";
+      echo "<option value='0'>-----</option>\n";
+      if ($result = $DB->query($query)) {
+         while($ligne= mysql_fetch_array($result)) {
+            $view_name=$ligne["name"];
+            $view_id=$ligne["id"];
+            echo "<option value='".$view_id."' ".($view_id=="".$default.""?" selected ":"").">".$view_name."</option>";
+         } 
+      } 
+      echo "</select>";
+   }
+	
+   function viewSelect($obj,$views_id) {
+      global $CFG_GLPI,$LANG,$DB;
+      
+      $querytype=$obj->type;
+      $ID=$obj->fields["id"];
+      $object_view=$obj->fields["views_id"];
+      if (!isset($views_id)) $views_id = $object_view;
+      
+      echo "<form method='get' name='selecting' action='".$_SERVER['PHP_SELF']."'>";
+      echo "<table class='tab_cadre' cellpadding='5'>";
+      echo "<tr class='tab_bg_1'>";
+      
+      echo "<td class='center'>";
+      echo $LANG['plugin_archires'][0]." : ";    
+      $this->dropdownObject($obj);
+      echo "</td>";
+      
+      echo "<td class='center'>";
+      echo $LANG['plugin_archires']['title'][3]." : ";
+      $this->dropdownView(-1,$views_id);      
+      echo "</td>";
+      
+      echo "<td>";
+      echo "<input type='hidden' name='querytype' value=\"".$querytype."\"> ";
+      echo "<input type='submit' class='submit'  name='displayview' value=\"".$LANG['buttons'][2]."\"> ";
+      echo "</td>";
+      echo "<td>";
+      if ($views_id)
+         echo "<a href=\"./image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."\">".$LANG['plugin_archires']['setup'][16]."</a>";
+      else
+         echo "<a href=\"./image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$vue_id."\">".$LANG['plugin_archires']['setup'][16]."</a>";
+      echo "</td>";
+      echo "</tr>";
+      echo "</table>";
+      echo "</form> ";
    }
   
 	function defineTabs($ID,$withtemplate) {
@@ -214,9 +214,7 @@ class PluginArchiresView extends CommonDBTM {
          dropdownyesno("phone",$this->fields["phone"]);
          echo "</td><td></td><td></td></tr>";
 
-
          echo "<tr class='tab_bg_1 top'><th colspan='4'>".$LANG['plugin_archires'][24]."</th></tr>";
-
 
          echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires'][16].": </td>";
          echo "<td>";
@@ -242,7 +240,6 @@ class PluginArchiresView extends CommonDBTM {
          echo "<td>";
          dropdownyesno("display_type",$this->fields["display_type"]);
          echo "</td>";
-
 
          echo "<td>".$LANG['plugin_archires'][26].": </td>";
          echo "<td>";
@@ -313,39 +310,37 @@ class PluginArchiresView extends CommonDBTM {
       return true;
 	}
 	
-	function dropdownView($object,$ID) {
-      global $DB,$CFG_GLPI;
-    
-      $views_id=-1;
-      $obj=new $object();
-      if ($obj->getFromDB($ID)) {
-         $views_id=$obj->fields["views_id"];
-      }
-      $query = "SELECT `id`, `name` 
-        FROM `".$this->table."` 
-        WHERE `is_deleted` = '0' 
-        AND `entities_id` = '" . $_SESSION["glpiactive_entity"] . "' 
-        ORDER BY `name` ASC";
-      echo "<select name='views_id' size=\"1\"> ";
-      echo "<option value='0'>-----</option>\n";
-      if ($result = $DB->query($query)) {
-         while($ligne= mysql_fetch_array($result)) {
-            $view_name=$ligne["name"];
-            $view_id=$ligne["id"];
-            echo "<option value='".$view_id."' ".($view_id=="".$views_id.""?" selected ":"").">".$view_name."</option>";
-         } 
-      } 
-      echo "</select>";
-   }
-	
 	// Print Search Form
-	function searchForm($field="",$phrasetype= "",$contains="",$sort= "",$deleted= "") {
+	function searchForm($params) {
       global $CFG_GLPI,$LANG;
-
-      $option[$this->table.".id"]		= $LANG['plugin_archires']['search'][0];
+      
+      // Default values of parameters
+      $default_values["link"]=array();
+      $default_values["field"]=array();
+      $default_values["contains"]=array();
+      $default_values["link1"]=array();
+      $default_values["field1"]=array();
+      $default_values["contains1"]=array();
+      $default_values["sort"]="";
+      $default_values["is_deleted"]=0;
+      $default_values["link2"]="";
+      $default_values["contains2"]="";
+      $default_values["field2"]="";
+      $default_values["itemtype2"]="";
+      $default_values["target"] = $_SERVER['PHP_SELF'];
+      
+      foreach ($default_values as $key => $val) {
+         if (isset($params[$key])) {
+            $$key=$params[$key];
+         } else {
+            $$key=$default_values[$key];
+         }
+      }
+      
+      $option[$this->table.".id"]	= $LANG['plugin_archires']['search'][0];
       $option[$this->table.".name"]	= $LANG['plugin_archires']['search'][1];
 
-      echo "<form method='get' action=\"./plugin_archires.view.search.php\">";
+      echo "<form method='get' action=\"./plugin_archires.view.index.php\">";
       echo "<div align='center'><table  width='750' class='tab_cadre'>";
       echo "<tr><th colspan='4'>".$LANG['search'][0].":</th></tr>";
       echo "<tr class='tab_bg_1'>";
@@ -375,14 +370,14 @@ class PluginArchiresView extends CommonDBTM {
       echo "</select> ";
 
       echo "<td>";
-      dropdownyesno("is_deleted",$deleted);
+      dropdownyesno("is_deleted",$is_deleted);
 
       echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/showdeleted.png\" alt='".$LANG['common'][3]."' title='".$LANG['common'][3]."'>";
 
       echo "</td>";
       // Display Reset search
       echo "<td class='center'>";
-      echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.config.index.php?reset_search=reset_search&amp;type='".$this->type."' ><img title=\"".$LANG['buttons'][16]."\" alt=\"".$LANG['buttons'][16]."\" src='".$CFG_GLPI["root_doc"]."/pics/reset.png' class='calendrier'></a>";
+      echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.view.index.php?reset_search=reset_search&amp;type=".$this->type."'><img title=\"".$LANG['buttons'][16]."\" alt=\"".$LANG['buttons'][16]."\" src='".$CFG_GLPI["root_doc"]."/pics/reset.png' class='calendrier'></a>";
       Bookmark::showSaveButton(BOOKMARK_SEARCH,$this->type);
 
       echo "</td>";
@@ -406,15 +401,42 @@ class PluginArchiresView extends CommonDBTM {
    *@param $sort the "sort by" field value
    *@param $order ASC or DSC (for mysql query)
    *@param $start row number from witch we start the query (limit $start,xxx)
-   *@param $deleted Query on deleted items or not.
+   *@param $is_deleted Query on deleted items or not.
    *@param $phrasetype='' not used (to be deleted)
    *
    *@return Nothing (display)
    *
    **/
-  function showList($target,$username,$field,$phrasetype,$contains,$sort,$order,$start,$deleted) {
+  function showList($params) {
       global $DB,$CFG_GLPI,$LANG;
-
+      
+      // Default values of parameters
+      $default_values["link"]=array();
+      $default_values["field"]=array();
+      $default_values["contains"]=array();
+      $default_values["link1"]=array();
+      $default_values["field1"]=array();
+      $default_values["contains1"]=array();
+      $default_values["phrasetype"]="contains";
+      $default_values["sort"]="1";
+      $default_values["order"]="ASC";
+      $default_values["start"]=0;
+      $default_values["is_deleted"]=0;
+      $default_values["export_all"]=0;
+      $default_values["link2"]="";
+      $default_values["contains2"]="";
+      $default_values["field2"]="";
+      $default_values["itemtype2"]="";
+      $default_values["target"] = $_SERVER['PHP_SELF'];
+      
+      foreach ($default_values as $key => $val) {
+         if (isset($params[$key])) {
+            $$key=$params[$key];
+         } else {
+            $$key=$default_values[$key];
+         }
+      }
+      
       $first=true;
       // Build query
       if ($field=="all") {
@@ -457,7 +479,7 @@ class PluginArchiresView extends CommonDBTM {
       if (in_array($itemtable,$CFG_GLPI["deleted_tables"])) {
          $LINK= " AND " ;
          if ($first) {$LINK=" ";$first=false;}
-         $query.= $LINK.$itemtable.".`is_deleted` = '$deleted' ";
+         $query.= $LINK.$itemtable.".`is_deleted` = '$is_deleted' ";
       }
       // Remove template items
       if (in_array($itemtable,$CFG_GLPI["template_tables"])) {
@@ -638,7 +660,7 @@ class PluginArchiresView extends CommonDBTM {
             //massive action
             if (plugin_archires_haveRight("archires","w")) {
                openArrowMassive("massiveaction_form");
-               $this->dropdownMassiveAction($ID,$deleted);
+               $this->dropdownMassiveAction($ID,$is_deleted);
                closeArrowMassive();
             }
             echo "</div></form>";

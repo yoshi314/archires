@@ -17,7 +17,6 @@ front/plugin_archires.networkequipment.index.php -text
 front/plugin_archires.profile.php -text
 front/plugin_archires.view.form.php -text
 front/plugin_archires.view.index.php -text
-front/plugin_archires.view.search.php -text
 /graph.php -text
 /hook.php -text
 /image.php -text
