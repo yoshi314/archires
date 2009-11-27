@@ -58,9 +58,9 @@ if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 	if (!isset($_GET["is_deleted"])) $_GET["is_deleted"] = "0";
 	
 	$PluginArchiresProfile=new PluginArchiresProfile();
-  $PluginArchiresProfile->checkRight("archires","r");
+   $PluginArchiresProfile->checkRight("archires","r");
   
-  $PluginArchiresView=new PluginArchiresView();
+   $PluginArchiresView=new PluginArchiresView();
   
 	if ($plugin->isActivated("network")) {
 		$PluginArchiresView->title();

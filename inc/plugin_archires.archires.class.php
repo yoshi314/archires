@@ -128,7 +128,7 @@ class PluginArchires extends CommonDBTM {
       return $name;
    }
   
-   function getClassType ($type) {
+   function getClassType($type) {
 	
       if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
          $object= "PluginArchiresQueryLocation";

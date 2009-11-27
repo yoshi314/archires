@@ -50,7 +50,7 @@ $LANG['plugin_archires']['menu'][0] = "Menú generál";
 $LANG['plugin_archires']['menu'][1] = "Adición de arquitectura";
 
 $LANG['plugin_archires'][0] = "Mostrar";
-$LANG['plugin_archires'][1] = "Lugar no definido";
+$LANG['plugin_archires'][1] = "See all views";
 $LANG['plugin_archires'][2] = "Mostrar los tipos de materiales";
 $LANG['plugin_archires'][3] = "Mostrar los materiales";
 $LANG['plugin_archires'][6] = "Computadores";

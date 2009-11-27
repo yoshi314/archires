@@ -39,6 +39,7 @@ include (GLPI_ROOT."/inc/includes.php");
 
 useplugin('archires',true);
 
+$PluginArchires=new PluginArchires();
 $PluginArchiresView=new PluginArchiresView();
 $PluginArchiresPrototype=new PluginArchiresPrototype();
 
@@ -51,13 +52,7 @@ else if ($format==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
 else if ($format==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
 else if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) $format_graph="svg";
 
-if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
-	$object= "PluginArchiresQueryLocation";
-} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
-	$object= "PluginArchiresQueryNetworkEquipment";
-} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
-	$object= "PluginArchiresQueryAppliance";
-}
+$object=$PluginArchires->getClassType($_GET["querytype"]);
 
 $obj=new $object();
 $obj->getFromDB($_GET["id"]);

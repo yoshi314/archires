@@ -487,14 +487,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       return $graph;
    }
    
-   function linkGenerate($type,$ID) {
-      global $LANG;
-      echo "<div align='center'>";
-      echo "<a href=\"../graph.php?id=".$ID."&querytype=".$type."\">".$LANG['plugin_archires']['search'][6]."</a>";
-      echo "</div>";
-   }
-   
-   function displayGraph($obj,$views_id) {
+   function displayGraph($obj,$views_id,$select=0) {
       global $LANG,$DB,$CFG_GLPI;
       
       $querytype=$obj->type;
@@ -509,18 +502,18 @@ class PluginArchiresPrototype extends CommonDBTM {
       $PluginArchiresStateColor=new PluginArchiresStateColor();
       
       echo "<div align='center'>";
-		$PluginArchiresView->viewSelect($obj,$views_id);
-		
-		echo "<br>";
-		
+      $PluginArchiresView->viewSelect($obj,$views_id,$select);
+      echo "</div>";
+      		
 		if (isset($ID) && !empty($ID)) {
 		
-			echo "<img src=\"image.php?id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."\" alt=\"\" usemap=\"#G\">";
+			echo "<img src='".$CFG_GLPI["root_doc"]."/plugins/archires/image.php?id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."' alt='' usemap='#G'>";
 			echo $this->createGraph("cmapx",$obj,$views_id);
 			
 		}
 		//legend
 		if (isset($ID) && !empty($ID)) {
+         echo "<div align='center'>";
 			echo "<table  cellpadding='5' border='0'>";
 			echo "<tr><td class='top'>";
 			if ( $PluginArchiresView->fields["color"] == 0 ) {
@@ -532,10 +525,11 @@ class PluginArchiresPrototype extends CommonDBTM {
 			$PluginArchiresStateColor->showForm();
 			echo "</td></tr>";
 			echo "</table>";
+			echo "</div>";
 		} else {
 		
 			echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
-			echo "<b>".$LANG['plugin_archires'][1]."</b></div>";
+			echo "<b>".$LANG['plugin_archires']['search'][7]."</b></div>";
 		}
    }
 

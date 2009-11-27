@@ -50,7 +50,7 @@ $LANG['plugin_archires']['menu'][0] = "Menu général";
 $LANG['plugin_archires']['menu'][1] = "Ajout d'architecture";
 
 $LANG['plugin_archires'][0] = "Afficher";
-$LANG['plugin_archires'][1] = "Pas de lieu défini";
+$LANG['plugin_archires'][1] = "Voir toutes les vues";
 $LANG['plugin_archires'][2] = "Afficher des types de matériel particulier";
 $LANG['plugin_archires'][3] = "Affichage des matériels";
 $LANG['plugin_archires'][6] = "Ordinateurs";

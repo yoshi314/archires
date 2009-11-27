@@ -50,7 +50,7 @@ $LANG['plugin_archires']['menu'][0] = "Sommario";
 $LANG['plugin_archires']['menu'][1] = "Aggiunta architettura di rete";
 
 $LANG['plugin_archires'][0] = "Mostra";
-$LANG['plugin_archires'][1] = "Nessuna posizione definita";
+$LANG['plugin_archires'][1] = "See all views";
 $LANG['plugin_archires'][2] = "Mostra il tipo degli elementi";
 $LANG['plugin_archires'][3] = "Visualizzazione degli elementi";
 $LANG['plugin_archires'][6] = "Computers";

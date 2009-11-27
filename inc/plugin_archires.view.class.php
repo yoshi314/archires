@@ -113,7 +113,14 @@ class PluginArchiresView extends CommonDBTM {
       echo "</select>";
    }
 	
-   function viewSelect($obj,$views_id) {
+	function linkToAllViews($type,$ID) {
+      global $LANG;
+      echo "<div align='center'>";
+      echo "<a href=\"../graph.php?id=".$ID."&querytype=".$type."\">".$LANG['plugin_archires'][1]."</a>";
+      echo "</div>";
+   }
+   
+   function viewSelect($obj,$views_id,$select=0) {
       global $CFG_GLPI,$LANG,$DB;
       
       $querytype=$obj->type;
@@ -121,33 +128,35 @@ class PluginArchiresView extends CommonDBTM {
       $object_view=$obj->fields["views_id"];
       if (!isset($views_id)) $views_id = $object_view;
       
-      echo "<form method='get' name='selecting' action='".$_SERVER['PHP_SELF']."'>";
-      echo "<table class='tab_cadre' cellpadding='5'>";
-      echo "<tr class='tab_bg_1'>";
+      if ($select) {
+         echo "<form method='get' name='selecting' action='".$CFG_GLPI["root_doc"]."/plugins/archires/graph.php'>";
+         echo "<table class='tab_cadre' cellpadding='5'>";
+         echo "<tr class='tab_bg_1'>";
+         
+         echo "<td class='center'>";
+         echo $LANG['plugin_archires'][0]." : ";    
+         $this->dropdownObject($obj);
+         echo "</td>";
+         
+         echo "<td class='center'>";
+         echo $LANG['plugin_archires']['title'][3]." : ";
+         $this->dropdownView(-1,$views_id);      
+         echo "</td>";
+         
+         echo "<td>";
+         echo "<input type='hidden' name='querytype' value=\"".$querytype."\"> ";
+         echo "<input type='submit' class='submit'  name='displayview' value=\"".$LANG['buttons'][2]."\"> ";
+         echo "</td>";
+         echo "</tr>";
+         echo "</table>";
+         echo "</form>";
+      }
       
-      echo "<td class='center'>";
-      echo $LANG['plugin_archires'][0]." : ";    
-      $this->dropdownObject($obj);
-      echo "</td>";
-      
-      echo "<td class='center'>";
-      echo $LANG['plugin_archires']['title'][3]." : ";
-      $this->dropdownView(-1,$views_id);      
-      echo "</td>";
-      
-      echo "<td>";
-      echo "<input type='hidden' name='querytype' value=\"".$querytype."\"> ";
-      echo "<input type='submit' class='submit'  name='displayview' value=\"".$LANG['buttons'][2]."\"> ";
-      echo "</td>";
-      echo "<td>";
       if ($views_id)
-         echo "<a href=\"./image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."\">".$LANG['plugin_archires']['setup'][16]."</a>";
+         echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
       else
-         echo "<a href=\"./image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$vue_id."\">".$LANG['plugin_archires']['setup'][16]."</a>";
-      echo "</td>";
-      echo "</tr>";
-      echo "</table>";
-      echo "</form> ";
+         echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$vue_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
+
    }
   
 	function defineTabs($ID,$withtemplate) {

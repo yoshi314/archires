@@ -43,18 +43,13 @@ if (isset($_GET)) $tab = $_GET;
 if (empty($tab) && isset($_POST)) $tab = $_POST;
 if (!isset($tab["id"])) $tab["id"] = "";
 
-if ($_GET["querytype"]==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
-	$object= "PluginArchiresQueryLocation";
-} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
-	$object= "PluginArchiresQueryNetworkEquipment";
-} else if ($_GET["querytype"]==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
-	$object= "PluginArchiresQueryAppliance";
-}
+$PluginArchires=new PluginArchires();
+$PluginArchiresView=new PluginArchiresView();
+$PluginArchiresPrototype=new PluginArchiresPrototype();
+
+$object=$PluginArchires->getClassType($_GET["querytype"]);
 
 $obj=new $object();
-$PluginArchiresView=new PluginArchiresView();
-$PluginArchires=new PluginArchires();
-$PluginArchiresPrototype=new PluginArchiresPrototype();
 
 if (isset($_GET["displayview"])) {
 
@@ -83,7 +78,7 @@ if (isset($_GET["displayview"])) {
 			$PluginArchires->titleGraph();
 		}
          
-      $PluginArchiresPrototype->displayGraph($obj,$views_id);
+      $PluginArchiresPrototype->displayGraph($obj,$views_id,1);
 			
 	} else {
 		

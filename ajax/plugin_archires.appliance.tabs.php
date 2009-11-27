@@ -49,6 +49,7 @@ if (!isset($_POST["id"])) {
 $PluginArchiresProfile=new PluginArchiresProfile();
 $PluginArchiresProfile->checkRight("archires","r");
 
+$PluginArchires=new PluginArchires();
 $PluginArchiresQueryType=new PluginArchiresQueryType();
 $PluginArchiresView=new PluginArchiresView();
 $PluginArchiresPrototype=new PluginArchiresPrototype();
@@ -69,7 +70,12 @@ if (empty($_POST["id"])) {
          $PluginArchiresPrototype->test(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_POST["id"]);
          break;
       case 3 :
-         $PluginArchiresPrototype->linkGenerate(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_POST["id"]);
+         $PluginArchiresView->linkToAllViews(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_POST["id"]);
+         $object=$PluginArchires->getClassType(PLUGIN_ARCHIRES_APPLIANCES_QUERY);
+         $obj=new $object();
+         $obj->getFromDB($_POST["id"]);
+         $views_id=$obj->fields["views_id"];
+         $PluginArchiresPrototype->displayGraph($obj,$views_id);
          break;
       case 10 :
          showNotesForm($_POST['target'],PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_POST["id"]);

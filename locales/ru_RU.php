@@ -50,7 +50,7 @@ $LANG['plugin_archires']['menu'][0] = "Сводка";
 $LANG['plugin_archires']['menu'][1] = "Добавить структуру сети";
 
 $LANG['plugin_archires'][0] = "Показать";
-$LANG['plugin_archires'][1] = "Местонахождение не задано";
+$LANG['plugin_archires'][1] = "See all views";
 $LANG['plugin_archires'][2] = "Показывать тип";
 $LANG['plugin_archires'][3] = "Показывать объекты";
 $LANG['plugin_archires'][6] = "Компьютеры";
