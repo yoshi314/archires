@@ -181,10 +181,6 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 						$out= $data["ITEM_$num"];
                return $out;
                break;
-				case "glpi_plugin_archires_locationsqueries.link" :
-					$out= "<a href=\"../graph.php?id=".$data["id"]."&querytype=".PLUGIN_ARCHIRES_LOCATIONS_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
-               return $out;
-               break;
 			}
 			return "";
 		break;
@@ -219,10 +215,6 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 						$out= $data["ITEM_$num"];
                return $out;
                break;
-				case "glpi_plugin_archires_networkequipmentsqueries.link" :
-					$out= "<a href=\"../graph.php?id=".$data["id"]."&querytype=".PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
-               return $out;
-               break;
 			}
 		case PLUGIN_ARCHIRES_APPLIANCES_QUERY :
 			switch ($table.'.'.$field) {
@@ -252,10 +244,6 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 						$out=$LANG['plugin_archires'][11];
 					else
 						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_plugin_archires_appliancesqueries.link" :
-					$out= "<a href=\"../graph.php?id=".$data["id"]."&querytype=".PLUGIN_ARCHIRES_APPLIANCES_QUERY."\">".$LANG['plugin_archires']['search'][6]."</a>";
                return $out;
                break;
 			}

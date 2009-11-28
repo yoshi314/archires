@@ -7,6 +7,9 @@ ajax/plugin_archires.appliance.tabs.php -text
 ajax/plugin_archires.location.tabs.php -text
 ajax/plugin_archires.networkequipment.tabs.php -text
 ajax/plugin_archires.view.tabs.php -text
+front/archires.graph.php -text
+front/archires.map.php -text
+front/archires.test.php -text
 front/plugin_archires.appliance.form.php -text
 front/plugin_archires.appliance.index.php -text
 front/plugin_archires.config.php -text
@@ -17,9 +20,7 @@ front/plugin_archires.networkequipment.index.php -text
 front/plugin_archires.profile.php -text
 front/plugin_archires.view.form.php -text
 front/plugin_archires.view.index.php -text
-/graph.php -text
 /hook.php -text
-/image.php -text
 inc/plugin_archires-1.4-update.sql -text
 inc/plugin_archires-1.5-empty.sql -text
 inc/plugin_archires-1.5-update.sql -text
@@ -50,4 +51,3 @@ pics/mini_archires.png -text
 pics/nothing.png -text
 pics/socket.png -text
 /setup.php -text
-/test.php -text

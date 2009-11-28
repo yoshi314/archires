@@ -293,7 +293,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       echo "<br><table class='tab_cadre' border='0' cellpadding='2'>";
       echo "<tr><th>".$LANG['plugin_archires']['test'][1]."</th></tr>";
       echo "<tr class='tab_bg_1'><td>";
-      echo "<img src=\"../test.php\" alt=\"\">";
+      echo "<img src=\"./archires.test.php\" alt=\"\">";
       echo "</td></tr>";
       echo "</table>";
 
@@ -314,11 +314,8 @@ class PluginArchiresPrototype extends CommonDBTM {
       $graph .= "<<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
     
       //img
-      if ($format!='svg') {
-         $graph .= "<tr><td><img src=\"".$image_name."\"/></td></tr>";
-      } else {
-         $graph .= "<tr><td><img src=\"".realpath(GLPI_ROOT)."/plugins/archires/".$image_name. "\"/></td></tr>";
-      }
+      $graph .= "<tr><td><img src=\"".realpath(GLPI_ROOT)."/plugins/archires/".$image_name. "\"/></td></tr>";
+      
       $graph .= "<tr><td> </td></tr><tr><td>".$device["name"];
       //ip / type
       $graph .= $this->displayTypeAndIP($PluginArchiresView,$itemtype,$device,true);
@@ -507,7 +504,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       		
 		if (isset($ID) && !empty($ID)) {
 		
-			echo "<img src='".$CFG_GLPI["root_doc"]."/plugins/archires/image.php?id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."' alt='' usemap='#G'>";
+			echo "<img src='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."' alt='' usemap='#G'>";
 			echo $this->createGraph("cmapx",$obj,$views_id);
 			
 		}

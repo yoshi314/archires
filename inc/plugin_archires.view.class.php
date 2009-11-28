@@ -116,7 +116,7 @@ class PluginArchiresView extends CommonDBTM {
 	function linkToAllViews($type,$ID) {
       global $LANG;
       echo "<div align='center'>";
-      echo "<a href=\"../graph.php?id=".$ID."&querytype=".$type."\">".$LANG['plugin_archires'][1]."</a>";
+      echo "<a href=\"./archires.graph.php?id=".$ID."&querytype=".$type."\">".$LANG['plugin_archires'][1]."</a>";
       echo "</div>";
    }
    
@@ -129,7 +129,7 @@ class PluginArchiresView extends CommonDBTM {
       if (!isset($views_id)) $views_id = $object_view;
       
       if ($select) {
-         echo "<form method='get' name='selecting' action='".$CFG_GLPI["root_doc"]."/plugins/archires/graph.php'>";
+         echo "<form method='get' name='selecting' action='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.graph.php'>";
          echo "<table class='tab_cadre' cellpadding='5'>";
          echo "<tr class='tab_bg_1'>";
          
@@ -153,9 +153,9 @@ class PluginArchiresView extends CommonDBTM {
       }
       
       if ($views_id)
-         echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
+         echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
       else
-         echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/image.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$vue_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
+         echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$vue_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
 
    }
   

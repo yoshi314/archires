@@ -34,42 +34,58 @@
 */
 
 $NEEDED_ITEMS=array("user","tracking","reservation","document","computer","device","printer","networking","peripheral","monitor","software","infocom","phone","link","ocsng","consumable","cartridge","contract","enterprise","contact","group","profile","search","mailgate","typedoc","setup","admininfo","registry","setup");
-define('GLPI_ROOT', '../..');
+define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
 useplugin('archires',true);
+
+if (isset($_GET)) $tab = $_GET;
+if (empty($tab) && isset($_POST)) $tab = $_POST;
+if (!isset($tab["id"])) $tab["id"] = "";
 
 $PluginArchires=new PluginArchires();
 $PluginArchiresView=new PluginArchiresView();
 $PluginArchiresPrototype=new PluginArchiresPrototype();
 
-$PluginArchiresView->getFromDB($_GET["views_id"]);
-if (isset($_GET["format"])) $format=$_GET["format"];
-else $format=$PluginArchiresView->fields["format"];
-
-if ($format==PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
-else if ($format==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
-else if ($format==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
-else if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) $format_graph="svg";
-
 $object=$PluginArchires->getClassType($_GET["querytype"]);
 
 $obj=new $object();
-$obj->getFromDB($_GET["id"]);
-$object_view=$obj->fields["views_id"];
-if (!isset($_GET["views_id"])) $views_id = $object_view;
-else $views_id = $_GET["views_id"];
 
-$output_data = $PluginArchiresPrototype->createGraph($format_graph,$obj,$views_id);
+if (isset($_GET["displayview"])) {
 
-if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) {
-   header("Content-type: image/svg+xml");
-   header('Content-Disposition: attachment; filename="image.svg"');
+	$obj->getFromDB($_GET["queries_id"]);
+	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.graph.php?id=".$obj->fields["id"]."&querytype=".$_GET["querytype"]."&views_id=".$_GET["views_id"]);
+	
 } else {
-   header("Content-Type: image/".$format_graph."");
-}
-header("Content-Length: ".strlen($output_data));
 
-echo $output_data;
+	$plugin = new Plugin();
+	if ($plugin->isActivated("network"))
+		commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
+	else
+		commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
+	
+	$obj->getFromDB($_GET["id"]);
+	$object_view=$obj->fields["views_id"];
+	$entities_id=$obj->fields["entities_id"];
+	
+	if ($PluginArchiresView->getFromDB($object_view)&&haveAccessToEntity($entities_id)) {
+		
+		if (!isset($_GET["views_id"])) $views_id = $object_view;
+		else $views_id = $_GET["views_id"];
+		
+		if ($plugin->isActivated("network")) {
+			
+			$PluginArchires->titleGraph();
+		}
+         
+      $PluginArchiresPrototype->displayGraph($obj,$views_id,1);
+			
+	} else {
+		
+			glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
+		}
+
+	commonFooter();
+}
 
 ?>
