@@ -8,9 +8,9 @@ ALTER TABLE `glpi_plugin_archires_color_state` RENAME `glpi_plugin_archires_stat
 ALTER TABLE `glpi_plugin_archires_color_vlan` RENAME `glpi_plugin_archires_vlanscolors`;
 ALTER TABLE `glpi_plugin_archires_config` RENAME `glpi_plugin_archires_views`;
 
-ALTER TABLE `glpi_plugin_archires_locationsqueries` DROP INDEX `link`;
-ALTER TABLE `glpi_plugin_archires_networkequipmentsqueries` DROP INDEX `link`;
-ALTER TABLE `glpi_plugin_archires_appliancesqueries` DROP INDEX `link`;
+ALTER TABLE `glpi_plugin_archires_locationsqueries` DROP `link`;
+ALTER TABLE `glpi_plugin_archires_networkequipmentsqueries` DROP `link`;
+ALTER TABLE `glpi_plugin_archires_appliancesqueries` DROP `link`;
 
 ALTER TABLE `glpi_plugin_archires_locationsqueries` DROP INDEX `deleted`;
 
