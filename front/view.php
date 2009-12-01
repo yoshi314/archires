@@ -33,31 +33,35 @@
 // ----------------------------------------------------------------------
 */
 
-$NEEDED_ITEMS=array("search");
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
-$ci = new CommonItem();
-$ci->setType(PLUGIN_ARCHIRES_APPLIANCES_QUERY,true);
+useplugin('archires',true);
 
-$plugin = new Plugin();
-if ($plugin->isActivated("network"))
-	commonHeader($ci->getType(),$_SERVER['PHP_SELF'],"plugins","network");
-else
-	commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","appliances");
+$ci = new CommonItem();
+$ci->setType(PLUGIN_ARCHIRES_VIEWS_TYPE,true);
+
+commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","view");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 	
-	if ($plugin->isActivated("network")) {
-		$PluginArchires=new PluginArchires();
-		$PluginArchires->title();
-	}
-		
-	manageGetValuesInSearch(PLUGIN_ARCHIRES_APPLIANCES_QUERY);
+	if (!isset($_GET["start"])) $_GET["start"] = 0;
+	if (!isset($_GET["order"])) $_GET["order"] = "ASC";
+	if (!isset($_GET["field"])) $_GET["field"] = "glpi_plugin_archires_views.name";
+	if (!isset($_GET["phrasetype"])) $_GET["phrasetype"] = "contains";
+	if (!isset($_GET["contains"])) $_GET["contains"] = "";
+	if (!isset($_GET["sort"])) $_GET["sort"] = "glpi_plugin_archires_views.name";
+	if (!isset($_GET["is_deleted"])) $_GET["is_deleted"] = "0";
+	
+	$PluginArchiresProfile=new PluginArchiresProfile();
+   $PluginArchiresProfile->checkRight("archires","r");
+  
+   $PluginArchiresView=new PluginArchiresView();
+  
+	$PluginArchiresView->searchForm($_GET);
 
-	searchForm(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_GET);
+	$PluginArchiresView->showList($_GET);
 
-	showList(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_GET);
 	
 } else {
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";

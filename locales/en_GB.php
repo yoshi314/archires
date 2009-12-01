@@ -39,15 +39,16 @@ $LANG['plugin_archires']['title'][0] = "".$title."";
 $LANG['plugin_archires']['title'][1] = "Add view";
 $LANG['plugin_archires']['title'][2] = "Add Network architecture by location";
 $LANG['plugin_archires']['title'][3] = "Viewes";
-$LANG['plugin_archires']['title'][4] = "Network architecture by location";
-$LANG['plugin_archires']['title'][5] = "Network architecture by networking device";
+$LANG['plugin_archires']['title'][4] = "location";
+$LANG['plugin_archires']['title'][5] = "networking device";
 $LANG['plugin_archires']['title'][6] = "Add a network architecture by networking device";
 $LANG['plugin_archires']['title'][7] = "Add Network architecture";
-$LANG['plugin_archires']['title'][8] = "Network architecture by appliance";
+$LANG['plugin_archires']['title'][8] = "appliance";
 $LANG['plugin_archires']['title'][9] = "Add Network architecture by appliance";
 
 $LANG['plugin_archires']['menu'][0] = "Summary";
 $LANG['plugin_archires']['menu'][1] = "Adding Network architecture";
+$LANG['plugin_archires']['menu'][2] = "Network architecture by";
 
 $LANG['plugin_archires'][0] = "Display";
 $LANG['plugin_archires'][1] = "See all views";

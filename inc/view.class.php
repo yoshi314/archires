@@ -43,24 +43,6 @@ class PluginArchiresView extends CommonDBTM {
 		$this->table="glpi_plugin_archires_views";
 		$this->type=PLUGIN_ARCHIRES_VIEWS_TYPE;
 	}
-
-	function title() {
-      global $CFG_GLPI,$LANG;
-
-      echo "<div align='center'><table border='0'><tr><td>";
-      echo "<img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/archires.png\" alt='".$LANG['plugin_archires']['title'][0]."' title='".$LANG['plugin_archires']['title'][0]."'></td>";
-      if (plugin_archires_haveRight("archires","w") || haveRight("config","w")) {
-         echo "<td><a  class='icon_consol' href=\"./plugin_archires.view.form.php?new=1\"><b>".$LANG['plugin_archires']['title'][1]."</b></a></td>";
-      } else {
-         echo "<td><a  class='icon_consol' href=\"index.php\"><b>".$LANG['plugin_archires']['title'][3]."</b></a></td>";
-      }
-      echo "<td><a  class='icon_consol' href=\"../index.php\"><b>".$LANG['plugin_archires']['title'][0]."</b></a></td>";
-
-      if (plugin_archires_haveRight("archires","w") || haveRight("config","w")) {
-         echo "<td><a class='icon_consol' href=\"plugin_archires.config.php\">".$LANG['plugin_archires']['profile'][2]."</a></td>";
-      }
-      echo "</tr></table></div>";
-	}
    
    function dropdownObject($obj) {
       global $LANG,$DB,$CFG_GLPI;
@@ -349,7 +331,7 @@ class PluginArchiresView extends CommonDBTM {
       $option[$this->table.".id"]	= $LANG['plugin_archires']['search'][0];
       $option[$this->table.".name"]	= $LANG['plugin_archires']['search'][1];
 
-      echo "<form method='get' action=\"./plugin_archires.view.index.php\">";
+      echo "<form method='get' action=\"./view.php\">";
       echo "<div align='center'><table  width='750' class='tab_cadre'>";
       echo "<tr><th colspan='4'>".$LANG['search'][0].":</th></tr>";
       echo "<tr class='tab_bg_1'>";
@@ -386,7 +368,7 @@ class PluginArchiresView extends CommonDBTM {
       echo "</td>";
       // Display Reset search
       echo "<td class='center'>";
-      echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.view.index.php?reset_search=reset_search&amp;type=".$this->type."'><img title=\"".$LANG['buttons'][16]."\" alt=\"".$LANG['buttons'][16]."\" src='".$CFG_GLPI["root_doc"]."/pics/reset.png' class='calendrier'></a>";
+      echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/view.php?reset_search=reset_search&amp;type=".$this->type."'><img title=\"".$LANG['buttons'][16]."\" alt=\"".$LANG['buttons'][16]."\" src='".$CFG_GLPI["root_doc"]."/pics/reset.png' class='calendrier'></a>";
       Bookmark::showSaveButton(BOOKMARK_SEARCH,$this->type);
 
       echo "</td>";
@@ -583,7 +565,7 @@ class PluginArchiresView extends CommonDBTM {
                if (plugin_archires_haveRight("archires","w"))
                   echo "<td width='5'><input type='checkbox' name='item[$ID]' value='1' $sel></td>";
                echo "<td>";
-               echo "<a href=\"./plugin_archires.view.form.php?id=$ID\">";
+               echo "<a href=\"./view.form.php?id=$ID\">";
                echo $this->fields["name"]."";
                if ($_SESSION["glpiis_ids_visible"] == 1 ||empty($this->fields["name"])) {
                   echo " (";

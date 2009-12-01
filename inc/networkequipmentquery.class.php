@@ -226,7 +226,7 @@ class PluginArchiresQueryNetworkEquipment extends CommonDBTM {
          while ($ligne = $DB->fetch_array($result_switch)) {
 
             $port = $ligne['port'];
-            $nw=new NetWire();
+            $nw=new NetworkPort_NetworkPort();
             $end=$nw->getOppositeContact($ligne['idport']);
 
             if ($end) {

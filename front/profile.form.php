@@ -33,54 +33,19 @@
 // ----------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-	die("Sorry. You can't access directly to this file");
-}
+$NEEDED_ITEMS=array("profile");
+define('GLPI_ROOT', '../../..'); 
+include (GLPI_ROOT."/inc/includes.php");
+checkRight("profile","r");
 
-function plugin_archires_installing($version) {
-	
-	global $DB;
-		
-	$DB_file = GLPI_ROOT ."/plugins/archires/inc/plugin_archires-$version-empty.sql";
-	$DBf_handle = fopen($DB_file, "rt");
-	$sql_query = fread($DBf_handle, filesize($DB_file));
-	fclose($DBf_handle);
-	foreach ( explode(";\n", "$sql_query") as $sql_line) {
-		if (get_magic_quotes_runtime()) $sql_line=stripslashes_deep($sql_line);
-		$DB->query($sql_line);
-	}
-	
-	$rep_files_archires = GLPI_PLUGIN_DOC_DIR."/archires";
-	if (!is_dir($rep_files_archires))
-      mkdir($rep_files_archires);	
-	
-}
+useplugin('archires',true);
 
-function plugin_archires_updatev13() {
-	
-	global $DB;
+$prof=new PluginArchiresProfile();
 
-	$query = "ALTER TABLE `glpi_plugin_archires_display` ADD `display_ports` ENUM( '1', '0' ) NOT NULL DEFAULT '0';";		
-	$DB->query($query) or die($DB->error());
-
-}
-
-function plugin_archires_update($version) {
-	
-	global $DB;
-
-	$DB_file = GLPI_ROOT ."/plugins/archires/inc/plugin_archires-$version-update.sql";
-	$DBf_handle = fopen($DB_file, "rt");
-	$sql_query = fread($DBf_handle, filesize($DB_file));
-	fclose($DBf_handle);
-	foreach ( explode(";\n", "$sql_query") as $sql_line) {
-		if (get_magic_quotes_runtime()) $sql_line=stripslashes_deep($sql_line);
-		$DB->query($sql_line);
-	}
-	
-	$rep_files_archires = GLPI_PLUGIN_DOC_DIR."/archires";
-	if (!is_dir($rep_files_archires))
-      mkdir($rep_files_archires);
+//Save profile
+if (isset ($_POST['update_user_profile'])) {
+	$prof->update($_POST);
+	glpi_header($_SERVER['HTTP_REFERER']);
 }
 
 ?>

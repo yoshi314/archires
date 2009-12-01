@@ -39,15 +39,16 @@ $LANG['plugin_archires']['title'][0] = "".$title."";
 $LANG['plugin_archires']['title'][1] = "Añadir una vista";
 $LANG['plugin_archires']['title'][2] = "Añadir una arquitectura por lugar";
 $LANG['plugin_archires']['title'][3] = "Vistas";
-$LANG['plugin_archires']['title'][4] = "Arquitectura por lugar";
-$LANG['plugin_archires']['title'][5] = "Arquitectura por equipo de red";
+$LANG['plugin_archires']['title'][4] = "location";
+$LANG['plugin_archires']['title'][5] = "networking device";
 $LANG['plugin_archires']['title'][6] = "Añadir arquitectura por equipo de red";
 $LANG['plugin_archires']['title'][7] = "Añadir arquitectura";
-$LANG['plugin_archires']['title'][8] = "Arquitectura por aplicativo";
+$LANG['plugin_archires']['title'][8] = "appliance";
 $LANG['plugin_archires']['title'][9] = "Añadir una arquitectura por aplicativo";
 
 $LANG['plugin_archires']['menu'][0] = "Menú generál";
 $LANG['plugin_archires']['menu'][1] = "Adición de arquitectura";
+$LANG['plugin_archires']['menu'][2] = "Network architecture by";
 
 $LANG['plugin_archires'][0] = "Mostrar";
 $LANG['plugin_archires'][1] = "See all views";

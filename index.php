@@ -37,36 +37,34 @@ $NEEDED_ITEMS=array("search");
 define('GLPI_ROOT', '../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
-$plugin = new Plugin();
-if ($plugin->isActivated("network"))
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
-else
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
+commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
-
+   
+   $plugin = new Plugin();
+   
 	if (isset($_GET['new'])) {
 			
 		echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
 		echo "<tr><th>".$LANG['plugin_archires']['menu'][1]."</th></tr>";
 
 		echo "<tr class='tab_bg_1'><td>";
-		echo "<a href='front/plugin_archires.view.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
+		echo "<a href='front/view.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
 		echo "</td></tr>";
 
 		if (countElementsInTable('glpi_plugin_archires_views',"`entities_id`='".$_SESSION["glpiactive_entity"]."'")>0) {
 			
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.location.form.php?new=1'>".$LANG['plugin_archires']['title'][2]."</a>";
+			echo "<a href='front/location.form.php?new=1'>".$LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][2]."</a>";
 			echo "</td></tr>";
 
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.networkequipment.form.php?new=1'>".$LANG['plugin_archires']['title'][6]."</a>";
+			echo "<a href='front/networkequipment.form.php?new=1'>".$LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][6]."</a>";
 			echo "</td></tr>";
 
 			if ($plugin->isActivated("appliances")) {
 				echo "<tr class='tab_bg_1'><td>";
-				echo "<a href='front/plugin_archires.appliance.form.php?new=1'>".$LANG['plugin_archires']['title'][9]."</a>";
+				echo "<a href='front/appliance.form.php?new=1'>".$LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][9]."</a>";
 				echo "</td></tr>";
 			}
 		}
@@ -74,35 +72,31 @@ if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 
 	} else {
 		
-		if ($plugin->isActivated("network")) {
-			$PluginArchires=new PluginArchires();
-			$PluginArchires->title();
-		}
 		echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
 		echo "<tr><th>".$LANG['plugin_archires']['menu'][0]."</th></tr>";
 
 		if (countElementsInTable('glpi_plugin_archires_views',"`entities_id`='".$_SESSION["glpiactive_entity"]."'")>0) {
 
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.view.index.php'>".$LANG['plugin_archires']['title'][3]."</a>";
+			echo "<a href='front/view.php'>".$LANG['plugin_archires']['title'][3]."</a>";
 			echo "</td></tr>";				
 
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.location.index.php'>".$LANG['plugin_archires']['title'][4]."</a>";
+			echo "<a href='front/location.php'>".$LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][4]."</a>";
 			echo "</td></tr>";
 
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.networkequipment.index.php'>".$LANG['plugin_archires']['title'][5]."</a>";
+			echo "<a href='front/networkequipment.php'>".$LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][5]."</a>";
 			echo "</td></tr>";
 
 			if ($plugin->isActivated("appliances")) {
 				echo "<tr class='tab_bg_1'><td>";
-				echo "<a href='front/plugin_archires.appliance.index.php'>".$LANG['plugin_archires']['title'][8]."</a>";
+				echo "<a href='front/appliance.php'>".$LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8]."</a>";
 				echo "</td></tr>";
 			}
 		} else {
 			echo "<tr class='tab_bg_1'><td>";
-			echo "<a href='front/plugin_archires.view.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
+			echo "<a href='front/view.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
 			echo "</td></tr>";				
 		}
 		echo "</table></div>";

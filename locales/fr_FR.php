@@ -39,15 +39,16 @@ $LANG['plugin_archires']['title'][0] = "".$title."";
 $LANG['plugin_archires']['title'][1] = "Ajouter une vue";
 $LANG['plugin_archires']['title'][2] = "Ajouter une architecture par lieu";
 $LANG['plugin_archires']['title'][3] = "Vues";
-$LANG['plugin_archires']['title'][4] = "Architecture par lieu";
-$LANG['plugin_archires']['title'][5] = "Architecture par matériel réseau";
+$LANG['plugin_archires']['title'][4] = "lieu";
+$LANG['plugin_archires']['title'][5] = "matériel réseau";
 $LANG['plugin_archires']['title'][6] = "Ajouter une architecture par matériel réseau";
 $LANG['plugin_archires']['title'][7] = "Ajouter une architecture";
-$LANG['plugin_archires']['title'][8] = "Architecture par applicatifs";
-$LANG['plugin_archires']['title'][9] = "Ajouter une architecture par applicatifs";
+$LANG['plugin_archires']['title'][8] = "applicatif";
+$LANG['plugin_archires']['title'][9] = "Ajouter une architecture par applicatif";
 
 $LANG['plugin_archires']['menu'][0] = "Menu général";
 $LANG['plugin_archires']['menu'][1] = "Ajout d'architecture";
+$LANG['plugin_archires']['menu'][2] = "Architecture par";
 
 $LANG['plugin_archires'][0] = "Afficher";
 $LANG['plugin_archires'][1] = "Voir toutes les vues";

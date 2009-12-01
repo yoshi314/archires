@@ -39,15 +39,16 @@ $LANG['plugin_archires']['title'][0] = "".$title."";
 $LANG['plugin_archires']['title'][1] = "Добавить вид";
 $LANG['plugin_archires']['title'][2] = "Добавить структуру сети по местонахождению";
 $LANG['plugin_archires']['title'][3] = "Виды";
-$LANG['plugin_archires']['title'][4] = "Структура сети по местонахождению";
-$LANG['plugin_archires']['title'][5] = "Структура сети по сетевым устройствам";
+$LANG['plugin_archires']['title'][4] = "location";
+$LANG['plugin_archires']['title'][5] = "networking device";
 $LANG['plugin_archires']['title'][6] = "Добавить структуру сети по сетевым устройствам";
 $LANG['plugin_archires']['title'][7] = "Добавить структуру сети";
-$LANG['plugin_archires']['title'][8] = "Network architecture by appliance";
+$LANG['plugin_archires']['title'][8] = "appliance";
 $LANG['plugin_archires']['title'][9] = "Add Network architecture by appliance";
 
 $LANG['plugin_archires']['menu'][0] = "Сводка";
 $LANG['plugin_archires']['menu'][1] = "Добавить структуру сети";
+$LANG['plugin_archires']['menu'][2] = "Network architecture by";
 
 $LANG['plugin_archires'][0] = "Показать";
 $LANG['plugin_archires'][1] = "See all views";

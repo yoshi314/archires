@@ -40,18 +40,9 @@ include (GLPI_ROOT."/inc/includes.php");
 $ci = new CommonItem();
 $ci->setType(PLUGIN_ARCHIRES_LOCATIONS_QUERY,true);
 
-$plugin = new Plugin();
-if ($plugin->isActivated("network"))
-	commonHeader($ci->getType(),$_SERVER['PHP_SELF'],"plugins","network");
-else
-	commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","locations");
+commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","location");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
-	
-	if ($plugin->isActivated("network")) {
-		$PluginArchires=new PluginArchires();
-		$PluginArchires->title();
-	}
 		
 	manageGetValuesInSearch(PLUGIN_ARCHIRES_LOCATIONS_QUERY);
 			

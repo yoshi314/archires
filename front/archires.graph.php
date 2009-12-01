@@ -58,11 +58,7 @@ if (isset($_GET["displayview"])) {
 	
 } else {
 
-	$plugin = new Plugin();
-	if ($plugin->isActivated("network"))
-		commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","network");
-	else
-		commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
+	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
 	
 	$obj->getFromDB($_GET["id"]);
 	$object_view=$obj->fields["views_id"];
@@ -72,11 +68,6 @@ if (isset($_GET["displayview"])) {
 		
 		if (!isset($_GET["views_id"])) $views_id = $object_view;
 		else $views_id = $_GET["views_id"];
-		
-		if ($plugin->isActivated("network")) {
-			
-			$PluginArchires->titleGraph();
-		}
          
       $PluginArchiresPrototype->displayGraph($obj,$views_id,1);
 			

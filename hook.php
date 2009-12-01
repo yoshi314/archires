@@ -37,51 +37,52 @@ foreach (glob(GLPI_ROOT . '/plugins/archires/inc/*.php') as $file)
 	include_once ($file);
 
 function plugin_archires_install() {
-
+   global $DB;
+   
    include_once (GLPI_ROOT."/inc/profile.class.php");
 
    if (!TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
 
-      plugin_archires_installing("1.8.0");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/empty-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_display") &&  !FieldExists("glpi_plugin_archires_display","display_ports")) {
 
       plugin_archires_updatev13();
-      plugin_archires_update("1.4");
-      plugin_archires_update("1.5");
-      plugin_archires_update("1.7.0");
-      plugin_archires_update("1.7.2");
-      plugin_archires_update("1.8.0");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.4.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.5.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.2.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_display") && !TableExists("glpi_plugin_archires_profiles")) {
 
-      plugin_archires_update("1.4");
-      plugin_archires_update("1.5");
-      plugin_archires_update("1.7.0");
-      plugin_archires_update("1.7.2");
-      plugin_archires_update("1.8.0");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.4.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.5.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.2.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_display") && !TableExists("glpi_plugin_archires_image_device")) {
 
-      plugin_archires_update("1.5");
-      plugin_archires_update("1.7.0");
-      plugin_archires_update("1.7.2");
-      plugin_archires_update("1.8.0");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.5.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.2.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_profiles") && FieldExists("glpi_plugin_archires_profiles","interface")) {
 
-      plugin_archires_update("1.7.0");
-      plugin_archires_update("1.7.2");
-      plugin_archires_update("1.8.0");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.2.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_config") && FieldExists("glpi_plugin_archires_config","system")) {
 
-      plugin_archires_update("1.7.2");
-      plugin_archires_update("1.8.0");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.2.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (!TableExists("glpi_plugin_archires_views")) {
 
-      plugin_archires_update("1.8.0");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    }
  
@@ -111,7 +112,7 @@ function plugin_archires_uninstall() {
 
 	deleteDir($rep_files_archires);
   
-   $tables_glpi = array("glpi_displayprefs",
+   $tables_glpi = array("glpi_displaypreferences",
 					"glpi_documents_items",
 					"glpi_bookmarks",
 					"glpi_logs");
@@ -465,7 +466,7 @@ function plugin_headings_archires($type,$ID,$withtemplate=0) {
 		case PROFILE_TYPE :
 			if (!$PluginArchiresProfile->GetfromDB($ID))
             $PluginArchiresProfile->createAccess($ID);
-			$PluginArchiresProfile->showForm($CFG_GLPI["root_doc"]."/plugins/archires/front/plugin_archires.profile.php",$ID);
+			$PluginArchiresProfile->showForm($CFG_GLPI["root_doc"]."/plugins/archires/front/profile.fom.php",$ID);
          break;
 	}
 }

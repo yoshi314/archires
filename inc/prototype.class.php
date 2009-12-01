@@ -269,18 +269,21 @@ class PluginArchiresPrototype extends CommonDBTM {
             echo "<tr class='tab_bg_1'>";
 
             if ($PluginArchiresView->fields["display_ports"]!=0 && $PluginArchiresView->fields["engine"]!=1) {
-               $url_ports = $CFG_GLPI["root_doc"] . "/front/networking.port.php?id=";
+               $url_ports = $CFG_GLPI["root_doc"] . "/front/networkport.form.php?id=";
                echo  "<td>".$device_unique_name1;		
                echo  " -- " . $device_unique_name2 ."</td>";
 
                if ($PluginArchiresView->fields["display_ip"]!=0)
                   echo  "<td>".$ip1."</td>";
+               else
+                  echo  "<td></td>";
                echo  "<td><a href='".$url_ports.$ID1."'>".$name1."</a> - ".$LANG['plugin_archires'][17]." ".$logical_number1."</td>";   
                echo  "<td><div align='center'><img src= \"../pics/socket.png\" alt='../pics/socket.png' /></div></td>";
                echo  "<td><a href='".$url_ports.$ID2."'>".$name2."</a> - ".$LANG['plugin_archires'][17]." ".$logical_number2."</td>";
                if ($PluginArchiresView->fields["display_ip"]!=0)
                   echo  "<td>".$ip2."</td>";
-
+               else
+                  echo  "<td></td>";
             } else {
 
                echo  "<td>".$device_unique_name1;
@@ -418,7 +421,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       }
       //Display Ports
       if ($PluginArchiresView->fields["display_ports"]!=0 && $PluginArchiresView->fields["engine"]!=1) {
-         $url_ports = $CFG_GLPI["root_doc"] . "/front/networking.port.php?id=";
+         $url_ports = $CFG_GLPI["root_doc"] . "/front/networkport.form.php?id=";
          $graph .= "\"".$device_unique_name1."\"";		
          $graph .= " -- \"".$device_unique_name2."\"[label=";
          $graph .= "<<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\">";

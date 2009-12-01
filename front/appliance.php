@@ -31,19 +31,30 @@
 // Original Author of file: CAILLAUD Xavier
 // Purpose of file: plugin archires v1.8.0 - GLPI 0.80
 // ----------------------------------------------------------------------
- */
+*/
 
-$NEEDED_ITEMS=array("profile");
+$NEEDED_ITEMS=array("search");
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
-checkRight("profile","r");
 
-$prof=new PluginArchiresProfile();
+$ci = new CommonItem();
+$ci->setType(PLUGIN_ARCHIRES_APPLIANCES_QUERY,true);
 
-//Save profile
-if (isset ($_POST['update_user_profile'])) {
-	$prof->update($_POST);
-	glpi_header($_SERVER['HTTP_REFERER']);
+commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","appliance");
+
+if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
+		
+	manageGetValuesInSearch(PLUGIN_ARCHIRES_APPLIANCES_QUERY);
+
+	searchForm(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_GET);
+
+	showList(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_GET);
+	
+} else {
+	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
+	echo "<b>".$LANG['login'][5]."</b></div>";
 }
+
+commonFooter();
 
 ?>
