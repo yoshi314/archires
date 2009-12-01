@@ -358,35 +358,35 @@ function plugin_archires_MassiveActionsProcess($data) {
 		case 'plugin_archires_duplicate':
 			if ($data['itemtype']==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
 
-				$PluginArchiresQueryLocation=new PluginArchiresQueryLocation();
+				$PluginArchiresLocationQuery=new PluginArchiresLocationQuery();
 				foreach ($data['item'] as $key => $val) {
 					if ($val==1) {
-						if ($PluginArchiresQueryLocation->getFromDB($key)) {
-							unset($PluginArchiresQueryLocation->fields["id"]);
-							$PluginArchiresQueryLocation->fields["entities_id"]=$data["entities_id"];
-							$newID=$PluginArchiresQueryLocation->add($PluginArchiresQueryLocation->fields);
+						if ($PluginArchiresLocationQuery->getFromDB($key)) {
+							unset($PluginArchiresLocationQuery->fields["id"]);
+							$PluginArchiresLocationQuery->fields["entities_id"]=$data["entities_id"];
+							$newID=$PluginArchiresLocationQuery->add($PluginArchiresLocationQuery->fields);
 						}
 					}
 				}
 			} else if ($data['itemtype']==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
-				$PluginArchiresQueryNetworkEquipment=new PluginArchiresQueryNetworkEquipment();
+				$PluginArchiresNetworkEquipmentQuery=new PluginArchiresNetworkEquipmentQuery();
 				foreach ($data['item'] as $key => $val) {
 					if ($val==1) {
-						if ($PluginArchiresQueryNetworkEquipment->getFromDB($key)) {
-							unset($PluginArchiresQueryNetworkEquipment->fields["id"]);
-							$PluginArchiresQueryNetworkEquipment->fields["entities_id"]=$data["entities_id"];
-							$newID=$PluginArchiresQueryNetworkEquipment->add($PluginArchiresQueryNetworkEquipment->fields);
+						if ($PluginArchiresNetworkEquipmentQuery->getFromDB($key)) {
+							unset($PluginArchiresNetworkEquipmentQuery->fields["id"]);
+							$PluginArchiresNetworkEquipmentQuery->fields["entities_id"]=$data["entities_id"];
+							$newID=$PluginArchiresNetworkEquipmentQuery->add($PluginArchiresNetworkEquipmentQuery->fields);
 						}
 					}
 				}
 			} else if ($data['itemtype']==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
-				$PluginArchiresQueryAppliance=new PluginArchiresQueryAppliance();
+				$PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery();
 				foreach ($data['item'] as $key => $val) {
 					if ($val==1) {
-						if ($PluginArchiresQueryAppliance->getFromDB($key)) {
-							unset($PluginArchiresQueryAppliance->fields["id"]);
-							$PluginArchiresQueryAppliance->fields["entities_id"]=$data["entities_id"];
-							$newID=$PluginArchiresQueryAppliance->add($PluginArchiresQueryAppliance->fields);
+						if ($PluginArchiresApplianceQuery->getFromDB($key)) {
+							unset($PluginArchiresApplianceQuery->fields["id"]);
+							$PluginArchiresApplianceQuery->fields["entities_id"]=$data["entities_id"];
+							$newID=$PluginArchiresApplianceQuery->add($PluginArchiresApplianceQuery->fields);
 						}
 					}
 				}

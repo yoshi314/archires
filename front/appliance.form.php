@@ -46,44 +46,44 @@ if (!isset($tab["id"])) $tab["id"] = "";
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
 
-$PluginArchiresQueryAppliance=new PluginArchiresQueryAppliance();
+$PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery();
 $PluginArchiresQueryType=new PluginArchiresQueryType();
 
 if (isset($_POST["add"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$newID=$PluginArchiresQueryAppliance->add($_POST);
+		$newID=$PluginArchiresApplianceQuery->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["delete"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresQueryAppliance->delete($_POST);
+		$PluginArchiresApplianceQuery->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 	
 } else if (isset($_POST["restore"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresQueryAppliance->restore($_POST);
+		$PluginArchiresApplianceQuery->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 	
 } else if (isset($_POST["purge"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresQueryAppliance->delete($_POST,1);
+		$PluginArchiresApplianceQuery->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 	
 } else if (isset($_POST["update"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresQueryAppliance->update($_POST);
+		$PluginArchiresApplianceQuery->update($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["duplicate"])) {
 
 	if (plugin_archires_haveRight("archires","w")) {
 		unset($_POST['id']);
-		$newID=$PluginArchiresQueryAppliance->add($_POST);
+		$newID=$PluginArchiresApplianceQuery->add($_POST);
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
@@ -126,7 +126,7 @@ if (isset($_POST["add"])) {
 	
 	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","archires","appliance");
 
-	$PluginArchiresQueryAppliance->showForm($_SERVER["PHP_SELF"],$tab["id"]);
+	$PluginArchiresApplianceQuery->showForm($_SERVER["PHP_SELF"],$tab["id"]);
 
 	commonFooter();
 }

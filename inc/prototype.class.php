@@ -154,9 +154,9 @@ class PluginArchiresPrototype extends CommonDBTM {
       $views_id=$obj->fields["views_id"];
 
       $PluginArchiresView=new PluginArchiresView;
-      $PluginArchiresQueryAppliance=new PluginArchiresQueryAppliance;
-      $PluginArchiresQueryLocation=new PluginArchiresQueryLocation;
-      $PluginArchiresQueryNetworkEquipment=new PluginArchiresQueryNetworkEquipment;
+      $PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery;
+      $PluginArchiresLocationQuery=new PluginArchiresLocationQuery;
+      $PluginArchiresNetworkEquipmentQuery=new PluginArchiresNetworkEquipmentQuery;
       $PluginArchiresStateColor=new PluginArchiresStateColor;
       $PluginArchiresItemImage=new PluginArchiresItemImage;
 
@@ -176,14 +176,14 @@ class PluginArchiresPrototype extends CommonDBTM {
       echo "<th>".$LANG['plugin_archires']['test'][9]."</th></tr>";
 
       if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
-         $devices=$PluginArchiresQueryLocation->Query($ID,$PluginArchiresView,true);
-         $ports=$PluginArchiresQueryLocation->Query($ID,$PluginArchiresView,false);
+         $devices=$PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,true);
+         $ports=$PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,false);
       } else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
-         $devices=$PluginArchiresQueryNetworkEquipment->Query($ID,$PluginArchiresView,true);
-         $ports=$PluginArchiresQueryNetworkEquipment->Query($ID,$PluginArchiresView,false);
+         $devices=$PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,true);
+         $ports=$PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,false);
       } else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
-         $devices=$PluginArchiresQueryAppliance->Query($ID,$PluginArchiresView,true);
-         $ports=$PluginArchiresQueryAppliance->Query($ID,$PluginArchiresView,false);
+         $devices=$PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,true);
+         $ports=$PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,false);
       }
 
       foreach ($devices as $itemtype => $typed_devices) {
@@ -542,9 +542,9 @@ class PluginArchiresPrototype extends CommonDBTM {
       if (!isset($views_id)) $views_id = $object_view;
 
       $PluginArchiresView=new PluginArchiresView;
-      $PluginArchiresQueryAppliance=new PluginArchiresQueryAppliance;
-      $PluginArchiresQueryLocation=new PluginArchiresQueryLocation;
-      $PluginArchiresQueryNetworkEquipment=new PluginArchiresQueryNetworkEquipment;
+      $PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery;
+      $PluginArchiresLocationQuery=new PluginArchiresLocationQuery;
+      $PluginArchiresNetworkEquipmentQuery=new PluginArchiresNetworkEquipmentQuery;
       $PluginArchiresItemImage=new PluginArchiresItemImage;
 
       $PluginArchiresView->getFromDB($views_id);
@@ -553,14 +553,14 @@ class PluginArchiresPrototype extends CommonDBTM {
       $ports = array();
 
       if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
-         $devices=$PluginArchiresQueryLocation->Query($ID,$PluginArchiresView,true);
-         $ports=$PluginArchiresQueryLocation->Query($ID,$PluginArchiresView,false);
+         $devices=$PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,true);
+         $ports=$PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,false);
       } else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
-         $devices=$PluginArchiresQueryNetworkEquipment->Query($ID,$PluginArchiresView,true);
-         $ports=$PluginArchiresQueryNetworkEquipment->Query($ID,$PluginArchiresView,false);
+         $devices=$PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,true);
+         $ports=$PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,false);
       } else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
-         $devices=$PluginArchiresQueryAppliance->Query($ID,$PluginArchiresView,true);
-         $ports=$PluginArchiresQueryAppliance->Query($ID,$PluginArchiresView,false);
+         $devices=$PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,true);
+         $ports=$PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,false);
       }
       $wires = array();
 

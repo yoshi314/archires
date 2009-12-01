@@ -37,7 +37,7 @@ if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
 }
 
-class PluginArchiresQueryLocation extends CommonDBTM {
+class PluginArchiresLocationQuery extends CommonDBTM {
 
 	function __construct () {
 		$this->table="glpi_plugin_archires_locationsqueries";

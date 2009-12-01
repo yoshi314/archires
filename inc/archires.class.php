@@ -102,11 +102,11 @@ class PluginArchires extends CommonDBTM {
    function getClassType($type) {
 	
       if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
-         $object= "PluginArchiresQueryLocation";
+         $object= "PluginArchiresLocationQuery";
       } else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
-         $object= "PluginArchiresQueryNetworkEquipment";
+         $object= "PluginArchiresNetworkEquipmentQuery";
       } else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
-         $object= "PluginArchiresQueryAppliance";
+         $object= "PluginArchiresApplianceQuery";
       }
       
       return $object;

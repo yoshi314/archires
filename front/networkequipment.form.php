@@ -46,44 +46,44 @@ if (!isset($tab["id"])) $tab["id"] = "";
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
 
-$PluginArchiresQueryNetworkEquipment=new PluginArchiresQueryNetworkEquipment();
+$PluginArchiresNetworkEquipmentQuery=new PluginArchiresNetworkEquipmentQuery();
 $PluginArchiresQueryType=new PluginArchiresQueryType();
 
 if (isset($_POST["add"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$newID=$PluginArchiresQueryNetworkEquipment->add($_POST);
+		$newID=$PluginArchiresNetworkEquipmentQuery->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["delete"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresQueryNetworkEquipment->delete($_POST);
+		$PluginArchiresNetworkEquipmentQuery->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 	
 } else if (isset($_POST["restore"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresQueryNetworkEquipment->restore($_POST);
+		$PluginArchiresNetworkEquipmentQuery->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 	
 } else if (isset($_POST["purge"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresQueryNetworkEquipment->delete($_POST,1);
+		$PluginArchiresNetworkEquipmentQuery->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
 	
 } else if (isset($_POST["update"])) {
 
 	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresQueryNetworkEquipment->update($_POST);
+		$PluginArchiresNetworkEquipmentQuery->update($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["duplicate"])) {
 
 	if (plugin_archires_haveRight("archires","w")) {
 		unset($_POST['id']);
-		$newID=$PluginArchiresQueryNetworkEquipment->add($_POST);
+		$newID=$PluginArchiresNetworkEquipmentQuery->add($_POST);
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
@@ -127,7 +127,7 @@ if (isset($_POST["add"])) {
 
 	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","archires","networkequipment");
 
-	$PluginArchiresQueryNetworkEquipment->showForm($_SERVER["PHP_SELF"],$tab["id"]);
+	$PluginArchiresNetworkEquipmentQuery->showForm($_SERVER["PHP_SELF"],$tab["id"]);
 
 	commonFooter();
 }
