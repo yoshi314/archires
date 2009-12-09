@@ -56,7 +56,7 @@ if (isset($_POST["add"]) && isset($_POST['type'])) {
 
 	$test= explode(";", $_POST['type']);
 	
-	if (isset($test[0]) && $test[0]> 0) {
+	if (isset($test[0])) {
 		$_POST['type']= $test[1];
 		$_POST['itemtype']= $test[0];
 	
