@@ -33,20 +33,19 @@
 // ----------------------------------------------------------------------
  */
 
-foreach (glob(GLPI_ROOT . '/plugins/archires/inc/*.php') as $file)
-	include_once ($file);
-
 function plugin_archires_install() {
    global $DB;
    
-   include_once (GLPI_ROOT."/inc/profile.class.php");
-
+   include_once (GLPI_ROOT."/plugins/archires/inc/profile.class.php");
+   $update=false;
+   
    if (!TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
 
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/empty-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_display") &&  !FieldExists("glpi_plugin_archires_display","display_ports")) {
-
+      
+      $update=true;
       plugin_archires_updatev13();
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.4.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.5.sql");
@@ -55,7 +54,8 @@ function plugin_archires_install() {
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_display") && !TableExists("glpi_plugin_archires_profiles")) {
-
+      
+      $update=true;
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.4.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.5.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.0.sql");
@@ -63,31 +63,41 @@ function plugin_archires_install() {
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_display") && !TableExists("glpi_plugin_archires_image_device")) {
-
+      
+      $update=true;
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.5.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.0.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.2.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_profiles") && FieldExists("glpi_plugin_archires_profiles","interface")) {
-
+      
+      $update=true;
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.0.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.2.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (TableExists("glpi_plugin_archires_config") && FieldExists("glpi_plugin_archires_config","system")) {
-
+      
+      $update=true;
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.7.2.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    } else if (!TableExists("glpi_plugin_archires_views")) {
-
+      
+      $update=true;
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
 
    }
- 
-   $PluginArchiresProfile=new PluginArchiresProfile();
-   $PluginArchiresProfile->createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+   
+   if ($update) {
+      Plugin::migrateItemType(
+         array(3000=>'PluginArchiresLocationQuery',3001=>'PluginArchiresNetworkEquipmentQuery',3002=>'PluginArchiresApplianceQuery',3003=>'PluginArchiresView'),
+         array("glpi_bookmarks", "glpi_bookmarks_users", "glpi_displaypreferences",
+               "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_tickets"),
+         array("glpi_plugin_archires_queriestypes","glpi_plugin_archires_imageitems"));
+	}
+   PluginArchiresProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    return true;
 }
 
@@ -118,7 +128,7 @@ function plugin_archires_uninstall() {
 					"glpi_logs");
 
 	foreach($tables_glpi as $table_glpi)
-		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = '".PLUGIN_ARCHIRES_LOCATIONS_QUERY."' OR `itemtype` = '".PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY."' OR `itemtype` = '".PLUGIN_ARCHIRES_APPLIANCES_QUERY."';");
+		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = 'PluginArchiresLocationQuery' OR `itemtype` = 'PluginArchiresNetworkEquipmentQuery' OR `itemtype` = 'PluginArchiresApplianceQuery';");
 
 	plugin_init_archires();
 
@@ -146,13 +156,13 @@ function plugin_archires_getDatabaseRelations() {
 function plugin_archires_giveItem($type,$ID,$data,$num) {
 	global $LANG;
   
-   $searchopt=&getSearchOptions($type);
+   $searchopt=&Search::getOptions($type);
   
 	$table=$searchopt[$ID]["table"];
 	$field=$searchopt[$ID]["field"];
 
 	switch ($type) {
-		case PLUGIN_ARCHIRES_LOCATIONS_QUERY :
+		case 'PluginArchiresLocationQuery' :
 			switch ($table.'.'.$field) {
 				case "glpi_locations.completename" :
 					if (empty($data["ITEM_$num"]))
@@ -186,11 +196,11 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 			return "";
 		break;
 
-		case PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY :
+		case 'PluginArchiresNetworkEquipmentQuery' :
 			switch ($table.'.'.$field) {
 				case "glpi_networkequipments.name" :
 					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][32];
+						$out=$LANG['plugin_archires'][34];
 					else
 						$out= $data["ITEM_$num"];
                return $out;
@@ -217,11 +227,11 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
                return $out;
                break;
 			}
-		case PLUGIN_ARCHIRES_APPLIANCES_QUERY :
+		case 'PluginArchiresApplianceQuery' :
 			switch ($table.'.'.$field) {
-				case "glpi_plugin_appliances.name" :
+				case "glpi_plugin_appliances_appliances.name" :
 					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][32];
+						$out=$LANG['plugin_archires'][34];
 					else
 						$out= $data["ITEM_$num"];
                return $out;
@@ -260,7 +270,7 @@ function plugin_pre_item_delete_archires($input) {
 
 	if (isset($input["_item_type_"]))
 		switch ($input["_item_type_"]) {
-			case PROFILE_TYPE :
+			case 'Profile' :
 				// Manipulate data if needed
 				$PluginArchiresProfile=new PluginArchiresProfile;
 				$PluginArchiresProfile->cleanProfiles($input["id"]);
@@ -275,7 +285,7 @@ function plugin_archires_MassiveActions($type) {
 	global $LANG;
 	
 	switch ($type) {
-		case PLUGIN_ARCHIRES_LOCATIONS_QUERY:
+		case 'PluginArchiresLocationQuery':
 			return array(
 				// Specific one
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
@@ -283,7 +293,7 @@ function plugin_archires_MassiveActions($type) {
 				);
          break;
 
-		case PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY:
+		case 'PluginArchiresNetworkEquipmentQuery':
 			return array(
 				// Specific one
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
@@ -291,7 +301,7 @@ function plugin_archires_MassiveActions($type) {
 				);
          break;
 
-		case PLUGIN_ARCHIRES_APPLIANCES_QUERY:
+		case 'PluginArchiresApplianceQuery':
 			return array(
 				// Specific one
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
@@ -307,41 +317,41 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 	global $LANG;
 	
 	switch ($type) {
-		case PLUGIN_ARCHIRES_LOCATIONS_QUERY:
+		case 'PluginArchiresLocationQuery':
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					dropdownValue("glpi_entities", "entities_id", '');
+					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					dropdownValue("glpi_entities", "entities_id", '');
+					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}
          break;
-		case PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY:
+		case 'PluginArchiresNetworkEquipmentQuery':
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					dropdownValue("glpi_entities", "entities_id", '');
+					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					dropdownValue("glpi_entities", "entities_id", '');
+					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}
          break;
-		case PLUGIN_ARCHIRES_APPLIANCES_QUERY:
+		case 'PluginArchiresApplianceQuery':
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					dropdownValue("glpi_entities", "entities_id", '');
+					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					dropdownValue("glpi_entities", "entities_id", '');
+					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}
@@ -356,7 +366,7 @@ function plugin_archires_MassiveActionsProcess($data) {
 
 	switch ($data['action']) {
 		case 'plugin_archires_duplicate':
-			if ($data['itemtype']==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
+			if ($data['itemtype']=='PluginArchiresLocationQuery') {
 
 				$PluginArchiresLocationQuery=new PluginArchiresLocationQuery();
 				foreach ($data['item'] as $key => $val) {
@@ -368,7 +378,7 @@ function plugin_archires_MassiveActionsProcess($data) {
 						}
 					}
 				}
-			} else if ($data['itemtype']==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
+			} else if ($data['itemtype']=='PluginArchiresNetworkEquipmentQuery') {
 				$PluginArchiresNetworkEquipmentQuery=new PluginArchiresNetworkEquipmentQuery();
 				foreach ($data['item'] as $key => $val) {
 					if ($val==1) {
@@ -379,7 +389,7 @@ function plugin_archires_MassiveActionsProcess($data) {
 						}
 					}
 				}
-			} else if ($data['itemtype']==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
+			} else if ($data['itemtype']=='PluginArchiresApplianceQuery') {
 				$PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery();
 				foreach ($data['item'] as $key => $val) {
 					if ($val==1) {
@@ -391,64 +401,65 @@ function plugin_archires_MassiveActionsProcess($data) {
 					}
 				}
 			}
-
          break;
 		case "plugin_archires_transfert":
-		if ($data['itemtype']==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
-			foreach ($data["item"] as $key => $val) {
-				if ($val==1) {
+         if ($data['itemtype']=='PluginArchiresLocationQuery') {
+            foreach ($data["item"] as $key => $val) {
+               if ($val==1) {
 
-					$query="UPDATE `glpi_plugin_archires_locationsqueries`
-							SET `entities_id` = '".$data['entities_id']."'
-							WHERE `id` = '$key'";
-					$DB->query($query);
-				}
-			}
-		} else if ($data['itemtype']==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
-			foreach ($data["item"] as $key => $val) {
-				if ($val==1) {
+                  $query="UPDATE `glpi_plugin_archires_locationsqueries`
+                        SET `entities_id` = '".$data['entities_id']."'
+                        WHERE `id` = '$key'";
+                  $DB->query($query);
+               }
+            }
+         } else if ($data['itemtype']=='PluginArchiresNetworkEquipmentQuery') {
+            foreach ($data["item"] as $key => $val) {
+               if ($val==1) {
 
-					$query="UPDATE `glpi_plugin_archires_networkequipmentsqueries`
-							SET `entities_id` = '".$data['entities_id']."'
-							WHERE `id` = '$key'";
-					$DB->query($query);
-				}
-			}
-		} else if ($data['itemtype']==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
-			foreach ($data["item"] as $key => $val) {
-				if ($val==1) {
+                  $query="UPDATE `glpi_plugin_archires_networkequipmentsqueries`
+                        SET `entities_id` = '".$data['entities_id']."'
+                        WHERE `id` = '$key'";
+                  $DB->query($query);
+               }
+            }
+         } else if ($data['itemtype']=='PluginArchiresApplianceQuery') {
+            foreach ($data["item"] as $key => $val) {
+               if ($val==1) {
 
-					$query="UPDATE `glpi_plugin_archires_appliancesqueries`
-							SET `entities_id` = '".$data['entities_id']."'
-							WHERE `id` = '$key'";
-					$DB->query($query);
-				}
-			}
-		}
+                  $query="UPDATE `glpi_plugin_archires_appliancesqueries`
+                        SET `entities_id` = '".$data['entities_id']."'
+                        WHERE `id` = '$key'";
+                  $DB->query($query);
+               }
+            }
+         }
          break;
 	}
 }
 
-
 // Define headings added by the plugin
-function plugin_get_headings_archires($type,$ID,$withtemplate) {
+function plugin_get_headings_archires($item,$withtemplate) {
 	global $LANG;
 
-	if ($type==PROFILE_TYPE) {
-		$prof = new Profile();
-		if ($ID>0 && $prof->getFromDB($ID) && $prof->fields['interface']!='helpdesk') {
+	if (get_class($item)=='Profile') {
+		if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
 			return array(
 				1 => $LANG['plugin_archires']['title'][0],
-				);
+         );
 		}
+	} else if (get_class($item)=='Config') {
+      return array(
+         1 => $LANG['plugin_archires']['title'][0],
+      );
 	}
 	return false;
 }
 
 // Define headings actions added by the plugin
-function plugin_headings_actions_archires($type) {
+function plugin_headings_actions_archires($item) {
 
-	if (in_array($type,array(PROFILE_TYPE))) {
+	if (in_array(get_class($item),array('Profile','Config'))) {
 		return array(
 			1 => "plugin_headings_archires",
 		);
@@ -457,16 +468,19 @@ function plugin_headings_actions_archires($type) {
 }
 
 // action heading
-function plugin_headings_archires($type,$ID,$withtemplate=0) {
+function plugin_headings_archires($item,$withtemplate=0) {
 	global $CFG_GLPI;
   
    $PluginArchiresProfile=new PluginArchiresProfile();
   
-	switch ($type) {
-		case PROFILE_TYPE :
-			if (!$PluginArchiresProfile->GetfromDB($ID))
-            $PluginArchiresProfile->createAccess($ID);
-			$PluginArchiresProfile->showForm($CFG_GLPI["root_doc"]."/plugins/archires/front/profile.fom.php",$ID);
+	switch (get_class($item)) {
+		case 'Profile' :
+			if (!$PluginArchiresProfile->GetfromDB($item->getField('id')))
+            $PluginArchiresProfile->createAccess($item->getField('id'));
+			$PluginArchiresProfile->showForm($CFG_GLPI["root_doc"]."/plugins/archires/front/profile.fom.php",$item->getField('id'));
+         break;
+      case 'Config' :
+
          break;
 	}
 }

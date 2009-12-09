@@ -33,22 +33,15 @@
 // ----------------------------------------------------------------------
 */
 
-$NEEDED_ITEMS=array("user","tracking","reservation","document","computer","device","printer","networking","peripheral","monitor","software","infocom","phone","link","ocsng","consumable","cartridge","contract","enterprise","contact","group","profile","search","mailgate","typedoc","setup","admininfo","registry","setup");
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
-useplugin('archires',true);
+if (!isset($_GET["id"])) $_GET["id"] = "";
 
-if (isset($_GET)) $tab = $_GET;
-if (empty($tab) && isset($_POST)) $tab = $_POST;
-if (!isset($tab["id"])) $tab["id"] = "";
-
-$PluginArchires=new PluginArchires();
 $PluginArchiresView=new PluginArchiresView();
 $PluginArchiresPrototype=new PluginArchiresPrototype();
 
-$object=$PluginArchires->getClassType($_GET["querytype"]);
-
+$object=$_GET["querytype"];
 $obj=new $object();
 
 if (isset($_GET["displayview"])) {
@@ -73,7 +66,7 @@ if (isset($_GET["displayview"])) {
 			
 	} else {
 		
-			glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
+			glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
 		}
 
 	commonFooter();

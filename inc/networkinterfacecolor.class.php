@@ -38,10 +38,8 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
-
-	function __construct() {
-		$this->table="glpi_plugin_archires_networkinterfacescolors";
-	}
+   
+   public $table = 'glpi_plugin_archires_networkinterfacescolors';
 
 	function getFromDBbyNetworkInterface($networkinterfaces_id) {
 		global $DB;
@@ -143,7 +141,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
           
                if ($number==1)
                   echo "<tr class='tab_bg_1'>";						
-               echo "<td>".getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
+               echo "<td>".CommonDropdown::getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                if ($canupdate)

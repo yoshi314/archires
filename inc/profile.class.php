@@ -39,10 +39,8 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresProfile extends CommonDBTM {
 
-	function __construct() {
-		$this->table="glpi_plugin_archires_profiles";
-		$this->type=-1;
-	}
+	public $table = 'glpi_plugin_archires_profiles';
+   public $type  = -1;
 	
 	//if profile deleted
 	function cleanProfiles($ID) {
@@ -50,15 +48,16 @@ class PluginArchiresProfile extends CommonDBTM {
 		$this->delete(array('id'=>$ID));
 	}
 	
-	function createFirstAccess($ID) {
-
-      if (!$this->GetfromDB($ID)) {
+	static function createFirstAccess($ID) {
+      
+      $myProf = new self();
+      if (!$myProf->GetfromDB($ID)) {
       
          $Profile=new Profile();
          $Profile->GetfromDB($ID);
          $name=$Profile->fields["name"];
 
-         $this->add(array(
+         $myProf->add(array(
         'id' => $ID,
         'name' => $name,
         'archires' => 'w'));
@@ -75,16 +74,17 @@ class PluginArchiresProfile extends CommonDBTM {
       'id' => $ID,
       'name' => $name));
    }
-  
-   function changeProfile() {
    
-      if ($this->getFromDB($_SESSION['glpiactiveprofile']['id']))
-         $_SESSION["glpi_plugin_archires_profile"]=$this->fields;
+   static function changeProfile() {
+      
+      $prof = new self();
+      if ($prof->getFromDB($_SESSION['glpiactiveprofile']['id']))
+         $_SESSION["glpi_plugin_archires_profile"]=$prof->fields;
       else
          unset($_SESSION["glpi_plugin_archires_profile"]);
    }
   
-   function checkRight($module, $right) {
+   static function checkRight($module, $right) {
       global $CFG_GLPI;
 
       if (!plugin_archires_haveRight($module, $right)) {
@@ -114,7 +114,7 @@ class PluginArchiresProfile extends CommonDBTM {
 
 		echo "<tr class='tab_bg_2'>";
 		echo "<td>".$LANG['plugin_archires']['profile'][3].":</td><td>";
-		dropdownNoneReadWrite("archires",$this->fields["archires"],1,1,1);
+		Profile::dropdownNoneReadWrite("archires",$this->fields["archires"],1,1,1);
 		echo "</td>";
 		echo "</tr>";
 

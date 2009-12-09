@@ -41,137 +41,125 @@ define ("PLUGIN_ARCHIRES_PNG_FORMAT",1);
 define ("PLUGIN_ARCHIRES_GIF_FORMAT",2);
 define ("PLUGIN_ARCHIRES_SVG_FORMAT",3);
 
-include_once ("inc/profile.class.php");
-
 // Init the hooks of the plugins -Needed
 function plugin_init_archires() {
 
 	global $PLUGIN_HOOKS,$CFG_GLPI,$LANG,$PLUGIN_ARCHIRES_TYPE_TABLES,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES,$PLUGIN_ARCHIRES_TYPE_NAME;
 
-	$PLUGIN_HOOKS['change_profile']['archires'] = 'plugin_archires_changeProfile';
+	$PLUGIN_HOOKS['change_profile']['archires'] = array('PluginArchiresProfile','changeProfile');
 
 	$PLUGIN_ARCHIRES_TYPE_TABLES = array (
-		COMPUTER_TYPE => "glpi_computertypes",
-		PRINTER_TYPE => "glpi_printertypes",
-		NETWORKING_TYPE => "glpi_networkequipmenttypes",
-		PERIPHERAL_TYPE => "glpi_peripheraltypes",
-		PHONE_TYPE => "glpi_phonetypes"
+		'Computer' => "glpi_computertypes",
+		'Printer' => "glpi_printertypes",
+		'NetworkEquipment' => "glpi_networkequipmenttypes",
+		'Peripheral' => "glpi_peripheraltypes",
+		'Phone' => "glpi_phonetypes"
 	);
    
    $PLUGIN_ARCHIRES_TYPE_FIELD_TABLES = array (
-		COMPUTER_TYPE => "computertypes_id",
-		PRINTER_TYPE => "printertypes_id",
-		NETWORKING_TYPE => "networkequipmenttypes_id",
-		PERIPHERAL_TYPE => "peripheraltypes_id",
-		PHONE_TYPE => "phonetypes_id"
+		'Computer' => "computertypes_id",
+		'Printer' => "printertypes_id",
+		'NetworkEquipment' => "networkequipmenttypes_id",
+		'Peripheral' => "peripheraltypes_id",
+		'Phone' => "phonetypes_id"
 	);
 	
 	$PLUGIN_ARCHIRES_TYPE_NAME = array (
-		COMPUTER_TYPE => $LANG['Menu'][0],
-		PRINTER_TYPE => $LANG['Menu'][2],
-		NETWORKING_TYPE => $LANG['Menu'][1],
-		PERIPHERAL_TYPE => $LANG['Menu'][16],
-		PHONE_TYPE => $LANG['Menu'][34]
+		'Computer' => $LANG['Menu'][0],
+		'Printer' => $LANG['Menu'][2],
+		'NetworkEquipment' => $LANG['Menu'][1],
+		'Peripheral' => $LANG['Menu'][16],
+		'Phone' => $LANG['Menu'][34]
 	);
 
 	// Params : plugin name - string type - number - tabke - form page
-	registerPluginType('archires', 'PLUGIN_ARCHIRES_LOCATIONS_QUERY', 3000, array(
+	Plugin::registerClass('PluginArchiresLocationQuery', array(
 		'classname'  => 'PluginArchiresLocationQuery',
 		'tablename'  => 'glpi_plugin_archires_locationsqueries',
-		'formpage'   => 'front/location.form.php',
-		'searchpage' => 'front/location.php',
+		'formpage'   => 'front/locationquery.form.php',
+		'searchpage' => 'front/locationquery.php',
 		'deleted_tables' => true,
 		'specif_entities_tables' => true,
 		'typename'   => $LANG['plugin_archires']['title'][4]
-		));
+   ));
 
-	registerPluginType('archires', 'PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY', 3001, array(
+	Plugin::registerClass('PluginArchiresNetworkEquipmentQuery', array(
 		'classname'  => 'PluginArchiresNetworkEquipmentQuery',
 		'tablename'  => 'glpi_plugin_archires_networkequipmentsqueries',
-		'formpage'   => 'front/networkequipment.form.php',
-		'searchpage' => 'front/networkequipment.php',
+		'formpage'   => 'front/networkequipmentquery.form.php',
+		'searchpage' => 'front/networkequipmentquery.php',
 		'deleted_tables' => true,
 		'specif_entities_tables' => true,
 		'typename'   => $LANG['plugin_archires']['title'][5]
-		));
+   ));
 
-	registerPluginType('archires', 'PLUGIN_ARCHIRES_APPLIANCES_QUERY', 3002, array(
+	Plugin::registerClass('PluginArchiresApplianceQuery', array(
 		'classname'  => 'PluginArchiresApplianceQuery',
 		'tablename'  => 'glpi_plugin_archires_appliancesqueries',
-		'formpage'   => 'front/appliance.form.php',
-		'searchpage' => 'front/appliance.php',
+		'formpage'   => 'front/appliancequery.form.php',
+		'searchpage' => 'front/appliancequery.php',
 		'deleted_tables' => true,
 		'specif_entities_tables' => true,
 		'typename'   => $LANG['plugin_archires']['title'][8]
-		));
+   ));
 
-	registerPluginType('archires', 'PLUGIN_ARCHIRES_VIEWS_TYPE', 3003, array(
+	Plugin::registerClass('PluginArchiresView', array(
 		'classname'  => 'PluginArchiresView',
 		'tablename'  => 'glpi_plugin_archires_views',
 		'formpage'   => 'front/view.form.php',
 		'deleted_tables' => true,
 		'specif_entities_tables' => true,
 		'typename'   => $LANG['plugin_archires']['title'][3]
-		));
+   ));
 
 	if (isset($_SESSION["glpiID"])) {
 
-		if ((isset($_SESSION["glpi_plugin_network_installed"]) && $_SESSION["glpi_plugin_network_installed"]==1)) {
+      if (plugin_archires_haveRight("archires","r")) {
+         $PLUGIN_HOOKS['menu_entry']['archires'] = 'front/archires.php';
+         
+         //summary
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['summary']['title'] = $LANG['plugin_archires']['menu'][0];
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['summary']['page'] = '/plugins/archires/front/archires.php';
+         //views
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['title'] = $LANG['plugin_archires']['title'][3];
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['page'] = '/plugins/archires/front/view.php';
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['search'] = '/plugins/archires/front/view.php';
+         //locations
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['title'] = $LANG['plugin_archires']['title'][4];
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['page'] = '/plugins/archires/front/locationquery.php';
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['links']['search'] = '/plugins/archires/front/locationquery.php';
+         //networkequipments
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['title'] = $LANG['plugin_archires']['title'][5];
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['page'] = '/plugins/archires/front/networkequipmentquery.php';
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['search'] = '/plugins/archires/front/networkequipmentquery.php';
+         //appliances
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['title'] = $LANG['plugin_archires']['title'][8];
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['page'] = '/plugins/archires/front/appliancequery.php';
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['search'] = '/plugins/archires/front/appliancequery.php';
 
-			$_SESSION["glpi_plugin_network_archires"]=1;
+      }
 
-			if (plugin_archires_haveRight("archires","r")) {
-				$PLUGIN_HOOKS['menu_entry']['archires'] = false;
-				$PLUGIN_HOOKS['use_massive_action']['archires']=1;
-			}
-		} else {
+      if (plugin_archires_haveRight("archires","w")) {
+         
+         //summary
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['add'] = '/plugins/archires/front/view.form.php?new=1';
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['config'] = '/plugins/archires/front/config.form.php';
+         //locations
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['links']['add'] = '/plugins/archires/front/locationquery.form.php?new=1';
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['links']['config'] = '/plugins/archires/front/config.form.php';
+         //networkequipments
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['add'] = '/plugins/archires/front/networkequipmentquery.form.php?new=1';
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['config'] = '/plugins/archires/front/config.form.php';
+         //appliances
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['add'] = '/plugins/archires/front/appliancequery.form.php?new=1';
+         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['config'] = '/plugins/archires/front/config.form.php';
 
-			if (plugin_archires_haveRight("archires","r")) {
-				$PLUGIN_HOOKS['menu_entry']['archires'] = true;
-				
-				//summary
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['summary']['title'] = $LANG['plugin_archires']['menu'][0];
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['summary']['page'] = '/plugins/archires/index.php';
-				//views
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['title'] = $LANG['plugin_archires']['title'][3];
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['page'] = '/plugins/archires/front/view.php';
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['search'] = '/plugins/archires/front/view.php';
-				//locations
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['title'] = $LANG['plugin_archires']['title'][4];
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['page'] = '/plugins/archires/front/location.php';
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['links']['search'] = '/plugins/archires/front/location.php';
-				//networkequipments
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['title'] = $LANG['plugin_archires']['title'][5];
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['page'] = '/plugins/archires/front/networkequipment.php';
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['search'] = '/plugins/archires/front/networkequipment.php';
-				//appliances
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['title'] = $LANG['plugin_archires']['title'][8];
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['page'] = '/plugins/archires/front/appliance.php';
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['search'] = '/plugins/archires/front/appliance.php';
-
-			}
-
-			if (plugin_archires_haveRight("archires","w")) {
-				
-				//summary
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['add'] = '/plugins/archires/front/view.form.php?new=1';
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['config'] = '/plugins/archires/front/config.form.php';
-				//locations
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['links']['add'] = '/plugins/archires/front/location.form.php?new=1';
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['links']['config'] = '/plugins/archires/front/config.form.php';
-				//networkequipments
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['add'] = '/plugins/archires/front/networkequipment.form.php?new=1';
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['config'] = '/plugins/archires/front/config.form.php';
-				//appliances
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['add'] = '/plugins/archires/front/appliance.form.php?new=1';
-				$PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['config'] = '/plugins/archires/front/config.form.php';
-
-				if (haveRight("config","w"))
-					$PLUGIN_HOOKS['submenu_entry']['archires']['config'] = 'front/config.form.php';
-					
-				$PLUGIN_HOOKS['use_massive_action']['archires']=1;
-			}
-		}
+         if (haveRight("config","w"))
+            $PLUGIN_HOOKS['submenu_entry']['archires']['config'] = 'front/config.form.php';
+            
+         $PLUGIN_HOOKS['use_massive_action']['archires']=1;
+      }
+		
 		// Headings
 		if (plugin_archires_haveRight("archires","r")) {
 			$PLUGIN_HOOKS['headings']['archires'] = 'plugin_get_headings_archires';
@@ -217,24 +205,19 @@ function plugin_archires_check_config() {
 
 function plugin_archires_haveTypeRight($type,$right) {
 	switch ($type) {
-		case PLUGIN_ARCHIRES_LOCATIONS_QUERY :
+		case 'PluginArchiresLocationQuery' :
 			return plugin_archires_haveRight("archires",$right);
 			break;
-		case PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY :
+		case 'PluginArchiresNetworkEquipmentQuery' :
 			return plugin_archires_haveRight("archires",$right);
 			break;
-		case PLUGIN_ARCHIRES_APPLIANCES_QUERY :
+		case 'PluginArchiresApplianceQuery' :
 			return plugin_archires_haveRight("archires",$right);
 			break;
-		case PLUGIN_ARCHIRES_VIEWS_TYPE :
+		case 'PluginArchiresApplianceQuery' :
 			return plugin_archires_haveRight("archires",$right);
 			break;
 	}
-}
-
-function plugin_archires_changeProfile() {
-	$PluginArchiresProfile=new PluginArchiresProfile();
-	$PluginArchiresProfile->changeProfile();
 }
 
 function plugin_archires_haveRight($module,$right) {

@@ -39,10 +39,8 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresView extends CommonDBTM {
 
-	function __construct() {
-		$this->table="glpi_plugin_archires_views";
-		$this->type=PLUGIN_ARCHIRES_VIEWS_TYPE;
-	}
+	public $table = 'glpi_plugin_archires_views';
+   public $type = "PluginArchiresView";
    
    function dropdownObject($obj) {
       global $LANG,$DB,$CFG_GLPI;
@@ -697,13 +695,11 @@ class PluginArchiresView extends CommonDBTM {
    function showView($type,$ID) {
       global $CFG_GLPI,$DB,$LANG;
     
-      $PluginArchires=new PluginArchires();
-      $object=$PluginArchires->getClassType($type);
-    
-      $obj=new $object();
+      $obj=new $type();
       $obj->getFromDB($ID);
       $views_id=$obj->fields["views_id"];
-
+      
+      if (!$views_id) return false;
       $this->getFromDB($views_id);
 
       $name_config=$this->fields["name"];

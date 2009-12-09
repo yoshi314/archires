@@ -39,9 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresItemImage extends CommonDBTM {
 
-	function __construct () {
-		$this->table="glpi_plugin_archires_imageitems";
-	}
+	public $table = 'glpi_plugin_archires_imageitems';
 
 	function getFromDBbyType($itemtype, $type) {
 		global $DB;
@@ -120,8 +118,8 @@ class PluginArchiresItemImage extends CommonDBTM {
       echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='4'>";
       echo $LANG['plugin_archires']['setup'][2]." : </th></tr>";
       echo "<tr class='tab_bg_1'><td>";
-      $PluginArchires=new PluginArchires();
-      $PluginArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
+      $PluginArchiresArchires=new PluginArchiresArchires();
+      $PluginArchiresArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
       echo "</td><td>";
       //file
       $rep = "../pics/";
@@ -171,8 +169,8 @@ class PluginArchiresItemImage extends CommonDBTM {
                if ($number==1)
                   echo "<tr class='tab_bg_1'>";
                   
-               $PluginArchires=new PluginArchires();
-               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchires->getType($ligne["itemtype"],$ligne["type"])."</td><td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"]."\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";					
+               $PluginArchiresArchires=new PluginArchiresArchires();
+               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchiresArchires->getType($ligne["itemtype"],$ligne["type"])."</td><td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"]."\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                echo "<input type='checkbox' name='item[$ID]' value='1'>";

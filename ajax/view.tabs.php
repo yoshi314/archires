@@ -32,9 +32,7 @@
 // Purpose of file: plugin archires v1.8.0 - GLPI 0.80
 // ----------------------------------------------------------------------
  */
-
-$NEEDED_ITEMS=array("computer","printer","networking","monitor","software","peripheral","phone","tracking","document","user","enterprise","contract","infocom","group");
-
+ 
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
@@ -44,8 +42,7 @@ if (!isset($_POST["id"])) {
 	exit();
 }
 
-$PluginArchiresProfile=new PluginArchiresProfile();
-$PluginArchiresProfile->checkRight("archires","r");
+PluginArchiresProfile::checkRight("archires","r");
 
 if (empty($_POST["id"])) {
    switch($_REQUEST['glpi_tab']) {

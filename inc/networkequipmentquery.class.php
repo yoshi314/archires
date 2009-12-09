@@ -39,11 +39,8 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
-	function __construct () {
-		$this->table="glpi_plugin_archires_networkequipmentsqueries";
-		$this->type=PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY;
-		$object=$this;
-	}
+	public $table = 'glpi_plugin_archires_networkequipmentsqueries';
+   public $type = "PluginArchiresNetworkEquipmentQuery";
 	
 	function cleanDBonPurge($ID) {
 		global $DB;
@@ -150,16 +147,16 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['help'][26].":	</td><td>";
 
-      dropdownValue("glpi_networkequipments", "networkequipments_id", $this->fields["networkequipments_id"],1,$this->fields["entities_id"]);
+      CommonDropdown::dropdownValue("glpi_networkequipments", "networkequipments_id", $this->fields["networkequipments_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";	
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
-      dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
+      CommonDropdown::dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
       echo "</td></tr>";
 
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
-      dropdownValue("glpi_states", "states_id", $this->fields["states_id"]);
+      CommonDropdown::dropdownValue("glpi_states", "states_id", $this->fields["states_id"]);
       echo "</td></tr>";
 
       echo "</table>";
@@ -168,11 +165,11 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       echo "<table cellpadding='2' cellspacing='2' border='0'>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['common'][35].": </td><td>";
-      dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"]);
+      CommonDropdown::dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['networking'][56].": </td><td>";
-      dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"]);
+      CommonDropdown::dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
@@ -202,19 +199,19 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       $ports = array();
       
       if ($PluginArchiresView->fields["computer"]!=0)
-         $types[]=COMPUTER_TYPE;
+         $types[]='Computer';
       if ($PluginArchiresView->fields["printer"]!=0)
-         $types[]=PRINTER_TYPE;
+         $types[]='Printer';
       if ($PluginArchiresView->fields["peripheral"]!=0)
-         $types[]=PERIPHERAL_TYPE;
+         $types[]='Peripheral';
       if ($PluginArchiresView->fields["phone"]!=0)
-         $types[]=PHONE_TYPE;
+         $types[]='Phone';
       if ($PluginArchiresView->fields["networking"]!=0)
-         $types[]=NETWORKING_TYPE;
+         $types[]='NetworkEquipment';
     
       $query_switch = "SELECT c.name as port,c.id AS idport ";
       $query_switch .= " FROM glpi_networkequipments";
-      $query_switch .= " LEFT JOIN glpi_networkports c ON (c.itemtype=" . NETWORKING_TYPE . " AND c.items_id=glpi_networkequipments.id)";
+      $query_switch .= " LEFT JOIN glpi_networkports c ON (c.itemtype='NetworkEquipment' AND c.items_id=glpi_networkequipments.id)";
       $query_switch .= " WHERE glpi_networkequipments.id='".$this->fields["networkequipments_id"]."' 
               AND glpi_networkequipments.is_deleted = '0' 
               AND glpi_networkequipments.is_template = '0'";
@@ -242,7 +239,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                   if ($this->fields["vlans_id"] > "0")
                      $query .= ", `glpi_networkports_vlans` nv";
 
-                  $query .= " WHERE `np`.`itemtype` = " . $val . " 
+                  $query .= " WHERE `np`.`itemtype` = '" . $val . "' 
                         AND `np`.`items_id` = `$LINK_ID_TABLE[$val]`.`id`  
                         AND `np`.`id` ='".$end."'";
                   $query .= " AND `$LINK_ID_TABLE[$val]`.`is_deleted` = '0' 
@@ -252,7 +249,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                   if ($this->fields["vlans_id"] > "0")
                      $query .= " AND `nv`.`networkports_id` = `np`.`id` 
                       AND vlans_id= '".$this->fields["vlans_id"]."'";
-                  if ($this->fields["networks_id"] > "0" && $val != PHONE_TYPE && $val != PERIPHERAL_TYPE)
+                  if ($this->fields["networks_id"] > "0" && $val != 'Phone' && $val != 'Peripheral')
                      $query .= " AND `$LINK_ID_TABLE[$val]`.`networks_id` = '".$this->fields["networks_id"]."'";
                   if ($this->fields["states_id"] > "0")
                      $query .= " AND `$LINK_ID_TABLE[$val]`.`states_id` = '".$this->fields["states_id"]."'";
@@ -311,7 +308,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       $query .= " FROM `glpi_networkports` `np`, `glpi_networkequipments` `n` ";
       if ($this->fields["vlans_id"] > "0")
          $query .= ", `glpi_networkports_vlans` nv";
-      $query .= " WHERE `np`.`itemtype` = " . NETWORKING_TYPE . " 
+      $query .= " WHERE `np`.`itemtype` = 'NetworkEquipment' 
     AND `np`.`items_id` = `n`.`id` 
     AND `n`.`id` = '".$this->fields["networkequipments_id"]."'";
       $query .= " AND `n`.`is_deleted` = '0' 
@@ -323,16 +320,16 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
          while ($data = $DB->fetch_array($result)) {
 
             if ($PluginArchiresView->fields["display_state"]!=0)
-               $devices[NETWORKING_TYPE][$data["items_id"]]["states_id"] = $data["states_id"];
+               $devices['NetworkEquipment'][$data["items_id"]]["states_id"] = $data["states_id"];
 
-            $devices[NETWORKING_TYPE][$data["items_id"]]["name"] = $data["name"];  
-            $devices[NETWORKING_TYPE][$data["items_id"]]["type"] = $data["type"];
-            $devices[NETWORKING_TYPE][$data["items_id"]]["users_id"] = $data["users_id"];
-            $devices[NETWORKING_TYPE][$data["items_id"]]["groups_id"] = $data["groups_id"];
-            $devices[NETWORKING_TYPE][$data["items_id"]]["contact"] = $data["contact"];
-            $devices[NETWORKING_TYPE][$data["items_id"]]["ip"]  = $data["nip"];
-            $devices[NETWORKING_TYPE][$data["items_id"]]["entity"] = $data["entities_id"];
-            $devices[NETWORKING_TYPE][$data["items_id"]]["locations_id"] = $data["locations_id"];
+            $devices['NetworkEquipment'][$data["items_id"]]["name"] = $data["name"];  
+            $devices['NetworkEquipment'][$data["items_id"]]["type"] = $data["type"];
+            $devices['NetworkEquipment'][$data["items_id"]]["users_id"] = $data["users_id"];
+            $devices['NetworkEquipment'][$data["items_id"]]["groups_id"] = $data["groups_id"];
+            $devices['NetworkEquipment'][$data["items_id"]]["contact"] = $data["contact"];
+            $devices['NetworkEquipment'][$data["items_id"]]["ip"]  = $data["nip"];
+            $devices['NetworkEquipment'][$data["items_id"]]["entity"] = $data["entities_id"];
+            $devices['NetworkEquipment'][$data["items_id"]]["locations_id"] = $data["locations_id"];
             $ports[$data["id"]]["items_id"] = $data["items_id"];
             $ports[$data["id"]]["logical_number"] = $data["logical_number"];
             $ports[$data["id"]]["networkinterfaces_id"] = $data["networkinterfaces_id"];
@@ -340,7 +337,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
             $ports[$data["id"]]["netmask"] = $data["netmask"];
             $ports[$data["id"]]["namep"] = $data["namep"];
             $ports[$data["id"]]["idp"] = $data["id"];
-            $ports[$data["id"]]["itemtype"] = NETWORKING_TYPE;
+            $ports[$data["id"]]["itemtype"] = 'NetworkEquipment';
          }
       }
     

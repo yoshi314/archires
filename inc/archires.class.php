@@ -37,14 +37,14 @@ if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
 }
 
-class PluginArchires extends CommonDBTM {
+class PluginArchiresArchires extends CommonDBTM {
 	
 	function dropdownAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
       global $DB,$LANG,$CFG_GLPI,$PLUGIN_ARCHIRES_TYPE_TABLES,$PLUGIN_ARCHIRES_TYPE_NAME;
       
       $types = array(
-         COMPUTER_TYPE,NETWORKING_TYPE,PERIPHERAL_TYPE,
-         PHONE_TYPE,PRINTER_TYPE);
+         'Computer','NetworkEquipment','Peripheral',
+         'Phone','Printer');
          
       $rand=mt_rand();
       $ci=new CommonItem();
@@ -60,7 +60,7 @@ class PluginArchires extends CommonDBTM {
 
       echo "</select>";
 
-      $params=array('idtable'=>'__VALUE__',
+      $params=array('typetable'=>'__VALUE__',
       'value'=>$value,
       'myname'=>$myname,
       'entity_restrict'=>$entity_restrict,
@@ -76,7 +76,7 @@ class PluginArchires extends CommonDBTM {
          echo "document.getElementById('item_type$rand').value='".$value_type."';";
          echo "</script>\n";
 
-         $params["idtable"]=$value_type;
+         $params["typetable"]=$value_type;
          ajaxUpdateItem("show_$myname$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",$params);
       }
       return $rand;
@@ -97,20 +97,6 @@ class PluginArchires extends CommonDBTM {
          $name=$DB->result($result, 0, "name");
       }
       return $name;
-   }
-  
-   function getClassType($type) {
-	
-      if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
-         $object= "PluginArchiresLocationQuery";
-      } else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
-         $object= "PluginArchiresNetworkEquipmentQuery";
-      } else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
-         $object= "PluginArchiresApplianceQuery";
-      }
-      
-      return $object;
-
    }
 }
 

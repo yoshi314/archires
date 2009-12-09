@@ -33,16 +33,12 @@
 // ----------------------------------------------------------------------
  */
 
-$NEEDED_ITEMS=array("user","tracking","reservation","document","computer","device","printer","networking","peripheral","monitor","software","infocom","phone","link","ocsng","consumable","cartridge","contract","enterprise","contact","group","profile","search","mailgate","typedoc","setup","admininfo","registry","setup");
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
-useplugin('archires',true);
-
-$PluginArchiresProfile=new PluginArchiresProfile();
-$PluginArchiresProfile->checkRight("archires","w");
+PluginArchiresProfile::checkRight("archires","w");
 
 commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
 

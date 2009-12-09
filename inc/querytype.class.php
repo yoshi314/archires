@@ -39,9 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresQueryType extends CommonDBTM {
 
-	function __construct() {
-		$this->table="glpi_plugin_archires_queriestypes";
-	}
+   public $table = 'glpi_plugin_archires_queriestypes';
 
 	function getFromDBbyType($itemtype, $type,$type_query,$query_ID) {
 		global $DB;
@@ -132,12 +130,12 @@ class PluginArchiresQueryType extends CommonDBTM {
    function showTypes($type,$ID) {
       global $CFG_GLPI,$DB,$LANG,$PLUGIN_ARCHIRES_TYPE_NAME;
 
-      if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY)
-         $page="location";
-      else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY)
-         $page="networkequipment";
-      else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY)
-         $page="appliance";
+      if ($type=='PluginArchiresLocationQuery')
+         $page="locationquery";
+      else if ($type=='PluginArchiresNetworkEquipmentQuery')
+         $page="networkequipmentquery";
+      else if ($type=='PluginArchiresApplianceQuery')
+         $page="appliancequery";
 
       echo "<div align='center'>";
 
@@ -148,8 +146,8 @@ class PluginArchiresQueryType extends CommonDBTM {
          echo $LANG['plugin_archires'][2]." : </th></tr>";
          echo "<tr class='tab_bg_1'><td>";
 
-         $PluginArchires=new PluginArchires();
-         $PluginArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
+         $PluginArchiresArchires=new PluginArchiresArchires();
+         $PluginArchiresArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
 
          echo "</td>";
          echo "<td>";
@@ -192,8 +190,8 @@ class PluginArchiresQueryType extends CommonDBTM {
 
                if ($number==1)
                   echo "<tr class='tab_bg_1'>";
-               $PluginArchires=new PluginArchires();
-               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchires->getType($ligne["itemtype"],$ligne["type"])."</td>";
+               $PluginArchiresArchires=new PluginArchiresArchires();
+               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchiresArchires->getType($ligne["itemtype"],$ligne["type"])."</td>";
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                echo "<input type='checkbox' name='item[$ID]' value='1'>";

@@ -82,7 +82,7 @@ $LANG['plugin_archires'][30] = "Todos los lugares principales";
 $LANG['plugin_archires'][31] = "Ver lugar del material";
 $LANG['plugin_archires'][32] = "Ver la entidad del material";
 $LANG['plugin_archires'][33] = "See names";
-$LANG['plugin_archires'][34] = "Todos los aplicativos";
+$LANG['plugin_archires'][34] = "None";
 $LANG['plugin_archires'][35] = "Vlan";
 $LANG['plugin_archires'][36] = "Tous les VLANs";
 

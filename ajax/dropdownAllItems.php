@@ -41,9 +41,9 @@ header_nocache();
 
 // Make a select box
 
-if (isset($_POST["idtable"]) && $_POST["idtable"]!=0) {
-	//$table=$LINK_ID_TABLE[$_POST["idtable"]];
-	$test= explode(";", $_POST['idtable']);
+if (isset($_POST["typetable"])) {
+	//$table=$LINK_ID_TABLE[$_POST["typetable"]];
+	$test= explode(";", $_POST['typetable']);
 	$table= $test[1];
 	$itemtype= $test[0];
 	// Link to user for search only > normal users
@@ -80,7 +80,6 @@ if (isset($_POST["idtable"]) && $_POST["idtable"]!=0) {
 		echo "</script>\n";
 		ajaxUpdateItem("results_$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/$link",$params);
 	}
-
 }
 	
 ?>

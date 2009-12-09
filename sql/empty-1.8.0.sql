@@ -78,7 +78,7 @@ DROP TABLE IF EXISTS `glpi_plugin_archires_imageitems`;
 CREATE TABLE `glpi_plugin_archires_imageitems` (
 	`id` int(11) NOT NULL auto_increment,
 	`type` int(11) NOT NULL default '0',
-	`itemtype` int(11) NOT NULL default '0'  COMMENT 'see define.php *_TYPE constant',
+	`itemtype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'see .class.php file',
 	`img` VARCHAR( 50 ) collate utf8_unicode_ci NOT NULL,
 	PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -86,9 +86,9 @@ CREATE TABLE `glpi_plugin_archires_imageitems` (
 DROP TABLE IF EXISTS `glpi_plugin_archires_queriestypes`;
 CREATE TABLE `glpi_plugin_archires_queriestypes` (
 	`id` int(11) NOT NULL auto_increment,
-	`querytype` int(11) NOT NULL default '0' COMMENT 'RELATION to the 3 type of archires (type)',
+	`querytype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'RELATION to the 3 type of archires (type)',
 	`type` int(11) NOT NULL default '0',
-	`itemtype` int(11) NOT NULL default '0'  COMMENT 'see define.php *_TYPE constant',
+	`itemtype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'see .class.php file',
 	`queries_id` int(11) NOT NULL default '0' COMMENT 'RELATION to the 3 queries tables (id)',
 	PRIMARY KEY  (`id`),
 	KEY `queries_id` (`queries_id`),
@@ -161,22 +161,22 @@ CREATE TABLE `glpi_plugin_archires_profiles` (
 	KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3000','2','1','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3000','3','2','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3000','4','3','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3000','5','4','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3000','6','5','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3000','7','6','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3000','8','7','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3001','2','1','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3001','3','2','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3001','4','3','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3001','5','4','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3001','6','5','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3001','7','6','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3002','2','1','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3002','3','2','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3002','4','3','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3002','5','4','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3002','6','5','0');
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'3002','7','6','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresLocationQuery','2','1','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresLocationQuery','3','2','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresLocationQuery','4','3','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresLocationQuery','5','4','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresLocationQuery','6','5','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresLocationQuery','7','6','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresLocationQuery','8','7','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresNetworkEquipmentQuery','2','1','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresNetworkEquipmentQuery','3','2','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresNetworkEquipmentQuery','4','3','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresNetworkEquipmentQuery','5','4','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresNetworkEquipmentQuery','6','5','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresNetworkEquipmentQuery','7','6','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresApplianceQuery','2','1','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresApplianceQuery','3','2','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresApplianceQuery','4','3','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresApplianceQuery','5','4','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresApplianceQuery','6','5','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginArchiresApplianceQuery','7','6','0');

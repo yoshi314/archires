@@ -38,17 +38,13 @@ define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
 $ci = new CommonItem();
-$ci->setType(PLUGIN_ARCHIRES_LOCATIONS_QUERY,true);
+$ci->setType('PluginArchiresLocationQuery',true);
 
 commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","location");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 		
-	manageGetValuesInSearch(PLUGIN_ARCHIRES_LOCATIONS_QUERY);
-			
-	searchForm(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_GET);
-
-	showList(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_GET);
+	Search::show("PluginArchiresLocationQuery");
 	
 } else {
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";

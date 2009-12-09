@@ -82,7 +82,7 @@ $LANG['plugin_archires'][30] = "Все местонахождения";
 $LANG['plugin_archires'][31] = "Показывать расположение";
 $LANG['plugin_archires'][32] = "Показывать организацию";
 $LANG['plugin_archires'][33] = "See names";
-$LANG['plugin_archires'][34] = "All appliances";
+$LANG['plugin_archires'][34] = "None";
 $LANG['plugin_archires'][35] = "Vlan";
 $LANG['plugin_archires'][36] = "Tous les VLANs";
 

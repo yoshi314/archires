@@ -38,10 +38,8 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresStateColor extends CommonDBTM {
-
-	function __construct () {
-		$this->table="glpi_plugin_archires_statescolors";
-	}
+   
+   public $table = 'glpi_plugin_archires_statescolors';
 
 	function getFromDBbyState($state) {
 		global $DB;
@@ -145,7 +143,7 @@ class PluginArchiresStateColor extends CommonDBTM {
 
                if ($number==1)
                   echo "<tr class='tab_bg_1'>";						
-               echo "<td>".getDropdownName("glpi_states",$ligne["states_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
+               echo "<td>".CommonDropdown::getDropdownName("glpi_states",$ligne["states_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                if ($canupdate)
@@ -241,9 +239,9 @@ class PluginArchiresStateColor extends CommonDBTM {
 
       if ($number_state != 0 && $device["states_id"] > 0) {
          $color_state=$DB->result($result_state,0,"color");
-         $graph ="<font color=\"$color_state\">".getDropdownName("glpi_states",$device["states_id"])."</font>";
+         $graph ="<font color=\"$color_state\">".CommonDropdown::getDropdownName("glpi_states",$device["states_id"])."</font>";
       } else if ($number_state == 0 && $device["states_id"] > 0) {
-         $graph =getDropdownName("glpi_states",$device["states_id"]);
+         $graph =CommonDropdown::getDropdownName("glpi_states",$device["states_id"]);
       }
 
     return $graph;

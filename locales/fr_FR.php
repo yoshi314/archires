@@ -82,7 +82,7 @@ $LANG['plugin_archires'][30] = "Tous les lieux racines";
 $LANG['plugin_archires'][31] = "Voir le lieu du matériel";
 $LANG['plugin_archires'][32] = "Voir l'entité du matériel";
 $LANG['plugin_archires'][33] = "Voir les noms";
-$LANG['plugin_archires'][34] = "Tous les applicatifs";
+$LANG['plugin_archires'][34] = "Aucun";
 $LANG['plugin_archires'][35] = "Vlan";
 $LANG['plugin_archires'][36] = "Tous les VLANs";
 

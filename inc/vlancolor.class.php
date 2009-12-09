@@ -38,10 +38,8 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresVlanColor extends CommonDBTM {
-
-	function __construct () {
-		$this->table="glpi_plugin_archires_vlanscolors";
-	}
+	
+	public $table = 'glpi_plugin_archires_vlanscolors';
 
 	function getFromDBbyVlan($vlan) {
 		global $DB;
@@ -145,7 +143,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
 
                if ($number==1)
                   echo "<tr class='tab_bg_1'>";						
-               echo "<td>".getDropdownName("glpi_vlans", $ligne["vlans_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
+               echo "<td>".CommonDropdown::getDropdownName("glpi_vlans", $ligne["vlans_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                if ($canupdate)

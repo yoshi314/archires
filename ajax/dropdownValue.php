@@ -112,7 +112,7 @@ echo "<option value=\"0\">-----</option>";
 $number = $DB->numrows($result);
 if ($number != 0)
 echo "<option value=\"".$_POST['itemtype'].";-1\">".$LANG['plugin_archires'][18]."</option>";
-$output=getDropdownName($_POST['table'],$_POST['value']);
+$output=CommonDropdown::getDropdownName($_POST['table'],$_POST['value']);
 if (!empty($output)&&$output!="&nbsp;") {
    echo "<option selected value='".$_POST['value']."'>".$output."</option>";
 }

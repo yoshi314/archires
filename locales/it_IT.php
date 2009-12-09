@@ -82,7 +82,7 @@ $LANG['plugin_archires'][30] = "Tutte le posizioni root";
 $LANG['plugin_archires'][31] = "Visualizza posizione elementi";
 $LANG['plugin_archires'][32] = "Visulizza entit&agrave; degli elementi";
 $LANG['plugin_archires'][33] = "See names";
-$LANG['plugin_archires'][34] = "Tutte le appliances";
+$LANG['plugin_archires'][34] = "None";
 $LANG['plugin_archires'][35] = "Vlan";
 $LANG['plugin_archires'][36] = "Tous les VLANs";
 

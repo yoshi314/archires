@@ -40,7 +40,6 @@ $AJAX_INCLUDE=1;
 header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
-
 if (isset($_POST["action"])||isset($_POST["id"])) {
 	echo "<input type='hidden' name='action' value='".$_POST["action"]."'>";
 	echo "<input type='hidden' name='id' value='".$_POST["id"]."'>";
@@ -52,14 +51,13 @@ if (isset($_POST["action"])||isset($_POST["id"])) {
 			echo "<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
          break;
 		case "duplicate":
-			dropdownValue("glpi_entities", "entities_id", '');
+			CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
 			echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
          break;
 		case "transfert":
-			dropdownValue("glpi_entities", "entities_id", '');
+			CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
 			echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
          break;
-
 	}
 }
 

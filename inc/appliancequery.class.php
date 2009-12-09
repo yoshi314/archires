@@ -39,10 +39,8 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresApplianceQuery extends CommonDBTM {
 
-	function __construct() {
-		$this->table="glpi_plugin_archires_appliancesqueries";
-		$this->type=PLUGIN_ARCHIRES_APPLIANCES_QUERY;
-	}
+	public $table = 'glpi_plugin_archires_appliancesqueries';
+   public $type = "PluginArchiresApplianceQuery";
 	
 	function cleanDBonPurge($ID) {
 		global $DB;
@@ -148,17 +146,17 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][8].":	</td><td>";
-      dropdownValue("glpi_plugin_appliances_appliances", "appliances_id", $this->fields["appliances_id"],1,$this->fields["entities_id"]);
+      CommonDropdown::dropdownValue("glpi_plugin_appliances_appliances", "appliances_id", $this->fields["appliances_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
-      dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"],1,$this->fields["entities_id"]);
+      CommonDropdown::dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
-      dropdownValue("glpi_states", "states_id", $this->fields["states_id"],1,$this->fields["entities_id"]);
+      CommonDropdown::dropdownValue("glpi_states", "states_id", $this->fields["states_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
       echo "</table>";
@@ -167,11 +165,11 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       echo "<table cellpadding='2' cellspacing='2' border='0'>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['common'][35].": </td><td>";
-      dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"],1,$this->fields["entities_id"]);
+      CommonDropdown::dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['networking'][56].": </td><td>";
-      dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"],1,$this->fields["entities_id"]);
+      CommonDropdown::dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
@@ -223,7 +221,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
             $query .= ", `glpi_networkports_vlans` nv";
 
          $query .= ", `glpi_plugin_appliances_appliances_items` app";
-         $query .= " WHERE `np`.`itemtype` = " . $val . " 
+         $query .= " WHERE `np`.`itemtype` = '" . $val . "' 
             AND `np`.`items_id` = `$LINK_ID_TABLE[$val]`.`id` 
             AND `app`.`items_id` = `$LINK_ID_TABLE[$val]`.`id` ";
          $query .= " AND `$LINK_ID_TABLE[$val]`.`is_deleted` = '0' 
@@ -233,15 +231,15 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
          if ($this->fields["vlans_id"] > "0")
             $query .= " AND `nv`.`networkports_id` = `np`.`id` 
               AND `vlans_id` = '".$this->fields["vlans_id"]."'";
-         if ($this->fields["networks_id"] > "0" && $val != PHONE_TYPE && $val != PERIPHERAL_TYPE)
+         if ($this->fields["networks_id"] > "0" && $val != 'Phone' && $val != 'Peripheral')
             $query .= " AND `$LINK_ID_TABLE[$val]`.`networks_id` = '".$this->fields["networks_id"]."'";
          if ($this->fields["states_id"] > "0")
             $query .= " AND `$LINK_ID_TABLE[$val]`.`states_id` = '".$this->fields["states_id"]."'";
          if ($this->fields["groups_id"] > "0")
             $query .= " AND `$LINK_ID_TABLE[$val]`.`groups_id` = '".$this->fields["groups_id"]."'";
       
-         $query .= " AND `app`.`appliances_id` = '" . $this->fields["appliances_id"] . "' 
-            AND `app`.`itemtype` = " . $val . " ";
+         $query .= " AND `app`.`plugin_appliances_appliances_id` = '" . $this->fields["appliances_id"] . "' 
+            AND `app`.`itemtype` = '" . $val . "' ";
       
          $PluginArchiresQueryType=new PluginArchiresQueryType();
          $query .= $PluginArchiresQueryType->queryTypeCheck($this->type,$ID,$val);

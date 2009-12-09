@@ -35,11 +35,8 @@
 
 if (!defined('GLPI_ROOT')) {
 	define('GLPI_ROOT', '../../..');
-	$NEEDED_ITEMS=array("setup");
 	include (GLPI_ROOT . "/inc/includes.php");
 }
-
-useplugin('archires',true);
 
 checkRight("config","w");
 
@@ -49,13 +46,6 @@ if ($plugin->isActivated("archires"))
 	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","archires","summary");
 else
 	commonHeader($LANG['common'][12],$_SERVER['PHP_SELF'],"config","plugins");
-
-if ($plugin->isActivated("network")) {
-	echo "<div align='center'><table border='0'><tr><td>";
-	echo "<a class='icon_consol' href=\"../index.php\">".$LANG['plugin_archires']['title'][0]."</a></td>";
-	echo "<td><a  class='icon_consol' href=\"".$CFG_GLPI["root_doc"]."/plugins/network/front/plugin_network.config.php\"><b>".$LANG['plugin_network']['title'][0]."</b></a></td>";
-	echo "</tr></table></div><br>";
-}
 
 $PluginArchiresItemImage=new PluginArchiresItemImage();
 $PluginArchiresNetworkInterfaceColor=new PluginArchiresNetworkInterfaceColor();

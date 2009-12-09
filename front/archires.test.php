@@ -36,8 +36,6 @@
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
-useplugin('archires',true);
-
 $PluginArchiresPrototype=new PluginArchiresPrototype();
 $output_data = $PluginArchiresPrototype->testGraphviz();
 

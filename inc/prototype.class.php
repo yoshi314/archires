@@ -85,13 +85,13 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       $graph ="";
       
-      $PluginArchires= new PluginArchires();
+      $PluginArchiresArchires= new PluginArchiresArchires();
       if ($PluginArchiresView->fields["display_ip"]!=0 && isset($device["ip"])) {
          if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
             if (!$generation)
-               $graph = $PluginArchires->getType($itemtype,$device["type"]) . " " . $device["ip"];
+               $graph = $PluginArchiresArchires->getType($itemtype,$device["type"]) . " " . $device["ip"];
             else
-               $graph =" - ".$PluginArchires->getType($itemtype,$device["type"])."</td></tr><tr><td>".$device["ip"]."</td></tr>";
+               $graph =" - ".$PluginArchiresArchires->getType($itemtype,$device["type"])."</td></tr><tr><td>".$device["ip"]."</td></tr>";
 
          } else {
             if (!$generation)
@@ -102,9 +102,9 @@ class PluginArchiresPrototype extends CommonDBTM {
       } else {
          if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
             if (!$generation)
-               $graph =$PluginArchires->getType($itemtype,$device["type"]);
+               $graph =$PluginArchiresArchires->getType($itemtype,$device["type"]);
             else
-               $graph ="</td></tr><tr><td>".$PluginArchires->getType($itemtype,$device["type"])."</td></tr>";
+               $graph ="</td></tr><tr><td>".$PluginArchiresArchires->getType($itemtype,$device["type"])."</td></tr>";
          } else {
             if (!$generation)
                echo "";
@@ -125,9 +125,9 @@ class PluginArchiresPrototype extends CommonDBTM {
             $graph = "<a href='".$url."'>".getusername($device["users_id"])."</a>";
       } else if (!$device["users_id"] && $device["groups_id"]) {
          if ($generation)
-            $graph = "URL=\"".$url."\" tooltip=\"".getdropdownname("glpi_groups",$device["groups_id"])."\"";
+            $graph = "URL=\"".$url."\" tooltip=\"".CommonDropdown::getDropdownName("glpi_groups",$device["groups_id"])."\"";
          else
-            $graph = "<a href='".$url."'>".getdropdownname("glpi_groups",$device["groups_id"])."</a>";
+            $graph = "<a href='".$url."'>".CommonDropdown::getDropdownName("glpi_groups",$device["groups_id"])."</a>";
       } else if (!$device["users_id"] && !$device["groups_id"] && $device["contact"]) {
          if ($generation)
             $graph = "URL=\"".$url."\" tooltip=\"".$device["contact"]."\"";
@@ -146,13 +146,11 @@ class PluginArchiresPrototype extends CommonDBTM {
     
       global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
     
-      $PluginArchires=new PluginArchires();
-      $object=$PluginArchires->getClassType($type);
-    
-      $obj=new $object();
+      $obj=new $type();
       $obj->getFromDB($ID);
       $views_id=$obj->fields["views_id"];
-
+      if (!$views_id) return false;
+      
       $PluginArchiresView=new PluginArchiresView;
       $PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery;
       $PluginArchiresLocationQuery=new PluginArchiresLocationQuery;
@@ -175,13 +173,13 @@ class PluginArchiresPrototype extends CommonDBTM {
       echo "<th>".$LANG['plugin_archires']['test'][8]."</th>";
       echo "<th>".$LANG['plugin_archires']['test'][9]."</th></tr>";
 
-      if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
+      if ($type=='PluginArchiresLocationQuery') {
          $devices=$PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,true);
          $ports=$PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,false);
-      } else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
+      } else if ($type=='PluginArchiresNetworkEquipmentQuery') {
          $devices=$PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,true);
          $ports=$PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,false);
-      } else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
+      } else if ($type=='PluginArchiresApplianceQuery') {
          $devices=$PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,true);
          $ports=$PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,false);
       }
@@ -324,11 +322,11 @@ class PluginArchiresPrototype extends CommonDBTM {
       $graph .= $this->displayTypeAndIP($PluginArchiresView,$itemtype,$device,true);
       //entity
       if ($PluginArchiresView->fields["display_entity"]!=0 && isset($device["entity"])) {
-         $graph .="<tr><td>".$this->CleanField(getDropdownName("glpi_entities",$device["entity"]))."</td></tr>";
+         $graph .="<tr><td>".$this->CleanField(CommonDropdown::getDropdownName("glpi_entities",$device["entity"]))."</td></tr>";
       }
       //location
       if ($PluginArchiresView->fields["display_location"]!=0 && isset($device["locations_id"])) {
-         $graph .="<tr><td>".$this->CleanField(getDropdownName("glpi_locations",$device["locations_id"]))."</td></tr>";
+         $graph .="<tr><td>".$this->CleanField(CommonDropdown::getDropdownName("glpi_locations",$device["locations_id"]))."</td></tr>";
       }
 
       //state
@@ -494,6 +492,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $ID=$obj->fields["id"];
       $object_view=$obj->fields["views_id"];
       if (!isset($views_id)) $views_id = $object_view;
+      if (!$object_view && !$views_id) return false;
 
       $PluginArchiresView=new PluginArchiresView();
       $PluginArchiresView->getFromDB($views_id);
@@ -552,13 +551,13 @@ class PluginArchiresPrototype extends CommonDBTM {
       $devices = array();
       $ports = array();
 
-      if ($type==PLUGIN_ARCHIRES_LOCATIONS_QUERY) {
+      if ($type=='PluginArchiresLocationQuery') {
          $devices=$PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,true);
          $ports=$PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,false);
-      } else if ($type==PLUGIN_ARCHIRES_NETWORKEQUIPMENTS_QUERY) {
+      } else if ($type=='PluginArchiresNetworkEquipmentQuery') {
          $devices=$PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,true);
          $ports=$PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,false);
-      } else if ($type==PLUGIN_ARCHIRES_APPLIANCES_QUERY) {
+      } else if ($type=='PluginArchiresApplianceQuery') {
          $devices=$PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,true);
          $ports=$PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,false);
       }

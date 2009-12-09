@@ -33,23 +33,17 @@
 // ----------------------------------------------------------------------
  */
 
-$NEEDED_ITEMS=array("computer","printer","networking","monitor","software","peripheral","phone","tracking","document","user","enterprise","contract","infocom","group");
-
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
-useplugin('archires',true);
-
 if (!isset($_POST["id"])) {
 	exit();
 }
 
-$PluginArchiresProfile=new PluginArchiresProfile();
-$PluginArchiresProfile->checkRight("archires","r");
+PluginArchiresProfile::checkRight("archires","r");
 
-$PluginArchires=new PluginArchires();
 $PluginArchiresQueryType=new PluginArchiresQueryType();
 $PluginArchiresView=new PluginArchiresView();
 $PluginArchiresPrototype=new PluginArchiresPrototype();
@@ -63,25 +57,24 @@ if (empty($_POST["id"])) {
 
    switch($_REQUEST['glpi_tab']) {
       case -1 :
-         $PluginArchiresQueryType->showTypes(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST["id"]);
+         $PluginArchiresQueryType->showTypes('PluginArchiresLocationQuery',$_POST["id"]);
          break;
       case 2 :
-         $PluginArchiresView->showView(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST["id"]);
-         $PluginArchiresPrototype->test(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST["id"]);
+         $PluginArchiresView->showView('PluginArchiresLocationQuery',$_POST["id"]);
+         $PluginArchiresPrototype->test('PluginArchiresLocationQuery',$_POST["id"]);
          break;
       case 3 :
-         $PluginArchiresView->linkToAllViews(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST["id"]);
-         $object=$PluginArchires->getClassType(PLUGIN_ARCHIRES_LOCATIONS_QUERY);
-         $obj=new $object();
+         $PluginArchiresView->linkToAllViews('PluginArchiresLocationQuery',$_POST["id"]);
+         $obj=new PluginArchiresLocationQuery();
          $obj->getFromDB($_POST["id"]);
          $views_id=$obj->fields["views_id"];
          $PluginArchiresPrototype->displayGraph($obj,$views_id);
          break;
       case 10 :
-         showNotesForm($_POST['target'],PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST["id"]);
+         showNotesForm($_POST['target'],'PluginArchiresLocationQuery',$_POST["id"]);
          break;
       default :
-         $PluginArchiresQueryType->showTypes(PLUGIN_ARCHIRES_LOCATIONS_QUERY,$_POST["id"]);
+         $PluginArchiresQueryType->showTypes('PluginArchiresLocationQuery',$_POST["id"]);
          break;	
    }
 }

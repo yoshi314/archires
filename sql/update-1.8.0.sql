@@ -87,7 +87,7 @@ ALTER TABLE `glpi_plugin_archires_appliancesqueries` ADD INDEX (`is_deleted`);
 ALTER TABLE `glpi_plugin_archires_imageitems` DROP INDEX `device_type`;
 ALTER TABLE `glpi_plugin_archires_imageitems` CHANGE `ID` `id` int(11) NOT NULL auto_increment;
 ALTER TABLE `glpi_plugin_archires_imageitems` CHANGE `type` `type` int(11) NOT NULL default '0';
-ALTER TABLE `glpi_plugin_archires_imageitems` CHANGE `device_type` `itemtype` int(11) NOT NULL default '0'  COMMENT 'see define.php *_TYPE constant';
+ALTER TABLE `glpi_plugin_archires_imageitems` CHANGE `device_type` `itemtype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'see .class.php file';
 
 ALTER TABLE `glpi_plugin_archires_queriestypes` DROP INDEX `FK_query`;
 ALTER TABLE `glpi_plugin_archires_queriestypes` DROP INDEX `type`;
@@ -95,15 +95,19 @@ ALTER TABLE `glpi_plugin_archires_queriestypes` DROP INDEX `type_query`;
 ALTER TABLE `glpi_plugin_archires_queriestypes` DROP INDEX `device_type`;
 
 ALTER TABLE `glpi_plugin_archires_queriestypes` CHANGE `ID` `id` int(11) NOT NULL auto_increment;
-ALTER TABLE `glpi_plugin_archires_queriestypes` CHANGE `type_query` `querytype` int(11) NOT NULL default '0' COMMENT 'RELATION to the 3 type of archires (type)';
+ALTER TABLE `glpi_plugin_archires_queriestypes` CHANGE `type_query` `querytype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'RELATION to the 3 type of archires (type)';
 ALTER TABLE `glpi_plugin_archires_queriestypes` CHANGE `type` `type` int(11) NOT NULL default '0';
-ALTER TABLE `glpi_plugin_archires_queriestypes` CHANGE `device_type` `itemtype` int(11) NOT NULL default '0'  COMMENT 'see define.php *_TYPE constant';
+ALTER TABLE `glpi_plugin_archires_queriestypes` CHANGE `device_type` `itemtype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'see .class.php file';
 ALTER TABLE `glpi_plugin_archires_queriestypes` CHANGE `FK_query` `queries_id` int(11) NOT NULL default '0' COMMENT 'RELATION to the 3 queries tables (id)';
 
 ALTER TABLE `glpi_plugin_archires_queriestypes` ADD INDEX (`querytype`);
 ALTER TABLE `glpi_plugin_archires_queriestypes` ADD INDEX (`type`);
 ALTER TABLE `glpi_plugin_archires_queriestypes` ADD INDEX (`itemtype`);
 ALTER TABLE `glpi_plugin_archires_queriestypes` ADD INDEX (`queries_id`);
+
+UPDATE `glpi_plugin_archires_queriestypes` SET `querytype` = 'PluginArchiresLocationQuery' WHERE `querytype` = 0;
+UPDATE `glpi_plugin_archires_queriestypes` SET `querytype` = 'PluginArchiresNetworkEquipmentQuery' WHERE `querytype` = 1;
+UPDATE `glpi_plugin_archires_queriestypes` SET `querytype` = 'PluginArchiresApplianceQuery' WHERE `querytype` = 2;
 
 ALTER TABLE `glpi_plugin_archires_networkinterfacescolors` DROP INDEX `iface`;
 ALTER TABLE `glpi_plugin_archires_networkinterfacescolors` CHANGE `ID` `id` int(11) NOT NULL auto_increment;

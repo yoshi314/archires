@@ -33,13 +33,9 @@
 // ----------------------------------------------------------------------
 */
 
-$NEEDED_ITEMS=array("user","tracking","reservation","document","computer","device","printer","networking","peripheral","monitor","software","infocom","phone","link","ocsng","consumable","cartridge","contract","enterprise","contact","group","profile","search","mailgate","typedoc","setup","admininfo","registry","setup");
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
-useplugin('archires',true);
-
-$PluginArchires=new PluginArchires();
 $PluginArchiresView=new PluginArchiresView();
 $PluginArchiresPrototype=new PluginArchiresPrototype();
 
@@ -52,8 +48,7 @@ else if ($format==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
 else if ($format==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
 else if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) $format_graph="svg";
 
-$object=$PluginArchires->getClassType($_GET["querytype"]);
-
+$object=$_GET["querytype"];
 $obj=new $object();
 $obj->getFromDB($_GET["id"]);
 $object_view=$obj->fields["views_id"];

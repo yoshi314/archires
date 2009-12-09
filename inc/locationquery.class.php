@@ -39,10 +39,8 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresLocationQuery extends CommonDBTM {
 
-	function __construct () {
-		$this->table="glpi_plugin_archires_locationsqueries";
-		$this->type=PLUGIN_ARCHIRES_LOCATIONS_QUERY;
-	}
+	public $table = 'glpi_plugin_archires_locationsqueries';
+   public $type = "PluginArchiresLocationQuery";
 	
 	function cleanDBonPurge($ID) {
 		global $DB;
@@ -166,7 +164,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
-      dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
+      CommonDropdown::dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
       echo "</td></tr>";
 
       echo "</table>";
@@ -175,16 +173,16 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       echo "<table cellpadding='2' cellspacing='2' border='0'>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
-      dropdownValue("glpi_states", "states_id", $this->fields["states_id"]);
+      CommonDropdown::dropdownValue("glpi_states", "states_id", $this->fields["states_id"]);
       echo "</td></tr>";
 
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['common'][35].": </td><td>";
-      dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"]);
+      CommonDropdown::dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['networking'][56].": </td><td>";
-      dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"]);
+      CommonDropdown::dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
@@ -227,7 +225,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
          while($ligne0= mysql_fetch_array($result0)) {
            
-            echo "<optgroup label=\"".getdropdownname("glpi_entities",$ligne0["entities_id"])."\">";
+            echo "<optgroup label=\"".CommonDropdown::getDropdownName("glpi_entities",$ligne0["entities_id"])."\">";
 
             $query = "SELECT `id`, `completename` 
            FROM `glpi_locations` ";
@@ -308,15 +306,15 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       $ports = array();
     
       if ($PluginArchiresView->fields["computer"]!=0)
-         $types[]=COMPUTER_TYPE;
+         $types[]='Computer';
       if ($PluginArchiresView->fields["printer"]!=0)
-         $types[]=PRINTER_TYPE;
+         $types[]='Printer';
       if ($PluginArchiresView->fields["peripheral"]!=0)
-         $types[]=PERIPHERAL_TYPE;
+         $types[]='Peripheral';
       if ($PluginArchiresView->fields["phone"]!=0)
-         $types[]=PHONE_TYPE;
+         $types[]='Phone';
       if ($PluginArchiresView->fields["networking"]!=0)
-         $types[]=NETWORKING_TYPE;
+         $types[]='NetworkEquipment';
     
       foreach ($types as $key => $val) {
       
@@ -331,7 +329,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
          $query .= ", `glpi_networkports_vlans` nv";
 
          $query .= ", `glpi_locations` lc";
-         $query .= " WHERE `np`.`itemtype` = " . $val . " 
+         $query .= " WHERE `np`.`itemtype` = '" . $val . "' 
             AND `np`.`items_id` = `$LINK_ID_TABLE[$val]`.`id` ";
          $query .= " AND `$LINK_ID_TABLE[$val]`.`is_deleted` = '0' 
             AND `$LINK_ID_TABLE[$val]`.`is_template` = '0'";
@@ -342,7 +340,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
          $query .= " AND `nv`.`networkports_id` = `np`.`id` 
             AND `vlans_id` = '".$this->fields["vlans_id"]."'";
             
-         if ($this->fields["networks_id"] > "0" && $val != PHONE_TYPE && $val != PERIPHERAL_TYPE)
+         if ($this->fields["networks_id"] > "0" && $val != 'Phone' && $val != 'Peripheral')
             $query .= " AND `$LINK_ID_TABLE[$val]`.`networks_id` = '".$this->fields["networks_id"]."'";
          if ($this->fields["states_id"] > "0")
             $query .= " AND `$LINK_ID_TABLE[$val]`.`states_id` = '".$this->fields["states_id"]."'";

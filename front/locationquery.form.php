@@ -33,62 +33,55 @@
 // ----------------------------------------------------------------------
  */
 
-$NEEDED_ITEMS=array("user","tracking","reservation","document","computer","device","printer","networking","peripheral","monitor","software","infocom","phone","link","ocsng","consumable","cartridge","contract","enterprise","contact","group","profile","search","mailgate","typedoc","setup","admininfo","registry","setup");
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
-useplugin('archires',true);
-
-if (isset($_GET)) $tab = $_GET;
-if (empty($tab) && isset($_POST)) $tab = $_POST;
-if (!isset($tab["id"])) $tab["id"] = "";
-
+if (!isset($_GET["id"])) $_GET["id"] = "";
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
 
-$PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery();
+$PluginArchiresLocationQuery=new PluginArchiresLocationQuery();
 $PluginArchiresQueryType=new PluginArchiresQueryType();
 
 if (isset($_POST["add"])) {
 
-	if (plugin_archires_haveRight("archires","w"))
-		$newID=$PluginArchiresApplianceQuery->add($_POST);
+	$PluginArchiresLocationQuery->check(-1,'w',$_POST);
+   $newID=$PluginArchiresLocationQuery->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["delete"])) {
 
-	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresApplianceQuery->delete($_POST);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
+	$PluginArchiresLocationQuery->check($_POST['id'],'w');
+   $PluginArchiresLocationQuery->delete($_POST);
+	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
 	
 } else if (isset($_POST["restore"])) {
 
-	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresApplianceQuery->restore($_POST);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
+	$PluginArchiresLocationQuery->check($_POST['id'],'w');
+   $PluginArchiresLocationQuery->restore($_POST);
+	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
 	
 } else if (isset($_POST["purge"])) {
 
-	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresApplianceQuery->delete($_POST,1);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/index.php");
+	$PluginArchiresLocationQuery->check($_POST['id'],'w');
+   $PluginArchiresLocationQuery->delete($_POST,1);
+	glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
 	
 } else if (isset($_POST["update"])) {
 
-	if (plugin_archires_haveRight("archires","w"))
-		$PluginArchiresApplianceQuery->update($_POST);
+	$PluginArchiresLocationQuery->check($_POST['id'],'w');
+   $PluginArchiresLocationQuery->update($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["duplicate"])) {
 
-	if (plugin_archires_haveRight("archires","w")) {
-		unset($_POST['id']);
-		$newID=$PluginArchiresApplianceQuery->add($_POST);
-	}
+	$PluginArchiresLocationQuery->check($_POST['id'],'w');
+   unset($_POST['id']);
+   $newID=$PluginArchiresLocationQuery->add($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["addtype"])) {
-		
+	
 	$test= explode(";", $_POST['type']);
 	
 	if (isset($test[0]) && isset($test[1])) {
@@ -96,7 +89,7 @@ if (isset($_POST["add"])) {
 		$_POST['itemtype']= $test[0];
 	
 		if (plugin_archires_haveRight("archires","w")) {
-				$PluginArchiresQueryType->addType(PLUGIN_ARCHIRES_APPLIANCES_QUERY,$_POST['type'],$_POST['itemtype'],$_POST['query']);
+			$PluginArchiresQueryType->addType('PluginArchiresLocationQuery',$_POST['type'],$_POST['itemtype'],$_POST['query']);
 		}
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
@@ -116,17 +109,16 @@ if (isset($_POST["add"])) {
 	
 } else {
 
-   $PluginArchiresProfile=new PluginArchiresProfile();
-	$PluginArchiresProfile->checkRight("archires","r");
-
+	PluginArchiresProfile::checkRight("archires","r");
+	
 	if (!isset($_SESSION['glpi_tab'])) $_SESSION['glpi_tab']=1;
 	if (isset($_GET['onglet'])) {
-		$_SESSION['glpi_tab']=$_GET['onglet'];
+		$_SESSION['glpi_tab']=$_GET['onglet'];;
 	}
-	
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","archires","appliance");
 
-	$PluginArchiresApplianceQuery->showForm($_SERVER["PHP_SELF"],$tab["id"]);
+	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","archires","location");
+
+	$PluginArchiresLocationQuery->showForm($_SERVER["PHP_SELF"],$_GET["id"]);
 
 	commonFooter();
 }
