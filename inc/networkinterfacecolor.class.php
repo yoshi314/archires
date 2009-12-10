@@ -141,7 +141,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
           
                if ($number==1)
                   echo "<tr class='tab_bg_1'>";						
-               echo "<td>".CommonDropdown::getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
+               echo "<td>".Dropdown::getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                if ($canupdate)

@@ -143,7 +143,7 @@ class PluginArchiresStateColor extends CommonDBTM {
 
                if ($number==1)
                   echo "<tr class='tab_bg_1'>";						
-               echo "<td>".CommonDropdown::getDropdownName("glpi_states",$ligne["states_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
+               echo "<td>".Dropdown::getDropdownName("glpi_states",$ligne["states_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                if ($canupdate)
@@ -239,9 +239,9 @@ class PluginArchiresStateColor extends CommonDBTM {
 
       if ($number_state != 0 && $device["states_id"] > 0) {
          $color_state=$DB->result($result_state,0,"color");
-         $graph ="<font color=\"$color_state\">".CommonDropdown::getDropdownName("glpi_states",$device["states_id"])."</font>";
+         $graph ="<font color=\"$color_state\">".Dropdown::getDropdownName("glpi_states",$device["states_id"])."</font>";
       } else if ($number_state == 0 && $device["states_id"] > 0) {
-         $graph =CommonDropdown::getDropdownName("glpi_states",$device["states_id"]);
+         $graph =Dropdown::getDropdownName("glpi_states",$device["states_id"]);
       }
 
     return $graph;

@@ -110,9 +110,9 @@ function plugin_archires_uninstall() {
 					"glpi_plugin_archires_vlanscolors",
 					"glpi_plugin_archires_statescolors",
 					"glpi_plugin_archires_profiles",
-					"glpi_plugin_archires_locationsqueries",
-					"glpi_plugin_archires_networkequipmentsqueries",
-					"glpi_plugin_archires_appliancesqueries",
+					"glpi_plugin_archires_locationqueries",
+					"glpi_plugin_archires_networkequipmentqueries",
+					"glpi_plugin_archires_appliancequeries",
 					"glpi_plugin_archires_queriestypes");
 
 	foreach($tables as $table)
@@ -142,9 +142,9 @@ function plugin_archires_getDatabaseRelations() {
 	if ($plugin->isActivated("archires"))
 
 		return array(
-		"glpi_entities"=>array("glpi_plugin_archires_locationsqueries"=>"entities_id",
-								"glpi_plugin_archires_networkequipmentsqueries"=>"entities_id",
-								"glpi_plugin_archires_appliancesqueries"=>"entities_id",
+		"glpi_entities"=>array("glpi_plugin_archires_locationqueries"=>"entities_id",
+								"glpi_plugin_archires_networkequipmentqueries"=>"entities_id",
+								"glpi_plugin_archires_appliancequeries"=>"entities_id",
 								"glpi_plugin_archires_views"=>"entities_id"));
 	else
 		return array();
@@ -321,11 +321,11 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}
@@ -334,11 +334,11 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}
@@ -347,11 +347,11 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}
@@ -407,7 +407,7 @@ function plugin_archires_MassiveActionsProcess($data) {
             foreach ($data["item"] as $key => $val) {
                if ($val==1) {
 
-                  $query="UPDATE `glpi_plugin_archires_locationsqueries`
+                  $query="UPDATE `glpi_plugin_archires_locationqueries`
                         SET `entities_id` = '".$data['entities_id']."'
                         WHERE `id` = '$key'";
                   $DB->query($query);
@@ -417,7 +417,7 @@ function plugin_archires_MassiveActionsProcess($data) {
             foreach ($data["item"] as $key => $val) {
                if ($val==1) {
 
-                  $query="UPDATE `glpi_plugin_archires_networkequipmentsqueries`
+                  $query="UPDATE `glpi_plugin_archires_networkequipmentqueries`
                         SET `entities_id` = '".$data['entities_id']."'
                         WHERE `id` = '$key'";
                   $DB->query($query);
@@ -427,7 +427,7 @@ function plugin_archires_MassiveActionsProcess($data) {
             foreach ($data["item"] as $key => $val) {
                if ($val==1) {
 
-                  $query="UPDATE `glpi_plugin_archires_appliancesqueries`
+                  $query="UPDATE `glpi_plugin_archires_appliancequeries`
                         SET `entities_id` = '".$data['entities_id']."'
                         WHERE `id` = '$key'";
                   $DB->query($query);

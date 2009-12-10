@@ -42,7 +42,7 @@ header_nocache();
 // Make a select box
 
 if (isset($_POST["typetable"])) {
-	//$table=$LINK_ID_TABLE[$_POST["typetable"]];
+
 	$test= explode(";", $_POST['typetable']);
 	$table= $test[1];
 	$itemtype= $test[0];

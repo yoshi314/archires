@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `glpi_plugin_archires_locationsqueries`;
-CREATE TABLE `glpi_plugin_archires_locationsqueries` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_locationqueries`;
+CREATE TABLE `glpi_plugin_archires_locationqueries` (
 	`id` int(11) NOT NULL auto_increment,
 	`entities_id` int(11) NOT NULL default '0',
 	`name` varchar(255) collate utf8_unicode_ci default NULL,
@@ -24,8 +24,8 @@ CREATE TABLE `glpi_plugin_archires_locationsqueries` (
 	KEY `is_deleted` (`is_deleted`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `glpi_plugin_archires_networkequipmentsqueries`;
-CREATE TABLE `glpi_plugin_archires_networkequipmentsqueries` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_networkequipmentqueries`;
+CREATE TABLE `glpi_plugin_archires_networkequipmentqueries` (
 	`id` int(11) NOT NULL auto_increment,
 	`entities_id` int(11) NOT NULL default '0',
 	`name` varchar(255) collate utf8_unicode_ci default NULL,
@@ -49,8 +49,8 @@ CREATE TABLE `glpi_plugin_archires_networkequipmentsqueries` (
 	KEY `is_deleted` (`is_deleted`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `glpi_plugin_archires_appliancesqueries`;
-CREATE TABLE `glpi_plugin_archires_appliancesqueries` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_appliancequeries`;
+CREATE TABLE `glpi_plugin_archires_appliancequeries` (
 	`id` int(11) NOT NULL auto_increment,
 	`entities_id` int(11) NOT NULL default '0',
 	`name` varchar(255) collate utf8_unicode_ci default NULL,

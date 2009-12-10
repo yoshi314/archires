@@ -103,7 +103,7 @@ class PluginArchiresQueryType extends CommonDBTM {
    }
   
    function queryTypeCheck($querytype,$views_id,$val) {
-      global $DB,$LINK_ID_TABLE,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
+      global $DB,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
     
       $query0="SELECT * 
           FROM `".$this->table."` 
@@ -115,8 +115,8 @@ class PluginArchiresQueryType extends CommonDBTM {
       $query="";
       
       if ($DB->numrows($result0)>0) {
-        
-        $query = "AND `$LINK_ID_TABLE[$val]`.`$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES[$val]` IN (0 ";	
+        $itemtable=getTableForItemType($val);
+        $query = "AND `$itemtable`.`$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES[$val]` IN (0 ";	
          while ($data0=$DB->fetch_array($result0)) {
             $type_where=",'".$data0["type"]."' ";
             $query .= " $type_where ";

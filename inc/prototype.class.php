@@ -125,9 +125,9 @@ class PluginArchiresPrototype extends CommonDBTM {
             $graph = "<a href='".$url."'>".getusername($device["users_id"])."</a>";
       } else if (!$device["users_id"] && $device["groups_id"]) {
          if ($generation)
-            $graph = "URL=\"".$url."\" tooltip=\"".CommonDropdown::getDropdownName("glpi_groups",$device["groups_id"])."\"";
+            $graph = "URL=\"".$url."\" tooltip=\"".Dropdown::getDropdownName("glpi_groups",$device["groups_id"])."\"";
          else
-            $graph = "<a href='".$url."'>".CommonDropdown::getDropdownName("glpi_groups",$device["groups_id"])."</a>";
+            $graph = "<a href='".$url."'>".Dropdown::getDropdownName("glpi_groups",$device["groups_id"])."</a>";
       } else if (!$device["users_id"] && !$device["groups_id"] && $device["contact"]) {
          if ($generation)
             $graph = "URL=\"".$url."\" tooltip=\"".$device["contact"]."\"";
@@ -144,7 +144,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
    function test($type,$ID) {
     
-      global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
+      global $DB,$CFG_GLPI,$LANG,$INFOFORM_PAGES;
     
       $obj=new $type();
       $obj->getFromDB($ID);
@@ -322,11 +322,11 @@ class PluginArchiresPrototype extends CommonDBTM {
       $graph .= $this->displayTypeAndIP($PluginArchiresView,$itemtype,$device,true);
       //entity
       if ($PluginArchiresView->fields["display_entity"]!=0 && isset($device["entity"])) {
-         $graph .="<tr><td>".$this->CleanField(CommonDropdown::getDropdownName("glpi_entities",$device["entity"]))."</td></tr>";
+         $graph .="<tr><td>".$this->CleanField(Dropdown::getDropdownName("glpi_entities",$device["entity"]))."</td></tr>";
       }
       //location
       if ($PluginArchiresView->fields["display_location"]!=0 && isset($device["locations_id"])) {
-         $graph .="<tr><td>".$this->CleanField(CommonDropdown::getDropdownName("glpi_locations",$device["locations_id"]))."</td></tr>";
+         $graph .="<tr><td>".$this->CleanField(Dropdown::getDropdownName("glpi_locations",$device["locations_id"]))."</td></tr>";
       }
 
       //state
@@ -533,7 +533,7 @@ class PluginArchiresPrototype extends CommonDBTM {
    }
 
    function createGraph($format,$obj,$views_id) {
-      global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES;
+      global $DB,$CFG_GLPI,$LANG,$INFOFORM_PAGES;
     
       $type=$obj->type;
       $ID=$obj->fields["id"];

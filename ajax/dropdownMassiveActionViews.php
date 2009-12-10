@@ -51,11 +51,11 @@ if (isset($_POST["action"])||isset($_POST["id"])) {
 			echo "<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
          break;
 		case "duplicate":
-			CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
+			Dropdown::dropdownValue("glpi_entities", "entities_id", '');
 			echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
          break;
 		case "transfert":
-			CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
+			Dropdown::dropdownValue("glpi_entities", "entities_id", '');
 			echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
          break;
 	}

@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresApplianceQuery extends CommonDBTM {
 
-	public $table = 'glpi_plugin_archires_appliancesqueries';
+	public $table = 'glpi_plugin_archires_appliancequeries';
    public $type = "PluginArchiresApplianceQuery";
 	
 	function cleanDBonPurge($ID) {
@@ -146,17 +146,17 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][8].":	</td><td>";
-      CommonDropdown::dropdownValue("glpi_plugin_appliances_appliances", "appliances_id", $this->fields["appliances_id"],1,$this->fields["entities_id"]);
+      Dropdown::dropdownValue("glpi_plugin_appliances_appliances", "appliances_id", $this->fields["appliances_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
-      CommonDropdown::dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"],1,$this->fields["entities_id"]);
+      Dropdown::dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
-      CommonDropdown::dropdownValue("glpi_states", "states_id", $this->fields["states_id"],1,$this->fields["entities_id"]);
+      Dropdown::dropdownValue("glpi_states", "states_id", $this->fields["states_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
       echo "</table>";
@@ -165,11 +165,11 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       echo "<table cellpadding='2' cellspacing='2' border='0'>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['common'][35].": </td><td>";
-      CommonDropdown::dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"],1,$this->fields["entities_id"]);
+      Dropdown::dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['networking'][56].": </td><td>";
-      CommonDropdown::dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"],1,$this->fields["entities_id"]);
+      Dropdown::dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"],1,$this->fields["entities_id"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
@@ -190,7 +190,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 	}
 	
 	function Query ($ID,$PluginArchiresView,$for) {
-      global $DB,$CFG_GLPI,$LANG,$LINK_ID_TABLE,$INFOFORM_PAGES,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
+      global $DB,$CFG_GLPI,$LANG,$INFOFORM_PAGES,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
     
       $this->getFromDB($ID);
     
@@ -212,31 +212,32 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       foreach ($types as $key => $val) {
       
          $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`networkinterfaces_id`,`np`.`ip`,`np`.`netmask`, `np`.`name` AS namep";
-      
-         $query = "SELECT `$LINK_ID_TABLE[$val]`.`id` AS idc, $fieldsnp , `$LINK_ID_TABLE[$val]`.`name`, `$LINK_ID_TABLE[$val]`.`$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES[$val]` AS `type`, `$LINK_ID_TABLE[$val]`.`users_id`, `$LINK_ID_TABLE[$val]`.`groups_id`, `$LINK_ID_TABLE[$val]`.`contact`, `$LINK_ID_TABLE[$val]`.`states_id`";
+         
+         $itemtable=getTableForItemType($val);
+         $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`, `$itemtable`.`$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES[$val]` AS `type`, `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`, `$itemtable`.`states_id`";
          //en +
-         $query .= ", `$LINK_ID_TABLE[$val]`.`entities_id`,`$LINK_ID_TABLE[$val]`.`locations_id` ";
-         $query .= " FROM `glpi_networkports` np, `$LINK_ID_TABLE[$val]` ";
+         $query .= ", `$itemtable`.`entities_id`,`$itemtable`.`locations_id` ";
+         $query .= " FROM `glpi_networkports` np, `$itemtable` ";
          if ($this->fields["vlans_id"] > "0")
             $query .= ", `glpi_networkports_vlans` nv";
 
          $query .= ", `glpi_plugin_appliances_appliances_items` app";
          $query .= " WHERE `np`.`itemtype` = '" . $val . "' 
-            AND `np`.`items_id` = `$LINK_ID_TABLE[$val]`.`id` 
-            AND `app`.`items_id` = `$LINK_ID_TABLE[$val]`.`id` ";
-         $query .= " AND `$LINK_ID_TABLE[$val]`.`is_deleted` = '0' 
-            AND `$LINK_ID_TABLE[$val]`.`is_template` = '0'";
+            AND `np`.`items_id` = `$itemtable`.`id` 
+            AND `app`.`items_id` = `$itemtable`.`id` ";
+         $query .= " AND `$itemtable`.`is_deleted` = '0' 
+            AND `$itemtable`.`is_template` = '0'";
          $LINK= " AND " ;
-         $query.=getEntitiesRestrictRequest($LINK,$LINK_ID_TABLE[$val]);
+         $query.=getEntitiesRestrictRequest($LINK,$itemtable);
          if ($this->fields["vlans_id"] > "0")
             $query .= " AND `nv`.`networkports_id` = `np`.`id` 
               AND `vlans_id` = '".$this->fields["vlans_id"]."'";
          if ($this->fields["networks_id"] > "0" && $val != 'Phone' && $val != 'Peripheral')
-            $query .= " AND `$LINK_ID_TABLE[$val]`.`networks_id` = '".$this->fields["networks_id"]."'";
+            $query .= " AND `$itemtable`.`networks_id` = '".$this->fields["networks_id"]."'";
          if ($this->fields["states_id"] > "0")
-            $query .= " AND `$LINK_ID_TABLE[$val]`.`states_id` = '".$this->fields["states_id"]."'";
+            $query .= " AND `$itemtable`.`states_id` = '".$this->fields["states_id"]."'";
          if ($this->fields["groups_id"] > "0")
-            $query .= " AND `$LINK_ID_TABLE[$val]`.`groups_id` = '".$this->fields["groups_id"]."'";
+            $query .= " AND `$itemtable`.`groups_id` = '".$this->fields["groups_id"]."'";
       
          $query .= " AND `app`.`plugin_appliances_appliances_id` = '" . $this->fields["appliances_id"] . "' 
             AND `app`.`itemtype` = '" . $val . "' ";
