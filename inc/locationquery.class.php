@@ -42,6 +42,20 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 	public $table = 'glpi_plugin_archires_locationqueries';
    public $type = "PluginArchiresLocationQuery";
 	
+	static function getTypeName() {
+      global $LANG;
+
+      return $LANG['plugin_archires']['title'][4];
+   }
+   
+	static function canCreate() {
+      return plugin_archires_haveRight('archires', 'w');
+   }
+
+   static function canView() {
+      return plugin_archires_haveRight('archires', 'r');
+   }
+   
 	function cleanDBonPurge($ID) {
 		global $DB;
 

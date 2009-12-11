@@ -201,25 +201,6 @@ function plugin_archires_check_config() {
 	return true;
 }
 
-//////////////////////////////// Define rights for the plugin types
-
-function plugin_archires_haveTypeRight($type,$right) {
-	switch ($type) {
-		case 'PluginArchiresLocationQuery' :
-			return plugin_archires_haveRight("archires",$right);
-			break;
-		case 'PluginArchiresNetworkEquipmentQuery' :
-			return plugin_archires_haveRight("archires",$right);
-			break;
-		case 'PluginArchiresApplianceQuery' :
-			return plugin_archires_haveRight("archires",$right);
-			break;
-		case 'PluginArchiresApplianceQuery' :
-			return plugin_archires_haveRight("archires",$right);
-			break;
-	}
-}
-
 function plugin_archires_haveRight($module,$right) {
 	$matches=array(
 			""  => array("","r","w"), // ne doit pas arriver normalement

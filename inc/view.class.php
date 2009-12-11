@@ -42,6 +42,20 @@ class PluginArchiresView extends CommonDBTM {
 	public $table = 'glpi_plugin_archires_views';
    public $type = "PluginArchiresView";
    
+   static function getTypeName() {
+      global $LANG;
+
+      return $LANG['plugin_archires']['title'][3];
+   }
+   
+   static function canCreate() {
+      return plugin_archires_haveRight('archires', 'w');
+   }
+
+   static function canView() {
+      return plugin_archires_haveRight('archires', 'r');
+   }
+   
    function dropdownObject($obj) {
       global $LANG,$DB,$CFG_GLPI;
       

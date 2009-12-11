@@ -42,6 +42,20 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 	public $table = 'glpi_plugin_archires_appliancequeries';
    public $type = "PluginArchiresApplianceQuery";
 	
+	static function getTypeName() {
+      global $LANG;
+
+      return $LANG['plugin_archires']['title'][8];
+   }
+   
+	static function canCreate() {
+      return plugin_archires_haveRight('archires', 'w');
+   }
+
+   static function canView() {
+      return plugin_archires_haveRight('archires', 'r');
+   }
+   
 	function cleanDBonPurge($ID) {
 		global $DB;
 

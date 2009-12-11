@@ -42,6 +42,20 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 	public $table = 'glpi_plugin_archires_networkequipmentqueries';
    public $type = "PluginArchiresNetworkEquipmentQuery";
 	
+	static function getTypeName() {
+      global $LANG;
+
+      return $LANG['plugin_archires']['title'][5];
+   }
+   
+	static function canCreate() {
+      return plugin_archires_haveRight('archires', 'w');
+   }
+
+   static function canView() {
+      return plugin_archires_haveRight('archires', 'r');
+   }
+   
 	function cleanDBonPurge($ID) {
 		global $DB;
 
