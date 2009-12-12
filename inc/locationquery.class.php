@@ -311,7 +311,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    }
 
 	function Query ($ID,$PluginArchiresView,$for) {
-      global $DB,$CFG_GLPI,$LANG,$INFOFORM_PAGES,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
+      global $DB,$CFG_GLPI,$LANG,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
     
       $this->getFromDB($ID);
     

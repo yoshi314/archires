@@ -74,42 +74,23 @@ function plugin_init_archires() {
 
 	// Params : plugin name - string type - number - tabke - form page
 	Plugin::registerClass('PluginArchiresLocationQuery', array(
-		'classname'  => 'PluginArchiresLocationQuery',
-		'tablename'  => 'glpi_plugin_archires_locationqueries',
-		'formpage'   => 'front/locationquery.form.php',
-		'searchpage' => 'front/locationquery.php',
 		'deleted_tables' => true,
-		'specif_entities_tables' => true,
-		'typename'   => $LANG['plugin_archires']['title'][4]
+		'specif_entities_tables' => true
    ));
 
 	Plugin::registerClass('PluginArchiresNetworkEquipmentQuery', array(
-		'classname'  => 'PluginArchiresNetworkEquipmentQuery',
-		'tablename'  => 'glpi_plugin_archires_networkequipmentqueries',
-		'formpage'   => 'front/networkequipmentquery.form.php',
-		'searchpage' => 'front/networkequipmentquery.php',
 		'deleted_tables' => true,
-		'specif_entities_tables' => true,
-		'typename'   => $LANG['plugin_archires']['title'][5]
+		'specif_entities_tables' => true
    ));
 
 	Plugin::registerClass('PluginArchiresApplianceQuery', array(
-		'classname'  => 'PluginArchiresApplianceQuery',
-		'tablename'  => 'glpi_plugin_archires_appliancequeries',
-		'formpage'   => 'front/appliancequery.form.php',
-		'searchpage' => 'front/appliancequery.php',
 		'deleted_tables' => true,
-		'specif_entities_tables' => true,
-		'typename'   => $LANG['plugin_archires']['title'][8]
+		'specif_entities_tables' => true
    ));
 
 	Plugin::registerClass('PluginArchiresView', array(
-		'classname'  => 'PluginArchiresView',
-		'tablename'  => 'glpi_plugin_archires_views',
-		'formpage'   => 'front/view.form.php',
 		'deleted_tables' => true,
 		'specif_entities_tables' => true,
-		'typename'   => $LANG['plugin_archires']['title'][3]
    ));
 
 	if (isset($_SESSION["glpiID"])) {

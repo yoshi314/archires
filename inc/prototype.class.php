@@ -144,7 +144,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
    function test($type,$ID) {
     
-      global $DB,$CFG_GLPI,$LANG,$INFOFORM_PAGES;
+      global $DB,$CFG_GLPI,$LANG;
     
       $obj=new $type();
       $obj->getFromDB($ID);
@@ -192,8 +192,8 @@ class PluginArchiresPrototype extends CommonDBTM {
             $device_unique_name .= $device["name"];
 
             $image_name = $PluginArchiresItemImage->displayItemImage($device["type"],$itemtype,true);
-
-            $url = $CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$itemtype]."?id=".$device_id;
+            $link=getItemTypeFormURL($itemtype);
+            $url = $link."?id=".$device_id;
 
             echo "<tr class='tab_bg_1'>";
             echo "<td>$device_unique_name</td>";
@@ -533,7 +533,7 @@ class PluginArchiresPrototype extends CommonDBTM {
    }
 
    function createGraph($format,$obj,$views_id) {
-      global $DB,$CFG_GLPI,$LANG,$INFOFORM_PAGES;
+      global $DB,$CFG_GLPI,$LANG;
     
       $type=$obj->type;
       $ID=$obj->fields["id"];
@@ -586,8 +586,8 @@ class PluginArchiresPrototype extends CommonDBTM {
          foreach ($typed_devices as $device_id => $device) {
 
             $image_name = $PluginArchiresItemImage->displayItemImage($device["type"],$itemtype,false);
-
-            $url = $CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$itemtype]."?id=".$device_id;
+            $link=getItemTypeFormURL($itemtype);
+            $url = $link."?id=".$device_id;
 
             $graph.=$this->graphItems($device,$device_id,$itemtype,$format,$image_name,$url,$PluginArchiresView);
 
