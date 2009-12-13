@@ -194,27 +194,27 @@ class PluginArchiresView extends CommonDBTM {
 
          echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires'][6].": </td>";
          echo "<td>";
-         dropdownyesno("computer",$this->fields["computer"]);
+         Dropdown::showYesNo("computer",$this->fields["computer"]);
          echo "</td>";
 
          echo "<td>".$LANG['plugin_archires'][7].": </td>";
          echo "<td>";
-         dropdownyesno("networking",$this->fields["networking"]);
+         Dropdown::showYesNo("networking",$this->fields["networking"]);
          echo "</td></tr>";
 
          echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires'][8].": </td>";
          echo "<td>";
-         dropdownyesno("printer",$this->fields["printer"]);
+         Dropdown::showYesNo("printer",$this->fields["printer"]);
          echo "</td>";
 
          echo "<td>".$LANG['plugin_archires'][9].": </td>";
          echo "<td>";
-         dropdownyesno("peripheral",$this->fields["peripheral"]);
+         Dropdown::showYesNo("peripheral",$this->fields["peripheral"]);
          echo "</td></tr>";
 
          echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires'][10].": </td>";
          echo "<td>";
-         dropdownyesno("phone",$this->fields["phone"]);
+         Dropdown::showYesNo("phone",$this->fields["phone"]);
          echo "</td><td></td><td></td></tr>";
 
          echo "<tr class='tab_bg_1 top'><th colspan='4'>".$LANG['plugin_archires'][24]."</th></tr>";
@@ -236,27 +236,27 @@ class PluginArchiresView extends CommonDBTM {
 
          echo "<td>".$LANG['plugin_archires'][23].": </td>";
          echo "<td>";
-         dropdownyesno("display_ip",$this->fields["display_ip"]);
+         Dropdown::showYesNo("display_ip",$this->fields["display_ip"]);
          echo "</td></tr>";
 
          echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires'][25].": </td>";
          echo "<td>";
-         dropdownyesno("display_type",$this->fields["display_type"]);
+         Dropdown::showYesNo("display_type",$this->fields["display_type"]);
          echo "</td>";
 
          echo "<td>".$LANG['plugin_archires'][26].": </td>";
          echo "<td>";
-         dropdownyesno("display_state",$this->fields["display_state"]);
+         Dropdown::showYesNo("display_state",$this->fields["display_state"]);
          echo "</td></tr>";
 
          echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires'][31].": </td>";
          echo "<td>";
-         dropdownyesno("display_location",$this->fields["display_location"]);
+         Dropdown::showYesNo("display_location",$this->fields["display_location"]);
          echo "</td>";
 
          echo "<td>".$LANG['plugin_archires'][32].": </td>";
          echo "<td>";
-         dropdownyesno("display_entity",$this->fields["display_entity"]);
+         Dropdown::showYesNo("display_entity",$this->fields["display_entity"]);
          echo "</td></tr>";
 
          echo "<tr class='tab_bg_1 top'><th colspan='4'>".$LANG['plugin_archires']['search'][6]."</th></tr>";
@@ -373,7 +373,7 @@ class PluginArchiresView extends CommonDBTM {
       echo "</select> ";
 
       echo "<td>";
-      dropdownyesno("is_deleted",$is_deleted);
+      Dropdown::showYesNo("is_deleted",$is_deleted);
 
       echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/showdeleted.png\" alt='".$LANG['common'][3]."' title='".$LANG['common'][3]."'>";
 

@@ -174,7 +174,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][3].":	</td>";
       echo "<td>";
-      dropdownyesno("child",$this->fields["child"]);
+      Dropdown::showYesNo("child",$this->fields["child"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
