@@ -156,7 +156,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $PluginArchiresLocationQuery=new PluginArchiresLocationQuery;
       $PluginArchiresNetworkEquipmentQuery=new PluginArchiresNetworkEquipmentQuery;
       $PluginArchiresStateColor=new PluginArchiresStateColor;
-      $PluginArchiresItemImage=new PluginArchiresItemImage;
+      $PluginArchiresImageItem=new PluginArchiresImageItem;
 
       $PluginArchiresView->getFromDB($views_id);
 
@@ -191,7 +191,7 @@ class PluginArchiresPrototype extends CommonDBTM {
             $device_unique_name = $itemtype . "_" . $device_id . "_";
             $device_unique_name .= $device["name"];
 
-            $image_name = $PluginArchiresItemImage->displayItemImage($device["type"],$itemtype,true);
+            $image_name = $PluginArchiresImageItem->displayItemImage($device["type"],$itemtype,true);
             $link=getItemTypeFormURL($itemtype);
             $url = $link."?id=".$device_id;
 
@@ -544,7 +544,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery;
       $PluginArchiresLocationQuery=new PluginArchiresLocationQuery;
       $PluginArchiresNetworkEquipmentQuery=new PluginArchiresNetworkEquipmentQuery;
-      $PluginArchiresItemImage=new PluginArchiresItemImage;
+      $PluginArchiresImageItem=new PluginArchiresImageItem;
 
       $PluginArchiresView->getFromDB($views_id);
       
@@ -585,7 +585,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
          foreach ($typed_devices as $device_id => $device) {
 
-            $image_name = $PluginArchiresItemImage->displayItemImage($device["type"],$itemtype,false);
+            $image_name = $PluginArchiresImageItem->displayItemImage($device["type"],$itemtype,false);
             $link=getItemTypeFormURL($itemtype);
             $url = $link."?id=".$device_id;
 

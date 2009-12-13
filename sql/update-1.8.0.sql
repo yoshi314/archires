@@ -2,10 +2,10 @@ ALTER TABLE `glpi_plugin_archires_query_location` RENAME `glpi_plugin_archires_l
 ALTER TABLE `glpi_plugin_archires_query_switch` RENAME `glpi_plugin_archires_networkequipmentqueries`;
 ALTER TABLE `glpi_plugin_archires_query_applicatifs` RENAME `glpi_plugin_archires_appliancequeries`;
 ALTER TABLE `glpi_plugin_archires_image_device` RENAME `glpi_plugin_archires_imageitems`;
-ALTER TABLE `glpi_plugin_archires_query_type` RENAME `glpi_plugin_archires_queriestypes`;
-ALTER TABLE `glpi_plugin_archires_color_iface` RENAME `glpi_plugin_archires_networkinterfacescolors`;
-ALTER TABLE `glpi_plugin_archires_color_state` RENAME `glpi_plugin_archires_statescolors`;
-ALTER TABLE `glpi_plugin_archires_color_vlan` RENAME `glpi_plugin_archires_vlanscolors`;
+ALTER TABLE `glpi_plugin_archires_query_type` RENAME `glpi_plugin_archires_querytypes`;
+ALTER TABLE `glpi_plugin_archires_color_iface` RENAME `glpi_plugin_archires_networkinterfacecolors`;
+ALTER TABLE `glpi_plugin_archires_color_state` RENAME `glpi_plugin_archires_statecolors`;
+ALTER TABLE `glpi_plugin_archires_color_vlan` RENAME `glpi_plugin_archires_vlancolors`;
 ALTER TABLE `glpi_plugin_archires_config` RENAME `glpi_plugin_archires_views`;
 
 ALTER TABLE `glpi_plugin_archires_locationqueries`
@@ -86,7 +86,7 @@ ALTER TABLE `glpi_plugin_archires_imageitems`
    CHANGE `type` `type` int(11) NOT NULL default '0',
    CHANGE `device_type` `itemtype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'see .class.php file';
 
-ALTER TABLE `glpi_plugin_archires_queriestypes` 
+ALTER TABLE `glpi_plugin_archires_querytypes` 
    DROP INDEX `FK_query`,
    DROP INDEX `type`,
    DROP INDEX `type_query`,
@@ -102,24 +102,24 @@ ALTER TABLE `glpi_plugin_archires_queriestypes`
    ADD INDEX (`queries_id`);
 
  
-UPDATE `glpi_plugin_archires_queriestypes` SET `querytype` = 'PluginArchiresLocationQuery' WHERE `querytype` = 0;
-UPDATE `glpi_plugin_archires_queriestypes` SET `querytype` = 'PluginArchiresNetworkEquipmentQuery' WHERE `querytype` = 1;
-UPDATE `glpi_plugin_archires_queriestypes` SET `querytype` = 'PluginArchiresApplianceQuery' WHERE `querytype` = 2;
+UPDATE `glpi_plugin_archires_querytypes` SET `querytype` = 'PluginArchiresLocationQuery' WHERE `querytype` = 0;
+UPDATE `glpi_plugin_archires_querytypes` SET `querytype` = 'PluginArchiresNetworkEquipmentQuery' WHERE `querytype` = 1;
+UPDATE `glpi_plugin_archires_querytypes` SET `querytype` = 'PluginArchiresApplianceQuery' WHERE `querytype` = 2;
 
-ALTER TABLE `glpi_plugin_archires_networkinterfacescolors` 
+ALTER TABLE `glpi_plugin_archires_networkinterfacecolors` 
    DROP INDEX `iface`,
    CHANGE `ID` `id` int(11) NOT NULL auto_increment,
    CHANGE `iface` `networkinterfaces_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_networkinterfaces (id)',
    ADD INDEX (`networkinterfaces_id`);
 
-ALTER TABLE `glpi_plugin_archires_statescolors` 
+ALTER TABLE `glpi_plugin_archires_statecolors` 
    CHANGE `ID` `id` int(11) NOT NULL auto_increment,
    CHANGE `state` `states_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_states (id)',
    ADD INDEX (`states_id`);
 
-ALTER TABLE `glpi_plugin_archires_statescolors` DROP INDEX `state`;
+ALTER TABLE `glpi_plugin_archires_statecolors` DROP INDEX `state`;
 
-ALTER TABLE `glpi_plugin_archires_vlanscolors` 
+ALTER TABLE `glpi_plugin_archires_vlancolors` 
    CHANGE `ID` `id` int(11) NOT NULL auto_increment,
    CHANGE `vlan` `vlans_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_vlans (id)',
    ADD INDEX (`vlans_id`);

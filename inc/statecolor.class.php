@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresStateColor extends CommonDBTM {
    
-   public $table = 'glpi_plugin_archires_statescolors';
+   public $table = 'glpi_plugin_archires_statecolors';
 
 	function getFromDBbyState($state) {
 		global $DB;

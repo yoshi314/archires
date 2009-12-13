@@ -60,7 +60,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 		global $DB;
 
 		$query = "DELETE 
-					FROM `glpi_plugin_archires_queriestypes` 
+					FROM `glpi_plugin_archires_querytypes` 
 					WHERE `queries_id` = '$ID'";
 		$DB->query($query);
 	}

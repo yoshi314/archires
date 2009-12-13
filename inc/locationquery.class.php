@@ -60,7 +60,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 		global $DB;
 
 		$query = "DELETE FROM 
-				`glpi_plugin_archires_queriestypes` 
+				`glpi_plugin_archires_querytypes` 
 				WHERE `queries_id` = '$ID'";
 		$DB->query($query);
 	}

@@ -37,7 +37,7 @@ if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
 }
 
-class PluginArchiresItemImage extends CommonDBTM {
+class PluginArchiresImageItem extends CommonDBTM {
 
 	public $table = 'glpi_plugin_archires_imageitems';
 

@@ -24,7 +24,7 @@ front/view.php -text
 /hook.php -text
 inc/appliancequery.class.php -text
 inc/archires.class.php -text
-inc/itemimage.class.php -text
+inc/imageitem.class.php -text
 inc/locationquery.class.php -text
 inc/networkequipmentquery.class.php -text
 inc/networkinterfacecolor.class.php -text

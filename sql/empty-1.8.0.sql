@@ -83,8 +83,8 @@ CREATE TABLE `glpi_plugin_archires_imageitems` (
 	PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `glpi_plugin_archires_queriestypes`;
-CREATE TABLE `glpi_plugin_archires_queriestypes` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_querytypes`;
+CREATE TABLE `glpi_plugin_archires_querytypes` (
 	`id` int(11) NOT NULL auto_increment,
 	`querytype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'RELATION to the 3 type of archires (type)',
 	`type` int(11) NOT NULL default '0',
@@ -97,8 +97,8 @@ CREATE TABLE `glpi_plugin_archires_queriestypes` (
 	KEY `itemtype` (`itemtype`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `glpi_plugin_archires_networkinterfacescolors`;
-CREATE TABLE `glpi_plugin_archires_networkinterfacescolors` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_networkinterfacecolors`;
+CREATE TABLE `glpi_plugin_archires_networkinterfacecolors` (
 	`id` int(11) NOT NULL auto_increment,
 	`networkinterfaces_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_networkinterfaces (id)',
 	`color` VARCHAR( 50 ) collate utf8_unicode_ci NOT NULL,
@@ -106,8 +106,8 @@ CREATE TABLE `glpi_plugin_archires_networkinterfacescolors` (
 	KEY `networkinterfaces_id` (`networkinterfaces_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `glpi_plugin_archires_statescolors`;
-CREATE TABLE `glpi_plugin_archires_statescolors` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_statecolors`;
+CREATE TABLE `glpi_plugin_archires_statecolors` (
 	`id` int(11) NOT NULL auto_increment,
 	`states_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_states (id)',
 	`color` VARCHAR( 50 ) collate utf8_unicode_ci NOT NULL,
@@ -115,8 +115,8 @@ CREATE TABLE `glpi_plugin_archires_statescolors` (
 	KEY `states_id` (`states_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `glpi_plugin_archires_vlanscolors`;
-CREATE TABLE `glpi_plugin_archires_vlanscolors` (
+DROP TABLE IF EXISTS `glpi_plugin_archires_vlancolors`;
+CREATE TABLE `glpi_plugin_archires_vlancolors` (
 	`id` int(11) NOT NULL auto_increment,
 	`vlans_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_vlans (id)',
 	`color` VARCHAR( 50 ) collate utf8_unicode_ci NOT NULL,

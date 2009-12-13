@@ -95,7 +95,7 @@ function plugin_archires_install() {
          array(3000=>'PluginArchiresLocationQuery',3001=>'PluginArchiresNetworkEquipmentQuery',3002=>'PluginArchiresApplianceQuery',3003=>'PluginArchiresView'),
          array("glpi_bookmarks", "glpi_bookmarks_users", "glpi_displaypreferences",
                "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_tickets"),
-         array("glpi_plugin_archires_queriestypes","glpi_plugin_archires_imageitems"));
+         array("glpi_plugin_archires_querytypes","glpi_plugin_archires_imageitems"));
 	}
    PluginArchiresProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    return true;
@@ -106,14 +106,14 @@ function plugin_archires_uninstall() {
 
 	$tables = array("glpi_plugin_archires_imageitems",
 					"glpi_plugin_archires_views",
-					"glpi_plugin_archires_networkinterfacescolors",
-					"glpi_plugin_archires_vlanscolors",
-					"glpi_plugin_archires_statescolors",
+					"glpi_plugin_archires_networkinterfacecolors",
+					"glpi_plugin_archires_vlancolors",
+					"glpi_plugin_archires_statecolors",
 					"glpi_plugin_archires_profiles",
 					"glpi_plugin_archires_locationqueries",
 					"glpi_plugin_archires_networkequipmentqueries",
 					"glpi_plugin_archires_appliancequeries",
-					"glpi_plugin_archires_queriestypes");
+					"glpi_plugin_archires_querytypes");
 
 	foreach($tables as $table)
 		$DB->query("DROP TABLE `$table`;");

@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresQueryType extends CommonDBTM {
 
-   public $table = 'glpi_plugin_archires_queriestypes';
+   public $table = 'glpi_plugin_archires_querytypes';
 
 	function getFromDBbyType($itemtype, $type,$type_query,$query_ID) {
 		global $DB;

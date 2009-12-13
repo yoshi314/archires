@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
    
-   public $table = 'glpi_plugin_archires_networkinterfacescolors';
+   public $table = 'glpi_plugin_archires_networkinterfacecolors';
 
 	function getFromDBbyNetworkInterface($networkinterfaces_id) {
 		global $DB;

@@ -43,7 +43,7 @@ if ($plugin->isActivated("archires")) {
    
    checkRight("config","w");
 
-   $PluginArchiresItemImage=new PluginArchiresItemImage();
+   $PluginArchiresImageItem=new PluginArchiresImageItem();
    $PluginArchiresNetworkInterfaceColor=new PluginArchiresNetworkInterfaceColor();
    $PluginArchiresVlanColor=new PluginArchiresVlanColor();
    $PluginArchiresStateColor=new PluginArchiresStateColor();
@@ -57,7 +57,7 @@ if ($plugin->isActivated("archires")) {
          $_POST['itemtype']= $test[0];
       
          if (plugin_archires_haveRight("archires","w")) {
-            $PluginArchiresItemImage->addItemImage($_POST['type'],$_POST['itemtype'],$_POST['img']);
+            $PluginArchiresImageItem->addItemImage($_POST['type'],$_POST['itemtype'],$_POST['img']);
          }
       }
       glpi_header($_SERVER['HTTP_REFERER']);
@@ -65,11 +65,11 @@ if ($plugin->isActivated("archires")) {
    } else if (isset($_POST["delete"])) {
       checkRight("config","w");
       
-      $PluginArchiresItemImage->getFromDB($_POST["id"],-1);
+      $PluginArchiresImageItem->getFromDB($_POST["id"],-1);
       
       foreach ($_POST["item"] as $key => $val) {
          if ($val==1) {
-            $PluginArchiresItemImage->deleteItemImage($key);
+            $PluginArchiresImageItem->deleteItemImage($key);
          }
       }
       glpi_header($_SERVER['HTTP_REFERER']);
@@ -137,7 +137,7 @@ if ($plugin->isActivated("archires")) {
       
       commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","archires","summary");
 
-      $PluginArchiresItemImage->showForm();
+      $PluginArchiresImageItem->showForm();
       
       $PluginArchiresNetworkInterfaceColor->showForm(true);
 

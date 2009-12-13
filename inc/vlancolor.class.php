@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresVlanColor extends CommonDBTM {
 	
-	public $table = 'glpi_plugin_archires_vlanscolors';
+	public $table = 'glpi_plugin_archires_vlancolors';
 
 	function getFromDBbyVlan($vlan) {
 		global $DB;
