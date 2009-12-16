@@ -116,8 +116,22 @@ function plugin_archires_uninstall() {
 					"glpi_plugin_archires_querytypes");
 
 	foreach($tables as $table)
-		$DB->query("DROP TABLE `$table`;");
+		$DB->query("DROP TABLE IF EXISTS `$table`;");
+   
+   //old versions	
+   $tables = array("glpi_plugin_archires_query_location",
+					"glpi_plugin_archires_query_switch",
+					"glpi_plugin_archires_query_applicatifs",
+					"glpi_plugin_archires_image_device",
+					"glpi_plugin_archires_query_type",
+					"glpi_plugin_archires_color_iface",
+					"glpi_plugin_archires_color_state",
+					"glpi_plugin_archires_config",
+					"glpi_plugin_archires_color_vlan");
 
+	foreach($tables as $table)
+		$DB->query("DROP TABLE IF EXISTS `$table`;");
+		
 	$rep_files_archires = GLPI_PLUGIN_DOC_DIR."/archires";
 
 	deleteDir($rep_files_archires);
@@ -266,17 +280,16 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 
 // Hook done on delete item case
 
-function plugin_pre_item_delete_archires($input) {
+function plugin_pre_item_purge_archires($item) {
 
-	if (isset($input["_item_type_"]))
-		switch ($input["_item_type_"]) {
-			case 'Profile' :
-				// Manipulate data if needed
-				$PluginArchiresProfile=new PluginArchiresProfile;
-				$PluginArchiresProfile->cleanProfiles($input["id"]);
-				break;
-		}
-	return $input;
+	switch (get_class($item)) {
+      case 'Profile' :
+         // Manipulate data if needed
+         $PluginArchiresProfile=new PluginArchiresProfile;
+         $PluginArchiresProfile->cleanProfiles($item->getField('id'));
+         break;
+   }
+	
 }
 
 ////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////
