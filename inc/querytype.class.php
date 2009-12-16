@@ -147,7 +147,7 @@ class PluginArchiresQueryType extends CommonDBTM {
          echo "<tr class='tab_bg_1'><td>";
 
          $PluginArchiresArchires=new PluginArchiresArchires();
-         $PluginArchiresArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
+         $PluginArchiresArchires->showAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
 
          echo "</td>";
          echo "<td>";
@@ -169,7 +169,7 @@ class PluginArchiresQueryType extends CommonDBTM {
          $number = $DB->numrows($result);
          if ($number != 0) {
 
-            echo "<form method='post' name='massiveaction_form$rand' id='massiveaction_form$rand' action=\"./plugin_archires.".$page.".form.php\">";
+            echo "<form method='post' name='massiveaction_form$rand' id='massiveaction_form$rand' action=\"./".$page.".form.php\">";
             echo "<div id='liste'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
@@ -191,7 +191,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                if ($number==1)
                   echo "<tr class='tab_bg_1'>";
                $PluginArchiresArchires=new PluginArchiresArchires();
-               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchiresArchires->getType($ligne["itemtype"],$ligne["type"])."</td>";
+               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchiresArchires->getItemType($ligne["itemtype"],$ligne["type"])."</td>";
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                echo "<input type='checkbox' name='item[$ID]' value='1'>";

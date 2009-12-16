@@ -48,11 +48,11 @@ class PluginArchiresView extends CommonDBTM {
       return $LANG['plugin_archires']['title'][3];
    }
    
-   static function canCreate() {
+   function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
-   static function canView() {
+   function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
    
@@ -65,7 +65,7 @@ class PluginArchiresView extends CommonDBTM {
                FROM `".$obj->table."`
                WHERE `is_deleted` = '0' ";
       // Add Restrict to current entities
-      if (in_array($obj->table,$CFG_GLPI["specif_entities_tables"])) {
+      if ($obj->isEntityAssign()) {
          $LINK= " AND " ;
          $query.=getEntitiesRestrictRequest($LINK,$obj->table);
       }
@@ -479,20 +479,20 @@ class PluginArchiresView extends CommonDBTM {
       $itemtable=$this->table;
 
       // Add deleted if item have it
-      if (in_array($itemtable,$CFG_GLPI["deleted_tables"])) {
+      if ($this->maybeDeleted()) {
          $LINK= " AND " ;
          if ($first) {$LINK=" ";$first=false;}
          $query.= $LINK.$itemtable.".`is_deleted` = '$is_deleted' ";
       }
       // Remove template items
-      if (in_array($itemtable,$CFG_GLPI["template_tables"])) {
+       if ($this->maybeTemplate()) {
          $LINK= " AND " ;
          if ($first) {$LINK=" ";$first=false;}
          $query.= $LINK.$itemtable.".`is_template` = '0' ";
       }
 
       // Add Restrict to current entities
-      if (in_array($itemtable,$CFG_GLPI["specif_entities_tables"])) {
+      if ($this->isEntityAssign()) {
          $LINK= " AND " ;
          if ($first) {$LINK=" ";$first=false;}
 

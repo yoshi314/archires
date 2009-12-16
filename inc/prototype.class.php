@@ -89,9 +89,9 @@ class PluginArchiresPrototype extends CommonDBTM {
       if ($PluginArchiresView->fields["display_ip"]!=0 && isset($device["ip"])) {
          if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
             if (!$generation)
-               $graph = $PluginArchiresArchires->getType($itemtype,$device["type"]) . " " . $device["ip"];
+               $graph = $PluginArchiresArchires->getItemType($itemtype,$device["type"]) . " " . $device["ip"];
             else
-               $graph =" - ".$PluginArchiresArchires->getType($itemtype,$device["type"])."</td></tr><tr><td>".$device["ip"]."</td></tr>";
+               $graph =" - ".$PluginArchiresArchires->getItemType($itemtype,$device["type"])."</td></tr><tr><td>".$device["ip"]."</td></tr>";
 
          } else {
             if (!$generation)
@@ -102,9 +102,9 @@ class PluginArchiresPrototype extends CommonDBTM {
       } else {
          if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
             if (!$generation)
-               $graph =$PluginArchiresArchires->getType($itemtype,$device["type"]);
+               $graph =$PluginArchiresArchires->getItemType($itemtype,$device["type"]);
             else
-               $graph ="</td></tr><tr><td>".$PluginArchiresArchires->getType($itemtype,$device["type"])."</td></tr>";
+               $graph ="</td></tr><tr><td>".$PluginArchiresArchires->getItemType($itemtype,$device["type"])."</td></tr>";
          } else {
             if (!$generation)
                echo "";

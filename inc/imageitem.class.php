@@ -119,7 +119,7 @@ class PluginArchiresImageItem extends CommonDBTM {
       echo $LANG['plugin_archires']['setup'][2]." : </th></tr>";
       echo "<tr class='tab_bg_1'><td>";
       $PluginArchiresArchires=new PluginArchiresArchires();
-      $PluginArchiresArchires->dropdownAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
+      $PluginArchiresArchires->showAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
       echo "</td><td>";
       //file
       $rep = "../pics/";
@@ -170,7 +170,7 @@ class PluginArchiresImageItem extends CommonDBTM {
                   echo "<tr class='tab_bg_1'>";
                   
                $PluginArchiresArchires=new PluginArchiresArchires();
-               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchiresArchires->getType($ligne["itemtype"],$ligne["type"])."</td><td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"]."\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";					
+               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchiresArchires->getItemType($ligne["itemtype"],$ligne["type"])."</td><td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"]."\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";					
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                echo "<input type='checkbox' name='item[$ID]' value='1'>";

@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresArchires extends CommonDBTM {
 	
-	function dropdownAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
+	function showAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
       global $DB,$LANG,$CFG_GLPI,$PLUGIN_ARCHIRES_TYPE_TABLES,$PLUGIN_ARCHIRES_TYPE_NAME;
       
       $types = array(
@@ -82,7 +82,7 @@ class PluginArchiresArchires extends CommonDBTM {
       return $rand;
    }
   
-   function getType($device_type,$type) {
+   function getItemType($device_type,$type) {
       global $DB,$PLUGIN_ARCHIRES_TYPE_TABLES;
     
       $name="";

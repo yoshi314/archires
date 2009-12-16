@@ -48,11 +48,11 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       return $LANG['plugin_archires']['title'][4];
    }
    
-	static function canCreate() {
+	function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
-   static function canView() {
+   function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
    

@@ -73,25 +73,13 @@ function plugin_init_archires() {
 	);
 
 	// Params : plugin name - string type - number - tabke - form page
-	Plugin::registerClass('PluginArchiresLocationQuery', array(
-		'deleted_tables' => true,
-		'specif_entities_tables' => true
-   ));
+	Plugin::registerClass('PluginArchiresLocationQuery');
 
-	Plugin::registerClass('PluginArchiresNetworkEquipmentQuery', array(
-		'deleted_tables' => true,
-		'specif_entities_tables' => true
-   ));
+	Plugin::registerClass('PluginArchiresNetworkEquipmentQuery');
 
-	Plugin::registerClass('PluginArchiresApplianceQuery', array(
-		'deleted_tables' => true,
-		'specif_entities_tables' => true
-   ));
+	Plugin::registerClass('PluginArchiresApplianceQuery');
 
-	Plugin::registerClass('PluginArchiresView', array(
-		'deleted_tables' => true,
-		'specif_entities_tables' => true,
-   ));
+	Plugin::registerClass('PluginArchiresView');
 
 	if (isset($_SESSION["glpiID"])) {
 
@@ -150,7 +138,7 @@ function plugin_init_archires() {
 			if (plugin_archires_haveRight("archires","w") || haveRight("config","w"))
             $PLUGIN_HOOKS['config_page']['archires'] = 'front/config.form.php';
 
-		$PLUGIN_HOOKS['pre_item_delete']['archires'] = 'plugin_pre_item_delete_archires';
+		$PLUGIN_HOOKS['pre_item_purge']['archires'] = 'plugin_pre_item_purge_archires';
 
 	}
 }

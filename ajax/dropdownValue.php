@@ -55,21 +55,12 @@ if (!TableExists($_POST['table'])) {
 	exit();
 }
 
+$item = new $_POST['itemtype']();
+
 // Make a select box with preselected values
 if (!isset($_POST["limit"])) $_POST["limit"]=$CFG_GLPI["dropdown_chars_limit"];
 $first=true;
 $where="WHERE ";
-
-if (in_array($_POST['table'],$CFG_GLPI["deleted_tables"])) {
-	if (!$first) $where.=" AND ";
-	else $first=false;
-	$where.=" `is_deleted` = '0' ";
-}
-if (in_array($_POST['table'],$CFG_GLPI["template_tables"])) {
-	if (!$first) $where.=" AND ";
-	else $first=false;
-	$where.=" `is_template` = '0' ";
-}
 
 $NBMAX=$CFG_GLPI["dropdown_max"];
 $LIMIT="LIMIT 0,$NBMAX";
@@ -78,14 +69,6 @@ if ($_POST['searchText']==$CFG_GLPI["ajax_wildcard"]) $LIMIT="";
 if (!$first) $where.=" AND ";
 else $first=false;
 $where .=" id <> '".$_POST['value']."' ";
-
-if (in_array($_POST['table'],$CFG_GLPI["specif_entities_tables"])) {
-   if (isset($_POST["entity_restrict"])&&$_POST["entity_restrict"]>=0) {
-      $where.= " AND ".$_POST['table'].".entities_id='".$_POST["entity_restrict"]."'";
-   } else {
-      $where.=getEntitiesRestrictRequest("AND",$_POST['table']);
-   }
-}
 
 $field="name";
 

@@ -44,11 +44,10 @@ header_nocache();
 if (isset($_POST["typetable"])) {
 
 	$test= explode(";", $_POST['typetable']);
-	$table= $test[1];
+	
 	$itemtype= $test[0];
+	$table= $test[1];
 	// Link to user for search only > normal users
-	$link="dropdownValue.php";
-
 	$rand=mt_rand();
 
 	$use_ajax=false;
@@ -71,14 +70,14 @@ if (isset($_POST["typetable"])) {
 	}
 	
 	$default="<select name='".$_POST["myname"]."'><option value='0'>------</option></select>";
-	ajaxDropdown($use_ajax,"/plugins/archires/ajax/$link",$params,$default,$rand);
+	ajaxDropdown($use_ajax,"/plugins/archires/ajax/dropdownValue.php",$params,$default,$rand);
 
 	if (isset($_POST['value'])&&$_POST['value']>0) {
 		$params['searchText']=$CFG_GLPI["ajax_wildcard"];
 		echo "<script type='text/javascript' >\n";
 		echo "document.getElementById('search_$rand').value='".$CFG_GLPI["ajax_wildcard"]."';";
 		echo "</script>\n";
-		ajaxUpdateItem("results_$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/$link",$params);
+		ajaxUpdateItem("results_$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownValue.php",$params);
 	}
 }
 	
