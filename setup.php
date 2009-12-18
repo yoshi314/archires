@@ -72,15 +72,6 @@ function plugin_init_archires() {
 		'Phone' => $LANG['Menu'][34]
 	);
 
-	// Params : plugin name - string type - number - tabke - form page
-	Plugin::registerClass('PluginArchiresLocationQuery');
-
-	Plugin::registerClass('PluginArchiresNetworkEquipmentQuery');
-
-	Plugin::registerClass('PluginArchiresApplianceQuery');
-
-	Plugin::registerClass('PluginArchiresView');
-
 	if (isset($_SESSION["glpiID"])) {
 
       if (plugin_archires_haveRight("archires","r")) {

@@ -1,10 +1,8 @@
 * text=auto !eol
 ajax/appliancequery.tabs.php -text
 ajax/dropdownAllItems.php -text
-ajax/dropdownMassiveActionViews.php -text
 ajax/dropdownValue.php -text
 ajax/locationquery.tabs.php -text
-ajax/massiveactionViews.php -text
 ajax/networkequipmentquery.tabs.php -text
 ajax/view.tabs.php -text
 front/appliancequery.form.php -text
@@ -34,6 +32,7 @@ inc/querytype.class.php -text
 inc/statecolor.class.php -text
 inc/view.class.php -text
 inc/vlancolor.class.php -text
+locales/de_DE.php -text
 locales/en_GB.php -text
 locales/es_ES.php -text
 locales/fr_FR.php -text

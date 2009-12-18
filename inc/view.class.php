@@ -56,6 +56,105 @@ class PluginArchiresView extends CommonDBTM {
       return plugin_archires_haveRight('archires', 'r');
    }
    
+   function getSearchOptions() {
+      global $LANG;
+
+      $tab = array();
+      $tab['common']=$LANG['plugin_archires']['title'][3];
+
+      $tab[1]['table'] = $this->table;
+      $tab[1]['field'] = 'name';
+      $tab[1]['linkfield'] = 'name';
+      $tab[1]['name'] = $LANG['plugin_archires']['search'][1];
+      $tab[1]['datatype']='itemlink';
+
+      $tab[2]['table'] = $this->table;
+      $tab[2]['field'] = 'computer';
+      $tab[2]['linkfield'] = 'computer';
+      $tab[2]['name'] = $LANG['plugin_archires'][6];
+      $tab[2]['datatype']='bool';
+      
+      $tab[3]['table'] = $this->table;
+      $tab[3]['field'] = 'networking';
+      $tab[3]['linkfield'] = 'networking';
+      $tab[3]['name'] = $LANG['plugin_archires'][7];
+      $tab[3]['datatype']='bool';
+      
+      $tab[4]['table'] = $this->table;
+      $tab[4]['field'] = 'printer';
+      $tab[4]['linkfield'] = 'printer';
+      $tab[4]['name'] = $LANG['plugin_archires'][8];
+      $tab[4]['datatype']='bool';
+      
+      $tab[5]['table'] = $this->table;
+      $tab[5]['field'] = 'peripheral';
+      $tab[5]['linkfield'] = 'peripheral';
+      $tab[5]['name'] = $LANG['plugin_archires'][9];
+      $tab[5]['datatype']='bool';
+
+      $tab[6]['table'] = $this->table;
+      $tab[6]['field'] = 'phone';
+      $tab[6]['linkfield'] = 'phone';
+      $tab[6]['name'] = $LANG['plugin_archires'][10];
+      $tab[6]['datatype']='bool';
+
+      $tab[7]['table'] = $this->table;
+      $tab[7]['field'] = 'display_ports';
+      $tab[7]['linkfield'] = 'display_ports';
+      $tab[7]['name'] = $LANG['plugin_archires'][16];
+      $tab[7]['datatype']='text';
+
+      $tab[8]['table'] = $this->table;
+      $tab[8]['field'] = 'display_ip';
+      $tab[8]['linkfield'] = 'display_ip';
+      $tab[8]['name'] = $LANG['plugin_archires'][23];
+      $tab[8]['datatype']='bool';
+
+      $tab[9]['table'] = $this->table;
+      $tab[9]['field'] = 'display_type';
+      $tab[9]['linkfield'] = 'display_type';
+      $tab[9]['name'] = $LANG['plugin_archires'][25];
+      $tab[9]['datatype']='bool';
+
+      $tab[10]['table'] = $this->table;
+      $tab[10]['field'] = 'display_state';
+      $tab[10]['linkfield'] = 'display_state';
+      $tab[10]['name'] = $LANG['plugin_archires'][26];
+      $tab[10]['datatype']='bool';
+
+      $tab[11]['table'] = $this->table;
+      $tab[11]['field'] = 'display_location';
+      $tab[11]['linkfield'] = 'display_location';
+      $tab[11]['name'] = $LANG['plugin_archires'][31];
+      $tab[11]['datatype']='bool';
+
+      $tab[12]['table'] = $this->table;
+      $tab[12]['field'] = 'display_entity';
+      $tab[12]['linkfield'] = 'display_entity';
+      $tab[12]['name'] = $LANG['plugin_archires'][32];
+      $tab[12]['datatype']='bool';
+
+      $tab[13]['table']= $this->table;
+      $tab[13]['field']='engine';
+      $tab[13]['linkfield']='engine';
+      $tab[13]['name']=$LANG['plugin_archires']['setup'][13];
+      $tab[13]['datatype']='text';
+
+      $tab[14]['table']= $this->table;
+      $tab[14]['field']='format';
+      $tab[14]['linkfield']='format';
+      $tab[14]['name']=$LANG['plugin_archires']['setup'][15];
+      $tab[14]['datatype']='text';
+      
+      $tab[15]['table']= $this->table;
+      $tab[15]['field']='color';
+      $tab[15]['linkfield']='color';
+      $tab[15]['name']=$LANG['plugin_archires']['setup'][25];
+      $tab[15]['datatype']='text';
+
+      return $tab;
+   }
+   
    function dropdownObject($obj) {
       global $LANG,$DB,$CFG_GLPI;
       
@@ -312,399 +411,6 @@ class PluginArchiresView extends CommonDBTM {
       }
       return true;
 	}
-	
-	// Print Search Form
-	function searchForm($params) {
-      global $CFG_GLPI,$LANG;
-      
-      // Default values of parameters
-      $default_values["link"]=array();
-      $default_values["field"]=array();
-      $default_values["contains"]=array();
-      $default_values["link1"]=array();
-      $default_values["field1"]=array();
-      $default_values["contains1"]=array();
-      $default_values["sort"]="";
-      $default_values["is_deleted"]=0;
-      $default_values["link2"]="";
-      $default_values["contains2"]="";
-      $default_values["field2"]="";
-      $default_values["itemtype2"]="";
-      $default_values["target"] = $_SERVER['PHP_SELF'];
-      
-      foreach ($default_values as $key => $val) {
-         if (isset($params[$key])) {
-            $$key=$params[$key];
-         } else {
-            $$key=$default_values[$key];
-         }
-      }
-      
-      $option[$this->table.".id"]	= $LANG['plugin_archires']['search'][0];
-      $option[$this->table.".name"]	= $LANG['plugin_archires']['search'][1];
-
-      echo "<form method='get' action=\"./view.php\">";
-      echo "<div align='center'><table  width='750' class='tab_cadre'>";
-      echo "<tr><th colspan='4'>".$LANG['search'][0].":</th></tr>";
-      echo "<tr class='tab_bg_1'>";
-      echo "<td class='center'>";
-      echo "<input type='text' size='15' name=\"contains\" value=\"". $contains ."\" >";
-      echo "&nbsp;";
-      echo $LANG['search'][10]."&nbsp;<select name=\"field\" size='1'>";
-      echo "<option value='all' ";
-      if ($field == "all") echo "selected";
-      echo ">".$LANG['common'][66]."</option>";
-      reset($option);
-      foreach ($option as $key => $val) {
-         echo "<option value=\"".$key."\"";
-         if ($key == $field) echo "selected";
-         echo ">". substr($val, 0, 18) ."</option>\n";
-      }
-      echo "</select>&nbsp;";
-
-      echo $LANG['search'][4];
-      echo "&nbsp;<select name='sort' size='1'>";
-      reset($option);
-      foreach ($option as $key => $val) {
-         echo "<option value=\"".$key."\"";
-         if ($key == $sort) echo "selected";
-         echo ">".$val."</option>\n";
-      }
-      echo "</select> ";
-
-      echo "<td>";
-      Dropdown::showYesNo("is_deleted",$is_deleted);
-
-      echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/showdeleted.png\" alt='".$LANG['common'][3]."' title='".$LANG['common'][3]."'>";
-
-      echo "</td>";
-      // Display Reset search
-      echo "<td class='center'>";
-      echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/view.php?reset_search=reset_search&amp;type=".$this->type."'><img title=\"".$LANG['buttons'][16]."\" alt=\"".$LANG['buttons'][16]."\" src='".$CFG_GLPI["root_doc"]."/pics/reset.png' class='calendrier'></a>";
-      Bookmark::showSaveButton(BOOKMARK_SEARCH,$this->type);
-
-      echo "</td>";
-
-      echo "<td width='80' class='center' class='tab_bg_2'>";
-      echo "<input type='submit' value=\"".$LANG['buttons'][0]."\" class='submit'>";
-      echo "</td></tr></table></div></form>";
-   }
-
-
-   /**
-   * Search and list sup
-   *
-   *
-   * Build the query, make the search and list contacts after a search.
-   *
-   *@param $target filename where to go when done.
-   *@param $username not used to be deleted.
-   *@param $field the field in witch the search would be done
-   *@param $contains the search string
-   *@param $sort the "sort by" field value
-   *@param $order ASC or DSC (for mysql query)
-   *@param $start row number from witch we start the query (limit $start,xxx)
-   *@param $is_deleted Query on deleted items or not.
-   *@param $phrasetype='' not used (to be deleted)
-   *
-   *@return Nothing (display)
-   *
-   **/
-  function showList($params) {
-      global $DB,$CFG_GLPI,$LANG;
-      
-      // Default values of parameters
-      $default_values["link"]=array();
-      $default_values["field"]=array();
-      $default_values["contains"]=array();
-      $default_values["link1"]=array();
-      $default_values["field1"]=array();
-      $default_values["contains1"]=array();
-      $default_values["phrasetype"]="contains";
-      $default_values["sort"]="1";
-      $default_values["order"]="ASC";
-      $default_values["start"]=0;
-      $default_values["is_deleted"]=0;
-      $default_values["export_all"]=0;
-      $default_values["link2"]="";
-      $default_values["contains2"]="";
-      $default_values["field2"]="";
-      $default_values["itemtype2"]="";
-      $default_values["target"] = $_SERVER['PHP_SELF'];
-      
-      foreach ($default_values as $key => $val) {
-         if (isset($params[$key])) {
-            $$key=$params[$key];
-         } else {
-            $$key=$default_values[$key];
-         }
-      }
-      
-      $first=true;
-      // Build query
-      if ($field=="all") {
-         $where = " (";
-         $fields = $DB->list_fields($this->table);
-         $columns = count($fields);
-         $i=0;
-         foreach ($fields as $key => $val) {
-            if ($i != 0) {
-               $where .= " OR ";
-            }
-
-            $where .= $this->table.".".$key . " LIKE '%".$contains."%'";
-
-            $i++;
-         }
-         $where .= ")";
-      } else {
-         if ($phrasetype == "contains") {
-            $where = "($field LIKE '%".$contains."%')";
-         } else {
-            $where = "($field LIKE '".$contains."')";
-         }
-      }
-
-      if (!$start) {
-         $start = 0;
-      }
-      if (!$order) {
-         $order = "ASC";
-      }
-      $query = "SELECT *
-        FROM `".$this->table."` ";
-      $query .= "WHERE ";
-      if (!empty($where)) $query .= " $where AND";
-
-      $itemtable=$this->table;
-
-      // Add deleted if item have it
-      if ($this->maybeDeleted()) {
-         $LINK= " AND " ;
-         if ($first) {$LINK=" ";$first=false;}
-         $query.= $LINK.$itemtable.".`is_deleted` = '$is_deleted' ";
-      }
-      // Remove template items
-       if ($this->maybeTemplate()) {
-         $LINK= " AND " ;
-         if ($first) {$LINK=" ";$first=false;}
-         $query.= $LINK.$itemtable.".`is_template` = '0' ";
-      }
-
-      // Add Restrict to current entities
-      if ($this->isEntityAssign()) {
-         $LINK= " AND " ;
-         if ($first) {$LINK=" ";$first=false;}
-
-         $query.=getEntitiesRestrictRequest($LINK,$itemtable);
-      }
-
-      $query .= " ORDER BY $sort $order";
-      // Get it from database
-      if ($result = $DB->query($query)) {
-         $numrows =  $DB->numrows($result);
-
-         // Limit the result, if no limit applies, use prior result
-         if ($numrows > $_SESSION["glpilist_limit"]) {
-            $query_limit = $query ." LIMIT $start,".$_SESSION["glpilist_limit"]." ";
-            $result_limit = $DB->query($query_limit);
-            $numrows_limit = $DB->numrows($result_limit);
-         } else {
-            $numrows_limit = $numrows;
-            $result_limit = $result;
-         }
-
-         if ($numrows_limit>0) {
-            // Pager
-            $parameters="field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=$sort&amp;order=$order";
-            printPager($start,$numrows,$target,$parameters);
-
-            echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"../ajax/massiveactionViews.php\">";
-            // Produce headline
-            echo "<div align='center'><table  class='tab_cadrehov'><tr>";
-            // Name
-            if (plugin_archires_haveRight("archires","w"))
-               echo "<th></th>";
-
-            echo "<th>";
-            if ($sort==$this->table.".name") {
-               if ($order=="DESC") echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-down.png\" alt='' title=''>";
-               else echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-up.png\" alt='' title=''>";
-            }
-            echo "<a href=\"$target?field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=".$this->table.".name&amp;order=".($order=="ASC"?"DESC":"ASC")."&amp;start=$start\">";
-            echo $LANG['plugin_archires']['search'][1]."</a></th>";
-
-            //items
-            echo "<th>";
-            echo $LANG['plugin_archires'][3]."</th>";
-
-            //display_ports
-            echo "<th>";
-            echo $LANG['plugin_archires'][24]."</th>";
-
-            //engine
-            echo "<th>";
-            if ($sort==$this->table.".engine") {
-               if ($order=="DESC") echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-down.png\" alt='' title=''>";
-               else echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-up.png\" alt='' title=''>";
-            }
-            echo "<a href=\"$target?field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=".$this->table.".engine&amp;order=".($order=="ASC"?"DESC":"ASC")."&amp;start=$start\">";
-            echo $LANG['plugin_archires']['setup'][13]."</a></th>";
-
-            //format
-            echo "<th>";
-            if ($sort==$this->table.".format") {
-               if ($order=="DESC") echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-down.png\" alt='' title=''>";
-               else echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/puce-up.png\" alt='' title=''>";
-            }
-            echo "<a href=\"$target?field=$field&amp;phrasetype=$phrasetype&amp;contains=$contains&amp;sort=".$this->table.".format&amp;order=".($order=="ASC"?"DESC":"ASC")."&amp;start=$start\">";
-            echo $LANG['plugin_archires']['setup'][15]."</a></th>";
-
-            echo "</tr>";
-
-            for ($i=0; $i < $numrows_limit; $i++) {
-
-               $ID = $DB->result($result_limit, $i, "id");
-
-               $this->getfromDB($ID);
-
-               $sel="";
-               if (isset($_GET["select"])&&$_GET["select"]=="all") $sel="checked";
-
-               echo displaySearchNewLine(HTML_OUTPUT,$i%2);
-               //	echo "<td>";
-
-               if (plugin_archires_haveRight("archires","w"))
-                  echo "<td width='5'><input type='checkbox' name='item[$ID]' value='1' $sel></td>";
-               echo "<td>";
-               echo "<a href=\"./view.form.php?id=$ID\">";
-               echo $this->fields["name"]."";
-               if ($_SESSION["glpiis_ids_visible"] == 1 ||empty($this->fields["name"])) {
-                  echo " (";
-                  echo $this->fields["id"].")";
-               }
-               echo "</a></td>";
-
-               echo "<td class='center'>";
-               if ($this->fields["computer"]!=0) echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][0];
-               echo "<br>";
-
-               if ($this->fields["networking"]!=0) echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][0];
-               echo "<br>";
-
-               if ($this->fields["printer"]!=0) echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][0];
-               echo "<br>";
-
-               if ($this->fields["peripheral"]!=0) echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][0];
-               echo "<br>";
-
-               if ($this->fields["phone"]!=0) echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][0];
-               echo "</td>";
-
-               echo "<td class='center'>";
-               if ($this->fields["display_ports"]!=0) echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][0];
-               echo "<br>";
-
-               if ($this->fields["display_ip"]!=0) echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][0];
-               echo "<br>";
-
-               if ($this->fields["display_type"]!=0) echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][0];
-               echo "<br>";
-
-               if ($this->fields["display_state"]!=0) echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][0];
-               echo "<br>";
-
-               if ($this->fields["display_location"]!=0) echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][0];
-               echo "<br>";
-
-               if ($this->fields["display_entity"]!=0) echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][1];
-               else
-                  echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][0];
-               echo "</td>";
-
-               echo "<td class='center'>";
-               if ($this->fields["engine"]!=0) echo "Neato";
-               else
-                  echo "Dot";
-               echo "</td>";
-
-               echo "<td class='center'>";
-               if ($this->fields["format"]==PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
-               else if ($this->fields["format"]==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
-               else if ($this->fields["format"]==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
-               echo $format_graph;
-               echo "</td>";
-
-               echo "</tr>";
-            }
-
-            // Close Table
-            echo "</table></div>";
-            //massive action
-            if (plugin_archires_haveRight("archires","w")) {
-               openArrowMassive("massiveaction_form");
-               $this->dropdownMassiveAction($ID,$is_deleted);
-               closeArrowMassive();
-            }
-            echo "</div></form>";
-
-            // Pager
-            echo "<br>";
-            printPager($start,$numrows,$target,$parameters);
-
-         } else {
-            echo "<div align='center'><b>".$LANG['plugin_archires']['search'][7]."</b></div>";
-         }
-      }
-   }
-  
-   function dropdownMassiveAction($ID,$is_deleted) {
-      global $LANG,$CFG_GLPI;
-
-      echo "<select name=\"massiveaction\" id='massiveaction'>";
-      echo "<option value=\"-1\" selected>-----</option>";
-      if (plugin_archires_haveRight("archires","w")) {
-         if ($is_deleted=="1") {
-            echo "<option value=\"purge\">".$LANG['buttons'][22]."</option>";
-            echo "<option value=\"restore\">".$LANG['buttons'][21]."</option>";
-        
-         } else {
-            echo "<option value=\"duplicate\">".$LANG['plugin_archires'][28]."</option>";
-            echo "<option value=\"delete\">".$LANG['buttons'][6]."</option>";
-            echo "<option value=\"transfert\">".$LANG['buttons'][48]."</option>";
-         }
-      }
-      echo "</select>";
-    
-      $params=array('action'=>'__VALUE__',
-        'is_deleted'=>$is_deleted,
-        'id'=>$ID,
-        );
-    
-      ajaxUpdateItemOnSelectEvent("massiveaction","show_massiveaction",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownMassiveActionViews.php",$params);
-    
-      echo "<span id='show_massiveaction'>&nbsp;</span>\n";
-   }
   
    function showView($type,$ID) {
       global $CFG_GLPI,$DB,$LANG;

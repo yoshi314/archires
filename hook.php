@@ -142,7 +142,7 @@ function plugin_archires_uninstall() {
 					"glpi_logs");
 
 	foreach($tables_glpi as $table_glpi)
-		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = 'PluginArchiresLocationQuery' OR `itemtype` = 'PluginArchiresNetworkEquipmentQuery' OR `itemtype` = 'PluginArchiresApplianceQuery';");
+		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = 'PluginArchiresLocationQuery' OR `itemtype` = 'PluginArchiresNetworkEquipmentQuery' OR `itemtype` = 'PluginArchiresApplianceQuery' OR `itemtype` = 'PluginArchiresView';");
 
 	plugin_init_archires();
 
@@ -175,105 +175,81 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 	$table=$searchopt[$ID]["table"];
 	$field=$searchopt[$ID]["field"];
 
-	switch ($type) {
-		case 'PluginArchiresLocationQuery' :
-			switch ($table.'.'.$field) {
-				case "glpi_locations.completename" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][30];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_networks.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][11];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_states.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][11];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_vlans.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][11];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-			}
-			return "";
-		break;
-
-		case 'PluginArchiresNetworkEquipmentQuery' :
-			switch ($table.'.'.$field) {
-				case "glpi_networkequipments.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][34];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_networks.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][11];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_states.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][11];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_vlans.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][11];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-			}
-		case 'PluginArchiresApplianceQuery' :
-			switch ($table.'.'.$field) {
-				case "glpi_plugin_appliances_appliances.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][34];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_networks.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][11];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_states.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][11];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-				case "glpi_vlans.name" :
-					if (empty($data["ITEM_$num"]))
-						$out=$LANG['plugin_archires'][11];
-					else
-						$out= $data["ITEM_$num"];
-               return $out;
-               break;
-			}
-			return "";
-		break;
+	switch ($table.'.'.$field) {
+      case "glpi_locations.completename" :
+         if (empty($data["ITEM_$num"]))
+            $out=$LANG['plugin_archires'][30];
+         else
+            $out= $data["ITEM_$num"];
+         return $out;
+         break;
+      case "glpi_networks.name" :
+         if (empty($data["ITEM_$num"]))
+            $out=$LANG['plugin_archires'][11];
+         else
+            $out= $data["ITEM_$num"];
+         return $out;
+         break;
+      case "glpi_states.name" :
+         if (empty($data["ITEM_$num"]))
+            $out=$LANG['plugin_archires'][11];
+         else
+            $out= $data["ITEM_$num"];
+         return $out;
+         break;
+      case "glpi_vlans.name" :
+         if (empty($data["ITEM_$num"]))
+            $out=$LANG['plugin_archires'][11];
+         else
+            $out= $data["ITEM_$num"];
+         return $out;
+         break;
+      case "glpi_networkequipments.name" :
+         if (empty($data["ITEM_$num"]))
+            $out=$LANG['plugin_archires'][34];
+         else
+            $out= $data["ITEM_$num"];
+         return $out;
+         break;
+      case "glpi_plugin_appliances_appliances.name" :
+         if (empty($data["ITEM_$num"]))
+            $out=$LANG['plugin_archires'][34];
+         else
+            $out= $data["ITEM_$num"];
+         return $out;
+         break;
+      case "glpi_plugin_archires_views.display_ports" :
+         if (empty($data["ITEM_$num"]))
+            $out=$LANG['choice'][0];
+         elseif ($data["ITEM_$num"]=='1')
+            $out= $LANG['plugin_archires'][29];
+         elseif ($data["ITEM_$num"]=='2')
+            $out= $LANG['plugin_archires'][33];
+         return $out;
+         break;
+      case "glpi_plugin_archires_views.engine" :
+         if (empty($data["ITEM_$num"]))
+            $out="Dot";
+         elseif ($data["ITEM_$num"]=='1')
+            $out= "Neato";
+         return $out;
+         break;
+      case "glpi_plugin_archires_views.format" :
+         if ($data["ITEM_$num"]==PLUGIN_ARCHIRES_JPEG_FORMAT)
+            $out="jpeg";
+         elseif ($data["ITEM_$num"]==PLUGIN_ARCHIRES_PNG_FORMAT)
+            $out= "png";
+         elseif ($data["ITEM_$num"]==PLUGIN_ARCHIRES_GIF_FORMAT)
+            $out= "gif";
+         return $out;
+         break;
+      case "glpi_plugin_archires_views.color" :
+         if (empty($data["ITEM_$num"]))
+            $out=$LANG['plugin_archires'][19];
+         elseif ($data["ITEM_$num"]=='1')
+            $out= $LANG['plugin_archires'][35];
+         return $out;
+         break;
 	}
 	return "";
 }
@@ -320,6 +296,13 @@ function plugin_archires_MassiveActions($type) {
 				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
 				"plugin_archires_transfert"=>$LANG['buttons'][48],
 				);
+         break;    
+      case 'PluginArchiresView':
+			return array(
+				// Specific one
+				"plugin_archires_duplicate"=>$LANG['plugin_archires'][28],
+				"plugin_archires_transfert"=>$LANG['buttons'][48],
+				);
          break;
 	}
 	return array();
@@ -357,6 +340,19 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 			}
          break;
 		case 'PluginArchiresApplianceQuery':
+			switch ($action) {
+				// No case for add_document : use GLPI core one
+				case "plugin_archires_duplicate":
+					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
+               break;
+				case "plugin_archires_transfert":
+					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+               echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
+               break;
+			}
+         break;
+      case 'PluginArchiresView':
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
@@ -413,6 +409,17 @@ function plugin_archires_MassiveActionsProcess($data) {
 						}
 					}
 				}
+			} else if ($data['itemtype']=='PluginArchiresView') {
+				$PluginArchiresView=new PluginArchiresView();
+				foreach ($data['item'] as $key => $val) {
+					if ($val==1) {
+						if ($PluginArchiresView->getFromDB($key)) {
+							unset($PluginArchiresView->fields["id"]);
+							$PluginArchiresView->fields["entities_id"]=$data["entities_id"];
+							$newID=$PluginArchiresView->add($PluginArchiresView->fields);
+						}
+					}
+				}
 			}
          break;
 		case "plugin_archires_transfert":
@@ -441,6 +448,16 @@ function plugin_archires_MassiveActionsProcess($data) {
                if ($val==1) {
 
                   $query="UPDATE `glpi_plugin_archires_appliancequeries`
+                        SET `entities_id` = '".$data['entities_id']."'
+                        WHERE `id` = '$key'";
+                  $DB->query($query);
+               }
+            }
+         } else if ($data['itemtype']=='PluginArchiresView') {
+            foreach ($data["item"] as $key => $val) {
+               if ($val==1) {
+
+                  $query="UPDATE `glpi_plugin_archires_views`
                         SET `entities_id` = '".$data['entities_id']."'
                         WHERE `id` = '$key'";
                   $DB->query($query);

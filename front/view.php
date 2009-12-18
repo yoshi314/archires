@@ -43,21 +43,9 @@ commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","view");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 	
-	if (!isset($_GET["start"])) $_GET["start"] = 0;
-	if (!isset($_GET["order"])) $_GET["order"] = "ASC";
-	if (!isset($_GET["field"])) $_GET["field"] = "glpi_plugin_archires_views.name";
-	if (!isset($_GET["phrasetype"])) $_GET["phrasetype"] = "contains";
-	if (!isset($_GET["contains"])) $_GET["contains"] = "";
-	if (!isset($_GET["sort"])) $_GET["sort"] = "glpi_plugin_archires_views.name";
-	if (!isset($_GET["is_deleted"])) $_GET["is_deleted"] = "0";
-	
 	PluginArchiresProfile::checkRight("archires","r");
-  
-   $PluginArchiresView=new PluginArchiresView();
-  
-	$PluginArchiresView->searchForm($_GET);
-
-	$PluginArchiresView->showList($_GET);
+	
+	Search::show("PluginArchiresView");
 
 	
 } else {
