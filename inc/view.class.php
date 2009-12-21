@@ -280,7 +280,7 @@ class PluginArchiresView extends CommonDBTM {
          $canedit=$this->can($ID,'w');
          $canrecu=$this->can($ID,'recursive');
             
-         $this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
+         $this->showTabs($ID, $withtemplate);
          $this->showFormHeader($target,$ID, $withtemplate,2);
             
          echo "<tr class='tab_bg_1 top'><td colspan='1'>".$LANG['plugin_archires']['search'][1].":	</td>";

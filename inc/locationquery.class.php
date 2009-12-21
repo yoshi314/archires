@@ -154,7 +154,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
        $this->getEmpty();
       }
 		
-      $this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
+      $this->showTabs($ID, $withtemplate);
       $this->showFormHeader($target,$ID,$withtemplate);
 
       echo "<tr><td class='tab_bg_1 top'>";
