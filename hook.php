@@ -144,8 +144,6 @@ function plugin_archires_uninstall() {
 	foreach($tables_glpi as $table_glpi)
 		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = 'PluginArchiresLocationQuery' OR `itemtype` = 'PluginArchiresNetworkEquipmentQuery' OR `itemtype` = 'PluginArchiresApplianceQuery' OR `itemtype` = 'PluginArchiresView';");
 
-	plugin_init_archires();
-
 	return true;
 }
 
