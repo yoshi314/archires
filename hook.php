@@ -317,11 +317,11 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::show('Entity');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::show('Entity');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}
@@ -330,11 +330,11 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::show('Entity');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::show('Entity');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}
@@ -343,11 +343,11 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::show('Entity');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::show('Entity');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}
@@ -356,11 +356,11 @@ function plugin_archires_MassiveActionsDisplay($type,$action) {
 			switch ($action) {
 				// No case for add_document : use GLPI core one
 				case "plugin_archires_duplicate":
-					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::show('Entity');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 				case "plugin_archires_transfert":
-					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::show('Entity');
                echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
                break;
 			}

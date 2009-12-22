@@ -160,17 +160,17 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][8].":	</td><td>";
-      Dropdown::dropdownValue("glpi_plugin_appliances_appliances", "appliances_id", $this->fields["appliances_id"],1,$this->fields["entities_id"]);
+      Dropdown::show('PluginAppliancesAppliance', array('name' => "appliances_id",'value' => $this->fields["appliances_id"], 'entity' => $this->fields["entities_id"]));
       echo "</td></tr>";
 
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][4].":	</td><td>";
-      Dropdown::dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"],1,$this->fields["entities_id"]);
+      Dropdown::show('Network', array('name' => "networks_id",'value' => $this->fields["networks_id"]));
       echo "</td></tr>";
 
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][5].":	</td><td>";
-      Dropdown::dropdownValue("glpi_states", "states_id", $this->fields["states_id"],1,$this->fields["entities_id"]);
+      Dropdown::show('State', array('name' => "states_id"));
       echo "</td></tr>";
 
       echo "</table>";
@@ -179,11 +179,11 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       echo "<table cellpadding='2' cellspacing='2' border='0'>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['common'][35].": </td><td>";
-      Dropdown::dropdownValue("glpi_groups", "groups_id", $this->fields["groups_id"],1,$this->fields["entities_id"]);
+      Dropdown::show('Group', array('name' => "groups_id",'value' => $this->fields["groups_id"], 'entity' => $this->fields["entities_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['networking'][56].": </td><td>";
-      Dropdown::dropdownValue("glpi_vlans", "vlans_id", $this->fields["vlans_id"],1,$this->fields["entities_id"]);
+      Dropdown::show('Vlan', array('name' => "vlans_id",'value' => $this->fields["vlans_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['setup'][20].": </td><td>";
