@@ -39,12 +39,10 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
    
-   public $table = 'glpi_plugin_archires_networkinterfacecolors';
-
 	function getFromDBbyNetworkInterface($networkinterfaces_id) {
 		global $DB;
 		
-		$query = "SELECT * FROM `".$this->table."`
+		$query = "SELECT * FROM `".$this->getTable()."`
 					WHERE `networkinterfaces_id` = '" . $networkinterfaces_id . "' ";
 		if ($result = $DB->query($query)) {
 			if ($DB->numrows($result) != 1) {
@@ -109,7 +107,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
       global $DB,$LANG,$CFG_GLPI;
 
       $query = "SELECT * 
-        FROM `".$this->table."` 
+        FROM `".$this->getTable()."` 
         ORDER BY `networkinterfaces_id` ASC;";
       $i=0;
       if ($result = $DB->query($query)) {

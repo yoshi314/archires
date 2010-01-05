@@ -39,9 +39,6 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresLocationQuery extends CommonDBTM {
 
-	public $table = 'glpi_plugin_archires_locationqueries';
-   public $type = "PluginArchiresLocationQuery";
-	
 	static function getTypeName() {
       global $LANG;
 
@@ -72,13 +69,13 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       $tab['common'] = $LANG['plugin_archires']['title'][4];
 
-      $tab[1]['table']=$this->table;
+      $tab[1]['table']=$this->getTable();
       $tab[1]['field']='name';
       $tab[1]['linkfield']='name';
       $tab[1]['name']=$LANG['plugin_archires']['search'][1];
       $tab[1]['datatype']='itemlink';
 
-      $tab[2]['table']=$this->table;
+      $tab[2]['table']=$this->getTable();
       $tab[2]['field']='child';
       $tab[2]['linkfield']='child';
       $tab[2]['name']=$LANG['plugin_archires']['search'][3];
@@ -114,7 +111,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       $tab[8]['linkfield']='views_id';
       $tab[8]['name']=$LANG['plugin_archires']['setup'][20];
 
-      $tab[30]['table']=$this->table;
+      $tab[30]['table']=$this->getTable();
       $tab[30]['field']='id';
       $tab[30]['linkfield']='';
       $tab[30]['name']=$LANG['common'][2];
@@ -163,7 +160,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
       echo "<td>";
-      autocompletionTextField("name",$this->table,"name",$this->fields["name"],50,$this->fields["entities_id"]);		
+      autocompletionTextField($this,"name");
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][2].":	</td><td>";
@@ -377,7 +374,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
          }
          //types
          $PluginArchiresQueryType=new PluginArchiresQueryType();
-         $query .= $PluginArchiresQueryType->queryTypeCheck($this->type,$ID,$val);
+         $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(),$ID,$val);
         
          $query .= "ORDER BY `np`.`ip` ASC ";	
     

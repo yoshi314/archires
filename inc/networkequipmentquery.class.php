@@ -39,9 +39,6 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
-	public $table = 'glpi_plugin_archires_networkequipmentqueries';
-   public $type = "PluginArchiresNetworkEquipmentQuery";
-	
 	static function getTypeName() {
       global $LANG;
 
@@ -72,7 +69,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
       $tab['common'] = $LANG['plugin_archires']['title'][5];
 
-      $tab[1]['table']=$this->table;
+      $tab[1]['table']=$this->getTable();
       $tab[1]['field']='name';
       $tab[1]['linkfield']='name';
       $tab[1]['name']=$LANG['plugin_archires']['search'][1];
@@ -108,7 +105,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       $tab[7]['linkfield']='views_id';
       $tab[7]['name']=$LANG['plugin_archires']['setup'][20];
 
-      $tab[30]['table']=$this->table;
+      $tab[30]['table']=$this->getTable();
       $tab[30]['field']='id';
       $tab[30]['linkfield']='';
       $tab[30]['name']=$LANG['common'][2];
@@ -156,7 +153,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
       echo "<td>";
-      autocompletionTextField("name",$this->table,"name",$this->fields["name"],50,$this->fields["entities_id"]);		
+      autocompletionTextField($this,"name");
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['help'][26].":	</td><td>";
@@ -271,7 +268,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
                   //types
                   $PluginArchiresQueryType=new PluginArchiresQueryType();
-                  $query .= $PluginArchiresQueryType->queryTypeCheck($this->type,$ID,$val);
+                  $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(),$ID,$val);
             
                   $query .= "ORDER BY `np`.`ip` ASC ";
              

@@ -39,12 +39,10 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresImageItem extends CommonDBTM {
 
-	public $table = 'glpi_plugin_archires_imageitems';
-
 	function getFromDBbyType($itemtype, $type) {
 		global $DB;
 		
-		$query = "SELECT * FROM `".$this->table."` " .
+		$query = "SELECT * FROM `".$this->getTable()."` " .
 			"WHERE (`itemtype` = '" . $itemtype . "') " .
 				"AND (`type` = '" . $type . "')";
 		if ($result = $DB->query($query)) {
@@ -140,7 +138,7 @@ class PluginArchiresImageItem extends CommonDBTM {
       echo "</form>";	
     
       $query = "SELECT * 
-        FROM `".$this->table."` 
+        FROM `".$this->getTable()."` 
         ORDER BY `itemtype`,`type` ASC;";
       $i=0;
       if ($result = $DB->query($query)) {

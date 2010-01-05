@@ -151,8 +151,12 @@ class PluginArchiresPrototype extends CommonDBTM {
       $views_id=$obj->fields["views_id"];
       if (!$views_id) return false;
       
+      $plugin = new Plugin();
+      
       $PluginArchiresView=new PluginArchiresView;
-      $PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery;
+      
+      if ($plugin->isActivated("appliances"))
+         $PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery;
       $PluginArchiresLocationQuery=new PluginArchiresLocationQuery;
       $PluginArchiresNetworkEquipmentQuery=new PluginArchiresNetworkEquipmentQuery;
       $PluginArchiresStateColor=new PluginArchiresStateColor;
@@ -541,6 +545,9 @@ class PluginArchiresPrototype extends CommonDBTM {
       if (!isset($views_id)) $views_id = $object_view;
 
       $PluginArchiresView=new PluginArchiresView;
+      
+      $plugin=new Plugin;
+      if ($plugin->isActivated("appliances"))
       $PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery;
       $PluginArchiresLocationQuery=new PluginArchiresLocationQuery;
       $PluginArchiresNetworkEquipmentQuery=new PluginArchiresNetworkEquipmentQuery;

@@ -37,11 +37,8 @@ if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
 }
 
-class PluginArchiresApplianceQuery extends CommonDBTM {
+class PluginArchiresAppliasnceQuery extends CommonDBTM {
 
-	public $table = 'glpi_plugin_archires_appliancequeries';
-   public $type = "PluginArchiresApplianceQuery";
-	
 	static function getTypeName() {
       global $LANG;
 
@@ -72,7 +69,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
       $tab['common'] = $LANG['plugin_archires']['title'][8];
 
-      $tab[1]['table']=$this->table;
+      $tab[1]['table']=$this->getTable();
       $tab[1]['field']='name';
       $tab[1]['linkfield']='name';
       $tab[1]['name']=$LANG['plugin_archires']['search'][1];
@@ -108,7 +105,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       $tab[7]['linkfield']='views_id';
       $tab[7]['name']=$LANG['plugin_archires']['setup'][20];
 
-      $tab[30]['table']=$this->table;
+      $tab[30]['table']=$this->getTable();
       $tab[30]['field']='id';
       $tab[30]['linkfield']='';
       $tab[30]['name']=$LANG['common'][2];
@@ -156,7 +153,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][1].":	</td>";
       echo "<td>";
-      autocompletionTextField("name",$this->table,"name",$this->fields["name"],50,$this->fields["entities_id"]);		
+      autocompletionTextField($this,"name");
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1 top'><td>".$LANG['plugin_archires']['search'][8].":	</td><td>";
@@ -257,7 +254,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
             AND `app`.`itemtype` = '" . $val . "' ";
       
          $PluginArchiresQueryType=new PluginArchiresQueryType();
-         $query .= $PluginArchiresQueryType->queryTypeCheck($this->type,$ID,$val);
+         $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(),$ID,$val);
         
          $query .= "ORDER BY `np`.`ip` ASC ";
     

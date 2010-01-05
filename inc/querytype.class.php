@@ -39,12 +39,10 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresQueryType extends CommonDBTM {
 
-   public $table = 'glpi_plugin_archires_querytypes';
-
 	function getFromDBbyType($itemtype, $type,$type_query,$query_ID) {
 		global $DB;
 		
-		$query = "SELECT * FROM `".$this->table."` " .
+		$query = "SELECT * FROM `".$this->getTable()."` " .
 			"WHERE `itemtype` = '" . $itemtype . "' " .
 				"AND `type` = '" . $type . "' " .
 				"AND `querytype` = '" . $type_query . "' " .
@@ -106,7 +104,7 @@ class PluginArchiresQueryType extends CommonDBTM {
       global $DB,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
     
       $query0="SELECT * 
-          FROM `".$this->table."` 
+          FROM `".$this->getTable()."` 
           WHERE `querytype` = '".$querytype."' 
           AND `queries_id` = '".$views_id."' 
           AND `itemtype` = '" . $val . "';";
@@ -158,7 +156,7 @@ class PluginArchiresQueryType extends CommonDBTM {
       }
 
       $query = "SELECT *
-        FROM `".$this->table."`
+        FROM `".$this->getTable()."`
         WHERE `queries_id` = '".$ID."'
         AND `querytype` = '".$type."'  ";
       $query.=" ORDER BY `itemtype`, `type` ASC;";

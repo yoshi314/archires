@@ -38,9 +38,6 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresProfile extends CommonDBTM {
-
-	public $table = 'glpi_plugin_archires_profiles';
-   public $type  = -1;
 	
 	//if profile deleted
 	function cleanProfiles($ID) {

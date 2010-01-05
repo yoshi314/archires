@@ -39,12 +39,10 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresStateColor extends CommonDBTM {
    
-   public $table = 'glpi_plugin_archires_statecolors';
-
 	function getFromDBbyState($state) {
 		global $DB;
 		
-		$query = "SELECT * FROM `".$this->table."`
+		$query = "SELECT * FROM `".$this->getTable()."`
 				WHERE `states_id` = '" . $state . "' ";
 		if ($result = $DB->query($query)) {
 			if ($DB->numrows($result) != 1) {
@@ -109,7 +107,7 @@ class PluginArchiresStateColor extends CommonDBTM {
       global $DB,$LANG,$CFG_GLPI;
 
       $query = "SELECT * 
-        FROM `".$this->table."` 
+        FROM `".$this->getTable()."` 
         ORDER BY `states_id` ASC;";
       $i=0;
       $used=array();
@@ -232,7 +230,7 @@ class PluginArchiresStateColor extends CommonDBTM {
 
       $graph ="";
       $query_state = "SELECT *
-      FROM `".$this->table."`
+      FROM `".$this->getTable()."`
       WHERE `states_id`= '".$device["states_id"]."';";
       $result_state = $DB->query($query_state);
       $number_state = $DB->numrows($result_state);

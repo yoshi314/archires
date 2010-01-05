@@ -39,12 +39,10 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresVlanColor extends CommonDBTM {
 	
-	public $table = 'glpi_plugin_archires_vlancolors';
-
 	function getFromDBbyVlan($vlan) {
 		global $DB;
 		
-		$query = "SELECT * FROM `".$this->table."`
+		$query = "SELECT * FROM `".$this->getTable()."`
 					WHERE `vlans_id` = '" . $vlan . "' ";
 		if ($result = $DB->query($query)) {
 			if ($DB->numrows($result) != 1) {
@@ -109,7 +107,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
     global $DB,$LANG,$CFG_GLPI;
 
       $query = "SELECT * 
-        FROM `".$this->table."` 
+        FROM `".$this->getTable()."` 
         ORDER BY `vlans_id` ASC;";
       $i=0;
       $used=array();
