@@ -116,7 +116,7 @@ if (isset($_POST["add"])) {
 		$_SESSION['glpi_tab']=$_GET['onglet'];
 	}
 	
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER['PHP_SELF'],"plugins","archires","appliance");
+	commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8],$_SERVER['PHP_SELF'],"plugins","archires","appliance");
 
 	$PluginArchiresApplianceQuery->showForm($_SERVER["PHP_SELF"],$_GET["id"]);
 

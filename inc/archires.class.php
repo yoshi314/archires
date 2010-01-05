@@ -47,7 +47,6 @@ class PluginArchiresArchires extends CommonDBTM {
          'Phone','Printer');
          
       $rand=mt_rand();
-      $ci=new CommonItem();
       
       echo "<table border='0'><tr><td>\n";
 

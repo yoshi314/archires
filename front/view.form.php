@@ -90,7 +90,7 @@ if (isset($_POST["add"])) {
 		//		glpi_header($_SERVER['HTTP_REFERER']);
 	}
 	
-	commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","view");
+	commonHeader($LANG['plugin_archires']['title'][3],$_SERVER["PHP_SELF"],"plugins","archires","view");
 
 	$PluginArchiresView->showForm($_SERVER["PHP_SELF"],$_GET["id"]);
 

@@ -36,10 +36,7 @@
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
-$ci = new CommonItem();
-$ci->setType('PluginArchiresNetworkEquipmentQuery',true);
-
-commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","networkequipment");
+commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][5],$_SERVER["PHP_SELF"],"plugins","archires","networkequipment");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 		

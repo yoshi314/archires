@@ -36,10 +36,7 @@
 define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT."/inc/includes.php");
 
-$ci = new CommonItem();
-$ci->setType('PluginArchiresLocationQuery',true);
-
-commonHeader($ci->getType(),$_SERVER["PHP_SELF"],"plugins","archires","location");
+commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][4],$_SERVER["PHP_SELF"],"plugins","archires","location");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
 		
