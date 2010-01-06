@@ -487,7 +487,7 @@ function plugin_get_headings_archires($item,$withtemplate) {
 // Define headings actions added by the plugin
 function plugin_headings_actions_archires($item) {
 
-	if (in_array(get_class($item),array('Profile','Config'))) {
+	if (in_array(get_class($item),array('Profile','Config')) && $item->getField('interface')!='helpdesk') {
 		return array(
 			1 => "plugin_headings_archires",
 		);
