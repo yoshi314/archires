@@ -242,10 +242,7 @@ class PluginArchiresView extends CommonDBTM {
          echo "</form>";
       }
       
-      if ($views_id)
-         echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
-      else
-         echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$vue_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
+      echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".$views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
 
    }
   
