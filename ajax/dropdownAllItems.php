@@ -33,7 +33,6 @@
 // ----------------------------------------------------------------------
  */
 
-$AJAX_INCLUDE=1;
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
@@ -42,43 +41,42 @@ header_nocache();
 // Make a select box
 
 if (isset($_POST["typetable"])) {
+   $test = explode(";", $_POST['typetable']);
 
-	$test= explode(";", $_POST['typetable']);
-	
-	$itemtype= $test[0];
-	$table= $test[1];
-	// Link to user for search only > normal users
-	$rand=mt_rand();
+   $itemtype = $test[0];
+   $table = $test[1];
+   // Link to user for search only > normal users
+   $rand = mt_rand();
 
-	$use_ajax=false;
-	if ($CFG_GLPI["use_ajax"]&&countElementsInTable($table)>$CFG_GLPI["ajax_limit_count"]) {
-		$use_ajax=true;
-	}
+   $use_ajax = false;
+   if ($CFG_GLPI["use_ajax"] && countElementsInTable($table)>$CFG_GLPI["ajax_limit_count"]) {
+      $use_ajax=true;
+   }
 
-     $params=array('searchText'=>'__VALUE__',
-                     'itemtype'=>$itemtype,
-                     'table'=>$table,
-                     'rand'=>$rand,
-                     'myname'=>$_POST["myname"],
-                     );
+   $params = array('searchText' => '__VALUE__',
+                   'itemtype'   => $itemtype,
+                   'table'      => $table,
+                   'rand'       => $rand,
+                   'myname'     => $_POST["myname"]);
 
-	if (isset($_POST['value'])) {
-		$params['value']=$_POST['value'];
-	}
-	if (isset($_POST['entity_restrict'])) {
-		$params['entity_restrict']=$_POST['entity_restrict'];
-	}
-	
-	$default="<select name='".$_POST["myname"]."'><option value='0'>------</option></select>";
-	ajaxDropdown($use_ajax,"/plugins/archires/ajax/dropdownValue.php",$params,$default,$rand);
+   if (isset($_POST['value'])) {
+      $params['value']=$_POST['value'];
+   }
+   if (isset($_POST['entity_restrict'])) {
+      $params['entity_restrict']=$_POST['entity_restrict'];
+   }
 
-	if (isset($_POST['value'])&&$_POST['value']>0) {
-		$params['searchText']=$CFG_GLPI["ajax_wildcard"];
-		echo "<script type='text/javascript' >\n";
-		echo "document.getElementById('search_$rand').value='".$CFG_GLPI["ajax_wildcard"]."';";
-		echo "</script>\n";
-		ajaxUpdateItem("results_$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownValue.php",$params);
-	}
+   $default = "<select name='".$_POST["myname"]."'><option value='0'>------</option></select>";
+   ajaxDropdown($use_ajax,"/plugins/archires/ajax/dropdownValue.php",$params,$default,$rand);
+
+   if (isset($_POST['value']) && $_POST['value'] >0) {
+      $params['searchText'] = $CFG_GLPI["ajax_wildcard"];
+      echo "<script type='text/javascript' >\n";
+      echo "document.getElementById('search_$rand').value='".$CFG_GLPI["ajax_wildcard"]."';";
+      echo "</script>\n";
+      ajaxUpdateItem("results_$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownValue.php",
+                     $params);
+   }
 }
-	
+
 ?>

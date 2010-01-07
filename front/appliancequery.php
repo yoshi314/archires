@@ -26,25 +26,26 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier
 // Purpose of file: plugin archires v1.8.0 - GLPI 0.80
 // ----------------------------------------------------------------------
 */
 
-define('GLPI_ROOT', '../../..'); 
+define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8],$_SERVER["PHP_SELF"],"plugins","archires","appliance");
+commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8],
+             $_SERVER["PHP_SELF"],"plugins","archires","appliance");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
+   Search::show("PluginArchiresApplianceQuery");
 
-	Search::show("PluginArchiresApplianceQuery");
-	
 } else {
-	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
-	echo "<b>".$LANG['login'][5]."</b></div>";
+   echo "<div align='center'><br><br>";
+   echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
+   echo "<b>".$LANG['login'][5]."</b></div>";
 }
 
 commonFooter();

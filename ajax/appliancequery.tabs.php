@@ -26,7 +26,7 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier
 // Purpose of file: plugin archires v1.8.0 - GLPI 0.80
@@ -39,46 +39,48 @@ header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
 if (!isset($_POST["id"])) {
-	exit();
+   exit();
 }
-
+logDebug("appliancesquery", $_POST);
 PluginArchiresProfile::checkRight("archires","r");
 
-$PluginArchiresQueryType=new PluginArchiresQueryType();
-$PluginArchiresView=new PluginArchiresView();
-$PluginArchiresPrototype=new PluginArchiresPrototype();
+$ApplianceQuery = new PluginArchiresApplianceQuery();
+$PluginArchiresQueryType = new PluginArchiresQueryType();
+$PluginArchiresView      = new PluginArchiresView();
+$PluginArchiresPrototype = new PluginArchiresPrototype();
 
-if (empty($_POST["id"])) {
-   switch($_REQUEST['glpi_tab']) {
-      default :
-         break;
-   }
-} else {
-      
-   switch($_REQUEST['glpi_tab']) {
+if ($_POST["id"] >0 && $ApplianceQuery->can($_POST["id"],'r')) {
+   switch($_POST['glpi_tab']) {
       case -1 :
          $PluginArchiresQueryType->showTypes('PluginArchiresApplianceQuery',$_POST["id"]);
+         Plugin::displayAction($ApplianceQuery,$_POST['glpi_tab']);
          break;
+
       case 2 :
          $PluginArchiresView->showView('PluginArchiresApplianceQuery',$_POST["id"]);
          $PluginArchiresPrototype->test('PluginArchiresApplianceQuery',$_POST["id"]);
          break;
+
       case 3 :
          $PluginArchiresView->linkToAllViews('PluginArchiresApplianceQuery',$_POST["id"]);
-         $obj=new PluginArchiresApplianceQuery();
+         $obj = new PluginArchiresApplianceQuery();
          $obj->getFromDB($_POST["id"]);
          $views_id=$obj->fields["views_id"];
          $PluginArchiresPrototype->displayGraph($obj,$views_id);
          break;
+
       case 10 :
          showNotesForm($_POST['target'],'PluginArchiresApplianceQuery',$_POST["id"]);
          break;
+
       default :
-         $PluginArchiresQueryType->showTypes('PluginArchiresApplianceQuery',$_POST["id"]);
-         break;
+      logDebug("ICI");
+         if (!Plugin::displayAction($ApplianceQuery,$_POST['glpi_tab'])) {
+            $PluginArchiresQueryType->showTypes('PluginArchiresApplianceQuery',$_POST["id"]);
+         }
    }
 }
-
+else logDebug("Pas le droit");
 ajaxFooter();
 
 ?>

@@ -26,7 +26,7 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier
 // Purpose of file: plugin archires v1.8.0 - GLPI 0.80
@@ -35,15 +35,14 @@
 
 // Direct access to file
 if (strpos($_SERVER['PHP_SELF'],"dropdownValue.php")) {
-	define('GLPI_ROOT', '../../..');
-	$AJAX_INCLUDE=1;
-	include (GLPI_ROOT."/inc/includes.php");
-	header("Content-Type: text/html; charset=UTF-8");
-	header_nocache();
-};
+   define('GLPI_ROOT', '../../..');
+   include (GLPI_ROOT."/inc/includes.php");
+   header("Content-Type: text/html; charset=UTF-8");
+   header_nocache();
+}
 
 if (!defined('GLPI_ROOT')) {
-	die("Can not acces directly to this file");
+   die("Can not acces directly to this file");
 }
 
 include_once (GLPI_ROOT."/plugins/archires/locales/".$_SESSION["glpilanguage"].".php");
@@ -52,50 +51,48 @@ checkLoginUser();
 
 // Security
 if (!TableExists($_POST['table'])) {
-	exit();
+   exit();
 }
 
 $item = new $_POST['itemtype']();
 
 // Make a select box with preselected values
-if (!isset($_POST["limit"])) $_POST["limit"]=$CFG_GLPI["dropdown_chars_limit"];
-$first=true;
-$where="WHERE ";
-
-$NBMAX=$CFG_GLPI["dropdown_max"];
-$LIMIT="LIMIT 0,$NBMAX";
-if ($_POST['searchText']==$CFG_GLPI["ajax_wildcard"]) $LIMIT="";
-
-if (!$first) $where.=" AND ";
-else $first=false;
-$where .=" id <> '".$_POST['value']."' ";
-
-$field="name";
-
-if ($_POST['searchText']!=$CFG_GLPI["ajax_wildcard"])
-   $where.=" AND $field ".makeTextSearch($_POST['searchText']);
-
-switch ($_POST['table']) {
-   default :
-      $query = "SELECT *
-            FROM `".$_POST['table']."`
-            $where
-            ORDER BY $field $LIMIT";
-   break;
+if (!isset($_POST["limit"])) {
+   $_POST["limit"] = $CFG_GLPI["dropdown_chars_limit"];
 }
+
+$NBMAX = $CFG_GLPI["dropdown_max"];
+$LIMIT = "LIMIT 0,$NBMAX";
+if ($_POST['searchText']==$CFG_GLPI["ajax_wildcard"]) {
+   $LIMIT = "";
+}
+
+$where = "WHERE id <> '".$_POST['value']."' ";
+$field = "name";
+
+if ($_POST['searchText']!=$CFG_GLPI["ajax_wildcard"]) {
+   $where .= " AND $field ".makeTextSearch($_POST['searchText']);
+}
+
+$query = "SELECT *
+          FROM `".$_POST['table']."`
+          $where
+          ORDER BY $field $LIMIT";
 
 $result = $DB->query($query);
 
-echo "<select id='dropdown_".$_POST["myname"].$_POST["rand"]."' name=\"".$_POST['myname']."\" size='1'>";
+echo "<select id='dropdown_".$_POST["myname"].$_POST["rand"]."' name=\"".$_POST['myname']."\">";
 
-if ($_POST['searchText']!=$CFG_GLPI["ajax_wildcard"]&&$DB->numrows($result)==$NBMAX)
-   echo "<option value=\"0\">--".$LANG['common'][11]."--</option>";
-
-echo "<option value=\"0\">-----</option>";
+if ($_POST['searchText'] != $CFG_GLPI["ajax_wildcard"] && $DB->numrows($result)==$NBMAX) {
+   echo "<option value='0\'>--".$LANG['common'][11]."--</option>";
+} else {
+   echo "<option value='0'>-----</option>";
+}
 $number = $DB->numrows($result);
-if ($number != 0)
-echo "<option value=\"".$_POST['itemtype'].";-1\">".$LANG['plugin_archires'][18]."</option>";
-$output=Dropdown::getDropdownName($_POST['table'],$_POST['value']);
+if ($number != 0) {
+   echo "<option value=\"".$_POST['itemtype'].";-1\">".$LANG['plugin_archires'][18]."</option>";
+}
+$output = Dropdown::getDropdownName($_POST['table'],$_POST['value']);
 if (!empty($output)&&$output!="&nbsp;") {
    echo "<option selected value='".$_POST['value']."'>".$output."</option>";
 }
@@ -104,12 +101,16 @@ if ($DB->numrows($result)) {
    while ($data =$DB->fetch_array($result)) {
       $output = $data[$field];
       $ID = $data['id'];
-      $addcomment="";
-      if (isset($data["comment"])) $addcomment=" - ".$data["comment"];
+      $addcomment = "";
+      if (isset($data["comment"])) {
+         $addcomment = " - ".$data["comment"];
+      }
+      if (empty($output)) {
+         $output = "($ID)";
+      }
 
-      if (empty($output)) $output="($ID)";
-
-      echo "<option value=\"".$_POST['itemtype'].";$ID\" title=\"$output$addcomment\">".substr($output,0,$_POST["limit"])."</option>";
+      echo "<option value=\"".$_POST['itemtype'].";$ID\" title=\"$output$addcomment\">".
+            substr($output,0,$_POST["limit"])."</option>";
    }
 }
 echo "</select>";

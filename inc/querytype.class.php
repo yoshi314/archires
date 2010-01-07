@@ -219,6 +219,17 @@ class PluginArchiresQueryType extends CommonDBTM {
       }
       echo "</div>";
    }
+
+
+   function clean($ID) {
+      global $DB;
+
+      $query = "DELETE 
+               FROM `".$this->getTable()."` 
+               WHERE `queries_id` = '$ID'";
+      $DB->query($query);
+   }
+   
 }
 
 ?>

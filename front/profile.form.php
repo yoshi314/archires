@@ -26,24 +26,24 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier
 // Purpose of file: plugin archires v1.8.0 - GLPI 0.80
 // ----------------------------------------------------------------------
  */
 
-define('GLPI_ROOT', '../../..'); 
+define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
 checkRight("profile","r");
 
-$prof=new PluginArchiresProfile();
+$prof = new PluginArchiresProfile();
 
 //Save profile
 if (isset ($_POST['update_user_profile'])) {
-	$prof->update($_POST);
-	glpi_header($_SERVER['HTTP_REFERER']);
+   $prof->update($_POST);
+   glpi_header($_SERVER['HTTP_REFERER']);
 }
 
 ?>

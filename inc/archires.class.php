@@ -34,37 +34,38 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-	die("Sorry. You can't access directly to this file");
+   die("Sorry. You can't access directly to this file");
 }
 
 class PluginArchiresArchires extends CommonDBTM {
-	
-	function showAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
+
+   function showAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
       global $DB,$LANG,$CFG_GLPI,$PLUGIN_ARCHIRES_TYPE_TABLES,$PLUGIN_ARCHIRES_TYPE_NAME;
-      
-      $types = array(
-         'Computer','NetworkEquipment','Peripheral',
-         'Phone','Printer');
-         
+
+      $types = array('Computer','NetworkEquipment','Peripheral','Phone','Printer');
+
       $rand=mt_rand();
-      
+
       echo "<table border='0'><tr><td>\n";
 
       echo "<select name='type' id='item_type$rand'>\n";
       echo "<option value='0;0'>-----</option>\n";
       
       foreach ($types as $type => $label) {
-         echo "<option value='".$label.";".$PLUGIN_ARCHIRES_TYPE_TABLES[$label]."'>".$PLUGIN_ARCHIRES_TYPE_NAME[$label]."</option>\n";
+         echo "<option value='".$label.";".$PLUGIN_ARCHIRES_TYPE_TABLES[$label]."'>".
+               $PLUGIN_ARCHIRES_TYPE_NAME[$label]."</option>\n";
       }
 
       echo "</select>";
 
-      $params=array('typetable'=>'__VALUE__',
-      'value'=>$value,
-      'myname'=>$myname,
-      'entity_restrict'=>$entity_restrict,
-      );
-      ajaxUpdateItemOnSelectEvent("item_type$rand","show_$myname$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",$params);
+      $params=array('typetable'       => '__VALUE__',
+                    'value'           => $value,
+                    'myname'          => $myname,
+                    'entity_restrict' => $entity_restrict);
+
+      ajaxUpdateItemOnSelectEvent("item_type$rand", "show_$myname$rand",
+                                  $CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",
+                                  $params);
 
       echo "</td><td>\n"	;
       echo "<span id='show_$myname$rand'>&nbsp;</span>\n";
@@ -76,27 +77,31 @@ class PluginArchiresArchires extends CommonDBTM {
          echo "</script>\n";
 
          $params["typetable"]=$value_type;
-         ajaxUpdateItem("show_$myname$rand",$CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",$params);
+         ajaxUpdateItem("show_$myname$rand", 
+                        $CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",$params);
       }
       return $rand;
    }
-  
+
+
    function getItemType($device_type,$type) {
       global $DB,$PLUGIN_ARCHIRES_TYPE_TABLES;
-    
-      $name="";
+
+      $name = "";
       if (isset($PLUGIN_ARCHIRES_TYPE_TABLES[$device_type])) {
-    
-         $query="SELECT `name` 
-            FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$device_type]."` 
-            WHERE `id` = '$type' ";
+
+         $query = "SELECT `name` 
+                   FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$device_type]."` 
+                   WHERE `id` = '$type' ";
          $result = $DB->query($query);
          $number = $DB->numrows($result);
-         if ($number !="0")
-         $name=$DB->result($result, 0, "name");
+         if ($number !="0") {
+            $name = $DB->result($result, 0, "name");
+         }
       }
       return $name;
    }
+
 }
 
 ?>

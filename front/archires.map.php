@@ -26,35 +26,44 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier
 // Purpose of file: plugin archires v1.8.0 - GLPI 0.80
 // ----------------------------------------------------------------------
 */
 
-define('GLPI_ROOT', '../../..'); 
+define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-$PluginArchiresView=new PluginArchiresView();
-$PluginArchiresPrototype=new PluginArchiresPrototype();
+$PluginArchiresView      = new PluginArchiresView();
+$PluginArchiresPrototype = new PluginArchiresPrototype();
 
 $PluginArchiresView->getFromDB($_GET["views_id"]);
-if (isset($_GET["format"])) $format=$_GET["format"];
-else $format=$PluginArchiresView->fields["format"];
-
-if ($format==PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
-else if ($format==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
-else if ($format==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
-else if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) $format_graph="svg";
-
-$object=$_GET["querytype"];
-$obj=new $object();
+if (isset($_GET["format"])) {
+   $format = $_GET["format"];
+} else {
+   $format = $PluginArchiresView->fields["format"];
+}
+if ($format == PLUGIN_ARCHIRES_JPEG_FORMAT) {
+   $format_graph = "jpeg";
+} else if ($format == PLUGIN_ARCHIRES_PNG_FORMAT) {
+   $format_graph = "png";
+} else if ($format == PLUGIN_ARCHIRES_GIF_FORMAT) {
+   $format_graph = "gif";
+} else if ($format == PLUGIN_ARCHIRES_SVG_FORMAT) {
+   $format_graph = "svg";
+}
+$object = $_GET["querytype"];
+$obj = new $object();
 $obj->getFromDB($_GET["id"]);
-$object_view=$obj->fields["views_id"];
-if (!isset($_GET["views_id"])) $views_id = $object_view;
-else $views_id = $_GET["views_id"];
+$object_view = $obj->fields["views_id"];
 
+if (!isset($_GET["views_id"])) {
+   $views_id = $object_view;
+} else {
+   $views_id = $_GET["views_id"];
+}
 $output_data = $PluginArchiresPrototype->createGraph($format_graph,$obj,$views_id);
 
 if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) {

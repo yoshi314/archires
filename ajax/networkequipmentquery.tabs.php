@@ -39,42 +39,40 @@ header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
 if (!isset($_POST["id"])) {
-	exit();
+   exit();
 }
 
 PluginArchiresProfile::checkRight("archires","r");
 
-$PluginArchiresQueryType=new PluginArchiresQueryType();
-$PluginArchiresView=new PluginArchiresView();
-$PluginArchiresPrototype=new PluginArchiresPrototype();
+$PluginArchiresQueryType = new PluginArchiresQueryType();
+$PluginArchiresView      = new PluginArchiresView();
+$PluginArchiresPrototype = new PluginArchiresPrototype();
 
-if (empty($_POST["id"])) {
-   switch($_REQUEST['glpi_tab']) {
-      default :
-         break;
-   }
-} else {
+if ($_POST["id"] >0) {
    switch($_REQUEST['glpi_tab']) {
       case -1 :
          $PluginArchiresQueryType->showTypes('PluginArchiresNetworkEquipmentQuery',$_POST["id"]);
          break;
+
       case 2 :
          $PluginArchiresView->showView('PluginArchiresNetworkEquipmentQuery',$_POST["id"]);
          $PluginArchiresPrototype->test('PluginArchiresNetworkEquipmentQuery',$_POST["id"]);
          break;
+
       case 3 :
          $PluginArchiresView->linkToAllViews('PluginArchiresNetworkEquipmentQuery',$_POST["id"]);
-         $obj=new PluginArchiresNetworkEquipmentQuery();
+         $obj = new PluginArchiresNetworkEquipmentQuery();
          $obj->getFromDB($_POST["id"]);
-         $views_id=$obj->fields["views_id"];
+         $views_id = $obj->fields["views_id"];
          $PluginArchiresPrototype->displayGraph($obj,$views_id);
          break;
+
       case 10 :
          showNotesForm($_POST['target'],'PluginArchiresNetworkEquipmentQuery',$_POST["id"]);
          break;
+
       default :
          $PluginArchiresQueryType->showTypes('PluginArchiresNetworkEquipmentQuery',$_POST["id"]);
-         break;
    }
 }
 
