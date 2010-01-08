@@ -213,7 +213,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       }
       $query0 = "SELECT `entities_id`
                 FROM `glpi_locations` ".
-                getEntitiesRestrictRequest("WHERE","glpi_locations")."
+                getEntitiesRestrictRequest(" WHERE","glpi_locations")."
                 GROUP BY `entities_id`
                 ORDER BY `entities_id`";
 
@@ -243,47 +243,6 @@ class PluginArchiresLocationQuery extends CommonDBTM {
          }
       }
       echo "</select>";
-   }
-
-
-    function findChilds($DB, $parent) {
-
-      // Recherche les enfants
-      if ($parent != "-1") {
-         $where = " `locations_id` = '$parent' ";
-      } else {
-         $where = "`level`= 1";
-      }
-      $queryChilds = "SELECT `id`
-                      FROM `glpi_locations`
-                      WHERE $where";
-
-      if ($resultChilds = $DB->query($queryChilds)) {
-         while ($dataChilds = $DB->fetch_array($resultChilds)) {
-            $child = $dataChilds["id"];
-            $queryBranch = "$child";
-            // Recherche les petits enfants r�cursivement
-            $queryBranch .= $this->findChilds($DB, $child);
-         }
-      }
-      return $queryBranch;
-   }
-
-
-   function findLevels($DB,$parent) {
-
-      $queryBranch = '';
-      // Recherche les enfants
-      $queryLevels = "SELECT `id`
-                      FROM `glpi_locations`
-                      WHERE `level`= 1";
-      if ($resultLevels = $DB->query($queryLevels)) {
-         while ($dataLevels = $DB->fetch_array($resultLevels)) {
-            $Levels = $dataLevels["id"];
-            $queryBranch .= ",$Levels";
-         }
-      }
-      return $queryBranch;
    }
 
 
@@ -333,7 +292,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                           AND `np`.`items_id` = `$itemtable`.`id`
                           AND `$itemtable`.`is_deleted` = '0'
                           AND `$itemtable`.`is_template` = '0'".
-                          getEntitiesRestrictRequest("AND",$itemtable);
+                          getEntitiesRestrictRequest(" AND",$itemtable);
 
          if ($this->fields["vlans_id"] > "0") {
             $query .= " AND `nv`.`networkports_id` = `np`.`id`
@@ -349,20 +308,22 @@ class PluginArchiresLocationQuery extends CommonDBTM {
             $query .= " AND `$itemtable`.`groups_id` = '".$this->fields["groups_id"]."'";
          }
          if ($this->fields["locations_id"]!="-1") {
-            $query .= " AND `lc`.`id` = `$itemtable`.`locations_id`
-                        AND `lc`.`id` IN ('".$this->fields["locations_id"]."'";
-            if ($this->fields["child"]!='0') {
-               $query .= $this->findChilds($DB, $this->fields["locations_id"]);
+            $query .= " AND `lc`.`id` = `$itemtable`.`locations_id` ";
+            if ($this->fields["child"]) {
+               $query .= " AND " . getRealQueryForTreeItem('glpi_locations',
+                                                           $this->fields["locations_id"],
+                                                           "`lc`.`id`");
+            } else {
+               $query .= " AND `lc`.`id` = '".$this->fields["locations_id"]."'";
+
             }
-            $query .= ") ";
-         } else {
-            $query .= " AND `lc`.`id` = `$itemtable`.`locations_id`
-                        AND `lc`.`id` IN (0";
-            $query .= $this->findLevels($DB, $this->fields["locations_id"]);
-            if ($this->fields["child"]!='0') {
-               $query .= $this->findChilds($DB, $this->fields["locations_id"]);
+         } else { // locations_id == -1 soit Lieux racines
+            $query .= " AND `lc`.`id` = `$itemtable`.`locations_id`";
+
+            if ($this->fields["child"]=='0') { // Pas d'enfants'
+               $query .= " AND `lc`.`level`==1";
             }
-            $query .= ") ";
+            // else, Si enfants => pas de restriction
          }
          //types
          $PluginArchiresQueryType = new PluginArchiresQueryType();

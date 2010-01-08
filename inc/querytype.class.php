@@ -26,7 +26,7 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier
 // Purpose of file: plugin archires v1.8.0 - GLPI 0.80
@@ -42,7 +42,7 @@ class PluginArchiresQueryType extends CommonDBTM {
    function getFromDBbyType($itemtype, $type,$type_query,$query_ID) {
       global $DB;
 
-      $query = "SELECT * 
+      $query = "SELECT *
                 FROM `".$this->getTable()."`
                 WHERE `itemtype` = '$itemtype'
                       AND `type` = '$type'
@@ -74,7 +74,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                              'queries_id' => $queries_id));
          }
       } else {
-         $query = "SELECT * 
+         $query = "SELECT *
                    FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$itemtype]."` ";
          $result = $DB->query($query);
          $number = $DB->numrows($result);
@@ -100,7 +100,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 
    function queryTypeCheck($querytype,$views_id,$val) {
       global $DB,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
-    
+
       $query0 = "SELECT *
                  FROM `".$this->getTable()."`
                  WHERE `querytype` = '$querytype'
@@ -113,7 +113,7 @@ class PluginArchiresQueryType extends CommonDBTM {
         $itemtable = getTableForItemType($val);
         $query = "AND `$itemtable`.`$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES[$val]` IN (0 ";
          while ($data0=$DB->fetch_array($result0)) {
-            $query = ",'".$data0["type"]."' ";
+            $query .= ",'".$data0["type"]."' ";
          }
          $query .= ") ";
       }
@@ -223,7 +223,7 @@ class PluginArchiresQueryType extends CommonDBTM {
    function clean($ID) {
       global $DB;
 
-      $query = "DELETE 
+      $query = "DELETE
                 FROM `".$this->getTable()."`
                 WHERE `queries_id` = '$ID'";
       $DB->query($query);

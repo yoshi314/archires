@@ -238,7 +238,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
                          AND `app`.`items_id` = `$itemtable`.`id`
                          AND `$itemtable`.`is_deleted` = '0'
                          AND `$itemtable`.`is_template` = '0'".
-                         getEntitiesRestrictRequest("AND",$itemtable);
+                         getEntitiesRestrictRequest(" AND",$itemtable);
 
          if ($this->fields["vlans_id"] > "0") {
             $query .= " AND `nv`.`networkports_id` = `np`.`id`

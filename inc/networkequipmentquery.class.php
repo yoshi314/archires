@@ -229,7 +229,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                        WHERE `glpi_networkequipments`.`id` = '".$this->fields["networkequipments_id"]."'
                              AND `glpi_networkequipments`.`is_deleted` = '0'
                              AND `glpi_networkequipments`.`is_template` = '0'".
-                             getEntitiesRestrictRequest("AND","glpi_networkequipments");
+                             getEntitiesRestrictRequest(" AND","glpi_networkequipments");
 
       if ($result_switch = $DB->query($query_switch)) {
          while ($ligne = $DB->fetch_array($result_switch)) {
@@ -259,7 +259,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                                     AND `np`.`id` ='$end'
                                     AND `$itemtable`.`is_deleted` = '0'
                                     AND `$itemtable`.`is_template` = '0'".
-                                    getEntitiesRestrictRequest("AND",$itemtable);
+                                    getEntitiesRestrictRequest(" AND",$itemtable);
 
                   if ($this->fields["vlans_id"] > "0") {
                      $query .= " AND `nv`.`networkports_id` = `np`.`id`
@@ -329,12 +329,17 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                 FROM `glpi_networkports` `np`, `glpi_networkequipments` `n` ";
 
       if ($this->fields["vlans_id"] > "0") {
-         $query .= ", `glpi_networkports_vlans` nv
-                    WHERE `np`.`itemtype` = 'NetworkEquipment'
-                          AND `np`.`items_id` = `n`.`id`
-                          AND `n`.`id` = '".$this->fields["networkequipments_id"]."'
-                          AND `n`.`is_deleted` = '0'
-                          AND `n`.`is_template` = '0'";
+         $query .= ", `glpi_networkports_vlans` nv ";
+      }
+      $query .= "WHERE `np`.`itemtype` = 'NetworkEquipment'
+                       AND `np`.`items_id` = `n`.`id`
+                       AND `n`.`id` = '".$this->fields["networkequipments_id"]."'
+                       AND `n`.`is_deleted` = '0'
+                       AND `n`.`is_template` = '0'";
+
+      if ($this->fields["vlans_id"] > "0") {
+         $query .= " AND `nv`.`networkports_id` = `np`.`id`
+                     AND vlans_id= '".$this->fields["vlans_id"]."' ";
       }
       $query .= "ORDER BY `np`.`ip` ASC ";
 

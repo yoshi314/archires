@@ -163,7 +163,7 @@ class PluginArchiresView extends CommonDBTM {
                 WHERE `is_deleted` = '0' ";
       // Add Restrict to current entities
       if ($obj->isEntityAssign()) {
-         $query .= getEntitiesRestrictRequest("AND",$obj->getTable());
+         $query .= getEntitiesRestrictRequest(" AND",$obj->getTable());
       }
       $query.=" ORDER BY `name` ASC";
 
