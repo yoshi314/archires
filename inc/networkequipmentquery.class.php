@@ -182,7 +182,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires']['search'][5]." : </td><td>";
+      echo "<td>".$LANG['plugin_archires']['search'][5]." : </td><td colspan='3'>";
       Dropdown::show('State', array('name'  => "states_id",
                                     'value' => $this->fields["states_id"]));
       echo "</td></tr>";

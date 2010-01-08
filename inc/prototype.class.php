@@ -337,7 +337,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       $graph = "\"".$device_unique_name."\"[shape=plaintext, label=";
       //label
-      $graph .= "<table>";
+      $graph .= "<<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
 
       //img
       $graph .= "<tr><td><img src=\"".realpath(GLPI_ROOT)."/plugins/archires/".$image_name. "\"/>".
@@ -407,20 +407,20 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       if ($PluginArchiresView->fields["color"] == PLUGIN_ARCHIRES_NETWORK_COLOR ) {
          if (empty($networkinterfaces_id1) && empty($networkinterfaces_id2)) {
-            $graph .= "edge [color=black,arrowsize=1, fontname='Verdana', fontsize='5'];\n";
+            $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
 
          } else if (!empty($networkinterfaces_id1)) {
             if ($PluginArchiresNetworkInterfaceColor->getFromDBbyNetworkInterface($networkinterfaces_id1)) {
-               $graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname='Verdana', fontsize='5'];\n";
+               $graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
             } else {
-               $graph .= "edge [color=black,arrowsize=1, fontname='Verdana', fontsize='5'];\n";
+               $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
 
          } else {
             if ($PluginArchiresNetworkInterfaceColor->getFromDBbyNetworkInterface($networkinterfaces_id2)) {
-               $graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname='Verdana', fontsize='5'];\n";
+               $graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
             } else {
-               $graph .= "edge [color=black,arrowsize=1, fontname='Verdana', fontsize='5'];\n";
+               $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
          }
       } else if ($PluginArchiresView->fields["color"] == PLUGIN_ARCHIRES_VLAN_COLOR ) {
@@ -428,20 +428,20 @@ class PluginArchiresPrototype extends CommonDBTM {
          $vlan2 = $PluginArchiresVlanColor->getVlanbyNetworkPort($ID2);
 
          if (empty($vlan1) && empty($vlan2)) {
-            $graph .= "edge [color=black,arrowsize=1, fontname='Verdana', fontsize='5'];\n";
+            $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
 
          } else if (!empty($vlan1)) {
             if ($PluginArchiresVlanColor->getFromDBbyVlan($vlan1)) {
-               $graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].", fontname='Verdana', fontsize='5'];\n";
+               $graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
             } else {
-               $graph .= "edge [color=black,arrowsize=1, fontname='Verdana', fontsize='5'];\n";
+               $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
 
          } else {
             if ($PluginArchiresVlanColor->getFromDBbyVlan($vlan2)) {
-               $graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].", fontname='Verdana', fontsize='5'];\n";
+               $graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
             } else {
-               $graph .= "edge [color=black,arrowsize=1, fontname='Verdana', fontsize='5'];\n";
+               $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
          }
       }
@@ -451,7 +451,7 @@ class PluginArchiresPrototype extends CommonDBTM {
          $url_ports = $CFG_GLPI["root_doc"] . "/front/networkport.form.php?id=";
          $graph .= "\"".$device_unique_name1."\"";
          $graph .= " -- \"".$device_unique_name2."\"[label=";
-         $graph .= "<table cellpadding='2' cellspacing='2'>";
+         $graph .= "<<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\">";
          //display ip ports
          if ($PluginArchiresView->fields["display_ip"]!=0) {
             if (!empty($ip1)) {
@@ -628,7 +628,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $graph .= "bgcolor=white;\n";
 
       //items
-      $graph .= "node [shape=polygon, sides=6, fontname='Verdana', fontsize='5'];\n";
+      $graph .= "node [shape=polygon, sides=6, fontname=\"Verdana\", fontsize=\"5\"];\n";
 
       foreach ($devices as $itemtype => $typed_devices) {
          foreach ($typed_devices as $device_id => $device) {
@@ -678,7 +678,7 @@ class PluginArchiresPrototype extends CommonDBTM {
          $command = $engine_archires." -T" .$format." -o \"".$output_name ."\" \"".$graph_name."\"";
          `$command`;
 
-         unlink($graph_name);
+         //unlink($graph_name);
 
          if ($output_file = fopen($output_name, "rb")) {
            $output_data = fread($output_file, filesize($output_name));

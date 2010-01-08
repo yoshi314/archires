@@ -34,89 +34,80 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-	die("Sorry. You can't access directly to this file");
+   die("Sorry. You can't access directly to this file");
 }
 
 class PluginArchiresImageItem extends CommonDBTM {
 
-	function getFromDBbyType($itemtype, $type) {
-		global $DB;
-		
-		$query = "SELECT * FROM `".$this->getTable()."` " .
-			"WHERE (`itemtype` = '" . $itemtype . "') " .
-				"AND (`type` = '" . $type . "')";
-		if ($result = $DB->query($query)) {
-			if ($DB->numrows($result) != 1) {
-				return false;
-			}
-			$this->fields = $DB->fetch_assoc($result);
-			if (is_array($this->fields) && count($this->fields)) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return false;
-	}
-	
-	function addItemImage($type,$itemtype,$img) {
+   function getFromDBbyType($itemtype, $type) {
+      global $DB;
+
+      $query = "SELECT *
+                FROM `".$this->getTable()."`
+                WHERE `itemtype` = '$itemtype'
+                      AND `type` = '$type'";
+
+      if ($result = $DB->query($query)) {
+         if ($DB->numrows($result) != 1) {
+            return false;
+         }
+         $this->fields = $DB->fetch_assoc($result);
+         if (is_array($this->fields) && count($this->fields)) {
+            return true;
+         }
+         return false;
+      }
+      return false;
+   }
+
+
+   function addItemImage($type,$itemtype,$img) {
       global $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
-    
-      if ($type!='-1') {
+
+      if ($type != '-1') {
          if ($this->GetfromDBbyType($itemtype,$type)) {
-
-           $this->update(array(
-             'id'=>$this->fields['id'],
-             'img'=>$img));
-             
+            $this->update(array('id'  => $this->fields['id'],
+                                'img' => $img));
          } else {
-
-           $this->add(array(
-             'itemtype'=>$itemtype,
-             'type'=>$type,
-             'img'=>$img));
+            $this->add(array('itemtype' => $itemtype,
+                             'type'     => $type,
+                             'img'      => $img));
          }
       } else {
-       
-         $query="SELECT * 
-             FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$itemtype]."` ";	    
+         $query = "SELECT * 
+                   FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$itemtype]."` ";
          $result = $DB->query($query);
          $number = $DB->numrows($result);
          $i = 0;
-         while($i < $number) {
-            $type_table=$DB->result($result, $i, "id");
+         while ($i < $number) {
+            $type_table = $DB->result($result, $i, "id");
             if ($this->GetfromDBbyType($itemtype,$type_table)) {
-
-            $this->update(array(
-               'id'=>$this->fields['id'],
-               'img'=>$img));
-               
+            $this->update(array('id'  => $this->fields['id'],
+                                'img' => $img));
            } else {
-
-             $this->add(array(
-               'itemtype'=>$itemtype,
-               'type'=>$type_table,
-               'img'=>$img));
+             $this->add(array('itemtype' => $itemtype,
+                              'type'     => $type_table,
+                              'img'      => $img));
             }
             $i++;
-         }			
+         }
       }
    }
 
+
    function deleteItemImage($ID) {
-    
-    $this->delete(array('id'=>$ID));
-      
+    $this->delete(array('id' => $ID));
    }
-  
+
+
    function showForm() {
       global $DB,$LANG,$CFG_GLPI,$PLUGIN_ARCHIRES_TYPE_NAME;
 
-      echo "<form method='post' action=\"./config.form.php\">";
+      echo "<form method='post' action='./config.form.php'>";
       echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='4'>";
       echo $LANG['plugin_archires']['setup'][2]." : </th></tr>";
       echo "<tr class='tab_bg_1'><td>";
-      $PluginArchiresArchires=new PluginArchiresArchires();
+      $PluginArchiresArchires = new PluginArchiresArchires();
       $PluginArchiresArchires->showAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
       echo "</td><td>";
       //file
@@ -126,34 +117,41 @@ class PluginArchiresImageItem extends CommonDBTM {
       while ($f = readdir($dir)) {
          if (is_file($rep.$f)) {
             echo "<option value='".$f."'>".$f."</option>";
-         }   
+         }
       }
       echo "</select>";
       closedir($dir);
-      echo " <img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"cleanhide('commentsdropdown')\" onmouseover=\"cleandisplay('commentsdropdown')\">";
-      echo "<span class='over_link' id='commentsdropdown'>".nl2br($LANG['plugin_archires']['setup'][21])."</span>";
+      echo "<img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"".
+            "cleanhide('commentsdropdown')\" onmouseover=\"cleandisplay('commentsdropdown')\">";
+      echo "<span class='over_link' id='commentsdropdown'>".
+            nl2br($LANG['plugin_archires']['setup'][21])."</span>";
       echo "<td>";
-      echo "<div align='center'><input type='submit' name='add' value=\"".$LANG['buttons'][2]."\" class='submit' ></div></td></tr>";			
+      echo "<div align='center'><input type='submit' name='add' value=\"".$LANG['buttons'][2].
+            "\" class='submit' ></div></td></tr>";			
       echo "</table>";
-      echo "</form>";	
+      echo "</form>";
     
       $query = "SELECT * 
-        FROM `".$this->getTable()."` 
-        ORDER BY `itemtype`,`type` ASC;";
-      $i=0;
+                FROM `".$this->getTable()."` 
+                ORDER BY `itemtype`,`type` ASC;";
+      $i = 0;
       if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
          if ($number != 0) {
-      
-            echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"./config.form.php\">";
+            echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action='".
+                  "./config.form.php'>";
             echo "<div id='liste'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
             if ($number > 1) {
-               echo "<th><div align='left'>".$LANG['plugin_archires'][12]."</div></th><th><div align='left'>".$LANG['plugin_archires'][13]."</div></th><th><div align='left'>".$LANG['plugin_archires'][14]."</div></th><th></th>";
-               echo "<th><div align='left'>".$LANG['plugin_archires'][12]."</div></th><th><div align='left'>".$LANG['plugin_archires'][13]."</div></th><th><div align='left'>".$LANG['plugin_archires'][14]."</div></th><th></th>";
+               echo "<th class='left'>".$LANG['plugin_archires'][12]."</th>";
+               echo "<th class='left'>".$LANG['plugin_archires'][13]."</th>";
+               echo "<th class='left'>".$LANG['plugin_archires'][14]."</th><th></th>";
+               echo "<th class='left'>".$LANG['plugin_archires'][12]."</th>";
+               echo "<th class='left'>".$LANG['plugin_archires'][13]."</th>";
+               echo "<th class='left'>".$LANG['plugin_archires'][14]."</th><th></th>";
             } else {
-               echo "<th><div align='left'>".$LANG['plugin_archires'][12]."</div></th><th><div align='left'>".$LANG['plugin_archires'][13]."</div></th><th><div align='left'>".$LANG['plugin_archires'][14]."</div></th><th></th>";						
+               echo "<th class='left'>".$LANG['plugin_archires'][12]."</th><th><div align='left'>".$LANG['plugin_archires'][13]."</div></th><th><div align='left'>".$LANG['plugin_archires'][14]."</div></th><th></th>";						
             }
             echo "</tr>";
       
