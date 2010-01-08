@@ -96,7 +96,7 @@ class PluginArchiresImageItem extends CommonDBTM {
 
 
    function deleteItemImage($ID) {
-    $this->delete(array('id' => $ID));
+      $this->delete(array('id' => $ID));
    }
 
 
@@ -143,58 +143,62 @@ class PluginArchiresImageItem extends CommonDBTM {
             echo "<div id='liste'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
+            echo "<th class='left'>".$LANG['plugin_archires'][12]."</th>";
+            echo "<th class='left'>".$LANG['plugin_archires'][13]."</th>";
+            echo "<th class='left'>".$LANG['plugin_archires'][14]."</th><th></th>";
             if ($number > 1) {
                echo "<th class='left'>".$LANG['plugin_archires'][12]."</th>";
                echo "<th class='left'>".$LANG['plugin_archires'][13]."</th>";
                echo "<th class='left'>".$LANG['plugin_archires'][14]."</th><th></th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][12]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][13]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][14]."</th><th></th>";
-            } else {
-               echo "<th class='left'>".$LANG['plugin_archires'][12]."</th><th><div align='left'>".$LANG['plugin_archires'][13]."</div></th><th><div align='left'>".$LANG['plugin_archires'][14]."</div></th><th></th>";						
             }
             echo "</tr>";
-      
+
             while($ligne= mysql_fetch_array($result)) {
-        
-               $ID=$ligne["id"];
-        
-               if ($i  % 2==0 && $number>1)
+               $ID = $ligne["id"];
+               if ($i  % 2==0 && $number>1) {
                   echo "<tr class='tab_bg_1'>";
-        
-               if ($number==1)
+               }
+               if ($number == 1) {
                   echo "<tr class='tab_bg_1'>";
-                  
-               $PluginArchiresArchires=new PluginArchiresArchires();
-               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td><td>".$PluginArchiresArchires->getItemType($ligne["itemtype"],$ligne["type"])."</td><td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"]."\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";					
+               }
+               $PluginArchiresArchires = new PluginArchiresArchires();
+               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td>";
+               echo "<td>".$PluginArchiresArchires->getItemType($ligne["itemtype"],
+                                                                $ligne["type"])."</td>";
+               echo "<td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"].
+                           "\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                echo "<input type='checkbox' name='item[$ID]' value='1'>";
                echo "</td>";
-        
+
                $i++;
-               if (($i  == $number) && ($number  % 2 !=0) && $number>1)
-               echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-        
+               if (($i == $number) && ($number % 2 !=0) && $number >1) {
+                  echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+               }
             }
-        
+
             echo "<tr class='tab_bg_1'>";
 
-            if ($number > 1)
-               echo "<td colspan='8'>";
-            else
-               echo "<td colspan='4'>";	
-            echo "<div align='center'><a onclick= \"if ( markCheckboxes ('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
-            echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form') ) return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
-            echo "<input type='submit' name='delete' value=\"".$LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
+            if ($number > 1) {
+               echo "<td colspan='8' class='center'>";
+            } else {
+               echo "<td colspan='4' class='center'>";
+            }
+            echo "<a onclick= \"if (markCheckboxes ('massiveaction_form')) return false;\" href='".
+                  $_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
+            echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form') ) return false;\" href='".
+                  $_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
+            echo "<input type='submit' name='delete' value=\"".$LANG['buttons'][6]."\" class='submit'>";
+            echo "</td></tr>";
             echo "</table>";
             echo "</div>";
             echo "</form>";
-
          }
       }
    }
-  
+
+
    function displayItemImage($type,$itemtype,$test) {
       global $DB;
 
@@ -204,19 +208,20 @@ class PluginArchiresImageItem extends CommonDBTM {
 
       $image_name = $path."pics/nothing.png";
       $query = "SELECT *
-        FROM `glpi_plugin_archires_imageitems`
-        WHERE `itemtype` = '".$itemtype."';";
-      if ($result = $DB->query($query)) {
-         while($ligne= mysql_fetch_array($result)) {
-            $config_img=$ligne["img"];
+                FROM `glpi_plugin_archires_imageitems`
+                WHERE `itemtype` = '$itemtype'";
 
-            if ($type == $ligne["type"])
-            $image_name = $path."pics/$config_img";
+      if ($result = $DB->query($query)) {
+         while ($ligne= mysql_fetch_array($result)) {
+            $config_img = $ligne["img"];
+            if ($type == $ligne["type"]) {
+               $image_name = $path."pics/$config_img";
+            }
          }
       }
-
       return $image_name;
    }
+
 }
 
 ?>

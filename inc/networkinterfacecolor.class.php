@@ -116,12 +116,9 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             echo "<div id='liste_color'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
+            echo "<th class='left'>".$LANG['plugin_archires'][19]."</th>";
+            echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
             if ($number > 1) {
-               echo "<th class='left'>".$LANG['plugin_archires'][19]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][19]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
-            } else {
                echo "<th class='left'>".$LANG['plugin_archires'][19]."</th>";
                echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
             }
@@ -137,7 +134,9 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                if ($number == 1) {
                   echo "<tr class='tab_bg_1'>";
                }
-               echo "<td>".Dropdown::getDropdownName("glpi_networkinterfaces",$ligne["networkinterfaces_id"])."</td><td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";
+               echo "<td>".Dropdown::getDropdownName("glpi_networkinterfaces",
+                                                     $ligne["networkinterfaces_id"])."</td><";
+               echo "td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                if ($canupdate) {
@@ -154,12 +153,11 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             if ($canupdate) {
                echo "<tr class='tab_bg_1'>";
                if ($number > 1) {
-                  echo "<td colspan='8'>";
+                  echo "<td colspan='8' class='center'>";
                } else {
-                  echo "<td colspan='4'>";
+                  echo "<td colspan='4' class='center'>";
                }
 
-               echo "<div align='center'>";
                echo "<a onclick= \"if (markCheckboxes('massiveaction_form_networkinterface_color')) ".
                      "return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".
                      $LANG['buttons'][18]."</a>";
@@ -167,7 +165,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                      "return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".
                      $LANG['buttons'][19]."</a> ";
                echo "<input type='submit' name='delete_color_networkinterface' value=\"".
-                     $LANG['buttons'][6]."\" class='submit' ></div></td></tr>";
+                     $LANG['buttons'][6]."\" class='submit'></td></tr>";
             }
             echo "</table>";
             echo "</div>";
