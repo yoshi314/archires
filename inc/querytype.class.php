@@ -220,12 +220,12 @@ class PluginArchiresQueryType extends CommonDBTM {
    }
 
 
-   function clean($ID) {
+   function clean() {
       global $DB;
 
       $query = "DELETE
                 FROM `".$this->getTable()."`
-                WHERE `queries_id` = '$ID'";
+                WHERE `queries_id` = '".$this->fields['id']."'";
       $DB->query($query);
    }
 

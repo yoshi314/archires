@@ -56,10 +56,10 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    }
 
 
-   function cleanDBonPurge($ID) {
+   function cleanDBonPurge() {
 
       $querytype = new PluginArchiresQueryType;
-      $querytype->clean($ID);
+      $querytype->clean();
    }
 
 

@@ -55,10 +55,10 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
    }
 
 
-   function cleanDBonPurge($ID) {
+   function cleanDBonPurge() {
 
       $querytype = new PluginArchiresQueryType;
-      $querytype->clean($ID);
+      $querytype->clean();
    }
 
 
