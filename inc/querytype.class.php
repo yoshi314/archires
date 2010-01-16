@@ -64,7 +64,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 
 
    function addType($querytype,$type,$itemtype,$queries_id) {
-      global $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
+      global $DB;
 
       if ($type!='-1') {
          if (!$this->GetfromDBbyType($itemtype,$type,$querytype,$queries_id)) {
@@ -75,7 +75,7 @@ class PluginArchiresQueryType extends CommonDBTM {
          }
       } else {
          $query = "SELECT *
-                   FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$itemtype]."` ";
+                   FROM `".getTableForItemType($itemtype."Type")."` ";
          $result = $DB->query($query);
          $number = $DB->numrows($result);
          $i = 0;
@@ -99,7 +99,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 
 
    function queryTypeCheck($querytype,$views_id,$val) {
-      global $DB,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
+      global $DB;
 
       $query0 = "SELECT *
                  FROM `".$this->getTable()."`
@@ -111,7 +111,7 @@ class PluginArchiresQueryType extends CommonDBTM {
       $query = "";
       if ($DB->numrows($result0)>0) {
         $itemtable = getTableForItemType($val);
-        $query = "AND `$itemtable`.`$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES[$val]` IN (0 ";
+        $query = "AND `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."` IN (0 ";
          while ($data0=$DB->fetch_array($result0)) {
             $query .= ",'".$data0["type"]."' ";
          }
@@ -122,7 +122,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 
 
    function showTypes($type,$ID) {
-      global $CFG_GLPI,$DB,$LANG,$PLUGIN_ARCHIRES_TYPE_NAME;
+      global $CFG_GLPI,$DB,$LANG;
 
       if ($type == 'PluginArchiresLocationQuery') {
          $page = "locationquery";
@@ -184,7 +184,8 @@ class PluginArchiresQueryType extends CommonDBTM {
                   echo "<tr class='tab_bg_1'>";
                }
                $PluginArchiresArchires = new PluginArchiresArchires();
-               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td>";
+               $item = new $ligne["itemtype"]();
+               echo "<td>".$item->getTypeName()."</td>";
                echo "<td>".$PluginArchiresArchires->getItemType($ligne["itemtype"],
                                                                 $ligne["type"])."</td>";
                echo "<td>";

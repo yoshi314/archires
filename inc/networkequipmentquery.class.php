@@ -196,7 +196,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
 
    function Query ($ID,$PluginArchiresView,$for) {
-      global $DB,$CFG_GLPI,$LANG,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES;
+      global $DB,$CFG_GLPI,$LANG;
 
       $this->getFromDB($ID);
 
@@ -245,7 +245,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                                `np`.`name` AS namep";
 
                   $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                                   `$itemtable`.`$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES[$val]` AS `type`,
+                                   `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."` AS `type`,
                                    `$itemtable`.`users_id`, `$itemtable`.`groups_id`,
                                    `$itemtable`.`contact`, `$itemtable`.`states_id`,
                                    `$itemtable`.`entities_id`,`$itemtable`.`locations_id`

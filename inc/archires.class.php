@@ -40,7 +40,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresArchires extends CommonDBTM {
 
    function showAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
-      global $DB,$LANG,$CFG_GLPI,$PLUGIN_ARCHIRES_TYPE_TABLES,$PLUGIN_ARCHIRES_TYPE_NAME;
+      global $DB,$LANG,$CFG_GLPI;
 
       $types = array('Computer','NetworkEquipment','Peripheral','Phone','Printer');
 
@@ -52,8 +52,9 @@ class PluginArchiresArchires extends CommonDBTM {
       echo "<option value='0;0'>-----</option>\n";
       
       foreach ($types as $type => $label) {
-         echo "<option value='".$label.";".$PLUGIN_ARCHIRES_TYPE_TABLES[$label]."'>".
-               $PLUGIN_ARCHIRES_TYPE_NAME[$label]."</option>\n";
+         $item = new $label();
+         echo "<option value='".$label.";".getTableForItemType($label."Type")."'>".
+               $item->getTypeName()."</option>\n";
       }
 
       echo "</select>";
@@ -85,13 +86,13 @@ class PluginArchiresArchires extends CommonDBTM {
 
 
    function getItemType($device_type,$type) {
-      global $DB,$PLUGIN_ARCHIRES_TYPE_TABLES;
+      global $DB;
 
       $name = "";
-      if (isset($PLUGIN_ARCHIRES_TYPE_TABLES[$device_type])) {
+      if (file_exists(GLPI_ROOT."/inc/".strtolower($device_type)."type.class.php")) {
 
          $query = "SELECT `name` 
-                   FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$device_type]."` 
+                   FROM `".getTableForItemType($device_type."Type")."` 
                    WHERE `id` = '$type' ";
          $result = $DB->query($query);
          $number = $DB->numrows($result);

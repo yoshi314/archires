@@ -62,7 +62,7 @@ class PluginArchiresImageItem extends CommonDBTM {
 
 
    function addItemImage($type,$itemtype,$img) {
-      global $PLUGIN_ARCHIRES_TYPE_TABLES,$DB;
+      global $DB;
 
       if ($type != '-1') {
          if ($this->GetfromDBbyType($itemtype,$type)) {
@@ -75,7 +75,7 @@ class PluginArchiresImageItem extends CommonDBTM {
          }
       } else {
          $query = "SELECT * 
-                   FROM `".$PLUGIN_ARCHIRES_TYPE_TABLES[$itemtype]."` ";
+                   FROM `".getTableForItemType($itemtype."Type")."` ";
          $result = $DB->query($query);
          $number = $DB->numrows($result);
          $i = 0;
@@ -101,7 +101,7 @@ class PluginArchiresImageItem extends CommonDBTM {
 
 
    function showForm() {
-      global $DB,$LANG,$CFG_GLPI,$PLUGIN_ARCHIRES_TYPE_NAME;
+      global $DB,$LANG,$CFG_GLPI;
 
       echo "<form method='post' action='./config.form.php'>";
       echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='4'>";
@@ -162,7 +162,8 @@ class PluginArchiresImageItem extends CommonDBTM {
                   echo "<tr class='tab_bg_1'>";
                }
                $PluginArchiresArchires = new PluginArchiresArchires();
-               echo "<td>".$PLUGIN_ARCHIRES_TYPE_NAME[$ligne["itemtype"]]."</td>";
+               $item = new $ligne["itemtype"]();
+               echo "<td>".$item->getTypeName()."</td>";
                echo "<td>".$PluginArchiresArchires->getItemType($ligne["itemtype"],
                                                                 $ligne["type"])."</td>";
                echo "<td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"].

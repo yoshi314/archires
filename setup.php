@@ -43,27 +43,9 @@ define ("PLUGIN_ARCHIRES_SVG_FORMAT",3);
 
 // Init the hooks of the plugins -Needed
 function plugin_init_archires() {
-   global $PLUGIN_HOOKS,$CFG_GLPI,$LANG,$PLUGIN_ARCHIRES_TYPE_TABLES,$PLUGIN_ARCHIRES_TYPE_FIELD_TABLES,$PLUGIN_ARCHIRES_TYPE_NAME;
+   global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
 
    $PLUGIN_HOOKS['change_profile']['archires'] = array('PluginArchiresProfile','changeProfile');
-
-   $PLUGIN_ARCHIRES_TYPE_TABLES = array ('Computer'         => "glpi_computertypes",
-                                         'Printer'          => "glpi_printertypes",
-                                         'NetworkEquipment' => "glpi_networkequipmenttypes",
-                                         'Peripheral'       => "glpi_peripheraltypes",
-                                         'Phone'            => "glpi_phonetypes");
-
-   $PLUGIN_ARCHIRES_TYPE_FIELD_TABLES = array ('Computer'         => "computertypes_id",
-                                               'Printer'          => "printertypes_id",
-                                               'NetworkEquipment' => "networkequipmenttypes_id",
-                                               'Peripheral'       => "peripheraltypes_id",
-                                               'Phone'            => "phonetypes_id");
-
-   $PLUGIN_ARCHIRES_TYPE_NAME = array ('Computer'         => $LANG['Menu'][0],
-                                       'Printer'          => $LANG['Menu'][2],
-                                       'NetworkEquipment' => $LANG['Menu'][1],
-                                       'Peripheral'       => $LANG['Menu'][16],
-                                       'Phone'            => $LANG['Menu'][34]);
 
    if (isset($_SESSION["glpiID"])) {
       if (plugin_archires_haveRight("archires","r")) {
