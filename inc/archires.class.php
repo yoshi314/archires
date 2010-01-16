@@ -83,26 +83,6 @@ class PluginArchiresArchires extends CommonDBTM {
       }
       return $rand;
    }
-
-
-   function getItemType($device_type,$type) {
-      global $DB;
-
-      $name = "";
-      if (file_exists(GLPI_ROOT."/inc/".strtolower($device_type)."type.class.php")) {
-
-         $query = "SELECT `name` 
-                   FROM `".getTableForItemType($device_type."Type")."` 
-                   WHERE `id` = '$type' ";
-         $result = $DB->query($query);
-         $number = $DB->numrows($result);
-         if ($number !="0") {
-            $name = $DB->result($result, 0, "name");
-         }
-      }
-      return $name;
-   }
-
 }
 
 ?>

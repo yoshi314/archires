@@ -164,8 +164,10 @@ class PluginArchiresImageItem extends CommonDBTM {
                $PluginArchiresArchires = new PluginArchiresArchires();
                $item = new $ligne["itemtype"]();
                echo "<td>".$item->getTypeName()."</td>";
-               echo "<td>".$PluginArchiresArchires->getItemType($ligne["itemtype"],
-                                                                $ligne["type"])."</td>";
+               $class = $ligne["itemtype"]."Type";
+               $typeclass = new $class();
+               $typeclass->getFromDB($ligne["type"]);
+               echo "<td>".$typeclass->fields["name"]."</td>";
                echo "<td><img src=\"".$CFG_GLPI["root_doc"]."/plugins/archires/pics/".$ligne["img"].
                            "\" alt=\"".$ligne["img"]."\" title=\"".$ligne["img"]."\"></td>";
                echo "<td>";

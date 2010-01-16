@@ -186,8 +186,10 @@ class PluginArchiresQueryType extends CommonDBTM {
                $PluginArchiresArchires = new PluginArchiresArchires();
                $item = new $ligne["itemtype"]();
                echo "<td>".$item->getTypeName()."</td>";
-               echo "<td>".$PluginArchiresArchires->getItemType($ligne["itemtype"],
-                                                                $ligne["type"])."</td>";
+               $class = $ligne["itemtype"]."Type";
+               $typeclass = new $class();
+               $typeclass->getFromDB($ligne["type"]);
+               echo "<td>".$typeclass->fields["name"]."</td>";
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
                echo "<input type='checkbox' name='item[$ID]' value='1'>";
