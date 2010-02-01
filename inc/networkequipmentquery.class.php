@@ -119,11 +119,11 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
    }
 
 
-   function defineTabs($ID,$withtemplate) {
+   function defineTabs($options=array()) {
       global $LANG;
 
       $ong[1] = $LANG['title'][26];
-      if ($ID > 0) {
+      if ($this->fields['id'] > 0) {
          $ong[2] = $LANG['plugin_archires']['test'][0];
          $ong[3] = $LANG['plugin_archires']['search'][6];
          if (haveRight("notes","r")) {
@@ -134,7 +134,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
    }
 
 
-   function showForm ($target,$ID,$withtemplate='') {
+   function showForm ($ID, $options=array()) {
     global $CFG_GLPI,$DB,$LANG;
 
       if ($ID > 0) {
@@ -145,8 +145,8 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
        $this->getEmpty();
       }
 
-      $this->showTabs($ID, $withtemplate);
-      $this->showFormHeader($target,$ID,$withtemplate,2);
+      $this->showTabs($options);
+      $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['plugin_archires']['search'][1]." : </td>";
@@ -187,7 +187,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                                     'value' => $this->fields["states_id"]));
       echo "</td></tr>";
 
-      $this->showFormButtons($ID,$withtemplate,2);
+      $this->showFormButtons($options);
       echo "<div id='tabcontent'></div>";
       echo "<script type='text/javascript'>loadDefaultTab();</script>";
 

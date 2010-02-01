@@ -97,7 +97,7 @@ class PluginArchiresStateColor extends CommonDBTM {
    }
 
 
-   function showForm($canupdate=false) {
+   function showConfigForm($canupdate=false) {
       global $DB,$LANG,$CFG_GLPI;
 
       $query = "SELECT * 

@@ -128,13 +128,13 @@ if ($plugin->isActivated("archires")) {
       commonHeader($LANG['plugin_archires']['title'][0], $_SERVER['PHP_SELF'], "plugins",
                    "archires", "summary");
 
-      $PluginArchiresImageItem->showForm();
+      $PluginArchiresImageItem->showConfigForm();
 
-      $PluginArchiresNetworkInterfaceColor->showForm(true);
+      $PluginArchiresNetworkInterfaceColor->showConfigForm(true);
 
-      $PluginArchiresVlanColor->showForm(true);
+      $PluginArchiresVlanColor->showConfigForm(true);
 
-      $PluginArchiresStateColor->showForm(true);
+      $PluginArchiresStateColor->showConfigForm(true);
 
       commonFooter();
    }

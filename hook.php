@@ -392,8 +392,8 @@ function plugin_headings_archires($item,$withtemplate=0) {
       case 'Profile' :
          $ArchiresProfile = new PluginArchiresProfile();
          if ($ArchiresProfile->GetfromDB($ID) || $ArchiresProfile->createAccess($item)) {
-            $ArchiresProfile->showForm($CFG_GLPI["root_doc"]."/plugins/archires/front/profile.form.php",
-                                       $item->getField('id'));
+            $ArchiresProfile->showForm($item->getField('id'),
+                                       array('target' => $CFG_GLPI["root_doc"]."/plugins/archires/front/profile.form.php"));
          }
          break;
    }

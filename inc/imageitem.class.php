@@ -100,7 +100,7 @@ class PluginArchiresImageItem extends CommonDBTM {
    }
 
 
-   function showForm() {
+   function showConfigForm() {
       global $DB,$LANG,$CFG_GLPI;
 
       echo "<form method='post' action='./config.form.php'>";

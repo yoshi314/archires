@@ -90,7 +90,7 @@ if (isset($_POST["add"])) {
 
    commonHeader($LANG['plugin_archires']['title'][3],$_SERVER["PHP_SELF"],"plugins","archires","view");
 
-   $PluginArchiresView->showForm($_SERVER["PHP_SELF"],$_GET["id"]);
+   $PluginArchiresView->showForm($_GET["id"]);
 
    commonFooter();
 }

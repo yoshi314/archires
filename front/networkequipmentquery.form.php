@@ -118,7 +118,7 @@ if (isset($_POST["add"])) {
    commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][5],
                 $_SERVER['PHP_SELF'],"plugins","archires","networkequipment");
 
-   $PluginArchiresNetworkEquipmentQuery->showForm($_SERVER["PHP_SELF"],$_GET["id"]);
+   $PluginArchiresNetworkEquipmentQuery->showForm($_GET["id"]);
 
    commonFooter();
 }

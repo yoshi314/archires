@@ -252,7 +252,7 @@ class PluginArchiresView extends CommonDBTM {
    }
 
 
-   function defineTabs($ID,$withtemplate) {
+   function defineTabs($options=array()) {
       global $LANG;
 
       $ong[1] = $LANG['title'][26];
@@ -260,7 +260,7 @@ class PluginArchiresView extends CommonDBTM {
    }
 
 
-   function showForm ($target,$ID, $withtemplate='') {
+   function showForm ($ID, $options=array()) {
       global $CFG_GLPI, $LANG;
 
       if ($ID>0) {
@@ -273,8 +273,8 @@ class PluginArchiresView extends CommonDBTM {
       $canedit=$this->can($ID,'w');
       $canrecu=$this->can($ID,'recursive');
 
-      $this->showTabs($ID, $withtemplate);
-      $this->showFormHeader($target,$ID, $withtemplate,2);
+      $this->showTabs($options);
+      $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
       echo "<td colspan='1'>".$LANG['plugin_archires']['search'][1]." : </td>";
@@ -410,7 +410,7 @@ class PluginArchiresView extends CommonDBTM {
       echo "value='1'>".$LANG['plugin_archires'][35]."</option>";
       echo "</select></td></tr>";
 
-      $this->showFormButtons($ID,$withtemplate,2);
+      $this->showFormButtons($options);
       echo "<div id='tabcontent'></div>";
       echo "<script type='text/javascript'>loadDefaultTab();</script>";
 

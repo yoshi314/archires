@@ -60,7 +60,7 @@ class PluginArchiresProfile extends CommonDBTM {
    }
 
 
-   function createAccess($profile) {
+   function createAccess($Profile) {
 
       return $this->add(array('id'   => $Profile->getField('id'),
                               'name' => $Profile->getField('name')));
@@ -93,8 +93,13 @@ class PluginArchiresProfile extends CommonDBTM {
 
 
    //profiles modification
-   function showForm($target,$ID) {
+   function showForm($ID, $options=array()) {
       global $LANG;
+
+      $target = $this->getFormURL();
+      if (isset($options['target'])) {
+        $target = $options['target'];
+      }
 
       if (!haveRight("profile","r")) {
          return false;
@@ -106,7 +111,7 @@ class PluginArchiresProfile extends CommonDBTM {
          $profile->getFromDB($ID);
       }
 
-      echo "<form action='$target' method='post'>";
+      echo "<form action='".$target."' method='post'>";
       echo "<table class='tab_cadre_fixe'>";
 
       echo "<tr><th colspan='2' class='center b'>".$LANG['plugin_archires']['profile'][0]." ".

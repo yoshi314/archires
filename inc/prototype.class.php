@@ -563,11 +563,11 @@ class PluginArchiresPrototype extends CommonDBTM {
          echo "<table cellpadding='5'>";
          echo "<tr><td class='top'>";
          if ( $PluginArchiresView->fields["color"] == 0 ) {
-            $PluginArchiresNetworkInterfaceColor->showForm();
+            $PluginArchiresNetworkInterfaceColor->showConfigForm();
          } else if ($PluginArchiresView->fields["color"] == 1 ) {
-            $PluginArchiresVlanColor->showForm();
+            $PluginArchiresVlanColor->showConfigForm();
          }
-         echo "</td><td>".$PluginArchiresStateColor->showForm()."</td>";
+         echo "</td><td>".$PluginArchiresStateColor->showConfigForm()."</td>";
          echo "</tr>";
          echo "</table>";
          echo "</div>";

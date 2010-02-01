@@ -116,7 +116,7 @@ if (isset($_POST["add"])) {
    commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8],
                 $_SERVER['PHP_SELF'],"plugins","archires","appliance");
 
-   $PluginArchiresApplianceQuery->showForm($_SERVER["PHP_SELF"],$_GET["id"]);
+   $PluginArchiresApplianceQuery->showForm($_GET["id"]);
 
    commonFooter();
 }
