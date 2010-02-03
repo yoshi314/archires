@@ -111,6 +111,11 @@ class PluginArchiresPrototype extends CommonDBTM {
          }
       } else {
          if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
+            
+            $class = $itemtype."Type";
+            $typeclass = new $class();
+            $typeclass->getFromDB($device["type"]);
+               
             if (!$generation) {
                $graph =$typeclass->fields["name"];
             } else {
