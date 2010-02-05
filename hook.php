@@ -287,15 +287,15 @@ function plugin_archires_MassiveActions($type) {
 
 
 // How to display specific actions ?
-function plugin_archires_MassiveActionsDisplay($type,$action) {
+function plugin_archires_MassiveActionsDisplay($options=array()) {
    global $LANG;
 
-   switch ($type) {
+   switch ($options['itemtype']) {
       case 'PluginArchiresLocationQuery':
       case 'PluginArchiresNetworkEquipmentQuery' :
       case 'PluginArchiresApplianceQuery' :
       case 'PluginArchiresView':
-         switch ($action) {
+         switch ($options['action']) {
             // No case for add_document : use GLPI core one
             case "plugin_archires_duplicate" :
             case "plugin_archires_transfert" :

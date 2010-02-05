@@ -270,9 +270,6 @@ class PluginArchiresView extends CommonDBTM {
          $this->getEmpty();
       }
 
-      $canedit=$this->can($ID,'w');
-      $canrecu=$this->can($ID,'recursive');
-
       $this->showTabs($options);
       $this->showFormHeader($options);
 
