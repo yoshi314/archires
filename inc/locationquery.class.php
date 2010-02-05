@@ -109,7 +109,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       $tab[8]['table']     = 'glpi_plugin_archires_views';
       $tab[8]['field']     = 'name';
-      $tab[8]['linkfield'] = 'views_id';
+      $tab[8]['linkfield'] = 'plugin_archires_views_id';
       $tab[8]['name']      = $LANG['plugin_archires']['setup'][20];
 
       $tab[30]['table'] = $this->getTable();

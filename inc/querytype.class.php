@@ -47,7 +47,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                 WHERE `itemtype` = '$itemtype'
                       AND `type` = '$type'
                       AND `querytype` = '$type_query'
-                      AND `queries_id` = '$query_ID'";
+                      AND `plugin_archires_queries_id` = '$query_ID'";
 
       if ($result = $DB->query($query)) {
          if ($DB->numrows($result) != 1) {
@@ -63,15 +63,15 @@ class PluginArchiresQueryType extends CommonDBTM {
    }
 
 
-   function addType($querytype,$type,$itemtype,$queries_id) {
+   function addType($querytype,$type,$itemtype,$plugin_archires_queries_id) {
       global $DB;
 
       if ($type!='-1') {
-         if (!$this->GetfromDBbyType($itemtype,$type,$querytype,$queries_id)) {
+         if (!$this->GetfromDBbyType($itemtype,$type,$querytype,$plugin_archires_queries_id)) {
             $this->add(array('itemtype'   => $itemtype,
                              'type'       => $type,
                              'querytype'  => $querytype,
-                             'queries_id' => $queries_id));
+                             'plugin_archires_queries_id' => $plugin_archires_queries_id));
          }
       } else {
          $query = "SELECT *
@@ -81,11 +81,11 @@ class PluginArchiresQueryType extends CommonDBTM {
          $i = 0;
          while ($i < $number) {
             $type_table = $DB->result($result, $i, "id");
-            if (!$this->GetfromDBbyType($itemtype,$type_table,$querytype,$queries_id)) {
+            if (!$this->GetfromDBbyType($itemtype,$type_table,$querytype,$plugin_archires_queries_id)) {
                $this->add(array('itemtype'   => $itemtype,
                                 'type'       => $type_table,
                                 'querytype'  => $querytype,
-                                'queries_id' => $queries_id));
+                                'plugin_archires_queries_id' => $plugin_archires_queries_id));
             }
             $i++;
          }
@@ -98,13 +98,13 @@ class PluginArchiresQueryType extends CommonDBTM {
    }
 
 
-   function queryTypeCheck($querytype,$views_id,$val) {
+   function queryTypeCheck($querytype,$plugin_archires_views_id,$val) {
       global $DB;
 
       $query0 = "SELECT *
                  FROM `".$this->getTable()."`
                  WHERE `querytype` = '$querytype'
-                       AND `queries_id` = '$views_id'
+                       AND `plugin_archires_queries_id` = '$plugin_archires_views_id'
                        AND `itemtype` = '$val'";
       $result0 = $DB->query($query0);
 
@@ -152,7 +152,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 
       $query = "SELECT *
                 FROM `".$this->getTable()."`
-                WHERE `queries_id` = '$ID'
+                WHERE `plugin_archires_queries_id` = '$ID'
                       AND `querytype` = '$type'
                 ORDER BY `itemtype`, `type` ASC";
 
@@ -228,7 +228,7 @@ class PluginArchiresQueryType extends CommonDBTM {
 
       $query = "DELETE
                 FROM `".$this->getTable()."`
-                WHERE `queries_id` = '".$this->fields['id']."'";
+                WHERE `plugin_archires_queries_id` = '".$this->fields['id']."'";
       $DB->query($query);
    }
 

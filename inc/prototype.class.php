@@ -173,8 +173,8 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       $obj = new $type();
       $obj->getFromDB($ID);
-      $views_id=$obj->fields["views_id"];
-      if (!$views_id) {
+      $plugin_archires_views_id=$obj->fields["plugin_archires_views_id"];
+      if (!$plugin_archires_views_id) {
          return false;
       }
       $plugin = new Plugin();
@@ -189,7 +189,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $PluginArchiresStateColor            = new PluginArchiresStateColor;
       $PluginArchiresImageItem             = new PluginArchiresImageItem;
 
-      $PluginArchiresView->getFromDB($views_id);
+      $PluginArchiresView->getFromDB($plugin_archires_views_id);
 
       $devices = array();
       $ports = array();
@@ -534,33 +534,33 @@ class PluginArchiresPrototype extends CommonDBTM {
    }
 
 
-   function displayGraph($obj,$views_id,$select=0) {
+   function displayGraph($obj,$plugin_archires_views_id,$select=0) {
       global $LANG,$DB,$CFG_GLPI;
 
       $querytype = get_class($obj);
       $ID = $obj->fields["id"];
-      $object_view = $obj->fields["views_id"];
-      if (!isset($views_id)) {
-        $views_id = $object_view;
+      $object_view = $obj->fields["plugin_archires_views_id"];
+      if (!isset($plugin_archires_views_id)) {
+        $plugin_archires_views_id = $object_view;
       }
-      if (!$object_view && !$views_id) {
+      if (!$object_view && !$plugin_archires_views_id) {
         return false;
       }
 
       $PluginArchiresView = new PluginArchiresView();
-      $PluginArchiresView->getFromDB($views_id);
+      $PluginArchiresView->getFromDB($plugin_archires_views_id);
       $PluginArchiresNetworkInterfaceColor = new PluginArchiresNetworkInterfaceColor();
       $PluginArchiresVlanColor = new PluginArchiresVlanColor();
       $PluginArchiresStateColor = new PluginArchiresStateColor();
 
       echo "<div align='center'>";
-      $PluginArchiresView->viewSelect($obj,$views_id,$select);
+      $PluginArchiresView->viewSelect($obj,$plugin_archires_views_id,$select);
       echo "</div>";
 
       if (isset($ID) && !empty($ID)) {
          echo "<img src='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?id=".$ID.
-               "&amp;querytype=".$querytype."&amp;views_id=".$views_id."' alt='' usemap='#G'>";
-         echo $this->createGraph("cmapx",$obj,$views_id);
+               "&amp;querytype=".$querytype."&amp;plugin_archires_views_id=".$plugin_archires_views_id."' alt='' usemap='#G'>";
+         echo $this->createGraph("cmapx",$obj,$plugin_archires_views_id);
       }
       //legend
       if (isset($ID) && !empty($ID)) {
@@ -585,14 +585,14 @@ class PluginArchiresPrototype extends CommonDBTM {
    }
 
 
-   function createGraph($format,$obj,$views_id) {
+   function createGraph($format,$obj,$plugin_archires_views_id) {
       global $DB,$CFG_GLPI,$LANG;
 
       $type = get_class($obj);
       $ID = $obj->fields["id"];
-      $object_view = $obj->fields["views_id"];
-      if (!isset($views_id)) {
-        $views_id = $object_view;
+      $object_view = $obj->fields["plugin_archires_views_id"];
+      if (!isset($plugin_archires_views_id)) {
+        $plugin_archires_views_id = $object_view;
       }
       $PluginArchiresView = new PluginArchiresView;
 
@@ -604,7 +604,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $PluginArchiresNetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery;
       $PluginArchiresImageItem             = new PluginArchiresImageItem;
 
-      $PluginArchiresView->getFromDB($views_id);
+      $PluginArchiresView->getFromDB($plugin_archires_views_id);
 
       $devices = array();
       $ports = array();

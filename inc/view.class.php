@@ -169,7 +169,7 @@ class PluginArchiresView extends CommonDBTM {
 
       if ($result = $DB->query($query)) {
          if ($DB->numrows($result) >0) {
-            echo "<select name='queries_id' size='1'> ";
+            echo "<select name='plugin_archires_queries_id' size='1'> ";
             while ($ligne = mysql_fetch_array($result)) {
                echo "<option value='".$ligne["id"]."' ".($ligne["id"]=="".$ID.""?" selected ":"").">".
                      $ligne["name"]."</option>";
@@ -184,7 +184,7 @@ class PluginArchiresView extends CommonDBTM {
       global $DB,$CFG_GLPI;
 
       if (isset($obj->fields["id"])) {
-         $default = $obj->fields["views_id"];
+         $default = $obj->fields["plugin_archires_views_id"];
       }
       $query = "SELECT `id`, `name`
                 FROM `".$this->getTable()."`
@@ -192,7 +192,7 @@ class PluginArchiresView extends CommonDBTM {
                    AND `entities_id` = '" . $_SESSION["glpiactive_entity"] . "'
                 ORDER BY `name` ASC";
 
-      echo "<select name='views_id' size='1'> ";
+      echo "<select name='plugin_archires_views_id' size='1'> ";
       echo "<option value='0'>-----</option>\n";
       if ($result = $DB->query($query)) {
          while ($ligne= mysql_fetch_array($result)) {
@@ -215,14 +215,14 @@ class PluginArchiresView extends CommonDBTM {
    }
 
 
-   function viewSelect($obj,$views_id,$select=0) {
+   function viewSelect($obj,$plugin_archires_views_id,$select=0) {
       global $CFG_GLPI,$LANG,$DB;
 
       $querytype = get_class($obj);
       $ID = $obj->fields["id"];
-      $object_view = $obj->fields["views_id"];
-      if (!isset($views_id)) {
-         $views_id = $object_view;
+      $object_view = $obj->fields["plugin_archires_views_id"];
+      if (!isset($plugin_archires_views_id)) {
+         $plugin_archires_views_id = $object_view;
       }
       if ($select) {
          echo "<form method='get' name='selecting' action='".$CFG_GLPI["root_doc"].
@@ -235,7 +235,7 @@ class PluginArchiresView extends CommonDBTM {
          echo "</td>";
 
          echo "<td class='center'>".$LANG['plugin_archires']['title'][3]." : ";
-         $this->dropdownView(-1,$views_id);
+         $this->dropdownView(-1,$plugin_archires_views_id);
          echo "</td>";
 
          echo "<td>";
@@ -247,8 +247,8 @@ class PluginArchiresView extends CommonDBTM {
          echo "</form>";
       }
       echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".
-            PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;views_id=".
-            $views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
+            PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;plugin_archires_views_id=".
+            $plugin_archires_views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
    }
 
 
@@ -420,12 +420,12 @@ class PluginArchiresView extends CommonDBTM {
 
       $obj = new $type();
       $obj->getFromDB($ID);
-      $views_id=$obj->fields["views_id"];
+      $plugin_archires_views_id=$obj->fields["plugin_archires_views_id"];
 
-      if (!$views_id) {
+      if (!$plugin_archires_views_id) {
          return false;
       }
-      $this->getFromDB($views_id);
+      $this->getFromDB($plugin_archires_views_id);
 
       $name_config=$this->fields["name"];
 

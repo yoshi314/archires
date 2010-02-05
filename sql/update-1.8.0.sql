@@ -17,7 +17,7 @@ ALTER TABLE `glpi_plugin_archires_locationqueries`
    CHANGE `network` `networks_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_networks (id)',
    CHANGE `state` `states_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_states (id)',
    CHANGE `FK_group` `groups_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_groups (id)',
-   CHANGE `FK_config` `views_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_archires_views (id)',
+   CHANGE `FK_config` `plugin_archires_views_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_archires_views (id)',
    CHANGE `FK_vlan` `vlans_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_vlans (id)',
    CHANGE `deleted` `is_deleted` tinyint(1) NOT NULL default '0',
    CHANGE `notes` `notepad` longtext collate utf8_unicode_ci,
@@ -27,7 +27,7 @@ ALTER TABLE `glpi_plugin_archires_locationqueries`
    ADD INDEX (`locations_id`),
    ADD INDEX (`networks_id`),
    ADD INDEX (`groups_id`),
-   ADD INDEX (`views_id`),
+   ADD INDEX (`plugin_archires_views_id`),
    ADD INDEX (`states_id`),
    ADD INDEX (`vlans_id`),
    ADD INDEX (`is_deleted`);
@@ -41,7 +41,7 @@ ALTER TABLE `glpi_plugin_archires_networkequipmentqueries`
    CHANGE `network` `networks_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_networks (id)',
    CHANGE `state` `states_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_states (id)',
    CHANGE `FK_group` `groups_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_groups (id)',
-   CHANGE `FK_config` `views_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_archires_views (id)',
+   CHANGE `FK_config` `plugin_archires_views_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_archires_views (id)',
    CHANGE `FK_vlan` `vlans_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_vlans (id)',
    CHANGE `deleted` `is_deleted` tinyint(1) NOT NULL default '0',
    CHANGE `notes` `notepad` longtext collate utf8_unicode_ci,
@@ -51,7 +51,7 @@ ALTER TABLE `glpi_plugin_archires_networkequipmentqueries`
    ADD INDEX (`networkequipments_id`),
    ADD INDEX (`networks_id`),
    ADD INDEX (`groups_id`),
-   ADD INDEX (`views_id`),
+   ADD INDEX (`plugin_archires_views_id`),
    ADD INDEX (`states_id`),
    ADD INDEX (`vlans_id`),
    ADD INDEX (`is_deleted`);
@@ -65,7 +65,7 @@ ALTER TABLE `glpi_plugin_archires_appliancequeries`
    CHANGE `network` `networks_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_networks (id)',
    CHANGE `state` `states_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_states (id)',
    CHANGE `FK_group` `groups_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_groups (id)',
-   CHANGE `FK_config` `views_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_archires_views (id)',
+   CHANGE `FK_config` `plugin_archires_views_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_plugin_archires_views (id)',
    CHANGE `FK_vlan` `vlans_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_vlans (id)',
    CHANGE `deleted` `is_deleted` tinyint(1) NOT NULL default '0',
    CHANGE `notes` `notepad` longtext collate utf8_unicode_ci,
@@ -75,7 +75,7 @@ ALTER TABLE `glpi_plugin_archires_appliancequeries`
    ADD INDEX (`appliances_id`),
    ADD INDEX (`networks_id`),
    ADD INDEX (`groups_id`),
-   ADD INDEX (`views_id`),
+   ADD INDEX (`plugin_archires_views_id`),
    ADD INDEX (`states_id`),
    ADD INDEX (`vlans_id`),
    ADD INDEX (`is_deleted`);
@@ -95,11 +95,11 @@ ALTER TABLE `glpi_plugin_archires_querytypes`
    CHANGE `type_query` `querytype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'RELATION to the 3 type of archires (type)',
    CHANGE `type` `type` int(11) NOT NULL default '0',
    CHANGE `device_type` `itemtype` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'see .class.php file',
-   CHANGE `FK_query` `queries_id` int(11) NOT NULL default '0' COMMENT 'RELATION to the 3 queries tables (id)',
+   CHANGE `FK_query` `plugin_archires_queries_id` int(11) NOT NULL default '0' COMMENT 'RELATION to the 3 queries tables (id)',
    ADD INDEX (`querytype`),
    ADD INDEX (`type`),
    ADD INDEX (`itemtype`),
-   ADD INDEX (`queries_id`);
+   ADD INDEX (`plugin_archires_queries_id`);
 
  
 UPDATE `glpi_plugin_archires_querytypes` SET `querytype` = 'PluginArchiresLocationQuery' WHERE `querytype` = 0;

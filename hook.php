@@ -166,10 +166,30 @@ function plugin_archires_getDatabaseRelations() {
 
    $plugin = new Plugin();
    if ($plugin->isActivated("archires")) {
-      return array("glpi_entities" => array("glpi_plugin_archires_locationqueries"  => "entities_id",
-                                            "glpi_plugin_archires_networkequipmentqueries"=> "entities_id",
-                                            "glpi_plugin_archires_appliancequeries" => "entities_id",
-                                            "glpi_plugin_archires_views"            => "entities_id"));
+      return array("glpi_locations" => array("glpi_plugin_archires_locationqueries"  => "locations_id"),
+                     "glpi_networks" => array("glpi_plugin_archires_locationqueries"  => "networks_id",
+                                             "glpi_plugin_archires_appliancequeries"  => "networks_id",
+                                             "glpi_plugin_archires_networkequipmentqueries"  => "networks_id"),
+                     "glpi_states" => array("glpi_plugin_archires_locationqueries"  => "states_id",
+                                             "glpi_plugin_archires_appliancequeries"  => "states_id",
+                                             "glpi_plugin_archires_networkequipmentqueries"  => "states_id",
+                                             "glpi_plugin_archires_statecolors"  => "states_id"),
+                     "glpi_groups" => array("glpi_plugin_archires_locationqueries"  => "groups_id",
+                                             "glpi_plugin_archires_appliancequeries"  => "groups_id",
+                                             "glpi_plugin_archires_networkequipmentqueries"  => "groups_id"),
+                     "glpi_vlans" => array("glpi_plugin_archires_locationqueries"  => "vlans_id",
+                                             "glpi_plugin_archires_appliancequeries"  => "vlans_id",
+                                             "glpi_plugin_archires_networkequipmentqueries"  => "vlans_id",
+                                             "glpi_plugin_archires_vlancolors"  => "vlans_id"),
+                     "glpi_entities" => array("glpi_plugin_archires_locationqueries"  => "entities_id",
+                                                "glpi_plugin_archires_networkequipmentqueries"=> "entities_id",
+                                                "glpi_plugin_archires_appliancequeries" => "entities_id",
+                                                "glpi_plugin_archires_views" => "entities_id"),
+                     "glpi_plugin_archires_views" => array("glpi_plugin_archires_locationqueries"  => "plugin_archires_views_id",
+                                                            "glpi_plugin_archires_networkequipmentqueries"=> "plugin_archires_views_id",
+                                                            "glpi_plugin_archires_appliancequeries" => "plugin_archires_views_id"),
+                     "glpi_plugin_appliances_appliances" => array("glpi_plugin_archires_appliancequeries" => "appliances_id"),
+                     "glpi_networkinterfaces" => array("glpi_plugin_archires_networkinterfacecolors" => "networkinterfaces_id"));
    } else {
       return array();
    }

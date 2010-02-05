@@ -65,8 +65,8 @@ if ($_POST["id"] >0 && $ApplianceQuery->can($_POST["id"],'r')) {
          $PluginArchiresView->linkToAllViews('PluginArchiresLocationQuery',$_POST["id"]);
          $obj = new PluginArchiresLocationQuery();
          $obj->getFromDB($_POST["id"]);
-         $views_id = $obj->fields["views_id"];
-         $PluginArchiresPrototype->displayGraph($obj,$views_id);
+         $plugin_archires_views_id = $obj->fields["plugin_archires_views_id"];
+         $PluginArchiresPrototype->displayGraph($obj,$plugin_archires_views_id);
          break;
 
       case 10 :

@@ -39,7 +39,7 @@ include (GLPI_ROOT."/inc/includes.php");
 $PluginArchiresView      = new PluginArchiresView();
 $PluginArchiresPrototype = new PluginArchiresPrototype();
 
-$PluginArchiresView->getFromDB($_GET["views_id"]);
+$PluginArchiresView->getFromDB($_GET["plugin_archires_views_id"]);
 if (isset($_GET["format"])) {
    $format = $_GET["format"];
 } else {
@@ -57,14 +57,14 @@ if ($format == PLUGIN_ARCHIRES_JPEG_FORMAT) {
 $object = $_GET["querytype"];
 $obj = new $object();
 $obj->getFromDB($_GET["id"]);
-$object_view = $obj->fields["views_id"];
+$object_view = $obj->fields["plugin_archires_views_id"];
 
-if (!isset($_GET["views_id"])) {
-   $views_id = $object_view;
+if (!isset($_GET["plugin_archires_views_id"])) {
+   $plugin_archires_views_id = $object_view;
 } else {
-   $views_id = $_GET["views_id"];
+   $plugin_archires_views_id = $_GET["plugin_archires_views_id"];
 }
-$output_data = $PluginArchiresPrototype->createGraph($format_graph,$obj,$views_id);
+$output_data = $PluginArchiresPrototype->createGraph($format_graph,$obj,$plugin_archires_views_id);
 
 if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) {
    header("Content-type: image/svg+xml");

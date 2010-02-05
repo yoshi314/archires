@@ -103,7 +103,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
       $tab[7]['table']     = 'glpi_plugin_archires_views';
       $tab[7]['field']     = 'name';
-      $tab[7]['linkfield'] = 'views_id';
+      $tab[7]['linkfield'] = 'plugin_archires_views_id';
       $tab[7]['name']      = $LANG['plugin_archires']['setup'][20];
 
       $tab[30]['table'] = $this->getTable();
