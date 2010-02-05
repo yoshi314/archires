@@ -50,7 +50,7 @@ $PluginArchiresView      = new PluginArchiresView();
 $PluginArchiresPrototype = new PluginArchiresPrototype();
 
 if ($_POST["id"] >0 && $ApplianceQuery->can($_POST["id"],'r')) {
-   switch($_POST['glpi_tab']) {
+   switch($_REQUEST['glpi_tab']) {
       case -1 :
          $PluginArchiresQueryType->showTypes('PluginArchiresApplianceQuery',$_POST["id"]);
          Plugin::displayAction($ApplianceQuery,$_REQUEST['glpi_tab']);
