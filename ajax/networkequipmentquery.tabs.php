@@ -44,6 +44,7 @@ if (!isset($_POST["id"])) {
 
 PluginArchiresProfile::checkRight("archires","r");
 
+$NetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery();
 $PluginArchiresQueryType = new PluginArchiresQueryType();
 $PluginArchiresView      = new PluginArchiresView();
 $PluginArchiresPrototype = new PluginArchiresPrototype();
@@ -52,6 +53,7 @@ if ($_POST["id"] >0) {
    switch($_REQUEST['glpi_tab']) {
       case -1 :
          $PluginArchiresQueryType->showTypes('PluginArchiresNetworkEquipmentQuery',$_POST["id"]);
+         Plugin::displayAction($NetworkEquipmentQuery,$_REQUEST['glpi_tab']);
          break;
 
       case 2 :
@@ -72,7 +74,9 @@ if ($_POST["id"] >0) {
          break;
 
       default :
-         $PluginArchiresQueryType->showTypes('PluginArchiresNetworkEquipmentQuery',$_POST["id"]);
+         if (!Plugin::displayAction($NetworkEquipmentQuery,$_REQUEST['glpi_tab'])) {
+            $PluginArchiresQueryType->showTypes('PluginArchiresNetworkEquipmentQuery',$_POST["id"]);
+         }
    }
 }
 

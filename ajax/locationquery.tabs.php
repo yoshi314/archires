@@ -53,7 +53,7 @@ if ($_POST["id"] >0 && $ApplianceQuery->can($_POST["id"],'r')) {
    switch($_POST['glpi_tab']) {
       case -1 :
          $PluginArchiresQueryType->showTypes('PluginArchiresLocationQuery',$_POST["id"]);
-         Plugin::displayAction($ApplianceQuery,$_POST['glpi_tab']);
+         Plugin::displayAction($ApplianceQuery,$_REQUEST['glpi_tab']);
          break;
 
       case 2 :
@@ -74,7 +74,7 @@ if ($_POST["id"] >0 && $ApplianceQuery->can($_POST["id"],'r')) {
          break;
 
       default :
-         if (!Plugin::displayAction($ApplianceQuery,$_POST['glpi_tab'])) {
+         if (!Plugin::displayAction($ApplianceQuery,$_REQUEST['glpi_tab'])) {
             $PluginArchiresQueryType->showTypes('PluginArchiresApplianceQuery',$_POST["id"]);
          }
    }
