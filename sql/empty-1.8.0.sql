@@ -155,7 +155,7 @@ INSERT INTO `glpi_plugin_archires_views` ( `id`,`entities_id`,`name`, `computer`
 DROP TABLE IF EXISTS `glpi_plugin_archires_profiles`;
 CREATE TABLE `glpi_plugin_archires_profiles` (
 	`id` int(11) NOT NULL auto_increment,
-	`name` varchar(255) collate utf8_unicode_ci default NULL,
+	`profiles_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
 	`archires` char(1) collate utf8_unicode_ci default NULL,
 	PRIMARY KEY  (`id`),
 	KEY `name` (`name`)

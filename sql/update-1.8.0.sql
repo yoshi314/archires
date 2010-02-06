@@ -136,8 +136,9 @@ ALTER TABLE `glpi_plugin_archires_views`
 
 ALTER TABLE `glpi_plugin_archires_profiles` 
    CHANGE `ID` `id` int(11) NOT NULL auto_increment,
-   CHANGE `name` `name` varchar(255) collate utf8_unicode_ci default NULL,
-   CHANGE `archires` `archires` char(1) collate utf8_unicode_ci default NULL;
+   ADD `profiles_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
+   CHANGE `archires` `archires` char(1) collate utf8_unicode_ci default NULL,
+   ADD INDEX (`profiles_id`);
 
 DELETE FROM `glpi_displaypreferences` WHERE `itemtype` = 3000 AND `num` = 9;
 DELETE FROM `glpi_displaypreferences` WHERE `itemtype` = 3001 AND `num` = 8;

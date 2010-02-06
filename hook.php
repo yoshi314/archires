@@ -91,7 +91,26 @@ function plugin_archires_install() {
       $update = true;
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
    }
+   
+   //Do One time on 0.80
+	$query_="SELECT *
+			FROM `glpi_plugin_archires_profiles` ";
+	$result_=$DB->query($query_);
+	if ($DB->numrows($result_)>0) {
 
+		while ($data=$DB->fetch_array($result_)) {
+			$query="UPDATE `glpi_plugin_archires_profiles`
+					SET `profiles_id` = '".$data["id"]."'
+					WHERE `id` = '".$data["id"]."';";
+			$result=$DB->query($query);
+
+		}
+	}
+   
+   $query="ALTER TABLE `glpi_plugin_archires_profiles`
+            DROP `name` ;";
+   $result=$DB->query($query);
+   
    if ($update) {
       Plugin::migrateItemType(array(3000 => 'PluginArchiresLocationQuery',
                                     3001 => 'PluginArchiresNetworkEquipmentQuery',
@@ -189,6 +208,7 @@ function plugin_archires_getDatabaseRelations() {
                                                             "glpi_plugin_archires_networkequipmentqueries"=> "plugin_archires_views_id",
                                                             "glpi_plugin_archires_appliancequeries" => "plugin_archires_views_id"),
                      "glpi_plugin_appliances_appliances" => array("glpi_plugin_archires_appliancequeries" => "appliances_id"),
+                     "glpi_profiles" => array("glpi_plugin_addressing_profiles" => "profiles_id"),
                      "glpi_networkinterfaces" => array("glpi_plugin_archires_networkinterfacecolors" => "networkinterfaces_id"));
    } else {
       return array();
@@ -411,7 +431,7 @@ function plugin_headings_archires($item,$withtemplate=0) {
    switch ($type) {
       case 'Profile' :
          $ArchiresProfile = new PluginArchiresProfile();
-         if ($ArchiresProfile->GetfromDB($ID) || $ArchiresProfile->createAccess($item)) {
+         if ($ArchiresProfile->getFromDBByProfile($ID) || $ArchiresProfile->createAccess($item)) {
             $ArchiresProfile->showForm($item->getField('id'),
                                        array('target' => $CFG_GLPI["root_doc"]."/plugins/archires/front/profile.form.php"));
          }
