@@ -54,6 +54,11 @@ class PluginArchiresProfile extends CommonDBTM {
    }
    
    //if profile deleted
+	static function purgeProfiles(Profile $prof) {
+      $plugprof = new self();
+      $plugprof->cleanProfiles($prof->getField("id"));
+   }
+   
 	function cleanProfiles($ID) {
 
 		$query = "DELETE 

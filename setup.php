@@ -46,7 +46,11 @@ function plugin_init_archires() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
 
    $PLUGIN_HOOKS['change_profile']['archires'] = array('PluginArchiresProfile','changeProfile');
-
+   
+   if (class_exists('PluginArchiresProfile')) { // only if plugin activated
+      $PLUGIN_HOOKS['pre_item_purge']['archires'] = array('Profile'=>array('PluginArchiresProfile', 'cleanProfiles'));
+   }
+   
    if (isset($_SESSION["glpiID"])) {
       if (plugin_archires_haveRight("archires","r")) {
          $PLUGIN_HOOKS['menu_entry']['archires'] = 'front/archires.php';
@@ -100,8 +104,6 @@ function plugin_init_archires() {
       if (plugin_archires_haveRight("archires","w") || haveRight("config","w")) {
          $PLUGIN_HOOKS['config_page']['archires'] = 'front/config.form.php';
       }
-      $PLUGIN_HOOKS['pre_item_purge']['archires'] = 'plugin_pre_item_purge_archires';
-
    }
 }
 
