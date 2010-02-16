@@ -292,21 +292,6 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
    return "";
 }
 
-
-// Hook done on delete item case
-
-function plugin_pre_item_purge_archires($item) {
-
-   switch (get_class($item)) {
-      case 'Profile' :
-         // Manipulate data if needed
-         $PluginArchiresProfile=new PluginArchiresProfile;
-         $PluginArchiresProfile->cleanProfiles($item->getField('id'));
-         break;
-   }
-}
-
-
 ////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////
 
 function plugin_archires_MassiveActions($type) {
