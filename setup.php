@@ -46,10 +46,7 @@ function plugin_init_archires() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
 
    $PLUGIN_HOOKS['change_profile']['archires'] = array('PluginArchiresProfile','changeProfile');
-   
-   if (class_exists('PluginArchiresProfile')) { // only if plugin activated
-      $PLUGIN_HOOKS['pre_item_purge']['archires'] = array('Profile'=>array('PluginArchiresProfile', 'cleanProfiles'));
-   }
+   $PLUGIN_HOOKS['pre_item_purge']['archires'] = array('Profile'=>array('PluginArchiresProfile', 'cleanProfiles'));
    
    if (isset($_SESSION["glpiID"])) {
       if (plugin_archires_haveRight("archires","r")) {
