@@ -88,7 +88,7 @@ if (isset($_POST["add"])) {
       $_SESSION['glpi_tab'] = $_GET['onglet'];
    }
 
-   commonHeader($LANG['plugin_archires']['title'][3],$_SERVER["PHP_SELF"],"plugins","archires","view");
+   commonHeader($LANG['plugin_archires']['title'][3],'',"plugins","archires","view");
 
    $PluginArchiresView->showForm($_GET["id"]);
 

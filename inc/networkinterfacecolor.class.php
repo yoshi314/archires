@@ -159,10 +159,10 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                }
 
                echo "<a onclick= \"if (markCheckboxes('massiveaction_form_networkinterface_color')) ".
-                     "return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".
+                     "return false;\" href='#'>".
                      $LANG['buttons'][18]."</a>";
                echo " - <a onclick= \"if (unMarkCheckboxes('massiveaction_form_networkinterface_color')) ".
-                     "return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".
+                     "return false;\" href='#'>".
                      $LANG['buttons'][19]."</a> ";
                echo "<input type='submit' name='delete_color_networkinterface' value=\"".
                      $LANG['buttons'][6]."\" class='submit'></td></tr>";

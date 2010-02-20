@@ -208,10 +208,10 @@ class PluginArchiresQueryType extends CommonDBTM {
                   echo "<td colspan='3' class='center'>";
                }
 
-               echo "<a onclick= \"if (markCheckboxes('massiveaction_form$rand')) return false;\" href='".
-                     $_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
-               echo " - <a onclick= \"if (unMarkCheckboxes('massiveaction_form$rand')) return false;\" href='".
-                     $_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
+               echo "<a onclick= \"if (markCheckboxes('massiveaction_form$rand')) return false;\" 
+                     href='#'>".$LANG['buttons'][18]."</a>";
+               echo " - <a onclick= \"if (unMarkCheckboxes('massiveaction_form$rand')) return false;\" 
+                     href='#'>".$LANG['buttons'][19]."</a> ";
                echo "<input type='submit' name='deletetype' value=\"".$LANG['buttons'][6]."\" class='submit'>";
                echo "</td></tr>";
             }

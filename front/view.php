@@ -36,7 +36,7 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-commonHeader($LANG['plugin_archires']['title'][3],$_SERVER["PHP_SELF"],"plugins","archires","view");
+commonHeader($LANG['plugin_archires']['title'][3],'',"plugins","archires","view");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
    PluginArchiresProfile::checkRight("archires","r");

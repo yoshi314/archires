@@ -50,7 +50,7 @@ if (isset($_GET["displayview"])) {
                $obj->fields["id"]."&querytype=".$_GET["querytype"]."&plugin_archires_views_id=".$_GET["plugin_archires_views_id"]);
 
 } else {
-   commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires");
+   commonHeader($LANG['plugin_archires']['title'][0],'',"plugins","archires");
 
    $obj->getFromDB($_GET["id"]);
    $object_view = $obj->fields["plugin_archires_views_id"];

@@ -125,7 +125,7 @@ if ($plugin->isActivated("archires")) {
       glpi_header($_SERVER['HTTP_REFERER']);
 
    } else {
-      commonHeader($LANG['plugin_archires']['title'][0], $_SERVER['PHP_SELF'], "plugins",
+      commonHeader($LANG['plugin_archires']['title'][0], '', "plugins",
                    "archires", "summary");
 
       $PluginArchiresImageItem->showConfigForm();
@@ -140,7 +140,7 @@ if ($plugin->isActivated("archires")) {
    }
 
 } else {
-   commonHeader($LANG["common"][12],$_SERVER['PHP_SELF'],"config","plugins");
+   commonHeader($LANG["common"][12],'',"config","plugins");
    echo "<div align='center'><br><br>";
    echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
    echo "<b>Please activate the plugin</b></div>";

@@ -157,10 +157,10 @@ class PluginArchiresStateColor extends CommonDBTM {
                   echo "<td colspan='4' class='center'>";
 
                echo "<a onclick= \"if (markCheckboxes ('massiveaction_form_state_color')) ".
-                     "return false;\" href='".$_SERVER['PHP_SELF']."?select=all'>".
+                     "return false;\" href='#'>".
                      $LANG['buttons'][18]."</a>";
                echo " - <a onclick= \"if (unMarkCheckboxes ('massiveaction_form_state_color')) ".
-                     "return false;\" href='".$_SERVER['PHP_SELF']."?select=none'>".
+                     "return false;\" href='#'>".
                      $LANG['buttons'][19]."</a> ";
                echo "<input type='submit' name='delete_color_state' value=\"".$LANG['buttons'][6].
                      "\" class='submit'></td></tr>";

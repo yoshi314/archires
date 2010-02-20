@@ -188,10 +188,10 @@ class PluginArchiresImageItem extends CommonDBTM {
             } else {
                echo "<td colspan='4' class='center'>";
             }
-            echo "<a onclick= \"if (markCheckboxes ('massiveaction_form')) return false;\" href='".
-                  $_SERVER['PHP_SELF']."?select=all'>".$LANG['buttons'][18]."</a>";
-            echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form') ) return false;\" href='".
-                  $_SERVER['PHP_SELF']."?select=none'>".$LANG['buttons'][19]."</a> ";
+            echo "<a onclick= \"if (markCheckboxes ('massiveaction_form')) return false;\" 
+                  href='#'>".$LANG['buttons'][18]."</a>";
+            echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form') ) return false;\" 
+                  href='#'>".$LANG['buttons'][19]."</a> ";
             echo "<input type='submit' name='delete' value=\"".$LANG['buttons'][6]."\" class='submit'>";
             echo "</td></tr>";
             echo "</table>";

@@ -36,7 +36,7 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-commonHeader($LANG['plugin_archires']['title'][0],$_SERVER["PHP_SELF"],"plugins","archires","summary");
+commonHeader($LANG['plugin_archires']['title'][0],'',"plugins","archires","summary");
 
 if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
    echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
