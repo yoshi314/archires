@@ -112,7 +112,7 @@ global $LANG;
                 'version'        => '1.8.0',
                 'author'         => 'Xavier Caillaud',
                 'homepage'       => 'https://forge.indepnet.net/projects/show/archires',
-                'minGlpiVersion' => '0.80');
+                'minGlpiVersion' => '0.78');
 }
 
 
