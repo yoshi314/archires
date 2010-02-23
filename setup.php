@@ -47,7 +47,7 @@ function plugin_init_archires() {
 
    $PLUGIN_HOOKS['change_profile']['archires'] = array('PluginArchiresProfile','changeProfile');
    $PLUGIN_HOOKS['pre_item_purge']['archires'] = array('Profile'=>array('PluginArchiresProfile', 'cleanProfiles'));
-   
+
    if (isset($_SESSION["glpiID"])) {
       if (plugin_archires_haveRight("archires","r")) {
          $PLUGIN_HOOKS['menu_entry']['archires'] = 'front/archires.php';
@@ -120,10 +120,10 @@ global $LANG;
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_archires_check_prerequisites() {
 
-   if (GLPI_VERSION >= 0.80) {
+   if (GLPI_VERSION >= 0.78) {
       return true;
    } else {
-      echo "GLPI version not compatible need 0.80";
+      echo "GLPI version not compatible need 0.78";
    }
 }
 
