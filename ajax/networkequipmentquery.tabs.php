@@ -28,7 +28,7 @@
  --------------------------------------------------------------------------
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi & LASSON Nelly
-// Purpose of file: plugin archires v1.8.0 - GLPI 0.80
+// Purpose of file: plugin archires v1.8.0 - GLPI 0.78
 // ----------------------------------------------------------------------
  */
  
