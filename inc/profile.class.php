@@ -121,7 +121,7 @@ class PluginArchiresProfile extends CommonDBTM {
 
       if (!plugin_archires_haveRight($module, $right)) {
          // Gestion timeout session
-         if (!isset ($_SESSION["glpiID"])) {
+         if (!getLoginUserID()) {
             glpi_header($CFG_GLPI["root_doc"] . "/index.php");
             exit ();
          }

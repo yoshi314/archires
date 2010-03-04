@@ -56,17 +56,17 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->delete($_POST);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+   glpi_header(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->restore($_POST);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+   glpi_header(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->delete($_POST,1);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+   glpi_header(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');

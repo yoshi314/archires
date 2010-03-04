@@ -55,17 +55,17 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->delete($_POST);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+   glpi_header(getItemTypeSearchURL('PluginArchiresLocationQuery'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->restore($_POST);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+   glpi_header(getItemTypeSearchURL('PluginArchiresLocationQuery'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->delete($_POST,1);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+   glpi_header(getItemTypeSearchURL('PluginArchiresLocationQuery'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');

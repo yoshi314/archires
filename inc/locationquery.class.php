@@ -308,7 +308,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
          }
          if ($this->fields["locations_id"]!="-1") {
             $query .= " AND `lc`.`id` = `$itemtable`.`locations_id` ";
-            if ($this->fields["child"]) {
+            if ($this->fields["child"] && !empty($this->fields["locations_id"])) {
                $query .= " AND " . getRealQueryForTreeItem('glpi_locations',
                                                            $this->fields["locations_id"],
                                                            "`lc`.`id`");

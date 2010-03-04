@@ -55,17 +55,17 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->delete($_POST);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+   glpi_header(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->restore($_POST);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+   glpi_header(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->delete($_POST,1);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+   glpi_header(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');

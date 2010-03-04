@@ -47,7 +47,7 @@ function plugin_init_archires() {
    $PLUGIN_HOOKS['change_profile']['archires'] = array('PluginArchiresProfile','changeProfile');
    $PLUGIN_HOOKS['pre_item_purge']['archires'] = array('Profile'=>array('PluginArchiresProfile', 'cleanProfiles'));
 
-   if (isset($_SESSION["glpiID"])) {
+   if (getLoginUserID()) {
       if (plugin_archires_haveRight("archires","r")) {
          $PLUGIN_HOOKS['menu_entry']['archires'] = 'front/archires.php';
          //summary
