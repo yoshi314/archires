@@ -218,7 +218,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       echo "<select name='locations_id'>";
       echo "<option value='0'>-----</option>\n";
-      echo "<option value='-1'>".$LANG['plugin_archires'][30]."</option>";
+      echo "<option option value='-1' ".
+                        ($locations_id=="-1"?" selected ":"").">".$LANG['plugin_archires'][30]."</option>";
 
       if ($result0 = $DB->query($query0)) {
          while ($ligne0 = mysql_fetch_array($result0)) {
@@ -320,7 +321,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
             $query .= " AND `lc`.`id` = `$itemtable`.`locations_id`";
 
             if ($this->fields["child"]=='0') { // Pas d'enfants'
-               $query .= " AND `lc`.`level`==1";
+               $query .= " AND `lc`.`level`=1 ";
             }
             // else, Si enfants => pas de restriction
          }
