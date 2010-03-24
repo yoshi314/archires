@@ -74,7 +74,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       $tab[1]['linkfield'] = 'name';
       $tab[1]['name']      = $LANG['plugin_archires']['search'][1];
       $tab[1]['datatype']  = 'itemlink';
-
+      $tab[1]['itemlink_type'] = $this->getType();
+      
       $tab[2]['table']     = $this->getTable();
       $tab[2]['field']     = 'child';
       $tab[2]['linkfield'] = 'child';

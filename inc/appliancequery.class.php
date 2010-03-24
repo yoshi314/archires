@@ -73,7 +73,8 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       $tab[1]['linkfield'] = 'name';
       $tab[1]['name']      = $LANG['plugin_archires']['search'][1];
       $tab[1]['datatype']  = 'itemlink';
-
+      $tab[1]['itemlink_type'] = $this->getType();
+      
       $tab[2]['table']     = 'glpi_plugin_appliances_appliances';
       $tab[2]['field']     = 'name';
       $tab[2]['linkfield'] = 'appliances_id';
