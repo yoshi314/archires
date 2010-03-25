@@ -388,8 +388,6 @@ function plugin_get_headings_archires($item,$withtemplate) {
          return array(1 => $LANG['plugin_archires']['title'][0]);
       }
 
-   } else if (get_class($item) == 'Config') {
-      return array(1 => $LANG['plugin_archires']['title'][0]);
    }
    return false;
 }
@@ -398,7 +396,7 @@ function plugin_get_headings_archires($item,$withtemplate) {
 // Define headings actions added by the plugin
 function plugin_headings_actions_archires($item) {
 
-   if (in_array(get_class($item),array('Profile','Config')) && $item->getField('interface')!='helpdesk') {
+   if (in_array(get_class($item),array('Profile')) && $item->getField('interface')!='helpdesk') {
       return array(1 => "plugin_headings_archires");
    }
    return false;
