@@ -175,7 +175,7 @@ class PluginArchiresStateColor extends CommonDBTM {
             $this->dropdownState($used);
             echo "</td>";
             echo "<td><input type='text' name='color'>";
-            echo "<a href='http://www.graphviz.org/doc/info/colors.html' target='_blank'>";
+            echo "&nbsp;<a href='http://www.graphviz.org/doc/info/colors.html' target='_blank'>";
             echo "<img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"".
                   "cleanhide('comments_state')\" onmouseover=\"cleandisplay('comments_state')\">";
             echo "</a><span class='over_link' id='comments_state'>".

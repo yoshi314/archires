@@ -176,11 +176,11 @@ class PluginArchiresVlanColor extends CommonDBTM {
             $this->dropdownVlan($used);
             echo "</td>";
             echo "<td><input type='text' name='color'>";
-            echo "<a href='http://www.graphviz.org/doc/info/colors.html' target='_blank'>";
+            echo "&nbsp;<a href='http://www.graphviz.org/doc/info/colors.html' target='_blank'>";
             echo "<img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"".
                   "cleanhide('comments_vlan')\" onmouseover=\"cleandisplay('comments_vlan')\">";
             echo "</a><span class='over_link' id='comments_vlan'>".
-                  nl2br($LANG['plugin_archires']['setup'][23])."</span>";
+                  nl2br($LANG['plugin_archires']['setup'][12])."</span>";
             echo "<td class='center'><input type='submit' name='add_color_vlan' value=\"".
                   $LANG['buttons'][2]."\" class='submit'></td></tr>";
             echo "</table>";
