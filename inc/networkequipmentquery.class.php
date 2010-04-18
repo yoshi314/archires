@@ -44,16 +44,13 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       return $LANG['plugin_archires']['title'][5];
    }
 
-
    function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
-
    function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
-
 
    function cleanDBonPurge() {
 
@@ -61,8 +58,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       $querytype->clean();
    }
 
-
-  function getSearchOptions() {
+   function getSearchOptions() {
       global $LANG;
 
       $tab = array();
@@ -118,6 +114,16 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       return $tab;
    }
 
+   function prepareInputForAdd($input) {
+		global $LANG;
+		
+		if (!isset ($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
+			addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
+			return array ();
+		}
+
+		return $input;
+	}
 
    function defineTabs($options=array()) {
       global $LANG;
@@ -132,7 +138,6 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       }
       return $ong;
    }
-
 
    function showForm ($ID, $options=array()) {
     global $CFG_GLPI,$DB,$LANG;
@@ -193,7 +198,6 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
       return true;
    }
-
 
    function Query ($ID,$PluginArchiresView,$for) {
       global $DB,$CFG_GLPI,$LANG;

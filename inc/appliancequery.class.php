@@ -117,7 +117,17 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
    return $tab;
    }
 
+   function prepareInputForAdd($input) {
+		global $LANG;
+		
+		if (!isset ($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
+			addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
+			return array ();
+		}
 
+		return $input;
+	}
+	
    function defineTabs($options=array()) {
       global $LANG;
 

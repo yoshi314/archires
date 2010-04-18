@@ -44,7 +44,6 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       return $LANG['plugin_archires']['title'][4];
    }
 
-
    function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
@@ -54,15 +53,13 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       return plugin_archires_haveRight('archires', 'r');
    }
 
-
    function cleanDBonPurge() {
 
       $querytype = new PluginArchiresQueryType;
       $querytype->clean();
    }
 
-
-  function getSearchOptions() {
+   function getSearchOptions() {
       global $LANG;
 
       $tab = array();
@@ -124,6 +121,16 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       return $tab;
    }
 
+   function prepareInputForAdd($input) {
+		global $LANG;
+		
+		if (!isset ($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
+			addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
+			return array ();
+		}
+
+		return $input;
+	}
 
    function defineTabs($options=array()) {
       global $LANG;
@@ -139,9 +146,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       return $ong;
    }
 
-
    function showForm ($ID, $options=array()) {
-    global $CFG_GLPI,$DB,$LANG;
+      global $CFG_GLPI,$DB,$LANG;
 
       if ($ID > 0) {
        $this->check($ID,'r');
@@ -202,7 +208,6 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       return true;
    }
 
-
    function dropdownLocation($object,$ID) {
       global $DB,$CFG_GLPI,$LANG;
 
@@ -245,7 +250,6 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       }
       echo "</select>";
    }
-
 
    function Query ($ID,$PluginArchiresView,$for) {
       global $DB,$CFG_GLPI,$LANG;

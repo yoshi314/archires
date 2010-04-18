@@ -53,6 +53,7 @@ $LANG['plugin_archires'][0] = "Показать";
 $LANG['plugin_archires'][1] = "See all views";
 $LANG['plugin_archires'][2] = "Показывать тип";
 $LANG['plugin_archires'][3] = "Показывать объекты";
+$LANG['plugin_archires'][4] = "Thanks to specify a default used view";
 $LANG['plugin_archires'][6] = "Компьютеры";
 $LANG['plugin_archires'][7] = "Сетевые устройства";
 $LANG['plugin_archires'][8] = "Принтеры";

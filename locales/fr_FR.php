@@ -53,6 +53,7 @@ $LANG['plugin_archires'][0] = "Afficher";
 $LANG['plugin_archires'][1] = "Voir toutes les vues";
 $LANG['plugin_archires'][2] = "Afficher des types de matériel particulier";
 $LANG['plugin_archires'][3] = "Affichage des matériels";
+$LANG['plugin_archires'][4] = "Merci de spécifier une vue utilisée par défaut";
 $LANG['plugin_archires'][6] = "Ordinateurs";
 $LANG['plugin_archires'][7] = "Matériel réseau";
 $LANG['plugin_archires'][8] = "Imprimantes";
