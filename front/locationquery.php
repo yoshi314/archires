@@ -38,7 +38,9 @@ include (GLPI_ROOT."/inc/includes.php");
 commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][4],
              '',"plugins","archires","location");
 
-if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
+$PluginArchiresLocationQuery=new PluginArchiresLocationQuery();
+
+if ($PluginArchiresLocationQuery->canView() || haveRight("config","w")) {
    Search::show("PluginArchiresLocationQuery");
 
 } else {

@@ -37,7 +37,9 @@ include (GLPI_ROOT."/inc/includes.php");
 
 commonHeader($LANG['plugin_archires']['title'][0],'',"plugins","archires","summary");
 
-if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
+$PluginArchiresArchires = new PluginArchiresArchires();
+
+if ($PluginArchiresArchires->canView() || haveRight("config","w")) {
    echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
    echo "<tr><th>".$LANG['plugin_archires']['menu'][0]."</th></tr>";
 

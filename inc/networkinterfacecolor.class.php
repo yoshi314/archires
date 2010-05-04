@@ -37,7 +37,15 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
+   
+   function canCreate() {
+      return plugin_archires_haveRight('archires', 'w');
+   }
 
+   function canView() {
+      return plugin_archires_haveRight('archires', 'r');
+   }
+   
    function getFromDBbyNetworkInterface($networkinterfaces_id) {
       global $DB;
 

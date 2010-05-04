@@ -104,7 +104,6 @@ class PluginArchiresProfile extends CommonDBTM {
       'profiles_id' => $ID));
    }
 
-
    static function changeProfile() {
 
       $prof = new self();
@@ -114,22 +113,7 @@ class PluginArchiresProfile extends CommonDBTM {
          unset($_SESSION["glpi_plugin_archires_profile"]);
       }
    }
-
-
-   static function checkRight($module, $right) {
-      global $CFG_GLPI;
-
-      if (!plugin_archires_haveRight($module, $right)) {
-         // Gestion timeout session
-         if (!getLoginUserID()) {
-            glpi_header($CFG_GLPI["root_doc"] . "/index.php");
-            exit ();
-         }
-         displayRightError();
-      }
-   }
-
-
+   
    //profiles modification
    function showForm($ID, $options=array()) {
       global $LANG;

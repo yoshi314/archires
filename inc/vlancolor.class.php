@@ -37,7 +37,15 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresVlanColor extends CommonDBTM {
+   
+   function canCreate() {
+      return plugin_archires_haveRight('archires', 'w');
+   }
 
+   function canView() {
+      return plugin_archires_haveRight('archires', 'r');
+   }
+   
    function getFromDBbyVlan($vlan) {
       global $DB;
 

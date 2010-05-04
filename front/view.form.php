@@ -78,7 +78,8 @@ if (isset($_POST["add"])) {
    glpi_header($_SERVER['HTTP_REFERER']);
 
 } else {
-   PluginArchiresProfile::checkRight("archires","r");
+
+   $PluginArchiresView->checkGlobal("r");
 
    if (!isset($_SESSION['glpi_tab'])) {
       $_SESSION['glpi_tab'] = 1;

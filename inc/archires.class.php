@@ -37,7 +37,16 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresArchires extends CommonDBTM {
+   
+   function canCreate() {
+      return plugin_archires_haveRight('archires', 'w');
+   }
 
+
+   function canView() {
+      return plugin_archires_haveRight('archires', 'r');
+   }
+   
    function showAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
       global $DB,$LANG,$CFG_GLPI;
 

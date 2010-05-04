@@ -37,7 +37,15 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresQueryType extends CommonDBTM {
+   
+   function canCreate() {
+      return plugin_archires_haveRight('archires', 'w');
+   }
 
+   function canView() {
+      return plugin_archires_haveRight('archires', 'r');
+   }
+   
    function getFromDBbyType($itemtype, $type,$type_query,$query_ID) {
       global $DB;
 
@@ -60,7 +68,6 @@ class PluginArchiresQueryType extends CommonDBTM {
       }
       return false;
    }
-
 
    function addType($querytype,$type,$itemtype,$plugin_archires_queries_id) {
       global $DB;
@@ -91,11 +98,9 @@ class PluginArchiresQueryType extends CommonDBTM {
       }
    }
 
-
    function deleteType($ID) {
       $this->delete(array('id'=>$ID));
    }
-
 
    function queryTypeCheck($querytype,$plugin_archires_views_id,$val) {
       global $DB;
@@ -130,14 +135,15 @@ class PluginArchiresQueryType extends CommonDBTM {
       } else if ($type == 'PluginArchiresApplianceQuery') {
          $page = "appliancequery";
       }
+      
+      $PluginArchiresArchires = new PluginArchiresArchires();
 
-      if (plugin_archires_haveRight("archires","w")) {
+      if ($this->canCreate()) {
          echo "<form method='post'  action=\"./".$page.".form.php\">";
          echo "<table class='tab_cadre' cellpadding='5' width='34%'><tr><th colspan='2'>";
          echo $LANG['plugin_archires'][2]." : </th></tr>";
          echo "<tr class='tab_bg_1'><td>";
 
-         $PluginArchiresArchires = new PluginArchiresArchires();
          $PluginArchiresArchires->showAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
 
          echo "</td>";
@@ -182,7 +188,6 @@ class PluginArchiresQueryType extends CommonDBTM {
                if ($number==1) {
                   echo "<tr class='tab_bg_1'>";
                }
-               $PluginArchiresArchires = new PluginArchiresArchires();
                $item = new $ligne["itemtype"]();
                echo "<td>".$item->getTypeName()."</td>";
                $class = $ligne["itemtype"]."Type";
@@ -199,7 +204,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
             }
 
-            if (plugin_archires_haveRight("archires","w")) {
+            if ($this->canCreate()) {
                echo "<tr class='tab_bg_1'>";
                if ($number > 1) {
                   echo "<td colspan='6' class='center'>";

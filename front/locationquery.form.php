@@ -85,7 +85,7 @@ if (isset($_POST["add"])) {
       $_POST['type'] = $test[1];
       $_POST['itemtype'] = $test[0];
 
-      if (plugin_archires_haveRight("archires","w")) {
+      if ($PluginArchiresQueryType->canCreate()) {
          $PluginArchiresQueryType->addType('PluginArchiresLocationQuery',$_POST['type'],
                                            $_POST['itemtype'],$_POST['query']);
       }
@@ -93,7 +93,7 @@ if (isset($_POST["add"])) {
    glpi_header($_SERVER['HTTP_REFERER']);
 
 } else if (isset($_POST["deletetype"])) {
-   if (plugin_archires_haveRight("archires","w")) {
+   if ($PluginArchiresQueryType->canCreate()) {
       $PluginArchiresQueryType->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item"] as $key => $val) {
@@ -105,7 +105,8 @@ if (isset($_POST["add"])) {
    glpi_header($_SERVER['HTTP_REFERER']);
 
 } else {
-   PluginArchiresProfile::checkRight("archires","r");
+   
+   $PluginArchiresLocationQuery->checkGlobal("r");
 
    if (!isset($_SESSION['glpi_tab'])) {
       $_SESSION['glpi_tab'] = 1;

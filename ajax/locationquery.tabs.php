@@ -41,18 +41,19 @@ if (!isset($_POST["id"])) {
    exit();
 }
 
-PluginArchiresProfile::checkRight("archires","r");
+$LocationQuery = new PluginArchiresLocationQuery();
 
-$ApplianceQuery = new PluginArchiresLocationQuery();
+$LocationQuery->checkGlobal("r");
+
 $PluginArchiresQueryType = new PluginArchiresQueryType();
 $PluginArchiresView      = new PluginArchiresView();
 $PluginArchiresPrototype = new PluginArchiresPrototype();
 
-if ($_POST["id"] >0 && $ApplianceQuery->can($_POST["id"],'r')) {
+if ($_POST["id"] >0 && $LocationQuery->can($_POST["id"],'r')) {
    switch($_REQUEST['glpi_tab']) {
       case -1 :
          $PluginArchiresQueryType->showTypes('PluginArchiresLocationQuery',$_POST["id"]);
-         Plugin::displayAction($ApplianceQuery,$_REQUEST['glpi_tab']);
+         Plugin::displayAction($LocationQuery,$_REQUEST['glpi_tab']);
          break;
 
       case 2 :
@@ -73,8 +74,8 @@ if ($_POST["id"] >0 && $ApplianceQuery->can($_POST["id"],'r')) {
          break;
 
       default :
-         if (!Plugin::displayAction($ApplianceQuery,$_REQUEST['glpi_tab'])) {
-            $PluginArchiresQueryType->showTypes('PluginArchiresApplianceQuery',$_POST["id"]);
+         if (!Plugin::displayAction($LocationQuery,$_REQUEST['glpi_tab'])) {
+            $PluginArchiresQueryType->showTypes('PluginArchiresLocationQuery',$_POST["id"]);
          }
    }
 }

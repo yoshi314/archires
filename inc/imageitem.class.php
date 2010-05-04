@@ -37,7 +37,15 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresImageItem extends CommonDBTM {
+   
+   function canCreate() {
+      return plugin_archires_haveRight('archires', 'w');
+   }
 
+   function canView() {
+      return plugin_archires_haveRight('archires', 'r');
+   }
+   
    function getFromDBbyType($itemtype, $type) {
       global $DB;
 

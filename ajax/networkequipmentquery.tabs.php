@@ -41,9 +41,10 @@ if (!isset($_POST["id"])) {
    exit();
 }
 
-PluginArchiresProfile::checkRight("archires","r");
-
 $NetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery();
+
+$NetworkEquipmentQuery->checkGlobal("r");
+
 $PluginArchiresQueryType = new PluginArchiresQueryType();
 $PluginArchiresView      = new PluginArchiresView();
 $PluginArchiresPrototype = new PluginArchiresPrototype();
