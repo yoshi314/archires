@@ -98,9 +98,10 @@ class PluginArchiresProfile extends CommonDBTM {
       }
    }
 
-   function createAccess($Profile) {
+   function createAccess($ID) {
 
-      return $this->add(array('profiles_id' => $Profile->getField('id')));
+      $this->add(array(
+      'profiles_id' => $ID));
    }
 
    static function changeProfile() {

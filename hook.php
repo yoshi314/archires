@@ -407,15 +407,13 @@ function plugin_headings_actions_archires($item) {
 function plugin_headings_archires($item,$withtemplate=0) {
    global $CFG_GLPI;
 
-   $type = get_Class($item);
-   $ID = $item->getField('id');
-   switch ($type) {
+   $PluginArchiresProfile=new PluginArchiresProfile();
+   switch (get_class($item)) {
       case 'Profile' :
-         $ArchiresProfile = new PluginArchiresProfile();
-         if ($ArchiresProfile->getFromDBByProfile($ID) || $ArchiresProfile->createAccess($item)) {
-            $ArchiresProfile->showForm($item->getField('id'),
-                                       array('target' => $CFG_GLPI["root_doc"]."/plugins/archires/front/profile.form.php"));
-         }
+         case 'Profile' :
+         if (!$PluginArchiresProfile->getFromDBByProfile($item->getField('id')))
+            $PluginArchiresProfile->createAccess($item->getField('id'));
+         $PluginArchiresProfile->showForm($item->getField('id'), array('target' => $CFG_GLPI["root_doc"]."/plugins/archires/front/profile.form.php"));
          break;
    }
 
