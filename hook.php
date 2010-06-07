@@ -165,15 +165,14 @@ function plugin_archires_uninstall() {
                         "glpi_documents_items",
                         "glpi_bookmarks",
                         "glpi_logs");
-
-   foreach($tables_glpi as $table_glpi) {
-      $DB->query("DELETE
-                  FROM `$table_glpi`
-                  WHERE `itemtype` IN ('PluginArchiresLocationQuery',
-                                       'PluginArchiresNetworkEquipmentQuery',
-                                       'PluginArchiresApplianceQuery','PluginArchiresView'");
-   }
-//                  WHERE `itemtype` = 'PluginArchiresLocationQuery' OR `itemtype` = 'PluginArchiresNetworkEquipmentQuery' OR `itemtype` = 'PluginArchiresApplianceQuery' OR `itemtype` = 'PluginArchiresView';");
+   
+   foreach($tables_glpi as $table_glpi)
+		$DB->query("DELETE FROM `$table_glpi` 
+            WHERE `itemtype` = 'PluginArchiresLocationQuery' 
+            OR `itemtype` = 'PluginArchiresNetworkEquipmentQuery' 
+            OR `itemtype` = 'PluginArchiresApplianceQuery' 
+            OR `itemtype` = 'PluginArchiresView';");
+		
    return true;
 }
 
