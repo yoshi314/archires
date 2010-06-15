@@ -225,7 +225,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
 
       if ($number >0) {
          echo "<select name='networkinterfaces_id'>\n";
-         echo "<option value='0'>-----</option>\n";
+         echo "<option value='0'>".DROPDOWN_EMPTY_VALUE."</option>\n";
          echo "<option value='-1'>".$LANG['plugin_archires'][21]."</option>\n";
          while ($data= mysql_fetch_array($result)) {
             $output = $data["name"];

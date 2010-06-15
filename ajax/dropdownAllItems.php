@@ -65,7 +65,7 @@ if (isset($_POST["typetable"])) {
       $params['entity_restrict']=$_POST['entity_restrict'];
    }
 
-   $default = "<select name='".$_POST["myname"]."'><option value='0'>------</option></select>";
+   $default = "<select name='".$_POST["myname"]."'><option value='0'>".DROPDOWN_EMPTY_VALUE."</option></select>";
    ajaxDropdown($use_ajax,"/plugins/archires/ajax/dropdownValue.php",$params,$default,$rand);
 
    if (isset($_POST['value']) && $_POST['value'] >0) {

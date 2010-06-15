@@ -57,7 +57,7 @@ class PluginArchiresArchires extends CommonDBTM {
       echo "<table border='0'><tr><td>\n";
 
       echo "<select name='type' id='item_type$rand'>\n";
-      echo "<option value='0;0'>-----</option>\n";
+      echo "<option value='0;0'>".DROPDOWN_EMPTY_VALUE."</option>\n";
       
       foreach ($types as $type => $label) {
          $item = new $label();

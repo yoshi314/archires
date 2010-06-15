@@ -221,7 +221,7 @@ class PluginArchiresStateColor extends CommonDBTM {
 
       if ($number !="0") {
          echo "<select name='states_id'>\n";
-         echo "<option value='0'>-----</option>\n";
+         echo "<option value='0'>".DROPDOWN_EMPTY_VALUE."</option>\n";
          echo "<option value='-1'>".$LANG['plugin_archires'][15]."</option>\n";
          while ($data= mysql_fetch_array($result)) {
             $output = $data["name"];

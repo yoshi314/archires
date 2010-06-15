@@ -193,7 +193,7 @@ class PluginArchiresView extends CommonDBTM {
                 ORDER BY `name` ASC";
 
       echo "<select name='plugin_archires_views_id' size='1'> ";
-      echo "<option value='0'>-----</option>\n";
+      echo "<option value='0'>".DROPDOWN_EMPTY_VALUE."</option>\n";
       if ($result = $DB->query($query)) {
          while ($ligne= mysql_fetch_array($result)) {
             $view_name = $ligne["name"];

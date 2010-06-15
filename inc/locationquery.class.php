@@ -222,7 +222,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                 ORDER BY `entities_id`";
 
       echo "<select name='locations_id'>";
-      echo "<option value='0'>-----</option>\n";
+      echo "<option value='0'>".DROPDOWN_EMPTY_VALUE."</option>\n";
       echo "<option option value='-1' ".
                         ($locations_id=="-1"?" selected ":"").">".$LANG['plugin_archires'][30]."</option>";
 
