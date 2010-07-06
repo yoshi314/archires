@@ -45,7 +45,7 @@ function plugin_init_archires() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
 
    $PLUGIN_HOOKS['change_profile']['archires'] = array('PluginArchiresProfile','changeProfile');
-   $PLUGIN_HOOKS['pre_item_purge']['archires'] = array('Profile'=>array('PluginArchiresProfile', 'cleanProfiles'));
+   $PLUGIN_HOOKS['pre_item_purge']['archires'] = array('Profile'=>array('PluginArchiresProfile', 'purgeProfiles'));
 
    if (getLoginUserID()) {
       if (plugin_archires_haveRight("archires","r")) {

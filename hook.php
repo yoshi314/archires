@@ -90,7 +90,7 @@ function plugin_archires_install() {
       $update = true;
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/update-1.8.0.sql");
    }
-   
+
    if ($update) {
       $query_="SELECT *
             FROM `glpi_plugin_archires_profiles` ";
@@ -105,11 +105,11 @@ function plugin_archires_install() {
 
          }
       }
-      
+
       $query="ALTER TABLE `glpi_plugin_archires_profiles`
                DROP `name` ;";
       $result=$DB->query($query);
-  
+
       Plugin::migrateItemType(array(3000 => 'PluginArchiresLocationQuery',
                                     3001 => 'PluginArchiresNetworkEquipmentQuery',
                                     3002 => 'PluginArchiresApplianceQuery',
@@ -165,14 +165,14 @@ function plugin_archires_uninstall() {
                         "glpi_documents_items",
                         "glpi_bookmarks",
                         "glpi_logs");
-   
+
    foreach($tables_glpi as $table_glpi)
-		$DB->query("DELETE FROM `$table_glpi` 
-            WHERE `itemtype` = 'PluginArchiresLocationQuery' 
-            OR `itemtype` = 'PluginArchiresNetworkEquipmentQuery' 
-            OR `itemtype` = 'PluginArchiresApplianceQuery' 
+		$DB->query("DELETE FROM `$table_glpi`
+            WHERE `itemtype` = 'PluginArchiresLocationQuery'
+            OR `itemtype` = 'PluginArchiresNetworkEquipmentQuery'
+            OR `itemtype` = 'PluginArchiresApplianceQuery'
             OR `itemtype` = 'PluginArchiresView';");
-		
+
    return true;
 }
 

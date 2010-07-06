@@ -37,13 +37,13 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresProfile extends CommonDBTM {
-   
+
    static function getTypeName() {
       global $LANG;
 
       return $LANG['plugin_archires']['profile'][0];
    }
-   
+
    function canCreate() {
       return haveRight('profile', 'w');
    }
@@ -51,25 +51,26 @@ class PluginArchiresProfile extends CommonDBTM {
    function canView() {
       return haveRight('profile', 'r');
    }
-   
+
    //if profile deleted
 	static function purgeProfiles(Profile $prof) {
       $plugprof = new self();
       $plugprof->cleanProfiles($prof->getField("id"));
    }
-   
-	function cleanProfiles($ID) {
 
-		$query = "DELETE 
+   function cleanProfiles($ID) {
+      global $DB;
+
+		$query = "DELETE
 				FROM `".$this->getTable()."`
 				WHERE `profiles_id` = '$ID' ";
-		
+
 		$DB->query($query);
 	}
-	
+
 	function getFromDBByProfile($profiles_id) {
 		global $DB;
-		
+
 		$query = "SELECT * FROM `".$this->getTable()."`
 					WHERE `profiles_id` = '" . $profiles_id . "' ";
 		if ($result = $DB->query($query)) {
@@ -85,16 +86,16 @@ class PluginArchiresProfile extends CommonDBTM {
 		}
 		return false;
 	}
-   
+
    static function createFirstAccess($ID) {
-      
+
       $myProf = new self();
       if (!$myProf->getFromDBByProfile($ID)) {
 
          $myProf->add(array(
             'profiles_id' => $ID,
             'archires' => 'w'));
-            
+
       }
    }
 
@@ -113,7 +114,7 @@ class PluginArchiresProfile extends CommonDBTM {
          unset($_SESSION["glpi_plugin_archires_profile"]);
       }
    }
-   
+
    //profiles modification
    function showForm($ID, $options=array()) {
       global $LANG;
@@ -134,12 +135,12 @@ class PluginArchiresProfile extends CommonDBTM {
 		}
 
       $this->showFormHeader($options);
-      
+
       echo "<tr class='tab_bg_2'>";
-		
+
 		echo "<th colspan='2'>".$LANG['plugin_archires']['profile'][0]." ".
             $prof->fields["name"]."</th>";
-      
+
       echo "<td>".$LANG['plugin_archires']['profile'][3]." : </td><td>";
       if ($prof->fields['interface'] != 'helpdesk') {
          Profile::dropdownNoneReadWrite("archires",$this->fields["archires"],1,1,1);
@@ -147,11 +148,11 @@ class PluginArchiresProfile extends CommonDBTM {
          echo $LANG['profiles'][12]; // No access;
       }
       echo "</td>";
-      
+
       echo "</tr>";
-      
+
       echo "<input type='hidden' name='id' value=".$this->fields["id"].">";
-      
+
       $options['candel'] = false;
       $this->showFormButtons($options);
    }
