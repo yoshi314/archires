@@ -183,11 +183,10 @@ class PluginArchiresStateColor extends CommonDBTM {
             $this->dropdownState($used);
             echo "</td>";
             echo "<td><input type='text' name='color'>";
-            echo "&nbsp;<a href='http://www.graphviz.org/doc/info/colors.html' target='_blank'>";
-            echo "<img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"".
-                  "cleanhide('comments_state')\" onmouseover=\"cleandisplay('comments_state')\">";
-            echo "</a><span class='over_link' id='comments_state'>".
-                  nl2br($LANG['plugin_archires']['setup'][12])."</span>";
+            echo "&nbsp;";
+            showToolTip(nl2br($LANG['plugin_archires']['setup'][21]),
+                        array('link'=>'http://www.graphviz.org/doc/info/colors.html',
+                              'linktarget'=>'_blank'));
             echo "<td class='center'>";
             echo "<input type='submit' name='add_color_state' value=\"".$LANG['buttons'][2].
                   "\" class='submit'></td></tr>";

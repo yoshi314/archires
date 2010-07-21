@@ -185,11 +185,10 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             $this->dropdownNetworkInterface($used);
             echo "</td><td>";
             echo "<input type='text' name=\"color\">";
-            echo "&nbsp;<a href='http://www.graphviz.org/doc/info/colors.html' target='_blank'>";
-            echo "<img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"".
-                  "cleanhide('comments_networkinterface')\" onmouseover=\"cleandisplay('comments_networkinterface')\">";
-            echo "</a><span class='over_link' id='comments_networkinterface'>".
-                  nl2br($LANG['plugin_archires']['setup'][12])."</span>";
+            echo "&nbsp;";
+            showToolTip(nl2br($LANG['plugin_archires']['setup'][21]),
+                        array('link'=>'http://www.graphviz.org/doc/info/colors.html',
+                              'linktarget'=>'_blank'));
             echo "<td>";
             echo "<div align='center'><input type='submit' name='add_color_networkinterface' value=\"".
                   $LANG['buttons'][2]."\" class='submit' ></div></td></tr>";

@@ -368,10 +368,8 @@ class PluginArchiresView extends CommonDBTM {
          echo "selected ";
       }
       echo "value='1'>Neato</option>";
-      echo "</select> ";
-      echo "<img alt='' src='".$CFG_GLPI["root_doc"].
-         "/pics/aide.png' onmouseout=\"cleanhide('comments')\" onmouseover=\"cleandisplay('comments')\">";
-      echo "<span class='over_link' id='comments'>".nl2br($LANG['plugin_archires']['setup'][14])."</span>";
+      echo "</select>&nbsp;";
+      showToolTip(nl2br($LANG['plugin_archires']['setup'][14]));
       echo "</td>";
       echo "<td>".$LANG['plugin_archires']['setup'][15]." : </td>";
       echo "<td><select name='format'> ";

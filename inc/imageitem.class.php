@@ -126,12 +126,9 @@ class PluginArchiresImageItem extends CommonDBTM {
             echo "<option value='".$f."'>".$f."</option>";
          }
       }
-      echo "</select>";
+      echo "</select>&nbsp;";
       closedir($dir);
-      echo "<img alt='' src='".$CFG_GLPI["root_doc"]."/pics/aide.png' onmouseout=\"".
-            "cleanhide('commentsdropdown')\" onmouseover=\"cleandisplay('commentsdropdown')\">";
-      echo "<span class='over_link' id='commentsdropdown'>".
-            nl2br($LANG['plugin_archires']['setup'][21])."</span>";
+      showToolTip(nl2br($LANG['plugin_archires']['setup'][21]));
       echo "<td>";
       echo "<div align='center'><input type='submit' name='add' value=\"".$LANG['buttons'][2].
             "\" class='submit' ></div></td></tr>";			
