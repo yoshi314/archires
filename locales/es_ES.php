@@ -36,17 +36,12 @@ $title = "Arquitectura de Red";
 
 $LANG['plugin_archires']['title'][0] = "".$title."";
 $LANG['plugin_archires']['title'][1] = "Añadir una vista";
-$LANG['plugin_archires']['title'][2] = "Añadir una arquitectura por lugar";
 $LANG['plugin_archires']['title'][3] = "Vistas";
 $LANG['plugin_archires']['title'][4] = "location";
 $LANG['plugin_archires']['title'][5] = "networking device";
-$LANG['plugin_archires']['title'][6] = "Añadir arquitectura por equipo de red";
-$LANG['plugin_archires']['title'][7] = "Añadir arquitectura";
 $LANG['plugin_archires']['title'][8] = "appliance";
-$LANG['plugin_archires']['title'][9] = "Añadir una arquitectura por aplicativo";
 
 $LANG['plugin_archires']['menu'][0] = "Menú generál";
-$LANG['plugin_archires']['menu'][1] = "Adición de arquitectura";
 $LANG['plugin_archires']['menu'][2] = "Network architecture by";
 
 $LANG['plugin_archires'][0] = "Mostrar";
@@ -70,7 +65,6 @@ $LANG['plugin_archires'][18] = "Todoss los tipos";
 $LANG['plugin_archires'][19] = "Tipo de red";
 $LANG['plugin_archires'][20] = "Color";
 $LANG['plugin_archires'][21] = "Todos los tipos de red";
-$LANG['plugin_archires'][22] = "Leyenda";
 $LANG['plugin_archires'][23] = "Ver IP/Máscara";
 $LANG['plugin_archires'][24] = "Ver Descripción";
 $LANG['plugin_archires'][25] = "Ver el tipo de material";
@@ -86,7 +80,6 @@ $LANG['plugin_archires'][34] = "None";
 $LANG['plugin_archires'][35] = "Vlan";
 $LANG['plugin_archires'][36] = "Tous les VLANs";
 
-$LANG['plugin_archires']['search'][0] = "ID";
 $LANG['plugin_archires']['search'][1] = "Nombre";
 $LANG['plugin_archires']['search'][2] = "Lugar";
 $LANG['plugin_archires']['search'][3] = "Hijos";
@@ -97,15 +90,12 @@ $LANG['plugin_archires']['search'][7] = "Registro no encontrado";
 $LANG['plugin_archires']['search'][8] = "Aplicativos";
 
 $LANG['plugin_archires']['profile'][0] = "Gestión de los derechos";
-$LANG['plugin_archires']['profile'][2] = "Configuración";
 $LANG['plugin_archires']['profile'][3] = "Generar un gráfico";
 
 $LANG['plugin_archires']['setup'][2] = "Asociar las imágenes a los tipos de material";
 $LANG['plugin_archires']['setup'][8] = "Asociar los colores a los tipos de redes";
-$LANG['plugin_archires']['setup'][9] = "Windows";
-$LANG['plugin_archires']['setup'][10] = "Linux";
 $LANG['plugin_archires']['setup'][11] = "Tipo de servidor";
-$LANG['plugin_archires']['setup'][12] = "Utilizar este formato para introducir el color :<br> http://www.graphviz.org/doc/info/colors.html";
+$LANG['plugin_archires']['setup'][12] = "Utilizar este formato para introducir el color";
 $LANG['plugin_archires']['setup'][13] = "Motor de renderizado";
 $LANG['plugin_archires']['setup'][14] = "Con neato, los puertos no serań visibles";
 $LANG['plugin_archires']['setup'][15] = "Formato de la imagen";

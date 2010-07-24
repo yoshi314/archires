@@ -186,7 +186,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             echo "</td><td>";
             echo "<input type='text' name=\"color\">";
             echo "&nbsp;";
-            showToolTip(nl2br($LANG['plugin_archires']['setup'][21]),
+            showToolTip(nl2br($LANG['plugin_archires']['setup'][12]),
                         array('link'=>'http://www.graphviz.org/doc/info/colors.html',
                               'linktarget'=>'_blank'));
             echo "<td>";

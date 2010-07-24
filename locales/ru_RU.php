@@ -36,17 +36,12 @@ $title = "Структура сети";
 
 $LANG['plugin_archires']['title'][0] = "".$title."";
 $LANG['plugin_archires']['title'][1] = "Добавить вид";
-$LANG['plugin_archires']['title'][2] = "Добавить структуру сети по местонахождению";
 $LANG['plugin_archires']['title'][3] = "Виды";
 $LANG['plugin_archires']['title'][4] = "location";
 $LANG['plugin_archires']['title'][5] = "networking device";
-$LANG['plugin_archires']['title'][6] = "Добавить структуру сети по сетевым устройствам";
-$LANG['plugin_archires']['title'][7] = "Добавить структуру сети";
 $LANG['plugin_archires']['title'][8] = "appliance";
-$LANG['plugin_archires']['title'][9] = "Add Network architecture by appliance";
 
 $LANG['plugin_archires']['menu'][0] = "Сводка";
-$LANG['plugin_archires']['menu'][1] = "Добавить структуру сети";
 $LANG['plugin_archires']['menu'][2] = "Network architecture by";
 
 $LANG['plugin_archires'][0] = "Показать";
@@ -70,13 +65,13 @@ $LANG['plugin_archires'][18] = "Все типы";
 $LANG['plugin_archires'][19] = "Тип сети";
 $LANG['plugin_archires'][20] = "Цвет";
 $LANG['plugin_archires'][21] = "Все типы сетей";
-$LANG['plugin_archires'][22] = "Обозначения";
 $LANG['plugin_archires'][23] = "Показывать IP/Mask";
 $LANG['plugin_archires'][24] = "Показывать описание";
 $LANG['plugin_archires'][25] = "Показывать тип объекта";
 $LANG['plugin_archires'][26] = "Показывать статус объекта";
 $LANG['plugin_archires'][27] = "Статус";
 $LANG['plugin_archires'][28] = "Копировать";
+$LANG['plugin_archires'][29] = "See numbers";
 $LANG['plugin_archires'][33] = "See numbers";
 $LANG['plugin_archires'][30] = "Все местонахождения";
 $LANG['plugin_archires'][31] = "Показывать расположение";
@@ -86,7 +81,6 @@ $LANG['plugin_archires'][34] = "None";
 $LANG['plugin_archires'][35] = "Vlan";
 $LANG['plugin_archires'][36] = "Tous les VLANs";
 
-$LANG['plugin_archires']['search'][0] = "ID";
 $LANG['plugin_archires']['search'][1] = "Название";
 $LANG['plugin_archires']['search'][2] = "Местонахождение";
 $LANG['plugin_archires']['search'][3] = "Подчинённые";
@@ -97,15 +91,12 @@ $LANG['plugin_archires']['search'][7] = "Записей не найдено";
 $LANG['plugin_archires']['search'][8] = "Appliances";
 
 $LANG['plugin_archires']['profile'][0] = "Права настройки";
-$LANG['plugin_archires']['profile'][2] = "Настройка";
 $LANG['plugin_archires']['profile'][3] = "Формирование";
 
 $LANG['plugin_archires']['setup'][2] = "Назначить изображения типам объектов";
 $LANG['plugin_archires']['setup'][8] = "Назначить цвет для типа сети";
-$LANG['plugin_archires']['setup'][9] = "Windows";
-$LANG['plugin_archires']['setup'][10] = "Linux";
 $LANG['plugin_archires']['setup'][11] = "Тип сервера";
-$LANG['plugin_archires']['setup'][12] = "Используйте данный формат цвета :<br> http://www.graphviz.org/doc/info/colors.html";
+$LANG['plugin_archires']['setup'][12] = "Используйте данный формат цвета";
 $LANG['plugin_archires']['setup'][13] = "Rendering engine";
 $LANG['plugin_archires']['setup'][14] = "При использовании neato порты не отображаются";
 $LANG['plugin_archires']['setup'][15] = "Формат изображения";

@@ -185,7 +185,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
             echo "</td>";
             echo "<td><input type='text' name='color'>";
             echo "&nbsp;";
-            showToolTip(nl2br($LANG['plugin_archires']['setup'][21]),
+            showToolTip(nl2br($LANG['plugin_archires']['setup'][12]),
                         array('link'=>'http://www.graphviz.org/doc/info/colors.html',
                               'linktarget'=>'_blank'));
             echo "<td class='center'><input type='submit' name='add_color_vlan' value=\"".

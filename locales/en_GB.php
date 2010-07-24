@@ -36,17 +36,12 @@ $title = "Network Architecture";
 
 $LANG['plugin_archires']['title'][0] = "".$title."";
 $LANG['plugin_archires']['title'][1] = "Add view";
-$LANG['plugin_archires']['title'][2] = "Add Network architecture by location";
 $LANG['plugin_archires']['title'][3] = "Viewes";
 $LANG['plugin_archires']['title'][4] = "location";
 $LANG['plugin_archires']['title'][5] = "networking device";
-$LANG['plugin_archires']['title'][6] = "Add a network architecture by networking device";
-$LANG['plugin_archires']['title'][7] = "Add Network architecture";
 $LANG['plugin_archires']['title'][8] = "appliance";
-$LANG['plugin_archires']['title'][9] = "Add Network architecture by appliance";
 
 $LANG['plugin_archires']['menu'][0] = "Summary";
-$LANG['plugin_archires']['menu'][1] = "Adding Network architecture";
 $LANG['plugin_archires']['menu'][2] = "Network architecture by";
 
 $LANG['plugin_archires'][0] = "Display";
@@ -70,7 +65,6 @@ $LANG['plugin_archires'][18] = "All types";
 $LANG['plugin_archires'][19] = "Type of network";
 $LANG['plugin_archires'][20] = "Color";
 $LANG['plugin_archires'][21] = "All types of network";
-$LANG['plugin_archires'][22] = "Legend";
 $LANG['plugin_archires'][23] = "Display IP/Mask";
 $LANG['plugin_archires'][24] = "Display description";
 $LANG['plugin_archires'][25] = "Display items type";
@@ -86,7 +80,6 @@ $LANG['plugin_archires'][34] = "None";
 $LANG['plugin_archires'][35] = "VLAN";
 $LANG['plugin_archires'][36] = "Tous les VLANs";
 
-$LANG['plugin_archires']['search'][0] = "ID";
 $LANG['plugin_archires']['search'][1] = "Name";
 $LANG['plugin_archires']['search'][2] = "Location";
 $LANG['plugin_archires']['search'][3] = "Childs";
@@ -97,15 +90,13 @@ $LANG['plugin_archires']['search'][7] = "No recording found";
 $LANG['plugin_archires']['search'][8] = "Appliances";
 
 $LANG['plugin_archires']['profile'][0] = "Rights management";
-$LANG['plugin_archires']['profile'][2] = "Setup";
 $LANG['plugin_archires']['profile'][3] = "Generate a graph";
 
 $LANG['plugin_archires']['setup'][2] = "Associate images with types of material";
 $LANG['plugin_archires']['setup'][8] = "Associate colors with network types";
-$LANG['plugin_archires']['setup'][9] = "Windows";
-$LANG['plugin_archires']['setup'][10] = "Linux";
+
 $LANG['plugin_archires']['setup'][11] = "Type of server";
-$LANG['plugin_archires']['setup'][12] = "Please use this color format :<br> http://www.graphviz.org/doc/info/colors.html";
+$LANG['plugin_archires']['setup'][12] = "Please use this color format";
 $LANG['plugin_archires']['setup'][13] = "Rendering engine";
 $LANG['plugin_archires']['setup'][14] = "With neato, the sockets will not be displayed";
 $LANG['plugin_archires']['setup'][15] = "Image format";
