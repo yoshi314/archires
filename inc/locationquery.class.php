@@ -56,7 +56,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    function cleanDBonPurge() {
 
       $querytype = new PluginArchiresQueryType;
-      $querytype->clean();
+      $querytype->deleteByCriteria(array('plugin_archires_queries_id' => $this->fields['id']));
    }
 
    function getSearchOptions() {

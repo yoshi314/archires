@@ -108,13 +108,6 @@ if (isset($_POST["add"])) {
    
    $PluginArchiresLocationQuery->checkGlobal("r");
 
-   if (!isset($_SESSION['glpi_tab'])) {
-      $_SESSION['glpi_tab'] = 1;
-   }
-   if (isset($_GET['onglet'])) {
-      $_SESSION['glpi_tab'] = $_GET['onglet'];;
-   }
-
    commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][4],
                 '',"plugins","archires","location");
 

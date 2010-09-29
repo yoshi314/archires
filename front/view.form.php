@@ -81,13 +81,6 @@ if (isset($_POST["add"])) {
 
    $PluginArchiresView->checkGlobal("r");
 
-   if (!isset($_SESSION['glpi_tab'])) {
-      $_SESSION['glpi_tab'] = 1;
-   }
-   if (isset($_GET['onglet'])) {
-      $_SESSION['glpi_tab'] = $_GET['onglet'];
-   }
-
    commonHeader($LANG['plugin_archires']['title'][3],'',"plugins","archires","view");
 
    $PluginArchiresView->showForm($_GET["id"]);
