@@ -96,7 +96,7 @@ function plugin_archires_install() {
       $table = "glpi_plugin_archires_statecolors";
       $index = "state";
       if (isIndex($table, $index)) {
-         $query="DROP INDEX `$index` (`$index`)";
+         $query="ALTER TABLE `$table` DROP INDEX `$index`;";
          $result=$DB->query($query);
       }
       
