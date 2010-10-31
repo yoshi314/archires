@@ -92,6 +92,14 @@ function plugin_archires_install() {
    }
 
    if ($update) {
+   
+      $table = "glpi_plugin_archires_statecolors";
+      $index = "state";
+      if (isIndex($table, $index)) {
+         $query="DROP INDEX `$index` (`$index`)";
+         $result=$DB->query($query);
+      }
+      
       $query_="SELECT *
             FROM `glpi_plugin_archires_profiles` ";
       $result_=$DB->query($query_);
