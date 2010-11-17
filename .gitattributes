@@ -32,7 +32,7 @@ inc/querytype.class.php -text
 inc/statecolor.class.php -text
 inc/view.class.php -text
 inc/vlancolor.class.php -text
-locales/de_DE.php -text svneol=unset#unset
+locales/de_DE.php -text
 locales/en_GB.php -text
 locales/es_ES.php -text
 locales/fr_FR.php -text
