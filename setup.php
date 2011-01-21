@@ -92,7 +92,7 @@ function plugin_init_archires() {
       }
 
       // Headings
-      if (plugin_archires_haveRight("archires","r")) {
+      if (plugin_archires_haveRight("archires","r") || haveRight("config","w")) {
          $PLUGIN_HOOKS['headings']['archires']        = 'plugin_get_headings_archires';
          $PLUGIN_HOOKS['headings_action']['archires'] = 'plugin_headings_actions_archires';
       }
