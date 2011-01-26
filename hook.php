@@ -373,11 +373,11 @@ function plugin_archires_MassiveActionsProcess($data) {
             $item = new $data['itemtype']();
             foreach ($data["item"] as $key => $val) {
                if ($val==1) {
+                  
+                  $values["id"] = $key;
+                  $values["entities_id"] = $data['entities_id'];
+                  $item->update($values);
 
-                  $query="UPDATE `".$item->getTable()."`
-                        SET `entities_id` = '".$data['entities_id']."'
-                        WHERE `id` = '$key'";
-                  $DB->query($query);
                }
             }
          }

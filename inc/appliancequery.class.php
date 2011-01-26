@@ -70,48 +70,40 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
       $tab[1]['table']     = $this->getTable();
       $tab[1]['field']     = 'name';
-      $tab[1]['linkfield'] = 'name';
       $tab[1]['name']      = $LANG['plugin_archires']['search'][1];
       $tab[1]['datatype']  = 'itemlink';
       $tab[1]['itemlink_type'] = $this->getType();
       
       $tab[2]['table']     = 'glpi_plugin_appliances_appliances';
       $tab[2]['field']     = 'name';
-      $tab[2]['linkfield'] = 'appliances_id';
       $tab[2]['name']      = $LANG['plugin_archires']['search'][8];
 
       $tab[3]['table']     = 'glpi_networks';
       $tab[3]['field']     = 'name';
-      $tab[3]['linkfield'] = 'networks_id';
       $tab[3]['name']      = $LANG['plugin_archires']['search'][4];
 
       $tab[4]['table']     = 'glpi_states';
       $tab[4]['field']     = 'name';
-      $tab[4]['linkfield'] = 'states_id';
       $tab[4]['name']      = $LANG['plugin_archires']['search'][5];
 
       $tab[5]['table']     = 'glpi_groups';
       $tab[5]['field']     = 'name';
-      $tab[5]['linkfield'] = 'groups_id';
       $tab[5]['name']      = $LANG['common'][35];
 
       $tab[6]['table']     = 'glpi_vlans';
       $tab[6]['field']     = 'name';
-      $tab[6]['linkfield'] = 'vlans_id';
       $tab[6]['name']      = $LANG['networking'][56];
 
       $tab[7]['table']     = 'glpi_plugin_archires_views';
       $tab[7]['field']     = 'name';
-      $tab[7]['linkfield'] = 'plugin_archires_views_id';
       $tab[7]['name']      = $LANG['plugin_archires']['setup'][20];
 
-      $tab[30]['table'] = $this->getTable();
-      $tab[30]['field'] = 'id';
-      $tab[30]['name']  =$LANG['common'][2];
+      $tab[30]['table']    = $this->getTable();
+      $tab[30]['field']    = 'id';
+      $tab[30]['name']     = $LANG['common'][2];
 
       $tab[80]['table']     = 'glpi_entities';
       $tab[80]['field']     = 'completename';
-      $tab[80]['linkfield'] = 'entities_id';
       $tab[80]['name']      = $LANG['entity'][0];
 
    return $tab;

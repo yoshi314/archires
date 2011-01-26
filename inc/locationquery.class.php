@@ -68,54 +68,45 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       $tab[1]['table']     = $this->getTable();
       $tab[1]['field']     = 'name';
-      $tab[1]['linkfield'] = 'name';
       $tab[1]['name']      = $LANG['plugin_archires']['search'][1];
       $tab[1]['datatype']  = 'itemlink';
       $tab[1]['itemlink_type'] = $this->getType();
       
       $tab[2]['table']     = $this->getTable();
       $tab[2]['field']     = 'child';
-      $tab[2]['linkfield'] = 'child';
       $tab[2]['name']      = $LANG['plugin_archires']['search'][3];
       $tab[2]['datatype']  = 'bool';
 
       $tab[3]['table']     = 'glpi_locations';
       $tab[3]['field']     = 'completename';
-      $tab[3]['linkfield'] = 'locations_id';
       $tab[3]['name']      = $LANG['plugin_archires']['search'][2];
 
       $tab[4]['table']     = 'glpi_networks';
       $tab[4]['field']     = 'name';
-      $tab[4]['linkfield'] = 'networks_id';
       $tab[4]['name']      = $LANG['plugin_archires']['search'][4];
 
       $tab[5]['table']     = 'glpi_states';
       $tab[5]['field']     = 'name';
-      $tab[5]['linkfield'] = 'states_id';
       $tab[5]['name']      = $LANG['plugin_archires']['search'][5];
 
       $tab[6]['table']     = 'glpi_groups';
       $tab[6]['field']     = 'name';
-      $tab[6]['linkfield'] = 'groups_id';
       $tab[6]['name']      = $LANG['common'][35];
 
       $tab[7]['table']     = 'glpi_vlans';
       $tab[7]['field']     = 'name';
-      $tab[7]['linkfield'] = 'vlans_id';
       $tab[7]['name']      = $LANG['networking'][56];
 
       $tab[8]['table']     = 'glpi_plugin_archires_views';
       $tab[8]['field']     = 'name';
-      $tab[8]['linkfield'] = 'plugin_archires_views_id';
       $tab[8]['name']      = $LANG['plugin_archires']['setup'][20];
 
-      $tab[30]['table'] = $this->getTable();
-      $tab[30]['field'] = 'id';
-      $tab[30]['name']  = $LANG['common'][2];
+      $tab[30]['table']    = $this->getTable();
+      $tab[30]['field']    = 'id';
+      $tab[30]['name']     = $LANG['common'][2];
 
       $tab[80]['table']     = 'glpi_entities';
       $tab[80]['field']     = 'completename';
-      $tab[80]['linkfield'] = 'entities_id';
       $tab[80]['name']      = $LANG['entity'][0];
 
       return $tab;

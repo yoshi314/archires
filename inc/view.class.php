@@ -60,92 +60,77 @@ class PluginArchiresView extends CommonDBTM {
 
       $tab[1]['table']     = $this->getTable();
       $tab[1]['field']     = 'name';
-      $tab[1]['linkfield'] = 'name';
       $tab[1]['name']      = $LANG['plugin_archires']['search'][1];
       $tab[1]['datatype']  = 'itemlink';
       $tab[1]['itemlink_type'] = $this->getType();
       
       $tab[2]['table']     = $this->getTable();
       $tab[2]['field']     = 'computer';
-      $tab[2]['linkfield'] = 'computer';
       $tab[2]['name']      = $LANG['plugin_archires'][6];
       $tab[2]['datatype']  = 'bool';
 
       $tab[3]['table']     = $this->getTable();
       $tab[3]['field']     = 'networking';
-      $tab[3]['linkfield'] = 'networking';
       $tab[3]['name']      = $LANG['plugin_archires'][7];
       $tab[3]['datatype']  = 'bool';
 
       $tab[4]['table']     = $this->getTable();
       $tab[4]['field']     = 'printer';
-      $tab[4]['linkfield'] = 'printer';
       $tab[4]['name']      = $LANG['plugin_archires'][8];
       $tab[4]['datatype']  = 'bool';
 
       $tab[5]['table']     = $this->getTable();
       $tab[5]['field']     = 'peripheral';
-      $tab[5]['linkfield'] = 'peripheral';
       $tab[5]['name']      = $LANG['plugin_archires'][9];
       $tab[5]['datatype']  = 'bool';
 
       $tab[6]['table']     = $this->getTable();
       $tab[6]['field']     = 'phone';
-      $tab[6]['linkfield'] = 'phone';
       $tab[6]['name']      = $LANG['plugin_archires'][10];
       $tab[6]['datatype']  = 'bool';
 
       $tab[7]['table']     = $this->getTable();
       $tab[7]['field']     = 'display_ports';
-      $tab[7]['linkfield'] = 'display_ports';
       $tab[7]['name']      = $LANG['plugin_archires'][16];
       $tab[7]['datatype']  = 'text';
 
       $tab[8]['table']     = $this->getTable();
       $tab[8]['field']     = 'display_ip';
-      $tab[8]['linkfield'] = 'display_ip';
       $tab[8]['name']      = $LANG['plugin_archires'][23];
       $tab[8]['datatype']  = 'bool';
 
       $tab[9]['table']     = $this->getTable();
       $tab[9]['field']     = 'display_type';
-      $tab[9]['linkfield'] = 'display_type';
       $tab[9]['name']      = $LANG['plugin_archires'][25];
       $tab[9]['datatype']  = 'bool';
 
       $tab[10]['table']     = $this->getTable();
       $tab[10]['field']     = 'display_state';
-      $tab[10]['linkfield'] = 'display_state';
       $tab[10]['name']      = $LANG['plugin_archires'][26];
       $tab[10]['datatype']  = 'bool';
 
       $tab[11]['table']     = $this->getTable();
       $tab[11]['field']     = 'display_location';
-      $tab[11]['linkfield'] = 'display_location';
       $tab[11]['name']      = $LANG['plugin_archires'][31];
       $tab[11]['datatype']  = 'bool';
 
       $tab[12]['table']     = $this->getTable();
       $tab[12]['field']     = 'display_entity';
-      $tab[12]['linkfield'] = 'display_entity';
       $tab[12]['name']      = $LANG['plugin_archires'][32];
       $tab[12]['datatype']  = 'bool';
 
       $tab[13]['table']     = $this->getTable();
       $tab[13]['field']     = 'engine';
-      $tab[13]['linkfield'] = 'engine';
       $tab[13]['name']      = $LANG['plugin_archires']['setup'][13];
       $tab[13]['datatype']  = 'text';
 
       $tab[14]['table']     = $this->getTable();
       $tab[14]['field']     = 'format';
-      $tab[14]['linkfield'] = 'format';
       $tab[14]['name']      = $LANG['plugin_archires']['setup'][15];
       $tab[14]['datatype']  = 'text';
 
       $tab[15]['table']     = $this->getTable();
       $tab[15]['field']     = 'color';
-      $tab[15]['linkfield'] = 'color';
       $tab[15]['name']      = $LANG['plugin_archires']['setup'][25];
       $tab[15]['datatype']  = 'text';
 
