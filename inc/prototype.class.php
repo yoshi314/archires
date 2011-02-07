@@ -415,7 +415,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       $graph = "";
 
-      if ($PluginArchiresView->fields["color"] == PLUGIN_ARCHIRES_NETWORK_COLOR ) {
+      if ($PluginArchiresView->fields["color"] == PluginArchiresView::PLUGIN_ARCHIRES_NETWORK_COLOR ) {
          if (empty($networkinterfaces_id1) && empty($networkinterfaces_id2)) {
             $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
 
@@ -433,7 +433,7 @@ class PluginArchiresPrototype extends CommonDBTM {
                $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
          }
-      } else if ($PluginArchiresView->fields["color"] == PLUGIN_ARCHIRES_VLAN_COLOR ) {
+      } else if ($PluginArchiresView->fields["color"] == PluginArchiresView::PLUGIN_ARCHIRES_VLAN_COLOR ) {
          $vlan1 = $PluginArchiresVlanColor->getVlanbyNetworkPort($ID1);
          $vlan2 = $PluginArchiresVlanColor->getVlanbyNetworkPort($ID2);
 

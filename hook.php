@@ -278,11 +278,11 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
          return $out;
 
       case "glpi_plugin_archires_views.format" :
-         if ($data["ITEM_$num"]==PLUGIN_ARCHIRES_JPEG_FORMAT) {
+         if ($data["ITEM_$num"]==PluginArchiresView::PLUGIN_ARCHIRES_JPEG_FORMAT) {
             $out = "jpeg";
-         } else if ($data["ITEM_$num"]==PLUGIN_ARCHIRES_PNG_FORMAT) {
+         } else if ($data["ITEM_$num"]==PluginArchiresView::PLUGIN_ARCHIRES_PNG_FORMAT) {
             $out = "png";
-         } else if ($data["ITEM_$num"]==PLUGIN_ARCHIRES_GIF_FORMAT) {
+         } else if ($data["ITEM_$num"]==PluginArchiresView::PLUGIN_ARCHIRES_GIF_FORMAT) {
             $out = "gif";
          }
          return $out;

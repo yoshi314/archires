@@ -32,14 +32,6 @@
 // ----------------------------------------------------------------------
  */
 
-define ("PLUGIN_ARCHIRES_NETWORK_COLOR",0);
-define ("PLUGIN_ARCHIRES_VLAN_COLOR",1);
-
-define ("PLUGIN_ARCHIRES_JPEG_FORMAT",0);
-define ("PLUGIN_ARCHIRES_PNG_FORMAT",1);
-define ("PLUGIN_ARCHIRES_GIF_FORMAT",2);
-define ("PLUGIN_ARCHIRES_SVG_FORMAT",3);
-
 // Init the hooks of the plugins -Needed
 function plugin_init_archires() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;

@@ -44,13 +44,13 @@ if (isset($_GET["format"])) {
 } else {
    $format = $PluginArchiresView->fields["format"];
 }
-if ($format == PLUGIN_ARCHIRES_JPEG_FORMAT) {
+if ($format == PluginArchiresView::PLUGIN_ARCHIRES_JPEG_FORMAT) {
    $format_graph = "jpeg";
-} else if ($format == PLUGIN_ARCHIRES_PNG_FORMAT) {
+} else if ($format == PluginArchiresView::PLUGIN_ARCHIRES_PNG_FORMAT) {
    $format_graph = "png";
-} else if ($format == PLUGIN_ARCHIRES_GIF_FORMAT) {
+} else if ($format == PluginArchiresView::PLUGIN_ARCHIRES_GIF_FORMAT) {
    $format_graph = "gif";
-} else if ($format == PLUGIN_ARCHIRES_SVG_FORMAT) {
+} else if ($format == PluginArchiresView::PLUGIN_ARCHIRES_SVG_FORMAT) {
    $format_graph = "svg";
 }
 $object = $_GET["querytype"];

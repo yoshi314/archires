@@ -37,6 +37,14 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresView extends CommonDBTM {
+   
+   const PLUGIN_ARCHIRES_NETWORK_COLOR = 0;
+   const PLUGIN_ARCHIRES_VLAN_COLOR = 1;
+   
+   const PLUGIN_ARCHIRES_JPEG_FORMAT = 0;
+   const PLUGIN_ARCHIRES_PNG_FORMAT = 1;
+   const PLUGIN_ARCHIRES_GIF_FORMAT = 2;
+   const PLUGIN_ARCHIRES_SVG_FORMAT = 3;
 
    static function getTypeName() {
       global $LANG;
@@ -359,17 +367,17 @@ class PluginArchiresView extends CommonDBTM {
       echo "<td>".$LANG['plugin_archires']['setup'][15]." : </td>";
       echo "<td><select name='format'> ";
       echo "<option ";
-      if ($this->fields["format"]==PLUGIN_ARCHIRES_JPEG_FORMAT) {
+      if ($this->fields["format"]==self::PLUGIN_ARCHIRES_JPEG_FORMAT) {
          echo "selected ";
       }
       echo "value='0'>jpeg</option>";
       echo "<option ";
-      if ($this->fields["format"]==PLUGIN_ARCHIRES_PNG_FORMAT) {
+      if ($this->fields["format"]==self::PLUGIN_ARCHIRES_PNG_FORMAT) {
          echo "selected ";
       }
       echo "value='1'>png</option>";
       echo "<option ";
-      if ($this->fields["format"]==PLUGIN_ARCHIRES_GIF_FORMAT) {
+      if ($this->fields["format"]==self::PLUGIN_ARCHIRES_GIF_FORMAT) {
          echo "selected ";
       }
       echo "value='2'>gif</option>";
@@ -485,9 +493,9 @@ class PluginArchiresView extends CommonDBTM {
          echo "Dot";
       echo "<br>";
       echo $LANG['plugin_archires']['setup'][15]." : ";
-      if ($this->fields["format"]==PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
-      else if ($this->fields["format"]==PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
-      else if ($this->fields["format"]==PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
+      if ($this->fields["format"]==self::PLUGIN_ARCHIRES_JPEG_FORMAT) $format_graph="jpeg";
+      else if ($this->fields["format"]==self::PLUGIN_ARCHIRES_PNG_FORMAT) $format_graph="png";
+      else if ($this->fields["format"]==self::PLUGIN_ARCHIRES_GIF_FORMAT) $format_graph="gif";
       echo $format_graph;
 
       echo "</td></tr>";
