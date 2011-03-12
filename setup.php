@@ -1,6 +1,6 @@
 <?php
 /*
- * @version $Id: HEADER 2010-10-31 21:36:26 tsmr $
+ * @version $Id: HEADER 2011-03-12 18:01:26 tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
  Copyright (C) 2003-2010 by the INDEPNET Development Team.
@@ -28,7 +28,7 @@
  --------------------------------------------------------------------------
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi & LASSON Nelly & PRUDHOMME Sebastien
-// Purpose of file: plugin archires v1.8.1 - GLPI 0.78
+// Purpose of file: plugin archires v1.9.0 - GLPI 0.80
 // ----------------------------------------------------------------------
  */
 
@@ -101,20 +101,20 @@ function plugin_version_archires() {
 global $LANG;
 
    return array('name'           => $LANG['plugin_archires']['title'][0],
-                'version'        => '1.8.1',
-                'author'         => 'Xavier Caillaud',
+                'version'        => '1.9.0',
+                'author'         => 'Xavier CAILLAUD, Remi COLLET, Nelly LASSON, Sebastien PRUDHOMME',
                 'homepage'       => 'https://forge.indepnet.net/projects/show/archires',
-                'minGlpiVersion' => '0.78');
+                'minGlpiVersion' => '0.80');
 }
 
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_archires_check_prerequisites() {
 
-   if (GLPI_VERSION >= 0.78) {
+   if (GLPI_VERSION >= 0.80) {
       return true;
    } else {
-      echo "GLPI version not compatible need 0.78";
+      echo "GLPI version not compatible need 0.80";
    }
 }
 
