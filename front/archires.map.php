@@ -65,7 +65,7 @@ if (!isset($_GET["plugin_archires_views_id"])) {
 }
 $output_data = $PluginArchiresPrototype->createGraph($format_graph,$obj,$plugin_archires_views_id);
 
-if ($format==PLUGIN_ARCHIRES_SVG_FORMAT) {
+if ($format==PluginArchiresView::PLUGIN_ARCHIRES_SVG_FORMAT) {
    header("Content-type: image/svg+xml");
    header('Content-Disposition: attachment; filename="image.svg"');
 } else {

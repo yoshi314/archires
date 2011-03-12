@@ -194,7 +194,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $ports = array();
 
       echo "<br><div align='center'>";
-      echo "<table class='tab_cadrehov'cellpadding='2' width='75%'>";
+      echo "<table class='tab_cadre_fixe'cellpadding='2' width='75%'>";
       echo "<tr><th colspan='6'>".$LANG['plugin_archires']['test'][2]."</th></tr>";
       echo "<tr><th>".$LANG['plugin_archires']['test'][4]."</th>";
       echo "<th>".$LANG['plugin_archires']['test'][5]."</th>";
@@ -248,7 +248,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       }
       echo "</table>";
 
-      echo "<br><table class='tab_cadrehov' cellpadding='2' width='75%'>";
+      echo "<br><table class='tab_cadre_fixe' cellpadding='2' width='75%'>";
       echo "<tr><th colspan='6'>".$LANG['plugin_archires']['test'][3]."</th></tr>";
       echo "<tr><th>".$LANG['plugin_archires']['test'][10]."</th>";
       echo "<th>".$LANG['plugin_archires']['test'][11]."</th>";

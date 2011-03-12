@@ -240,7 +240,7 @@ class PluginArchiresView extends CommonDBTM {
          echo "</form>";
       }
       echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".
-            PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;plugin_archires_views_id=".
+            self::PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype."&amp;plugin_archires_views_id=".
             $plugin_archires_views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
    }
 
@@ -419,7 +419,7 @@ class PluginArchiresView extends CommonDBTM {
 
       $name_config=$this->fields["name"];
 
-      echo "<table class='tab_cadrehov' cellpadding='2'width='75%'>";
+      echo "<table class='tab_cadre_fixe' cellpadding='2'width='75%'>";
       echo "<tr>";
       echo "<th colspan='3'>";
       echo $LANG['plugin_archires']['setup'][20]." : ".$name_config;
