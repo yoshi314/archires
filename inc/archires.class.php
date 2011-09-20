@@ -37,7 +37,8 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresArchires extends CommonDBTM {
-   
+
+
    function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
@@ -46,19 +47,19 @@ class PluginArchiresArchires extends CommonDBTM {
    function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
-   
+
+
    function showAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
       global $DB,$LANG,$CFG_GLPI;
 
       $types = array('Computer','NetworkEquipment','Peripheral','Phone','Printer');
-
-      $rand=mt_rand();
+      $rand  = mt_rand();
 
       echo "<table border='0'><tr><td>\n";
 
       echo "<select name='type' id='item_type$rand'>\n";
-      echo "<option value='0;0'>".DROPDOWN_EMPTY_VALUE."</option>\n";
-      
+      echo "<option value='0;0'>".Dropdown::EMPTY_VALUE."</option>\n";
+
       foreach ($types as $type => $label) {
          $item = new $label();
          echo "<option value='".$label.";".getTableForItemType($label."Type")."'>".
@@ -67,14 +68,14 @@ class PluginArchiresArchires extends CommonDBTM {
 
       echo "</select>";
 
-      $params=array('typetable'       => '__VALUE__',
-                    'value'           => $value,
-                    'myname'          => $myname,
-                    'entity_restrict' => $entity_restrict);
+      $params = array('typetable'       => '__VALUE__',
+                      'value'           => $value,
+                      'myname'          => $myname,
+                      'entity_restrict' => $entity_restrict);
 
-      ajaxUpdateItemOnSelectEvent("item_type$rand", "show_$myname$rand",
-                                  $CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",
-                                  $params);
+      Ajax::updateItemOnSelectEvent("item_type$rand", "show_$myname$rand",
+                                    $CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",
+                                    $params);
 
       echo "</td><td>\n"	;
       echo "<span id='show_$myname$rand'>&nbsp;</span>\n";
@@ -86,11 +87,11 @@ class PluginArchiresArchires extends CommonDBTM {
          echo "</script>\n";
 
          $params["typetable"]=$value_type;
-         ajaxUpdateItem("show_$myname$rand", 
-                        $CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",$params);
+         Ajax::updateItem("show_$myname$rand",
+                          $CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",
+                          $params);
       }
       return $rand;
    }
 }
-
 ?>

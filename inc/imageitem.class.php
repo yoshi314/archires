@@ -37,15 +37,18 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresImageItem extends CommonDBTM {
-   
+
+
    function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
+
    function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
-   
+
+
    function getFromDBbyType($itemtype, $type) {
       global $DB;
 
@@ -81,11 +84,12 @@ class PluginArchiresImageItem extends CommonDBTM {
                              'img'      => $img));
          }
       } else {
-         $query = "SELECT * 
-                   FROM `".getTableForItemType($itemtype."Type")."` ";
+         $query  = "SELECT *
+                    FROM `".getTableForItemType($itemtype."Type")."` ";
+
          $result = $DB->query($query);
          $number = $DB->numrows($result);
-         $i = 0;
+         $i      = 0;
          while ($i < $number) {
             $type_table = $DB->result($result, $i, "id");
             if ($this->GetfromDBbyType($itemtype,$type_table)) {
@@ -119,7 +123,7 @@ class PluginArchiresImageItem extends CommonDBTM {
       echo "</td><td>";
       //file
       $rep = "../pics/";
-      $dir = opendir($rep); 
+      $dir = opendir($rep);
       echo "<select name=\"img\">";
       while ($f = readdir($dir)) {
          if (is_file($rep.$f)) {
@@ -130,15 +134,16 @@ class PluginArchiresImageItem extends CommonDBTM {
       closedir($dir);
       showToolTip(nl2br($LANG['plugin_archires']['setup'][21]));
       echo "<td>";
-      echo "<div align='center'><input type='submit' name='add' value=\"".$LANG['buttons'][2].
-            "\" class='submit' ></div></td></tr>";			
+      echo "<div class='center'><input type='submit' name='add' value=\"".$LANG['buttons'][2].
+            "\" class='submit'></div></td></tr>";
       echo "</table>";
       echo "</form>";
-    
-      $query = "SELECT * 
-                FROM `".$this->getTable()."` 
+
+      $query = "SELECT *
+                FROM `".$this->getTable()."`
                 ORDER BY `itemtype`,`type` ASC;";
-      $i = 0;
+
+      $i     = 0;
       if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
          if ($number != 0) {
@@ -192,13 +197,11 @@ class PluginArchiresImageItem extends CommonDBTM {
             } else {
                echo "<td colspan='4' class='center'>";
             }
-            echo "<a onclick= \"if (markCheckboxes ('massiveaction_form')) return false;\" 
+            echo "<a onclick= \"if (markCheckboxes ('massiveaction_form')) return false;\"
                   href='#'>".$LANG['buttons'][18]."</a>";
-            echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form') ) return false;\" 
+            echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form') ) return false;\"
                   href='#'>".$LANG['buttons'][19]."</a> ";
-            echo "<input type='submit' name='delete' value=\"".$LANG['buttons'][6]."\" class='submit'>";
-            echo "</td></tr>";
-            echo "</table>";
+            Html::closeArrowMassives(array('delete' => $LANG['buttons'][6]));
             echo "</div>";
             echo "</form>";
          }
@@ -209,7 +212,7 @@ class PluginArchiresImageItem extends CommonDBTM {
    function displayItemImage($type,$itemtype,$test) {
       global $DB;
 
-      $path="";
+      $path = "";
       if ($test)
          $path="../";
 
@@ -230,5 +233,4 @@ class PluginArchiresImageItem extends CommonDBTM {
    }
 
 }
-
 ?>

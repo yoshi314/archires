@@ -38,25 +38,30 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
+
    static function getTypeName() {
       global $LANG;
 
       return $LANG['plugin_archires']['title'][5];
    }
 
+
    function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
+
    function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
+
 
    function cleanDBonPurge() {
 
       $querytype = new PluginArchiresQueryType;
       $querytype->deleteByCriteria(array('plugin_archires_queries_id' => $this->fields['id']));
    }
+
 
    function getSearchOptions() {
       global $LANG;
@@ -65,12 +70,12 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
       $tab['common'] = $LANG['plugin_archires']['title'][5];
 
-      $tab[1]['table']     = $this->getTable();
-      $tab[1]['field']     = 'name';
-      $tab[1]['name']      = $LANG['plugin_archires']['search'][1];
-      $tab[1]['datatype']  = 'itemlink';
+      $tab[1]['table']         = $this->getTable();
+      $tab[1]['field']         = 'name';
+      $tab[1]['name']          = $LANG['plugin_archires']['search'][1];
+      $tab[1]['datatype']      = 'itemlink';
       $tab[1]['itemlink_type'] = $this->getType();
-      
+
       $tab[2]['table']     = 'glpi_networkequipments';
       $tab[2]['field']     = 'name';
       $tab[2]['name']      = $LANG['help'][26];
@@ -106,16 +111,17 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       return $tab;
    }
 
-   function prepareInputForAdd($input) {
-		global $LANG;
-		
-		if (!isset ($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
-			addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
-			return array ();
-		}
 
-		return $input;
-	}
+   function prepareInputForAdd($input) {
+      global $LANG;
+
+      if (!isset($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
+         Session::addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
+         return array ();
+      }
+      return $input;
+   }
+
 
    function defineTabs($options=array()) {
       global $LANG;
@@ -131,8 +137,9 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       return $ong;
    }
 
+
    function showForm ($ID, $options=array()) {
-    global $CFG_GLPI,$DB,$LANG;
+    global $CFG_GLPI, $DB, $LANG;
 
       if ($ID > 0) {
        $this->check($ID,'r');
@@ -148,7 +155,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['plugin_archires']['search'][1]." : </td>";
       echo "<td>";
-      autocompletionTextField($this,"name");
+      Html::autocompletionTextField($this,"name");
       echo "</td>";
       echo "<td>".$LANG['common'][35]." : </td><td>";
       Dropdown::show('Group', array('name'   => "groups_id",
@@ -190,14 +197,15 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       return true;
    }
 
+
    function Query ($ID,$PluginArchiresView,$for) {
-      global $DB,$CFG_GLPI,$LANG;
+      global $DB, $CFG_GLPI, $LANG;
 
       $this->getFromDB($ID);
 
-      $types = array();
+      $types   = array();
       $devices = array();
-      $ports = array();
+      $ports   = array();
 
       if ($PluginArchiresView->fields["computer"]!=0) {
          $types[]='Computer';
@@ -240,7 +248,8 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                                `np`.`name` AS namep";
 
                   $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                                   `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."` AS `type`,
+                                   `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+                                       AS `type`,
                                    `$itemtable`.`users_id`, `$itemtable`.`groups_id`,
                                    `$itemtable`.`contact`, `$itemtable`.`states_id`,
                                    `$itemtable`.`entities_id`,`$itemtable`.`locations_id`
@@ -351,23 +360,21 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
             $devices['NetworkEquipment'][$data["items_id"]]["ip"]           = $data["nip"];
             $devices['NetworkEquipment'][$data["items_id"]]["entity"]       = $data["entities_id"];
             $devices['NetworkEquipment'][$data["items_id"]]["locations_id"] = $data["locations_id"];
-            $ports[$data["id"]]["items_id"]             = $data["items_id"];
-            $ports[$data["id"]]["logical_number"]       = $data["logical_number"];
-            $ports[$data["id"]]["networkinterfaces_id"] = $data["networkinterfaces_id"];
-            $ports[$data["id"]]["ip"]                   = $data["ip"];
-            $ports[$data["id"]]["netmask"]              = $data["netmask"];
-            $ports[$data["id"]]["namep"]                = $data["namep"];
-            $ports[$data["id"]]["idp"]                  = $data["id"];
-            $ports[$data["id"]]["itemtype"]             = 'NetworkEquipment';
+            $ports[$data["id"]]["items_id"]                                 = $data["items_id"];
+            $ports[$data["id"]]["logical_number"]                           = $data["logical_number"];
+            $ports[$data["id"]]["networkinterfaces_id"]                     = $data["networkinterfaces_id"];
+            $ports[$data["id"]]["ip"]                                       = $data["ip"];
+            $ports[$data["id"]]["netmask"]                                  = $data["netmask"];
+            $ports[$data["id"]]["namep"]                                    = $data["namep"];
+            $ports[$data["id"]]["idp"]                                      = $data["id"];
+            $ports[$data["id"]]["itemtype"]                                 = 'NetworkEquipment';
          }
       }
 
       if ($for) {
          return $devices;
-      } else {
-         return $ports;
       }
+      return $ports;
    }
 }
-
 ?>

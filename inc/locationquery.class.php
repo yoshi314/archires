@@ -38,11 +38,13 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresLocationQuery extends CommonDBTM {
 
+
    static function getTypeName() {
       global $LANG;
 
       return $LANG['plugin_archires']['title'][4];
    }
+
 
    function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
@@ -53,11 +55,13 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       return plugin_archires_haveRight('archires', 'r');
    }
 
+
    function cleanDBonPurge() {
 
       $querytype = new PluginArchiresQueryType;
       $querytype->deleteByCriteria(array('plugin_archires_queries_id' => $this->fields['id']));
    }
+
 
    function getSearchOptions() {
       global $LANG;
@@ -66,12 +70,12 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       $tab['common'] = $LANG['plugin_archires']['title'][4];
 
-      $tab[1]['table']     = $this->getTable();
-      $tab[1]['field']     = 'name';
-      $tab[1]['name']      = $LANG['plugin_archires']['search'][1];
-      $tab[1]['datatype']  = 'itemlink';
+      $tab[1]['table']         = $this->getTable();
+      $tab[1]['field']         = 'name';
+      $tab[1]['name']          = $LANG['plugin_archires']['search'][1];
+      $tab[1]['datatype']      = 'itemlink';
       $tab[1]['itemlink_type'] = $this->getType();
-      
+
       $tab[2]['table']     = $this->getTable();
       $tab[2]['field']     = 'child';
       $tab[2]['name']      = $LANG['plugin_archires']['search'][3];
@@ -105,23 +109,24 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       $tab[30]['field']    = 'id';
       $tab[30]['name']     = $LANG['common'][2];
 
-      $tab[80]['table']     = 'glpi_entities';
-      $tab[80]['field']     = 'completename';
-      $tab[80]['name']      = $LANG['entity'][0];
+      $tab[80]['table']    = 'glpi_entities';
+      $tab[80]['field']    = 'completename';
+      $tab[80]['name']     = $LANG['entity'][0];
 
       return $tab;
    }
 
-   function prepareInputForAdd($input) {
-		global $LANG;
-		
-		if (!isset ($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
-			addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
-			return array ();
-		}
 
-		return $input;
-	}
+   function prepareInputForAdd($input) {
+      global $LANG;
+
+      if (!isset ($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
+         Session::addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
+         return array ();
+      }
+      return $input;
+   }
+
 
    function defineTabs($options=array()) {
       global $LANG;
@@ -136,6 +141,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       }
       return $ong;
    }
+
 
    function showForm ($ID, $options=array()) {
       global $CFG_GLPI,$DB,$LANG;
@@ -154,7 +160,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['plugin_archires']['search'][1]." :</td>";
       echo "<td>";
-      autocompletionTextField($this,"name");
+      Html::autocompletionTextField($this,"name");
       echo "</td>";
       echo "<td>".$LANG['plugin_archires']['search'][5]." : </td><td>";
       Dropdown::show('State', array('name'  => "states_id",
@@ -198,24 +204,25 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       return true;
    }
 
-   function dropdownLocation($object,$ID) {
-      global $DB,$CFG_GLPI,$LANG;
 
-      $obj = new $object();
+   function dropdownLocation($object,$ID) {
+      global $DB, $CFG_GLPI, $LANG;
+
+      $obj          = new $object();
       $locations_id = -1;
       if ($obj->getFromDB($ID)) {
          $locations_id = $obj->fields["locations_id"];
       }
       $query0 = "SELECT `entities_id`
-                FROM `glpi_locations` ".
-                getEntitiesRestrictRequest(" WHERE","glpi_locations")."
-                GROUP BY `entities_id`
-                ORDER BY `entities_id`";
+                 FROM `glpi_locations` ".
+                 getEntitiesRestrictRequest(" WHERE","glpi_locations")."
+                 GROUP BY `entities_id`
+                 ORDER BY `entities_id`";
 
       echo "<select name='locations_id'>";
-      echo "<option value='0'>".DROPDOWN_EMPTY_VALUE."</option>\n";
-      echo "<option option value='-1' ".
-                        ($locations_id=="-1"?" selected ":"").">".$LANG['plugin_archires'][30]."</option>";
+      echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
+      echo "<option option value='-1' ".($locations_id=="-1"?" selected ":"").">".
+             $LANG['plugin_archires'][30]."</option>";
 
       if ($result0 = $DB->query($query0)) {
          while ($ligne0 = mysql_fetch_array($result0)) {
@@ -241,14 +248,15 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       echo "</select>";
    }
 
+
    function Query ($ID,$PluginArchiresView,$for) {
       global $DB,$CFG_GLPI,$LANG;
 
       $this->getFromDB($ID);
 
-      $types = array();
+      $types   = array();
       $devices = array();
-      $ports = array();
+      $ports   = array();
 
       if ($PluginArchiresView->fields["computer"]!=0) {
          $types[]='Computer';
@@ -272,7 +280,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                       `np`.`ip`,`np`.`netmask`, `np`.`name` AS namep";
 
          $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                          `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."` AS `type`,
+                          `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+                              AS `type`,
                           `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`,
                           `$itemtable`.`states_id`, `$itemtable`.`entities_id`,
                           `$itemtable`.`locations_id`
@@ -361,10 +370,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       }
       if ($for) {
          return $devices;
-      } else {
-         return $ports;
       }
+      return $ports;
    }
 }
-
 ?>

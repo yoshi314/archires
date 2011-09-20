@@ -49,6 +49,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       return plugin_archires_haveRight('archires', 'w');
    }
 
+
    function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
@@ -68,12 +69,12 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
       $tab['common'] = $LANG['plugin_archires']['title'][8];
 
-      $tab[1]['table']     = $this->getTable();
-      $tab[1]['field']     = 'name';
-      $tab[1]['name']      = $LANG['plugin_archires']['search'][1];
-      $tab[1]['datatype']  = 'itemlink';
+      $tab[1]['table']         = $this->getTable();
+      $tab[1]['field']         = 'name';
+      $tab[1]['name']          = $LANG['plugin_archires']['search'][1];
+      $tab[1]['datatype']      = 'itemlink';
       $tab[1]['itemlink_type'] = $this->getType();
-      
+
       $tab[2]['table']     = 'glpi_plugin_appliances_appliances';
       $tab[2]['field']     = 'name';
       $tab[2]['name']      = $LANG['plugin_archires']['search'][8];
@@ -102,24 +103,25 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       $tab[30]['field']    = 'id';
       $tab[30]['name']     = $LANG['common'][2];
 
-      $tab[80]['table']     = 'glpi_entities';
-      $tab[80]['field']     = 'completename';
-      $tab[80]['name']      = $LANG['entity'][0];
+      $tab[80]['table']    = 'glpi_entities';
+      $tab[80]['field']    = 'completename';
+      $tab[80]['name']     = $LANG['entity'][0];
 
    return $tab;
    }
 
-   function prepareInputForAdd($input) {
-		global $LANG;
-		
-		if (!isset ($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
-			addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
-			return array ();
-		}
 
-		return $input;
-	}
-	
+   function prepareInputForAdd($input) {
+      global $LANG;
+
+      if (!isset ($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
+         Session::addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
+         return array ();
+      }
+      return $input;
+   }
+
+
    function defineTabs($options=array()) {
       global $LANG;
 
@@ -127,7 +129,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       if ($this->fields['id'] > 0) {
          $ong[2] = $LANG['plugin_archires']['test'][0];
          $ong[3] = $LANG['plugin_archires']['search'][6];
-         if (haveRight("notes","r")) {
+         if (Session::haveRight("notes","r")) {
             $ong[10] = $LANG['title'][37];
          }
       }
@@ -222,7 +224,8 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
          $itemtable = getTableForItemType($val);
          $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                          `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."` AS `type`,
+                          `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+                              AS `type`,
                           `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`,
                           `$itemtable`.`states_id`, `$itemtable`.`entities_id`,
                           `$itemtable`.`locations_id`
@@ -258,7 +261,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
                      AND `app`.`itemtype` = '$val' ";
 
          $PluginArchiresQueryType = new PluginArchiresQueryType();
-         $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(),$ID,$val);
+         $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(), $ID, $val);
 
          $query .= "ORDER BY `np`.`ip` ASC ";
 
@@ -298,11 +301,9 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       }
       if ($for) {
          return $devices;
-      } else {
-         return $ports;
       }
+      return $ports;
    }
 
 }
-
 ?>
