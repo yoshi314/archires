@@ -41,21 +41,22 @@ $PluginArchiresView      = new PluginArchiresView();
 $PluginArchiresPrototype = new PluginArchiresPrototype();
 
 $object = $_GET["querytype"];
-$obj = new $object();
+$obj    = new $object();
 
 if (isset($_GET["displayview"])) {
    $obj->getFromDB($_GET["plugin_archires_queries_id"]);
-   glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.graph.php?id=".
-               $obj->fields["id"]."&querytype=".$_GET["querytype"]."&plugin_archires_views_id=".$_GET["plugin_archires_views_id"]);
+   Html::redirect($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.graph.php?id=".
+                  $obj->fields["id"]."&querytype=".$_GET["querytype"]."&plugin_archires_views_id=".
+                  $_GET["plugin_archires_views_id"]);
 
 } else {
-   commonHeader($LANG['plugin_archires']['title'][0],'',"plugins","archires");
+   Html::header($LANG['plugin_archires']['title'][0],'',"plugins","archires");
 
    $obj->getFromDB($_GET["id"]);
    $object_view = $obj->fields["plugin_archires_views_id"];
    $entities_id = $obj->fields["entities_id"];
 
-   if ($PluginArchiresView->getFromDB($object_view) && haveAccessToEntity($entities_id)) {
+   if ($PluginArchiresView->getFromDB($object_view) && Session::haveAccessToEntity($entities_id)) {
       if (!isset($_GET["plugin_archires_views_id"])) {
         $plugin_archires_views_id = $object_view;
       } else {
@@ -64,10 +65,9 @@ if (isset($_GET["displayview"])) {
       $PluginArchiresPrototype->displayGraph($obj,$plugin_archires_views_id,1);
 
    } else {
-      glpi_header($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
+      Html::redirect($CFG_GLPI["root_doc"]."/plugins/archires/front/archires.php");
    }
 
-   commonFooter();
+   Html::footer();
 }
-
 ?>

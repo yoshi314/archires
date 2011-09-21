@@ -37,7 +37,7 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresQueryType extends CommonDBTM {
-   
+
    function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
@@ -45,7 +45,7 @@ class PluginArchiresQueryType extends CommonDBTM {
    function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
-   
+
    function getFromDBbyType($itemtype, $type,$type_query,$query_ID) {
       global $DB;
 
@@ -125,8 +125,12 @@ class PluginArchiresQueryType extends CommonDBTM {
    }
 
 
-   function showTypes($type,$ID) {
+   static function showTypes($item) {
       global $CFG_GLPI,$DB,$LANG;
+
+      $type     = $item->getType();
+      $showtype = new self();
+      $ID       = $item->getID();
 
       if ($type == 'PluginArchiresLocationQuery') {
          $page = "locationquery";
@@ -135,10 +139,10 @@ class PluginArchiresQueryType extends CommonDBTM {
       } else if ($type == 'PluginArchiresApplianceQuery') {
          $page = "appliancequery";
       }
-      
+
       $PluginArchiresArchires = new PluginArchiresArchires();
 
-      if ($this->canCreate()) {
+      if ($showtype->canCreate()) {
          echo "<form method='post'  action=\"./".$page.".form.php\">";
          echo "<table class='tab_cadre' cellpadding='5' width='34%'><tr><th colspan='2'>";
          echo $LANG['plugin_archires'][2]." : </th></tr>";
@@ -156,12 +160,12 @@ class PluginArchiresQueryType extends CommonDBTM {
       }
 
       $query = "SELECT *
-                FROM `".$this->getTable()."`
+                FROM `".$showtype->getTable()."`
                 WHERE `plugin_archires_queries_id` = '$ID'
                       AND `querytype` = '$type'
                 ORDER BY `itemtype`, `type` ASC";
 
-      $i = 0;
+      $i    = 0;
       $rand = mt_rand();
       if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
@@ -190,7 +194,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                }
                $item = new $ligne["itemtype"]();
                echo "<td>".$item->getTypeName()."</td>";
-               $class = $ligne["itemtype"]."Type";
+               $class     = $ligne["itemtype"]."Type";
                $typeclass = new $class();
                $typeclass->getFromDB($ligne["type"]);
                echo "<td>".$typeclass->fields["name"]."</td>";
@@ -204,7 +208,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
             }
 
-            if ($this->canCreate()) {
+            if ($showtype->canCreate()) {
                echo "<tr class='tab_bg_1'>";
                if ($number > 1) {
                   echo "<td colspan='6' class='center'>";
@@ -212,19 +216,44 @@ class PluginArchiresQueryType extends CommonDBTM {
                   echo "<td colspan='3' class='center'>";
                }
 
-               echo "<a onclick= \"if (markCheckboxes('massiveaction_form$rand')) return false;\" 
+               echo "<a onclick= \"if (markCheckboxes('massiveaction_form$rand')) return false;\"
                      href='#'>".$LANG['buttons'][18]."</a>";
-               echo " - <a onclick= \"if (unMarkCheckboxes('massiveaction_form$rand')) return false;\" 
+               echo " - <a onclick= \"if (unMarkCheckboxes('massiveaction_form$rand')) return false;\"
                      href='#'>".$LANG['buttons'][19]."</a> ";
-               echo "<input type='submit' name='deletetype' value=\"".$LANG['buttons'][6]."\" class='submit'>";
-               echo "</td></tr>";
+               Html::closeArrowMassives(array('deletetype' => $LANG['buttons'][6]));
+            } else {
+               echo "</table>";
             }
-            echo "</table>";
             echo "</div>";
             echo "</form>";
          }
       }
    }
+
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+
+      switch ($item->getType()) {
+         case 'PluginArchiresApplianceQuery' :
+            self::showTypes($item);
+            break;
+      }
+      return true;
+   }
+
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+
+      if (!$withtemplate && plugin_archires_haveRight('archires', 'r')) {
+         switch ($item->getType()) {
+            case 'PluginArchiresApplianceQuery' :
+               return $LANG['title'][26];;
+         }
+      }
+      return '';
+   }
+
 }
 
 ?>

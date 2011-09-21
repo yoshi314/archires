@@ -38,9 +38,12 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresApplianceQuery extends CommonDBTM {
 
-   static function getTypeName() {
+   static function getTypeName($nb=0) {
       global $LANG;
 
+      if ($nb>1) {
+         return $LANG['plugin_archires']['title'][8];
+      }
       return $LANG['plugin_archires']['title'][8];
    }
 
@@ -125,14 +128,11 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
    function defineTabs($options=array()) {
       global $LANG;
 
-      $ong[1] = $LANG['title'][26];
-      if ($this->fields['id'] > 0) {
-         $ong[2] = $LANG['plugin_archires']['test'][0];
-         $ong[3] = $LANG['plugin_archires']['search'][6];
-         if (Session::haveRight("notes","r")) {
-            $ong[10] = $LANG['title'][37];
-         }
-      }
+      $ong = array();
+      $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
+      $this->addStandardTab('PluginArchiresView', $ong, $options);
+      $this->addStandardTab('PluginArchiresPrototype', $ong, $options);
+      $this->addStandardTab('Note', $ong, $options);
       return $ong;
    }
 
@@ -154,7 +154,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['plugin_archires']['search'][1]." : </td>";
       echo "<td>";
-      autocompletionTextField($this,"name");
+      Html::autocompletionTextField($this,"name");
       echo "</td>";
       echo "<td>".$LANG['common'][35]." : </td><td>";
       Dropdown::show('Group', array('name'   => "groups_id",
@@ -199,9 +199,9 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
       $this->getFromDB($ID);
 
-      $types = array();
+      $types   = array();
       $devices = array();
-      $ports = array();
+      $ports   = array();
 
       if ($PluginArchiresView->fields["computer"]!=0) {
          $types[] = 'Computer';

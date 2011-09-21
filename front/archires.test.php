@@ -36,10 +36,9 @@ define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
 $PluginArchiresPrototype = new PluginArchiresPrototype();
-$output_data = $PluginArchiresPrototype->testGraphviz();
+$output_data             = $PluginArchiresPrototype->testGraphviz();
 
 header("Content-Type: image/png");
 header("Content-Length: " . strlen($output_data));
 echo $output_data;
-
 ?>

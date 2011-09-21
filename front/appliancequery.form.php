@@ -51,45 +51,45 @@ $PluginArchiresQueryType      = new PluginArchiresQueryType();
 if (isset($_POST["add"])) {
    $PluginArchiresApplianceQuery->check(-1,'w',$_POST);
    $PluginArchiresApplianceQuery->add($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["delete"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->delete($_POST);
-   glpi_header(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->restore($_POST);
-   glpi_header(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->delete($_POST,1);
-   glpi_header(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->update($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["duplicate"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    unset($_POST['id']);
    $PluginArchiresApplianceQuery->add($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["addtype"])) {
-   $test= explode(";", $_POST['type']);
+   $test = explode(";", $_POST['type']);
    if (isset($test[0]) && isset($test[1])) {
-      $_POST['type']= $test[1];
-      $_POST['itemtype']= $test[0];
+      $_POST['type']     = $test[1];
+      $_POST['itemtype'] = $test[0];
       if ($PluginArchiresQueryType->canCreate()) {
          $PluginArchiresQueryType->addType('PluginArchiresApplianceQuery', $_POST['type'],
                                            $_POST['itemtype'], $_POST['query']);
       }
    }
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["deletetype"])) {
    if ($PluginArchiresQueryType->canCreate()) {
@@ -100,18 +100,17 @@ if (isset($_POST["add"])) {
          }
       }
    }
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else {
-   
+
    $PluginArchiresApplianceQuery->checkGlobal("r");
 
-   commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8],
+   Html::header($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8],
                 '',"plugins","archires","appliance");
 
    $PluginArchiresApplianceQuery->showForm($_GET["id"]);
 
-   commonFooter();
+   Html::footer();
 }
-
 ?>

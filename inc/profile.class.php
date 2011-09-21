@@ -47,12 +47,12 @@ class PluginArchiresProfile extends CommonDBTM {
 
 
    function canCreate() {
-      return haveRight('profile', 'w');
+      return Session::haveRight('profile', 'w');
    }
 
 
    function canView() {
-      return haveRight('profile', 'r');
+      return Session::haveRight('profile', 'r');
    }
 
 
@@ -94,8 +94,9 @@ class PluginArchiresProfile extends CommonDBTM {
    }
 
 
-   function createAccess($ID) {
-      $this->add(array('profiles_id' => $ID));
+   function createAccess($profile) {
+
+      return $this->add(array('profiles_id' => $profile->getField('id')));
    }
 
 
@@ -123,18 +124,16 @@ class PluginArchiresProfile extends CommonDBTM {
          return false;
       }
 
+      $canedit = Session::haveRight("profile", "w");
       $prof = new Profile();
       if ($ID) {
          $this->getFromDBByProfile($ID);
          $prof->getFromDB($ID);
       }
-
-      $this->showFormHeader($options);
-
-      echo "<tr class='tab_bg_2'>";
-
-      echo "<th colspan='2'>".$LANG['plugin_archires']['profile'][0]." ".
-            $prof->fields["name"]."</th>";
+      echo "<form action='".$target."' method='post'>";
+      echo "<table class='tab_cadre_fixe'>";
+      echo "<tr><th colspan='2' class='center b'>".$LANG['plugin_treeview']['profile'][0]." ".
+            Dropdown::getDropdownName("glpi_profiles", $ID)."</th></tr>";
 
       echo "<td>".$LANG['plugin_archires']['profile'][3]." : </td><td>";
       if ($prof->fields['interface'] != 'helpdesk') {
@@ -150,5 +149,32 @@ class PluginArchiresProfile extends CommonDBTM {
       $options['candel'] = false;
       $this->showFormButtons($options);
    }
+
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+
+      if ($item->getType() == 'Profile') {
+         if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
+            return array(1 => $LANG['plugin_archires']['title'][0]);
+         }
+      }
+      return '';
+   }
+
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+
+      if ($item->getType() == 'Profile') {
+         $prof = new self();
+         $ID = $item->getField('id');
+         if (!$prof->getFromDBByProfile($ID)) {
+            $prof->createAccess($item);
+         }
+         $prof->showForm($ID);
+      }
+      return true;
+   }
+
 }
 ?>

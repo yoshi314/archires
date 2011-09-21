@@ -35,20 +35,19 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][4],
+Html::header($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][4],
              '',"plugins","archires","location");
 
 $PluginArchiresLocationQuery=new PluginArchiresLocationQuery();
 
-if ($PluginArchiresLocationQuery->canView() || haveRight("config","w")) {
+if ($PluginArchiresLocationQuery->canView() || Session::haveRight("config","w")) {
    Search::show("PluginArchiresLocationQuery");
 
 } else {
-   echo "<div align='center'><br><br>";
+   echo "<div class='center'><br><br>";
    echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
    echo "<b>".$LANG['login'][5]."</b></div>";
 }
 
-commonFooter();
-
+Html::footer();
 ?>

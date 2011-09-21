@@ -50,33 +50,33 @@ $PluginArchiresQueryType             = new PluginArchiresQueryType();
 if (isset($_POST["add"])) {
    $PluginArchiresNetworkEquipmentQuery->check(-1,'w',$_POST);
    $PluginArchiresNetworkEquipmentQuery->add($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["delete"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->delete($_POST);
-   glpi_header(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->restore($_POST);
-   glpi_header(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->delete($_POST,1);
-   glpi_header(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->update($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["duplicate"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    unset($_POST['id']);
    $PluginArchiresNetworkEquipmentQuery->add($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["addtype"])) {
    $test = explode(";", $_POST['type']);
@@ -86,11 +86,11 @@ if (isset($_POST["add"])) {
       $_POST['itemtype'] = $test[0];
 
       if ($PluginArchiresQueryType->canCreate()) {
-         $PluginArchiresQueryType->addType('PluginArchiresNetworkEquipmentQuery',$_POST['type'],
-                                           $_POST['itemtype'],$_POST['query']);
+         $PluginArchiresQueryType->addType('PluginArchiresNetworkEquipmentQuery', $_POST['type'],
+                                           $_POST['itemtype'], $_POST['query']);
       }
    }
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["deletetype"])) {
    if ($PluginArchiresQueryType->canCreate()) {
@@ -102,18 +102,17 @@ if (isset($_POST["add"])) {
          }
       }
    }
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else {
-   
+
    $PluginArchiresNetworkEquipmentQuery->checkGlobal("r");
 
-   commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][5],
+   Html::header($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][5],
                 '',"plugins","archires","networkequipment");
 
    $PluginArchiresNetworkEquipmentQuery->showForm($_GET["id"]);
 
-   commonFooter();
+   Html::footer();
 }
-
 ?>

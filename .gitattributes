@@ -1,5 +1,4 @@
 * text=auto !eol
-ajax/appliancequery.tabs.php -text
 ajax/dropdownAllItems.php -text
 ajax/dropdownValue.php -text
 ajax/locationquery.tabs.php -text

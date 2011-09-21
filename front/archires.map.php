@@ -44,6 +44,7 @@ if (isset($_GET["format"])) {
 } else {
    $format = $PluginArchiresView->fields["format"];
 }
+
 if ($format == PluginArchiresView::PLUGIN_ARCHIRES_JPEG_FORMAT) {
    $format_graph = "jpeg";
 } else if ($format == PluginArchiresView::PLUGIN_ARCHIRES_PNG_FORMAT) {
@@ -53,8 +54,9 @@ if ($format == PluginArchiresView::PLUGIN_ARCHIRES_JPEG_FORMAT) {
 } else if ($format == PluginArchiresView::PLUGIN_ARCHIRES_SVG_FORMAT) {
    $format_graph = "svg";
 }
-$object = $_GET["querytype"];
-$obj = new $object();
+
+$object      = $_GET["querytype"];
+$obj         = new $object();
 $obj->getFromDB($_GET["id"]);
 $object_view = $obj->fields["plugin_archires_views_id"];
 
@@ -74,5 +76,4 @@ if ($format==PluginArchiresView::PLUGIN_ARCHIRES_SVG_FORMAT) {
 header("Content-Length: ".strlen($output_data));
 
 echo $output_data;
-
 ?>

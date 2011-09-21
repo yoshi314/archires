@@ -133,6 +133,8 @@ function plugin_archires_install() {
                               array("glpi_plugin_archires_querytypes",
                                     "glpi_plugin_archires_imageitems"));
    }
+
+   @mkdir(GLPI_PLUGIN_DOC_DIR."/archires");
    PluginArchiresProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    return true;
 }
@@ -677,7 +679,7 @@ function plugin_archires_uninstall() {
 
    $rep_files_archires = GLPI_PLUGIN_DOC_DIR."/archires";
 
-   deleteDir($rep_files_archires);
+   Toolbox::deleteDir($rep_files_archires);
 
    $tables_glpi = array("glpi_displaypreferences",
                         "glpi_documents_items",
@@ -905,46 +907,4 @@ function plugin_archires_MassiveActionsProcess($data) {
          break;
    }
 }
-
-
-// Define headings added by the plugin
-function plugin_get_headings_archires($item,$withtemplate) {
-   global $LANG;
-
-   if (get_class($item) == 'Profile') {
-      if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
-         return array(1 => $LANG['plugin_archires']['title'][0]);
-      }
-
-   }
-   return false;
-}
-
-
-// Define headings actions added by the plugin
-function plugin_headings_actions_archires($item) {
-
-   if (in_array(get_class($item),array('Profile')) && $item->getField('interface')!='helpdesk') {
-      return array(1 => "plugin_headings_archires");
-   }
-   return false;
-}
-
-
-// action heading
-function plugin_headings_archires($item,$withtemplate=0) {
-   global $CFG_GLPI;
-
-   $PluginArchiresProfile=new PluginArchiresProfile();
-   switch (get_class($item)) {
-      case 'Profile' :
-         case 'Profile' :
-         if (!$PluginArchiresProfile->getFromDBByProfile($item->getField('id')))
-            $PluginArchiresProfile->createAccess($item->getField('id'));
-         $PluginArchiresProfile->showForm($item->getField('id'), array('target' => $CFG_GLPI["root_doc"]."/plugins/archires/front/profile.form.php"));
-         break;
-   }
-
-}
-
 ?>

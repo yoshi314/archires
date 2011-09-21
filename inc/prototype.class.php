@@ -39,36 +39,22 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresPrototype extends CommonDBTM {
 
    function testGraphviz() {
-      $graph ="graph G {
+      $graph = "graph G {
                   a;
                   b;
                   c -- d;
                   a -- c;}";
 
-      $format="png";
-      $engine="dot";
+      $format = "png";
+      $engine = "dot";
 
-      //print $graph;
-      $Path = GLPI_PLUGIN_DOC_DIR."/archires";
-      $graph_name = tempnam($Path, "");
-      $output_name = tempnam($Path, "");
+      $Path        = realpath(GLPI_PLUGIN_DOC_DIR."/archires");
+      $graph_name  = tempnam($Path, "");
 
-      if ($graph_file = fopen($graph_name, "w")) {
-         fputs($graph_file, $graph);
-         fclose($graph_file);
-         //$command = $engine." -T" . $format . " -o " . $output_name . " " . $graph_name;
-         $command = $engine." -T" .$format." -o \"".$output_name ."\" \"".$graph_name."\"";
-         `$command`;
-
+      if (file_put_contents($graph_name, $graph)) {
+         $command = $engine." -T" .$format." \"".$graph_name."\"";
+         passthru($command);
          unlink($graph_name);
-
-         if ($output_file = fopen($output_name, "rb")) {
-            $output_data = fread($output_file, filesize($output_name));
-            fclose($output_file);
-            unlink($output_name);
-
-            return $output_data;
-         }
       }
    }
 
@@ -83,24 +69,23 @@ class PluginArchiresPrototype extends CommonDBTM {
 
    function displayTypeAndIP($PluginArchiresView,$itemtype,$device,$generation) {
 
-      $graph ="";
+      $graph = "";
 
-      $PluginArchiresArchires= new PluginArchiresArchires();
+      $PluginArchiresArchires = new PluginArchiresArchires();
       if ($PluginArchiresView->fields["display_ip"]!=0 && isset($device["ip"])) {
+
          if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
-            
-               $class = $itemtype."Type";
-               $typeclass = new $class();
-               $typeclass->getFromDB($device["type"]);
-               
+            $class     = $itemtype."Type";
+            $typeclass = new $class();
+            $typeclass->getFromDB($device["type"]);
+
             if (!$generation) {
-               
-               $graph = $typeclass->fields["name"] . " " .
-                        $device["ip"];
+               $graph = $typeclass->fields["name"] . " " .$device["ip"];
             } else {
-               $graph =" - ".$typeclass->fields["name"].
-                       "</td></tr><tr><td>".$device["ip"]."</td></tr>";
+               $graph = " - ".$typeclass->fields["name"].
+                        "</td></tr><tr><td>".$device["ip"]."</td></tr>";
             }
+
          } else {
             if (!$generation) {
                $graph = $device["ip"];
@@ -108,19 +93,20 @@ class PluginArchiresPrototype extends CommonDBTM {
                $graph ="</td></tr><tr><td>".$device["ip"]."</td></tr>";
             }
          }
+
       } else {
          if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
-            
-            $class = $itemtype."Type";
+            $class     = $itemtype."Type";
             $typeclass = new $class();
             $typeclass->getFromDB($device["type"]);
-               
+
             if (!$generation) {
                $graph =$typeclass->fields["name"];
             } else {
                $graph ="</td></tr><tr><td>".
                         $typeclass->fields["name"]."</td></tr>";
             }
+
          } else {
             if (!$generation) {
                echo "";
@@ -138,10 +124,11 @@ class PluginArchiresPrototype extends CommonDBTM {
       $graph ="";
       if ($device["users_id"]) {
          if ($generation) {
-            $graph = "URL=\"".$url."\" tooltip=\"".getusername($device["users_id"])."\"";
+            $graph = "URL=\"".$url."\" tooltip=\"".getUserName($device["users_id"])."\"";
          } else {
-            $graph = "<a href='".$url."'>".getusername($device["users_id"])."</a>";
+            $graph = "<a href='".$url."'>".getUserName($device["users_id"])."</a>";
          }
+
       } else if (!$device["users_id"] && $device["groups_id"]) {
          if ($generation) {
             $graph = "URL=\"".$url."\" tooltip=\"".Dropdown::getDropdownName("glpi_groups",
@@ -150,12 +137,14 @@ class PluginArchiresPrototype extends CommonDBTM {
             $graph = "<a href='".$url."'>".Dropdown::getDropdownName("glpi_groups",
                                                                      $device["groups_id"])."</a>";
          }
+
       } else if (!$device["users_id"] && !$device["groups_id"] && $device["contact"]) {
          if ($generation) {
             $graph = "URL=\"".$url."\" tooltip=\"".$device["contact"]."\"";
          } else {
             $graph = "<a href='".$url."'>".$device["contact"]."</a>";
          }
+
       } else {
          if ($generation) {
             $graph = "URL=\"".$url."\" tooltip=\"".$device["name"]."\"";
@@ -167,33 +156,34 @@ class PluginArchiresPrototype extends CommonDBTM {
    }
 
 
-   function test($type,$ID) {
+   static function test($item) {
       global $DB,$CFG_GLPI,$LANG;
 
-      $obj = new $type();
-      $obj->getFromDB($ID);
-      $plugin_archires_views_id=$obj->fields["plugin_archires_views_id"];
+      $ID                       = $item->getID();
+      $type                     = $item->getType();
+      $plugin_archires_views_id = $item->fields["plugin_archires_views_id"];
+
       if (!$plugin_archires_views_id) {
          return false;
       }
-      $plugin = new Plugin();
-
-      $PluginArchiresView = new PluginArchiresView;
+      $plugin             = new Plugin();
+      $PluginArchiresView = new PluginArchiresView();
+      $test               = new self();
 
       if ($plugin->isActivated("appliances")) {
-         $PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery;
+         $PluginArchiresApplianceQuery = new PluginArchiresApplianceQuery();
       }
-      $PluginArchiresLocationQuery         = new PluginArchiresLocationQuery;
-      $PluginArchiresNetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery;
-      $PluginArchiresStateColor            = new PluginArchiresStateColor;
-      $PluginArchiresImageItem             = new PluginArchiresImageItem;
+      $PluginArchiresLocationQuery         = new PluginArchiresLocationQuery();
+      $PluginArchiresNetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery();
+      $PluginArchiresStateColor            = new PluginArchiresStateColor();
+      $PluginArchiresImageItem             = new PluginArchiresImageItem();
 
       $PluginArchiresView->getFromDB($plugin_archires_views_id);
 
       $devices = array();
-      $ports = array();
+      $ports   = array();
 
-      echo "<br><div align='center'>";
+      echo "<br><div class='center'>";
       echo "<table class='tab_cadre_fixe'cellpadding='2' width='75%'>";
       echo "<tr><th colspan='6'>".$LANG['plugin_archires']['test'][2]."</th></tr>";
       echo "<tr><th>".$LANG['plugin_archires']['test'][4]."</th>";
@@ -204,26 +194,27 @@ class PluginArchiresPrototype extends CommonDBTM {
       echo "<th>".$LANG['plugin_archires']['test'][9]."</th></tr>";
 
       if ($type == 'PluginArchiresLocationQuery') {
-         $devices = $PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,true);
-         $ports = $PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,false);
+         $devices = $PluginArchiresLocationQuery->Query($ID, $PluginArchiresView, true);
+         $ports   = $PluginArchiresLocationQuery->Query($ID, $PluginArchiresView, false);
 
       } else if ($type == 'PluginArchiresNetworkEquipmentQuery') {
-         $devices = $PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,true);
-         $ports = $PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,false);
+         $devices = $PluginArchiresNetworkEquipmentQuery->Query($ID, $PluginArchiresView, true);
+         $ports   = $PluginArchiresNetworkEquipmentQuery->Query($ID, $PluginArchiresView, false);
 
       } else if ($type == 'PluginArchiresApplianceQuery') {
-         $devices = $PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,true);
-         $ports = $PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,false);
+         $devices = $PluginArchiresApplianceQuery->Query($ID, $PluginArchiresView, true);
+         $ports   = $PluginArchiresApplianceQuery->Query($ID, $PluginArchiresView, false);
       }
 
       foreach ($devices as $itemtype => $typed_devices) {
          foreach ($typed_devices as $device_id => $device) {
-            $device_unique_name = $itemtype . "_" . $device_id . "_";
+            $device_unique_name  = $itemtype . "_" . $device_id . "_";
             $device_unique_name .= $device["name"];
 
-            $image_name = $PluginArchiresImageItem->displayItemImage($device["type"],$itemtype,true);
-            $link=getItemTypeFormURL($itemtype);
-            $url = $link."?id=".$device_id;
+            $image_name = $PluginArchiresImageItem->displayItemImage($device["type"], $itemtype,
+                                                                     true);
+            $link       = Toolbox::getItemTypeFormURL($itemtype);
+            $url        = $link."?id=".$device_id;
 
             echo "<tr class='tab_bg_1'>";
             echo "<td>$device_unique_name</td>";
@@ -231,7 +222,7 @@ class PluginArchiresPrototype extends CommonDBTM {
             echo "<td>" . $device["name"]."</td>";
 
             echo "<td>";
-            echo $this->displayTypeAndIP($PluginArchiresView,$itemtype,$device,false);
+            echo $test->displayTypeAndIP($PluginArchiresView, $itemtype, $device, false);
             echo  "</td>";
 
             echo  "<td>";
@@ -241,7 +232,7 @@ class PluginArchiresPrototype extends CommonDBTM {
             echo  "</td>";
 
             echo  "<td>";
-            echo $this->displayUsers($url,$device,false);
+            echo $test->displayUsers($url, $device, false);
             echo  "</td>";
             echo  "</tr>";
          }
@@ -314,10 +305,11 @@ class PluginArchiresPrototype extends CommonDBTM {
                echo "<td class='center'><img src= \"../pics/socket.png\" alt='../pics/socket.png' />";
                echo "</td><td><a href='".$url_ports.$ID2."'>".$name2."</a> - ".
                               $LANG['plugin_archires'][17]." ".$logical_number2."</td>";
-               if ($PluginArchiresView->fields["display_ip"]!=0)
+               if ($PluginArchiresView->fields["display_ip"]!=0) {
                   echo  "<td>".$ip2."</td>";
-               else
+               } else {
                   echo  "<td></td>";
+               }
             } else {
 
                echo  "<td>".$device_unique_name1." -- ".$device_unique_name2 ."</td>";
@@ -337,15 +329,16 @@ class PluginArchiresPrototype extends CommonDBTM {
       echo "</div>";
    }
 
+
    function graphItems($device,$device_id,$itemtype,$format,$image_name,$url,$PluginArchiresView) {
       global $DB;
 
-      $PluginArchiresStateColor = new PluginArchiresStateColor;
+      $PluginArchiresStateColor = new PluginArchiresStateColor();
 
-      $device_unique_name = $itemtype . "_" . $device_id . "_";
+      $device_unique_name  = $itemtype . "_" . $device_id . "_";
       $device_unique_name .= $device["name"];
 
-      $graph = "\"".$device_unique_name."\"[shape=plaintext, label=";
+      $graph  = "\"".$device_unique_name."\"[shape=plaintext, label=";
       //label
       $graph .= "<<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
 
@@ -355,7 +348,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       $graph .= "<tr><td> </td></tr><tr><td>".$device["name"];
       //ip / type
-      $graph .= $this->displayTypeAndIP($PluginArchiresView,$itemtype,$device,true);
+      $graph .= $this->displayTypeAndIP($PluginArchiresView, $itemtype, $device, true);
       //entity
       if ($PluginArchiresView->fields["display_entity"]!=0 && isset($device["entity"])) {
          $graph .= "<tr><td>".$this->CleanField(Dropdown::getDropdownName("glpi_entities",
@@ -378,18 +371,19 @@ class PluginArchiresPrototype extends CommonDBTM {
       //end label
 
       //link - users
-      $graph .=$this->displayUsers($url,$device,true);
+      $graph .=$this->displayUsers($url, $device, true);
 
       $graph .="];\n";
 
       return $graph;
    }
 
-   function graphPorts($devices,$ports,$wire,$format,$PluginArchiresView) {
-      global $DB,$CFG_GLPI,$LANG;
+
+   function graphPorts($devices, $ports, $wire, $format, $PluginArchiresView) {
+      global $DB, $CFG_GLPI, $LANG;
 
       $PluginArchiresNetworkInterfaceColor = new PluginArchiresNetworkInterfaceColor();
-      $PluginArchiresVlanColor = new PluginArchiresVlanColor();
+      $PluginArchiresVlanColor             = new PluginArchiresVlanColor();
 
       $items_id1              = $ports[$wire["networkports_id_1"]]["items_id"];
       $itemtype1              = $ports[$wire["networkports_id_1"]]["itemtype"];
@@ -433,7 +427,7 @@ class PluginArchiresPrototype extends CommonDBTM {
                $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
          }
-      } else if ($PluginArchiresView->fields["color"] == PluginArchiresView::PLUGIN_ARCHIRES_VLAN_COLOR ) {
+      } else if ($PluginArchiresView->fields["color"] == PluginArchiresView::PLUGIN_ARCHIRES_VLAN_COLOR) {
          $vlan1 = $PluginArchiresVlanColor->getVlanbyNetworkPort($ID1);
          $vlan2 = $PluginArchiresVlanColor->getVlanbyNetworkPort($ID2);
 
@@ -533,12 +527,14 @@ class PluginArchiresPrototype extends CommonDBTM {
    }
 
 
-   function displayGraph($obj,$plugin_archires_views_id,$select=0) {
+   static function displayGraph($item, $plugin_archires_views_id, $select=0) {
       global $LANG,$DB,$CFG_GLPI;
 
-      $querytype = get_class($obj);
-      $ID = $obj->fields["id"];
-      $object_view = $obj->fields["plugin_archires_views_id"];
+      $querytype   = $item->getType();
+      $ID          = $item->getID();
+      $object_view = $item->fields["plugin_archires_views_id"];
+      $graph       = new self();
+
       if (!isset($plugin_archires_views_id)) {
         $plugin_archires_views_id = $object_view;
       }
@@ -546,24 +542,25 @@ class PluginArchiresPrototype extends CommonDBTM {
         return false;
       }
 
-      $PluginArchiresView = new PluginArchiresView();
+      $PluginArchiresView                  = new PluginArchiresView();
       $PluginArchiresView->getFromDB($plugin_archires_views_id);
       $PluginArchiresNetworkInterfaceColor = new PluginArchiresNetworkInterfaceColor();
-      $PluginArchiresVlanColor = new PluginArchiresVlanColor();
-      $PluginArchiresStateColor = new PluginArchiresStateColor();
+      $PluginArchiresVlanColor             = new PluginArchiresVlanColor();
+      $PluginArchiresStateColor            = new PluginArchiresStateColor();
 
-      echo "<div align='center'>";
-      $PluginArchiresView->viewSelect($obj,$plugin_archires_views_id,$select);
+      echo "<div class='center'>";
+      $PluginArchiresView->viewSelect($item, $plugin_archires_views_id, $select);
       echo "</div>";
 
       if (isset($ID) && !empty($ID)) {
          echo "<img src='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?id=".$ID.
-               "&amp;querytype=".$querytype."&amp;plugin_archires_views_id=".$plugin_archires_views_id."' alt='' usemap='#G'>";
-         echo $this->createGraph("cmapx",$obj,$plugin_archires_views_id);
+               "&amp;querytype=".$querytype."&amp;plugin_archires_views_id=".$plugin_archires_views_id.
+               "' alt='' usemap='#G'>";
+         echo $graph->createGraph("cmapx", $item, $plugin_archires_views_id);
       }
       //legend
       if (isset($ID) && !empty($ID)) {
-         echo "<div align='center'>";
+         echo "<div class='center'>";
          echo "<table cellpadding='5'>";
          echo "<tr><td class='top'>";
          if ( $PluginArchiresView->fields["color"] == 0 ) {
@@ -577,7 +574,7 @@ class PluginArchiresPrototype extends CommonDBTM {
          echo "</div>";
 
       } else {
-         echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"].
+         echo "<div class='center'><br><br><img src=\"".$CFG_GLPI["root_doc"].
                "/pics/warning.png\" alt='warning'><br><br>";
          echo "<b>".$LANG['plugin_archires']['search'][7]."</b></div>";
       }
@@ -587,38 +584,39 @@ class PluginArchiresPrototype extends CommonDBTM {
    function createGraph($format,$obj,$plugin_archires_views_id) {
       global $DB,$CFG_GLPI,$LANG;
 
-      $type = get_class($obj);
-      $ID = $obj->fields["id"];
+      $type        = get_class($obj);
+      $ID          = $obj->fields["id"];
       $object_view = $obj->fields["plugin_archires_views_id"];
+
       if (!isset($plugin_archires_views_id)) {
         $plugin_archires_views_id = $object_view;
       }
-      $PluginArchiresView = new PluginArchiresView;
+      $PluginArchiresView = new PluginArchiresView();
 
-      $plugin = new Plugin;
+      $plugin = new Plugin();
       if ($plugin->isActivated("appliances")) {
-         $PluginArchiresApplianceQuery = new PluginArchiresApplianceQuery;
+         $PluginArchiresApplianceQuery = new PluginArchiresApplianceQuery();
       }
-      $PluginArchiresLocationQuery         = new PluginArchiresLocationQuery;
-      $PluginArchiresNetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery;
-      $PluginArchiresImageItem             = new PluginArchiresImageItem;
+      $PluginArchiresLocationQuery         = new PluginArchiresLocationQuery();
+      $PluginArchiresNetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery();
+      $PluginArchiresImageItem             = new PluginArchiresImageItem();
 
       $PluginArchiresView->getFromDB($plugin_archires_views_id);
 
       $devices = array();
-      $ports = array();
+      $ports   = array();
 
       if ($type == 'PluginArchiresLocationQuery') {
-         $devices = $PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,true);
-         $ports   = $PluginArchiresLocationQuery->Query($ID,$PluginArchiresView,false);
+         $devices = $PluginArchiresLocationQuery->Query($ID, $PluginArchiresView, true);
+         $ports   = $PluginArchiresLocationQuery->Query($ID, $PluginArchiresView, false);
 
       } else if ($type == 'PluginArchiresNetworkEquipmentQuery') {
-         $devices = $PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,true);
-         $ports   = $PluginArchiresNetworkEquipmentQuery->Query($ID,$PluginArchiresView,false);
+         $devices = $PluginArchiresNetworkEquipmentQuery->Query($ID, $PluginArchiresView, true);
+         $ports   = $PluginArchiresNetworkEquipmentQuery->Query($ID, $PluginArchiresView, false);
 
       } else if ($type == 'PluginArchiresApplianceQuery') {
-         $devices = $PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,true);
-         $ports   = $PluginArchiresApplianceQuery->Query($ID,$PluginArchiresView,false);
+         $devices = $PluginArchiresApplianceQuery->Query($ID, $PluginArchiresView, true);
+         $ports   = $PluginArchiresApplianceQuery->Query($ID, $PluginArchiresView, false);
       }
       $wires = array();
 
@@ -632,7 +630,7 @@ class PluginArchiresPrototype extends CommonDBTM {
          }
       }
 
-      $graph = "graph G {\n";
+      $graph  = "graph G {\n";
       $graph .= "overlap=false;\n";
 
       $graph .= "bgcolor=white;\n";
@@ -644,7 +642,7 @@ class PluginArchiresPrototype extends CommonDBTM {
          foreach ($typed_devices as $device_id => $device) {
             $image_name = $PluginArchiresImageItem->displayItemImage($device["type"], $itemtype,
                                                                      false);
-            $link = getItemTypeFormURL($itemtype);
+            $link = Toolbox::getItemTypeFormURL($itemtype);
             $url = $link."?id=".$device_id;
 
             $graph .= $this->graphItems($device, $device_id, $itemtype, $format, $image_name, $url,
@@ -668,37 +666,57 @@ class PluginArchiresPrototype extends CommonDBTM {
    }
 
 
-   function generateGraphviz($graph,$format,$PluginArchiresView) {
+   function generateGraphviz($graph, $format, $PluginArchiresView) {
 
-      $Path = GLPI_PLUGIN_DOC_DIR."/archires";
-      $graph_name = tempnam($Path, "");
-      $output_name = tempnam($Path, "");
+      $Path        = GLPI_PLUGIN_DOC_DIR."/archires";
+      $graph_name  = realpath(tempnam($Path, ""));
 
-      if ($graph_file = fopen($graph_name, "w")) {
-         fputs($graph_file, $graph);
-         fclose($graph_file);
+      if (file_put_contents($graph_name, $graph)) {
 
          if ($PluginArchiresView->fields["engine"]!=0) {
             $engine_archires = "neato";
          } else {
             $engine_archires = "dot";
          }
-
-         //$command = $engine_archires." -T".$format." -o ".$output_name." ".$graph_name;
-         $command = $engine_archires." -T" .$format." -o \"".$output_name ."\" \"".$graph_name."\"";
-         `$command`;
-
-         //unlink($graph_name);
-
-         if ($output_file = fopen($output_name, "rb")) {
-           $output_data = fread($output_file, filesize($output_name));
-           fclose($output_file);
-           unlink($output_name);
-
-           return $output_data;
-         }
+         $command = $engine_archires." -T" .$format." \"".$graph_name."\"";
+         passthru($command);
+         unlink($graph_name);
       }
    }
-}
 
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+
+      switch ($item->getType()) {
+         case 'PluginArchiresApplianceQuery' :
+            switch ($tabnum) {
+               case '1' :
+                  self::test($item);
+                  break;
+
+               case '2' :
+                  $plugin_archires_views_id = $item->fields["plugin_archires_views_id"];
+                  self::displayGraph($item, $plugin_archires_views_id);
+                  break;
+            }
+            break;
+      }
+      return true;
+   }
+
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+
+      if (!$withtemplate && plugin_archires_haveRight('archires', 'r')) {
+         switch ($item->getType()) {
+            case 'PluginArchiresApplianceQuery' :
+               return array('1' => $LANG['plugin_archires']['test'][0],
+                            '2' => $LANG['plugin_archires']['search'][6]);
+         }
+      }
+      return '';
+   }
+
+}
 ?>

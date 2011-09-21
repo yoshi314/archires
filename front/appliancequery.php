@@ -35,12 +35,12 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8],
+Html::header($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8],
              '',"plugins","archires","appliance");
 
-$PluginArchiresApplianceQuery=new PluginArchiresApplianceQuery();
+$PluginArchiresApplianceQuery = new PluginArchiresApplianceQuery();
 
-if ($PluginArchiresApplianceQuery->canView() || haveRight("config","w")) {
+if ($PluginArchiresApplianceQuery->canView() || Session::haveRight("config","w")) {
    Search::show("PluginArchiresApplianceQuery");
 
 } else {
@@ -49,6 +49,5 @@ if ($PluginArchiresApplianceQuery->canView() || haveRight("config","w")) {
    echo "<b>".$LANG['login'][5]."</b></div>";
 }
 
-commonFooter();
-
+Html::footer();
 ?>

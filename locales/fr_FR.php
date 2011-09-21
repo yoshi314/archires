@@ -40,6 +40,7 @@ $LANG['plugin_archires']['title'][3] = "Vues";
 $LANG['plugin_archires']['title'][4] = "lieu";
 $LANG['plugin_archires']['title'][5] = "matériel réseau";
 $LANG['plugin_archires']['title'][8] = "applicatif";
+$LANG['plugin_archires']['title'][9] = "applicatifs";
 
 $LANG['plugin_archires']['menu'][0] = "Menu général";
 $LANG['plugin_archires']['menu'][2] = "Architecture par";

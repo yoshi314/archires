@@ -35,12 +35,12 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-commonHeader($LANG['plugin_archires']['title'][0],'',"plugins","archires","summary");
+Html::header($LANG['plugin_archires']['title'][0],'',"plugins","archires","summary");
 
 $PluginArchiresArchires = new PluginArchiresArchires();
 
-if ($PluginArchiresArchires->canView() || haveRight("config","w")) {
-   echo "<div align='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
+if ($PluginArchiresArchires->canView() || Session::haveRight("config","w")) {
+   echo "<div class='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
    echo "<tr><th>".$LANG['plugin_archires']['menu'][0]."</th></tr>";
 
    if (countElementsInTable('glpi_plugin_archires_views',
@@ -74,11 +74,10 @@ if ($PluginArchiresArchires->canView() || haveRight("config","w")) {
    echo "</table></div>";
 
 } else {
-   echo "<div align='center'><br><br>";
+   echo "<div class='center'><br><br>";
    echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
    echo "<b>".$LANG['login'][5]."</b></div>";
 }
 
-commonFooter();
-
+Html::footer();
 ?>

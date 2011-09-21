@@ -49,43 +49,42 @@ $PluginArchiresView = new PluginArchiresView();
 if (isset($_POST["add"])) {
    $PluginArchiresView->check(-1,'w',$_POST);
    $PluginArchiresView->add($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["delete"])) {
    $PluginArchiresView->check($_POST['id'],'w');
    $PluginArchiresView->delete($_POST);
-   glpi_header(getItemTypeSearchURL('PluginArchiresView'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresView'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresView->check($_POST['id'],'w');
    $PluginArchiresView->restore($_POST);
-   glpi_header(getItemTypeSearchURL('PluginArchiresView'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresView'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresView->check($_POST['id'],'w');
    $PluginArchiresView->delete($_POST,1);
-   glpi_header(getItemTypeSearchURL('PluginArchiresView'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresView'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresView->check($_POST['id'],'w');
    $PluginArchiresView->update($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["duplicate"])) {
    $PluginArchiresView->check($_POST['id'],'w');
    unset($_POST['id']);
    $PluginArchiresView->add($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else {
 
    $PluginArchiresView->checkGlobal("r");
 
-   commonHeader($LANG['plugin_archires']['title'][3],'',"plugins","archires","view");
+   Html::header($LANG['plugin_archires']['title'][3],'',"plugins","archires","view");
 
    $PluginArchiresView->showForm($_GET["id"]);
 
-   commonFooter();
+   Html::footer();
 }
-
 ?>

@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 $plugin = new Plugin();
 if ($plugin->isActivated("archires")) {
-   checkRight("config","w");
+   Session::checkRight("config","w");
 
    $PluginArchiresImageItem             = new PluginArchiresImageItem();
    $PluginArchiresNetworkInterfaceColor = new PluginArchiresNetworkInterfaceColor();
@@ -47,16 +47,17 @@ if ($plugin->isActivated("archires")) {
    $PluginArchiresStateColor            = new PluginArchiresStateColor();
 
    if (isset($_POST["add"]) && isset($_POST['type'])) {
-      $test= explode(";", $_POST['type']);
+      $test = explode(";", $_POST['type']);
       if (isset($test[0])) {
-         $_POST['type']= $test[1];
-         $_POST['itemtype']= $test[0];
+         $_POST['type']     = $test[1];
+         $_POST['itemtype'] = $test[0];
 
          if ($PluginArchiresImageItem->canCreate()) {
-            $PluginArchiresImageItem->addItemImage($_POST['type'],$_POST['itemtype'],$_POST['img']);
+            $PluginArchiresImageItem->addItemImage($_POST['type'], $_POST['itemtype'],
+                                                   $_POST['img']);
          }
       }
-      glpi_header($_SERVER['HTTP_REFERER']);
+      Html::back();
 
    } else if (isset($_POST["delete"])) {
       checkRight("config","w");
@@ -67,7 +68,7 @@ if ($plugin->isActivated("archires")) {
             $PluginArchiresImageItem->deleteItemImage($key);
          }
       }
-      glpi_header($_SERVER['HTTP_REFERER']);
+      Html::back();
 
    } else if (isset($_POST["add_color_networkinterface"])
               && isset($_POST['networkinterfaces_id'])) {
@@ -76,10 +77,10 @@ if ($plugin->isActivated("archires")) {
          $PluginArchiresNetworkInterfaceColor->addNetworkInterfaceColor($_POST['networkinterfaces_id'],
                                                                         $_POST['color']);
       }
-      glpi_header($_SERVER['HTTP_REFERER']);
+      Html::back();
 
    } else if (isset($_POST["delete_color_networkinterface"])) {
-      checkRight("config","w");
+      Session::checkRight("config","w");
       $PluginArchiresNetworkInterfaceColor->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item_color"] as $key => $val) {
@@ -87,16 +88,16 @@ if ($plugin->isActivated("archires")) {
             $PluginArchiresNetworkInterfaceColor->deleteNetworkInterfaceColor($key);
          }
       }
-      glpi_header($_SERVER['HTTP_REFERER']);
+      Html::back();
 
    } else if (isset($_POST["add_color_state"]) && isset($_POST['states_id'])) {
       if ($PluginArchiresStateColor->canCreate()) {
          $PluginArchiresStateColor->addStateColor($_POST['states_id'],$_POST['color']);
       }
-      glpi_header($_SERVER['HTTP_REFERER']);
+      Html::back();
 
    } else if (isset($_POST["delete_color_state"])) {
-      checkRight("config","w");
+      Session::checkRight("config","w");
       $PluginArchiresStateColor->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item_color"] as $key => $val) {
@@ -104,16 +105,16 @@ if ($plugin->isActivated("archires")) {
             $PluginArchiresStateColor->deleteStateColor($key);
          }
       }
-      glpi_header($_SERVER['HTTP_REFERER']);
+      Html::back();
 
    } else if (isset($_POST["add_color_vlan"]) && isset($_POST['vlans_id'])) {
       if ($PluginArchiresVlanColor->canCreate()) {
          $PluginArchiresVlanColor->addVlanColor($_POST['vlans_id'],$_POST['color']);
       }
-      glpi_header($_SERVER['HTTP_REFERER']);
+      Html::back();
 
    } else if (isset($_POST["delete_color_vlan"])) {
-      checkRight("config","w");
+      Session::checkRight("config","w");
       $PluginArchiresVlanColor->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item_color"] as $key => $val) {
@@ -121,10 +122,10 @@ if ($plugin->isActivated("archires")) {
             $PluginArchiresVlanColor->deleteVlanColor($key);
          }
       }
-      glpi_header($_SERVER['HTTP_REFERER']);
+      Html::back();
 
    } else {
-      commonHeader($LANG['plugin_archires']['title'][0], '', "plugins",
+      Html::header($LANG['plugin_archires']['title'][0], '', "plugins",
                    "archires", "summary");
 
       $PluginArchiresImageItem->showConfigForm();
@@ -135,15 +136,14 @@ if ($plugin->isActivated("archires")) {
 
       $PluginArchiresStateColor->showConfigForm(true);
 
-      commonFooter();
+      Html::footer();
    }
 
 } else {
-   commonHeader($LANG["common"][12],'',"config","plugins");
-   echo "<div align='center'><br><br>";
+   Html::header($LANG["common"][12],'',"config","plugins");
+   echo "<div class='center'><br><br>";
    echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
    echo "<b>Please activate the plugin</b></div>";
-   commonFooter();
+   Html::footer();
 }
-
 ?>

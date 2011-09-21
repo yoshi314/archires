@@ -37,15 +37,18 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresVlanColor extends CommonDBTM {
-   
+
+
    function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
+
    function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
-   
+
+
    function getFromDBbyVlan($vlan) {
       global $DB;
 
@@ -109,9 +112,9 @@ class PluginArchiresVlanColor extends CommonDBTM {
       global $DB,$LANG,$CFG_GLPI;
 
       $query = "SELECT *
-                FROM `".$this->getTable()."` 
+                FROM `".$this->getTable()."`
                 ORDER BY `vlans_id` ASC";
-      $i = 0;
+      $i    = 0;
       $used = array();
 
       if ($result = $DB->query($query)) {
@@ -163,17 +166,17 @@ class PluginArchiresVlanColor extends CommonDBTM {
                   echo "<td colspan='8' class='center'>";
                else
                   echo "<td colspan='4' class='center'>";
-                
+
                echo "<a onclick= \"if (markCheckboxes ('massiveaction_form_vlan_color')) ".
                      "return false;\" href='#'>".
                      $LANG['buttons'][18]."</a>";
                echo " - <a onclick= \"if (unMarkCheckboxes ('massiveaction_form_vlan_color')) ".
                      "return false;\" href='#'>".
                      $LANG['buttons'][19]."</a> ";
-               echo "<input type='submit' name='delete_color_vlan' value=\"".$LANG['buttons'][6].
-                     "\" class='submit'></td></tr>";
+               Html::closeArrowMassives(array('delete_color_vlan' => $LANG['buttons'][6]));
+            } else {
+               echo "</table>";
             }
-            echo "</table>";
             echo "</div>";
          }
 
@@ -185,9 +188,9 @@ class PluginArchiresVlanColor extends CommonDBTM {
             echo "</td>";
             echo "<td><input type='text' name='color'>";
             echo "&nbsp;";
-            showToolTip(nl2br($LANG['plugin_archires']['setup'][12]),
-                        array('link'=>'http://www.graphviz.org/doc/info/colors.html',
-                              'linktarget'=>'_blank'));
+            Html::showToolTip(nl2br($LANG['plugin_archires']['setup'][12]),
+                              array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
+                                    'linktarget' => '_blank'));
             echo "<td class='center'><input type='submit' name='add_color_vlan' value=\"".
                   $LANG['buttons'][2]."\" class='submit'></td></tr>";
             echo "</table>";
@@ -211,8 +214,8 @@ class PluginArchiresVlanColor extends CommonDBTM {
          $where .= ")";
       }
 
-      $query = "SELECT * 
-                FROM `glpi_vlans` 
+      $query = "SELECT *
+                FROM `glpi_vlans`
                 $where
                 ORDER BY `name`";
       $result = $DB->query($query);
@@ -220,12 +223,12 @@ class PluginArchiresVlanColor extends CommonDBTM {
 
       if ($number !="0") {
          echo "<select name='vlans_id'>\n";
-         echo "<option value='0'>".DROPDOWN_EMPTY_VALUE."</option>\n";
+         echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
          echo "<option value='-1'>".$LANG['plugin_archires'][36]."</option>\n";
          while ($data= mysql_fetch_array($result)) {
             $output = $data["name"];
-            if (utf8_strlen($output) > $limit) {
-               $output = utf8_substr($output,0,$limit)."&hellip;";
+            if (Toolbox::strlen($output) > $limit) {
+               $output = Toolbox::substr($output,0,$limit)."&hellip;";
             }
             echo "<option value='".$data["id"]."'>".$output."</option>";
          }
@@ -237,20 +240,19 @@ class PluginArchiresVlanColor extends CommonDBTM {
   function getVlanbyNetworkPort ($ID) {
     global $DB;
 
-      $query = "SELECT `glpi_vlans`.`id` 
-                FROM `glpi_vlans`, `glpi_networkports_vlans` 
-                WHERE `glpi_networkports_vlans`.`vlans_id` = `glpi_vlans`.`id` 
+      $query = "SELECT `glpi_vlans`.`id`
+                FROM `glpi_vlans`, `glpi_networkports_vlans`
+                WHERE `glpi_networkports_vlans`.`vlans_id` = `glpi_vlans`.`id`
                       AND `glpi_networkports_vlans`.`networkports_id` = '$ID' " ;
 
       $result = $DB->query($query);
-      $nb = $DB->numrows($result);
+      $nb     = $DB->numrows($result);
       if ($result = $DB->query($query)) {
         $data_vlan = $DB->fetch_array($result) ;
-        $vlan = $data_vlan["id"] ;
+        $vlan      = $data_vlan["id"] ;
       }
       return $vlan;
    }
 
 }
-
 ?>

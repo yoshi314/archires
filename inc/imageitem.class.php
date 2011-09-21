@@ -65,7 +65,6 @@ class PluginArchiresImageItem extends CommonDBTM {
          if (is_array($this->fields) && count($this->fields)) {
             return true;
          }
-         return false;
       }
       return false;
    }

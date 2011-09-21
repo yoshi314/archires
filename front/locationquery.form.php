@@ -50,33 +50,33 @@ $PluginArchiresQueryType     = new PluginArchiresQueryType();
 if (isset($_POST["add"])) {
    $PluginArchiresLocationQuery->check(-1,'w',$_POST);
    $PluginArchiresLocationQuery->add($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["delete"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->delete($_POST);
-   glpi_header(getItemTypeSearchURL('PluginArchiresLocationQuery'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresLocationQuery'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->restore($_POST);
-   glpi_header(getItemTypeSearchURL('PluginArchiresLocationQuery'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresLocationQuery'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->delete($_POST,1);
-   glpi_header(getItemTypeSearchURL('PluginArchiresLocationQuery'));
+   Html::redirect(getItemTypeSearchURL('PluginArchiresLocationQuery'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->update($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["duplicate"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    unset($_POST['id']);
    $PluginArchiresLocationQuery->add($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["addtype"])) {
    $test = explode(";", $_POST['type']);
@@ -86,11 +86,11 @@ if (isset($_POST["add"])) {
       $_POST['itemtype'] = $test[0];
 
       if ($PluginArchiresQueryType->canCreate()) {
-         $PluginArchiresQueryType->addType('PluginArchiresLocationQuery',$_POST['type'],
-                                           $_POST['itemtype'],$_POST['query']);
+         $PluginArchiresQueryType->addType('PluginArchiresLocationQuery', $_POST['type'],
+                                           $_POST['itemtype'], $_POST['query']);
       }
    }
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_POST["deletetype"])) {
    if ($PluginArchiresQueryType->canCreate()) {
@@ -102,18 +102,17 @@ if (isset($_POST["add"])) {
          }
       }
    }
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else {
-   
+
    $PluginArchiresLocationQuery->checkGlobal("r");
 
-   commonHeader($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][4],
+   Html::header($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][4],
                 '',"plugins","archires","location");
 
    $PluginArchiresLocationQuery->showForm($_GET["id"]);
 
-   commonFooter();
+   Html::footer();
 }
-
 ?>
