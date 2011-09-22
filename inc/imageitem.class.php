@@ -131,7 +131,7 @@ class PluginArchiresImageItem extends CommonDBTM {
       }
       echo "</select>&nbsp;";
       closedir($dir);
-      showToolTip(nl2br($LANG['plugin_archires']['setup'][21]));
+      Html::showToolTip(nl2br($LANG['plugin_archires']['setup'][21]));
       echo "<td>";
       echo "<div class='center'><input type='submit' name='add' value=\"".$LANG['buttons'][2].
             "\" class='submit'></div></td></tr>";

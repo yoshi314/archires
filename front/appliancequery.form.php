@@ -56,17 +56,17 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->delete($_POST);
-   Html::redirect(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresApplianceQuery'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->restore($_POST);
-   Html::redirect(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresApplianceQuery'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');
    $PluginArchiresApplianceQuery->delete($_POST,1);
-   Html::redirect(getItemTypeSearchURL('PluginArchiresApplianceQuery'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresApplianceQuery'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresApplianceQuery->check($_POST['id'],'w');

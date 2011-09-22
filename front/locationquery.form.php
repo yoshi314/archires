@@ -55,17 +55,17 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->delete($_POST);
-   Html::redirect(getItemTypeSearchURL('PluginArchiresLocationQuery'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresLocationQuery'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->restore($_POST);
-   Html::redirect(getItemTypeSearchURL('PluginArchiresLocationQuery'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresLocationQuery'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');
    $PluginArchiresLocationQuery->delete($_POST,1);
-   Html::redirect(getItemTypeSearchURL('PluginArchiresLocationQuery'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresLocationQuery'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresLocationQuery->check($_POST['id'],'w');

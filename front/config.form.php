@@ -60,7 +60,7 @@ if ($plugin->isActivated("archires")) {
       Html::back();
 
    } else if (isset($_POST["delete"])) {
-      checkRight("config","w");
+      Session::checkRight("config","w");
       $PluginArchiresImageItem->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item"] as $key => $val) {

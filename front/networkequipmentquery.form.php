@@ -55,17 +55,17 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->delete($_POST);
-   Html::redirect(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["restore"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->restore($_POST);
-   Html::redirect(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["purge"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
    $PluginArchiresNetworkEquipmentQuery->delete($_POST,1);
-   Html::redirect(getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["update"])) {
    $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
