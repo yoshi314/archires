@@ -33,7 +33,7 @@
  */
 
 function plugin_archires_install() {
-   global $DB;
+   global $DB, $LANG;
 
    include_once (GLPI_ROOT."/plugins/archires/inc/profile.class.php");
    $update = false;
@@ -93,7 +93,6 @@ function plugin_archires_install() {
       if (!TableExists("glpi_plugin_archires_views")) {
          plugin_archires_updateTo180();
       }
-
    }
 
    if ($update) {
@@ -134,7 +133,12 @@ function plugin_archires_install() {
                                     "glpi_plugin_archires_imageitems"));
    }
 
-   @mkdir(GLPI_PLUGIN_DOC_DIR."/archires");
+   $rep_files_archires = realpath(GLPI_PLUGIN_DOC_DIR)."/archires";
+   if (!is_dir($rep_files_archires)
+       && !mkdir($rep_files_archires)) {
+      die($LANG['document'][29].' ('.$rep_files_archires.')');
+   }
+
    PluginArchiresProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    return true;
 }

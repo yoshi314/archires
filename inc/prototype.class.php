@@ -48,14 +48,16 @@ class PluginArchiresPrototype extends CommonDBTM {
       $format = "png";
       $engine = "dot";
 
+      $out         = '';
       $Path        = realpath(GLPI_PLUGIN_DOC_DIR."/archires");
       $graph_name  = tempnam($Path, "");
 
       if (file_put_contents($graph_name, $graph)) {
          $command = $engine." -T" .$format." \"".$graph_name."\"";
-         passthru($command);
+         $out = shell_exec($command);
          unlink($graph_name);
       }
+      return $out;
    }
 
 
@@ -668,6 +670,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
    function generateGraphviz($graph, $format, $PluginArchiresView) {
 
+      $out         = '';
       $Path        = GLPI_PLUGIN_DOC_DIR."/archires";
       $graph_name  = realpath(tempnam($Path, ""));
 
@@ -679,9 +682,10 @@ class PluginArchiresPrototype extends CommonDBTM {
             $engine_archires = "dot";
          }
          $command = $engine_archires." -T" .$format." \"".$graph_name."\"";
-         passthru($command);
+         $out = shell_exec($command);
          unlink($graph_name);
       }
+      return $out;
    }
 
 
