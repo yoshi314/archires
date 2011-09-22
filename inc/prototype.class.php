@@ -704,6 +704,7 @@ class PluginArchiresPrototype extends CommonDBTM {
                case 2 :
                   $plugin_archires_views_id = $item->fields["plugin_archires_views_id"];
                   self::displayGraph($item, $plugin_archires_views_id);
+                  PluginArchiresView::linkToAllViews($item);
                   break;
             }
             break;

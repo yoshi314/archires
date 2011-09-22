@@ -540,10 +540,6 @@ class PluginArchiresView extends CommonDBTM {
                case 1 :
                   self::showView($item);
                   break;
-
-               case 2 :
-                  self::linkToAllViews($item);
-                  break;
             }
             break;
       }
@@ -559,8 +555,7 @@ class PluginArchiresView extends CommonDBTM {
             case 'PluginArchiresApplianceQuery' :
             case 'PluginArchiresLocationQuery' :
             case 'PluginArchiresNetworkEquipmentQuery' :
-               return array('1' => $LANG['plugin_archires']['setup'][20],
-                            '2' => $LANG['plugin_archires']['title'][3]);
+               return array('1' => $LANG['plugin_archires']['setup'][20]);
          }
       }
       return '';
