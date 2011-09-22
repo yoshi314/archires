@@ -48,28 +48,16 @@ class PluginArchiresPrototype extends CommonDBTM {
       $format="png";
       $engine="dot";
 
-      //print $graph;
-      $Path = GLPI_PLUGIN_DOC_DIR."/archires";
-      $graph_name = tempnam($Path, "");
-      $output_name = tempnam($Path, "");
+      $out         = '';
+      $Path        = realpath(GLPI_PLUGIN_DOC_DIR."/archires");
+      $graph_name  = tempnam($Path, "");
 
-      if ($graph_file = fopen($graph_name, "w")) {
-         fputs($graph_file, $graph);
-         fclose($graph_file);
-         //$command = $engine." -T" . $format . " -o " . $output_name . " " . $graph_name;
-         $command = $engine." -T" .$format." -o \"".$output_name ."\" \"".$graph_name."\"";
-         `$command`;
-
+      if (file_put_contents($graph_name, $graph)) {
+         $command = $engine." -T" .$format." \"".$graph_name."\"";
+         $out = shell_exec($command);
          unlink($graph_name);
-
-         if ($output_file = fopen($output_name, "rb")) {
-            $output_data = fread($output_file, filesize($output_name));
-            fclose($output_file);
-            unlink($output_name);
-
-            return $output_data;
-         }
       }
+      return $out;
    }
 
 
@@ -88,13 +76,13 @@ class PluginArchiresPrototype extends CommonDBTM {
       $PluginArchiresArchires= new PluginArchiresArchires();
       if ($PluginArchiresView->fields["display_ip"]!=0 && isset($device["ip"])) {
          if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
-            
+
                $class = $itemtype."Type";
                $typeclass = new $class();
                $typeclass->getFromDB($device["type"]);
-               
+
             if (!$generation) {
-               
+
                $graph = $typeclass->fields["name"] . " " .
                         $device["ip"];
             } else {
@@ -110,11 +98,11 @@ class PluginArchiresPrototype extends CommonDBTM {
          }
       } else {
          if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
-            
+
             $class = $itemtype."Type";
             $typeclass = new $class();
             $typeclass->getFromDB($device["type"]);
-               
+
             if (!$generation) {
                $graph =$typeclass->fields["name"];
             } else {
@@ -670,34 +658,22 @@ class PluginArchiresPrototype extends CommonDBTM {
 
    function generateGraphviz($graph,$format,$PluginArchiresView) {
 
-      $Path = GLPI_PLUGIN_DOC_DIR."/archires";
-      $graph_name = tempnam($Path, "");
-      $output_name = tempnam($Path, "");
+      $out         = '';
+      $Path        = GLPI_PLUGIN_DOC_DIR."/archires";
+      $graph_name  = realpath(tempnam($Path, ""));
 
-      if ($graph_file = fopen($graph_name, "w")) {
-         fputs($graph_file, $graph);
-         fclose($graph_file);
+      if (file_put_contents($graph_name, $graph)) {
 
          if ($PluginArchiresView->fields["engine"]!=0) {
             $engine_archires = "neato";
          } else {
             $engine_archires = "dot";
          }
-
-         //$command = $engine_archires." -T".$format." -o ".$output_name." ".$graph_name;
-         $command = $engine_archires." -T" .$format." -o \"".$output_name ."\" \"".$graph_name."\"";
-         `$command`;
-
-         //unlink($graph_name);
-
-         if ($output_file = fopen($output_name, "rb")) {
-           $output_data = fread($output_file, filesize($output_name));
-           fclose($output_file);
-           unlink($output_name);
-
-           return $output_data;
-         }
+         $command = $engine_archires." -T" .$format." \"".$graph_name."\"";
+         $out = shell_exec($command);
+         unlink($graph_name);
       }
+      return $out;
    }
 }
 

@@ -33,7 +33,7 @@
  */
 
 function plugin_archires_install() {
-   global $DB;
+   global $DB, $LANG;
 
    include_once (GLPI_ROOT."/plugins/archires/inc/profile.class.php");
    $update = false;
@@ -92,14 +92,14 @@ function plugin_archires_install() {
    }
 
    if ($update) {
-   
+
       $table = "glpi_plugin_archires_statecolors";
       $index = "state";
       if (isIndex($table, $index)) {
          $query="ALTER TABLE `$table` DROP INDEX `$index`;";
          $result=$DB->query($query);
       }
-      
+
       $query_="SELECT *
             FROM `glpi_plugin_archires_profiles` ";
       $result_=$DB->query($query_);
@@ -128,6 +128,13 @@ function plugin_archires_install() {
                               array("glpi_plugin_archires_querytypes",
                                     "glpi_plugin_archires_imageitems"));
    }
+
+   $rep_files_archires = realpath(GLPI_PLUGIN_DOC_DIR)."/archires";
+   if (!is_dir($rep_files_archires)
+       && !mkdir($rep_files_archires)) {
+      die($LANG['document'][29]." ($rep_files_archires)");
+   }
+
    PluginArchiresProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    return true;
 }
@@ -373,7 +380,7 @@ function plugin_archires_MassiveActionsProcess($data) {
             $item = new $data['itemtype']();
             foreach ($data["item"] as $key => $val) {
                if ($val==1) {
-                  
+
                   $values["id"] = $key;
                   $values["entities_id"] = $data['entities_id'];
                   $item->update($values);

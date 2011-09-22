@@ -101,7 +101,7 @@ function plugin_version_archires() {
 global $LANG;
 
    return array('name'           => $LANG['plugin_archires']['title'][0],
-                'version'        => '1.9.0',
+                'version'        => '1.9.1',
                 'author'         => 'Xavier CAILLAUD, Remi COLLET, Nelly LASSON, Sebastien PRUDHOMME',
                 'homepage'       => 'https://forge.indepnet.net/projects/show/archires',
                 'minGlpiVersion' => '0.80');
@@ -111,11 +111,11 @@ global $LANG;
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_archires_check_prerequisites() {
 
-   if (GLPI_VERSION >= 0.80) {
-      return true;
-   } else {
-      echo "GLPI version not compatible need 0.80";
+   if (version_compare(GLPI_VERSION,'0.80','lt') || version_compare(GLPI_VERSION,'0.81','ge')) {
+      echo "This plugin requires GLPI >= 0.80 and GLPI < 0.81";
+      return false;
    }
+   return true;
 }
 
 
