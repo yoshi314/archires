@@ -100,27 +100,29 @@ function plugin_archires_install() {
       $table = "glpi_plugin_archires_statecolors";
       $index = "state";
       if (isIndex($table, $index)) {
-         $query="ALTER TABLE `$table` DROP INDEX `$index`;";
-         $result=$DB->query($query);
+         $query = "ALTER TABLE `$table` DROP INDEX `$index`;";
+         $result = $DB->query($query);
       }
 
-      $query_="SELECT *
-            FROM `glpi_plugin_archires_profiles` ";
-      $result_=$DB->query($query_);
+      $query_  = "SELECT *
+                  FROM `glpi_plugin_archires_profiles` ";
+      $result_ = $DB->query($query_);
       if ($DB->numrows($result_)>0) {
 
          while ($data=$DB->fetch_array($result_)) {
-            $query="UPDATE `glpi_plugin_archires_profiles`
-                  SET `profiles_id` = '".$data["id"]."'
-                  WHERE `id` = '".$data["id"]."';";
-            $result=$DB->query($query);
+            $query = "UPDATE `glpi_plugin_archires_profiles`
+                      SET `profiles_id` = '".$data["id"]."'
+                      WHERE `id` = '".$data["id"]."';";
+            $result = $DB->query($query);
 
          }
       }
 
-      $query="ALTER TABLE `glpi_plugin_archires_profiles`
-               DROP `name` ;";
-      $result=$DB->query($query);
+      if (FieldExists("glpi_plugin_archires_profiles", "name")) {
+         $query  = "ALTER TABLE `glpi_plugin_archires_profiles`
+                    DROP `name`";
+      }
+      $result = $DB->query($query);
 
       Plugin::migrateItemType(array(3000 => 'PluginArchiresLocationQuery',
                                     3001 => 'PluginArchiresNetworkEquipmentQuery',
