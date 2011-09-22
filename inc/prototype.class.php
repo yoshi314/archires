@@ -38,6 +38,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresPrototype extends CommonDBTM {
 
+
    function testGraphviz() {
       $graph = "graph G {
                   a;
@@ -693,12 +694,14 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       switch ($item->getType()) {
          case 'PluginArchiresApplianceQuery' :
+         case 'PluginArchiresLocationQuery' :
+         case 'PluginArchiresNetworkEquipmentQuery' :
             switch ($tabnum) {
-               case '1' :
+               case 1 :
                   self::test($item);
                   break;
 
-               case '2' :
+               case 2 :
                   $plugin_archires_views_id = $item->fields["plugin_archires_views_id"];
                   self::displayGraph($item, $plugin_archires_views_id);
                   break;
@@ -715,6 +718,8 @@ class PluginArchiresPrototype extends CommonDBTM {
       if (!$withtemplate && plugin_archires_haveRight('archires', 'r')) {
          switch ($item->getType()) {
             case 'PluginArchiresApplianceQuery' :
+            case 'PluginArchiresLocationQuery' :
+            case 'PluginArchiresNetworkEquipmentQuery' :
                return array('1' => $LANG['plugin_archires']['test'][0],
                             '2' => $LANG['plugin_archires']['search'][6]);
          }

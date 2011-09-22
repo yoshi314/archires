@@ -37,19 +37,22 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginArchiresStateColor extends CommonDBTM {
-   
+
+
    function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
+
    function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
-   
+
+
    function getFromDBbyState($state) {
       global $DB;
 
-      $query = "SELECT * 
+      $query = "SELECT *
                 FROM `".$this->getTable()."`
                 WHERE `states_id` = '$state'";
 
@@ -61,7 +64,6 @@ class PluginArchiresStateColor extends CommonDBTM {
          if (is_array($this->fields) && count($this->fields)) {
             return true;
          }
-         return false;
       }
       return false;
    }
@@ -79,11 +81,12 @@ class PluginArchiresStateColor extends CommonDBTM {
                              'color'     => $color));
          }
       } else {
-         $query = "SELECT *
-                   FROM `glpi_states`";
+         $query  = "SELECT *
+                    FROM `glpi_states`";
          $result = $DB->query($query);
          $number = $DB->numrows($result);
-         $i = 0;
+         $i      = 0;
+
          while ($i < $number) {
             $state_table = $DB->result($result, $i, "id");
             if ($this->GetfromDBbyState($state_table)) {
@@ -100,17 +103,17 @@ class PluginArchiresStateColor extends CommonDBTM {
 
 
    function deleteStateColor($ID) {
-      $this->delete(array('id'=>$ID));
+      $this->delete(array('id' => $ID));
    }
 
 
    function showConfigForm($canupdate=false) {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB, $LANG, $CFG_GLPI;
 
-      $query = "SELECT * 
-                FROM `".$this->getTable()."` 
+      $query = "SELECT *
+                FROM `".$this->getTable()."`
                 ORDER BY `states_id` ASC;";
-      $i = 0;
+      $i    = 0;
       $used = array();
 
       if ($result = $DB->query($query)) {
@@ -133,10 +136,10 @@ class PluginArchiresStateColor extends CommonDBTM {
             echo "</tr>";
 
             while ($ligne= mysql_fetch_array($result)) {
-               $ID = $ligne["id"];
+               $ID        = $ligne["id"];
                $states_id = $ligne["states_id"];
-               $used[] = $states_id;
-               if ($i  % 2==0 && $number>1) {
+               $used[]    = $states_id;
+               if ($i % 2==0 && $number>1) {
                   echo "<tr class='tab_bg_1'>";
                }
                if ($number == 1) {
@@ -151,7 +154,7 @@ class PluginArchiresStateColor extends CommonDBTM {
                echo "</td>";
 
                $i++;
-               if (($i  == $number) && ($number  % 2 !=0) && $number>1) {
+               if (($i == $number) && ($number  % 2 !=0) && $number>1) {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
                }
             }
@@ -169,10 +172,10 @@ class PluginArchiresStateColor extends CommonDBTM {
                echo " - <a onclick= \"if (unMarkCheckboxes ('massiveaction_form_state_color')) ".
                      "return false;\" href='#'>".
                      $LANG['buttons'][19]."</a> ";
-               echo "<input type='submit' name='delete_color_state' value=\"".$LANG['buttons'][6].
-                     "\" class='submit'></td></tr>";
+               Html::closeArrowMassives(array('delete_color_state' => $LANG['buttons'][6]));
+            } else {
+               echo "</table>";
             }
-            echo "</table>";
             echo "</div>";
          }
 
@@ -184,13 +187,11 @@ class PluginArchiresStateColor extends CommonDBTM {
             echo "</td>";
             echo "<td><input type='text' name='color'>";
             echo "&nbsp;";
-            showToolTip(nl2br($LANG['plugin_archires']['setup'][12]),
-                        array('link'=>'http://www.graphviz.org/doc/info/colors.html',
-                              'linktarget'=>'_blank'));
+            Html::showToolTip(nl2br($LANG['plugin_archires']['setup'][12]),
+                              array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
+                                    'linktarget' => '_blank'));
             echo "<td class='center'>";
-            echo "<input type='submit' name='add_color_state' value=\"".$LANG['buttons'][2].
-                  "\" class='submit'></td></tr>";
-            echo "</table>";
+            Html::closeArrowMassives(array('add_color_state' => $LANG['buttons'][2]));
             echo "</form>";
          }
       }
@@ -198,7 +199,7 @@ class PluginArchiresStateColor extends CommonDBTM {
 
 
    function dropdownState($used=array()) {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB, $LANG, $CFG_GLPI;
 
       $limit = $_SESSION["glpidropdown_chars_limit"];
       $where = "";
@@ -206,13 +207,13 @@ class PluginArchiresStateColor extends CommonDBTM {
       if (count($used)) {
          $where = "WHERE `id` NOT IN (0";
          foreach ($used as $ID) {
-            $where .= ",$ID";
+            $where .= ", $ID";
          }
          $where .= ")";
       }
 
-      $query = "SELECT * 
-                FROM `glpi_states` 
+      $query = "SELECT *
+                FROM `glpi_states`
                 $where
                 ORDER BY `name`";
       $result = $DB->query($query);
@@ -220,12 +221,12 @@ class PluginArchiresStateColor extends CommonDBTM {
 
       if ($number !="0") {
          echo "<select name='states_id'>\n";
-         echo "<option value='0'>".DROPDOWN_EMPTY_VALUE."</option>\n";
+         echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
          echo "<option value='-1'>".$LANG['plugin_archires'][15]."</option>\n";
          while ($data= mysql_fetch_array($result)) {
             $output = $data["name"];
-            if (utf8_strlen($output) > $limit) {
-               $output = utf8_substr($output,0,$limit)."&hellip;";
+            if (Toolbox::strlen($output) > $limit) {
+               $output = Toolbox::substr($output,0,$limit)."&hellip;";
             }
             echo "<option value='".$data["id"]."'>".$output."</option>";
          }
@@ -256,5 +257,4 @@ class PluginArchiresStateColor extends CommonDBTM {
    }
 
 }
-
 ?>

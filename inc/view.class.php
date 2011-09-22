@@ -38,6 +38,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresView extends CommonDBTM {
 
+
    const PLUGIN_ARCHIRES_NETWORK_COLOR = 0;
    const PLUGIN_ARCHIRES_VLAN_COLOR    = 1;
 
@@ -249,14 +250,6 @@ class PluginArchiresView extends CommonDBTM {
             self::PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype.
             "&amp;plugin_archires_views_id=".
             $plugin_archires_views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
-   }
-
-
-   function defineTabs($options=array()) {
-      global $LANG;
-
-      $ong[1] = $LANG['title'][26];
-      return $ong;
    }
 
 
@@ -541,12 +534,14 @@ class PluginArchiresView extends CommonDBTM {
 
       switch ($item->getType()) {
          case 'PluginArchiresApplianceQuery' :
+         case 'PluginArchiresLocationQuery' :
+         case 'PluginArchiresNetworkEquipmentQuery' :
             switch ($tabnum) {
-               case '1' :
+               case 1 :
                   self::showView($item);
                   break;
 
-               case '2' :
+               case 2 :
                   self::linkToAllViews($item);
                   break;
             }
@@ -562,11 +557,14 @@ class PluginArchiresView extends CommonDBTM {
       if (!$withtemplate && plugin_archires_haveRight('archires', 'r')) {
          switch ($item->getType()) {
             case 'PluginArchiresApplianceQuery' :
+            case 'PluginArchiresLocationQuery' :
+            case 'PluginArchiresNetworkEquipmentQuery' :
                return array('1' => $LANG['plugin_archires']['setup'][20],
                             '2' => $LANG['plugin_archires']['title'][3]);
          }
       }
       return '';
    }
+
 }
 ?>

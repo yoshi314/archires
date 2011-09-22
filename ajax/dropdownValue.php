@@ -37,7 +37,7 @@ if (strpos($_SERVER['PHP_SELF'],"dropdownValue.php")) {
    define('GLPI_ROOT', '../../..');
    include (GLPI_ROOT."/inc/includes.php");
    header("Content-Type: text/html; charset=UTF-8");
-   header_nocache();
+   Html::header_nocache();
 }
 
 if (!defined('GLPI_ROOT')) {
@@ -46,7 +46,7 @@ if (!defined('GLPI_ROOT')) {
 
 include_once (GLPI_ROOT."/plugins/archires/locales/".$_SESSION["glpilanguage"].".php");
 
-checkLoginUser();
+Session::checkLoginUser();
 
 // Security
 if (!TableExists($_POST['table'])) {
@@ -66,17 +66,18 @@ if ($_POST['searchText']==$CFG_GLPI["ajax_wildcard"]) {
    $LIMIT = "";
 }
 
-$where = "WHERE id <> '".$_POST['value']."' ";
+$where = "WHERE `id` <> '".$_POST['value']."' ";
 $field = "name";
 
 if ($_POST['searchText']!=$CFG_GLPI["ajax_wildcard"]) {
-   $where .= " AND $field ".makeTextSearch($_POST['searchText']);
+   $where .= " AND `$field` ".Search::makeTextSearch($_POST['searchText']);
 }
 
 $query = "SELECT *
           FROM `".$_POST['table']."`
           $where
-          ORDER BY $field $LIMIT";
+          ORDER BY `$field`
+          $LIMIT";
 
 $result = $DB->query($query);
 
@@ -85,7 +86,7 @@ echo "<select id='dropdown_".$_POST["myname"].$_POST["rand"]."' name=\"".$_POST[
 if ($_POST['searchText'] != $CFG_GLPI["ajax_wildcard"] && $DB->numrows($result)==$NBMAX) {
    echo "<option value='0\'>--".$LANG['common'][11]."--</option>";
 } else {
-   echo "<option value='0'>".DROPDOWN_EMPTY_VALUE."</option>";
+   echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>";
 }
 $number = $DB->numrows($result);
 if ($number != 0) {
@@ -113,5 +114,4 @@ if ($DB->numrows($result)) {
    }
 }
 echo "</select>";
-
 ?>

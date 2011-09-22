@@ -58,7 +58,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
    function cleanDBonPurge() {
 
-      $querytype = new PluginArchiresQueryType;
+      $querytype = new PluginArchiresQueryType();
       $querytype->deleteByCriteria(array('plugin_archires_queries_id' => $this->fields['id']));
    }
 
@@ -131,14 +131,11 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    function defineTabs($options=array()) {
       global $LANG;
 
-      $ong[1] = $LANG['title'][26];
-      if ($this->fields['id'] > 0) {
-         $ong[2] = $LANG['plugin_archires']['test'][0];
-         $ong[3] = $LANG['plugin_archires']['search'][6];
-         if (haveRight("notes","r")) {
-            $ong[10] = $LANG['title'][37];
-         }
-      }
+      $ong = array();
+      $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
+      $this->addStandardTab('PluginArchiresView', $ong, $options);
+      $this->addStandardTab('PluginArchiresPrototype', $ong, $options);
+      $this->addStandardTab('Note', $ong, $options);
       return $ong;
    }
 

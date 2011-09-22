@@ -126,14 +126,11 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
    function defineTabs($options=array()) {
       global $LANG;
 
-      $ong[1] = $LANG['title'][26];
-      if ($this->fields['id'] > 0) {
-         $ong[2] = $LANG['plugin_archires']['test'][0];
-         $ong[3] = $LANG['plugin_archires']['search'][6];
-         if (haveRight("notes","r")) {
-            $ong[10] = $LANG['title'][37];
-         }
-      }
+      $ong = array();
+      $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
+      $this->addStandardTab('PluginArchiresView', $ong, $options);
+      $this->addStandardTab('PluginArchiresPrototype', $ong, $options);
+      $this->addStandardTab('Note', $ong, $options);
       return $ong;
    }
 
@@ -237,8 +234,8 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       if ($result_switch = $DB->query($query_switch)) {
          while ($ligne = $DB->fetch_array($result_switch)) {
             $port = $ligne['port'];
-            $nw = new NetworkPort_NetworkPort();
-            $end = $nw->getOppositeContact($ligne['idport']);
+            $nw   = new NetworkPort_NetworkPort();
+            $end  = $nw->getOppositeContact($ligne['idport']);
 
             if ($end) {
                foreach ($types as $key => $val) {
@@ -283,7 +280,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
                   //types
                   $PluginArchiresQueryType = new PluginArchiresQueryType();
-                  $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(),$ID,$val);
+                  $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(), $ID, $val);
                   $query .= "ORDER BY `np`.`ip` ASC ";
 
                   if ($result = $DB->query($query)) {

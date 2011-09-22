@@ -1,9 +1,6 @@
 * text=auto !eol
 ajax/dropdownAllItems.php -text
 ajax/dropdownValue.php -text
-ajax/locationquery.tabs.php -text
-ajax/networkequipmentquery.tabs.php -text
-ajax/view.tabs.php -text
 front/appliancequery.form.php -text
 front/appliancequery.php -text
 front/archires.graph.php -text
@@ -47,9 +44,3 @@ sql/empty-1.6.sql -text
 sql/empty-1.7.0.sql -text
 sql/empty-1.7.2.sql -text
 sql/empty-1.8.0.sql -text
-sql/update-1.3.sql -text
-sql/update-1.4.sql -text
-sql/update-1.5.sql -text
-sql/update-1.7.0.sql -text
-sql/update-1.7.2.sql -text
-sql/update-1.8.0.sql -text
