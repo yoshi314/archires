@@ -38,20 +38,13 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresPrototype extends CommonDBTM {
 
-   function testGraphviz() {
-      $graph ="graph G {
-                  a;
-                  b;
-                  c -- d;
-                  a -- c;}";
 
-      $format="png";
-      $engine="dot";
+   private static function dotIt($engine, $graph, $format) {
 
       $out         = '';
       $Path        = realpath(GLPI_PLUGIN_DOC_DIR."/archires");
       $graph_name  = tempnam($Path, "txt");
-      $out_name    = tempnam($Path, "png");
+      $out_name    = tempnam($Path, $format);
 
       if (file_put_contents($graph_name, $graph)) {
          $command = "$engine -T$format -o\"$out_name\" \"$graph_name\" ";
@@ -59,9 +52,21 @@ class PluginArchiresPrototype extends CommonDBTM {
          $out = file_get_contents($out_name);
          unlink($graph_name);
          unlink($out_name);
-         logDebug("command:", $command, "in:", $graph_name, "out:", $out_name, "Res:", strlen($out));
+         // logDebug("command:", $command, "in:", $graph_name, "out:", $out_name, "Res:", strlen($out));
       }
       return $out;
+   }
+
+
+   function testGraphviz() {
+
+      $graph ="graph G {
+                  a;
+                  b;
+                  c -- d;
+                  a -- c;}";
+
+      return self::dotIt('dot', $graph, 'png');
    }
 
 
@@ -662,22 +667,13 @@ class PluginArchiresPrototype extends CommonDBTM {
 
    function generateGraphviz($graph, $format, $PluginArchiresView) {
 
-      $out         = '';
-      $Path        = GLPI_PLUGIN_DOC_DIR."/archires";
-      $graph_name  = realpath(tempnam($Path, ""));
-
-      if (file_put_contents($graph_name, $graph)) {
-
-         if ($PluginArchiresView->fields["engine"]!=0) {
-            $engine_archires = "neato";
-         } else {
-            $engine_archires = "dot";
-         }
-         $command = $engine_archires." -T" .$format." \"".$graph_name."\"";
-         $out = shell_exec($command);
-         unlink($graph_name);
+      if ($PluginArchiresView->fields["engine"]!=0) {
+         $engine_archires = "neato";
+      } else {
+         $engine_archires = "dot";
       }
-      return $out;
+
+      return self::dotIt($engine_archires, $graph, $format);
    }
 }
 
