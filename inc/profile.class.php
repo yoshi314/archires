@@ -132,9 +132,10 @@ class PluginArchiresProfile extends CommonDBTM {
       }
       echo "<form action='".$target."' method='post'>";
       echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='2' class='center b'>".$LANG['plugin_treeview']['profile'][0]." ".
+      echo "<tr><th colspan='2' class='center b'>".$LANG['plugin_archires']['profile'][0]." ".
             Dropdown::getDropdownName("glpi_profiles", $ID)."</th></tr>";
 
+      echo "<tr class='tab_bg_2'>";
       echo "<td>".$LANG['plugin_archires']['profile'][3]." : </td><td>";
       if ($prof->fields['interface'] != 'helpdesk') {
          Profile::dropdownNoneReadWrite("archires", $this->fields["archires"],1,1,1);
