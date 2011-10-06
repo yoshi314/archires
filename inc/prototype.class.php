@@ -570,7 +570,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       }
       //legend
       if (isset($ID) && !empty($ID)) {
-         echo "<div class='center'>";
+         echo "<div align='center'>";
          echo "<table cellpadding='5'>";
          echo "<tr><td class='top'>";
          if ( $PluginArchiresView->fields["color"] == 0 ) {

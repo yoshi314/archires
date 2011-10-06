@@ -44,9 +44,7 @@ if ($PluginArchiresApplianceQuery->canView() || Session::haveRight("config","w")
    Search::show("PluginArchiresApplianceQuery");
 
 } else {
-   echo "<div align='center'><br><br>";
-   echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
-   echo "<b>".$LANG['login'][5]."</b></div>";
+   Html::displayRightError();
 }
 
 Html::footer();
