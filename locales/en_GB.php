@@ -1,35 +1,30 @@
 <?php
 /*
- * @version $Id: HEADER 2011-03-12 18:01:26 tsmr $
+ * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
- GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2010 by the INDEPNET Development Team.
+ Archires plugin for GLPI
+ Copyright (C) 2003-2011 by the archires Development Team.
 
- http://indepnet.net/   http://glpi-project.org
+ https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
 
  LICENSE
 
- This file is part of GLPI.
+ This file is part of archires.
 
- GLPI is free software; you can redistribute it and/or modify
+ Archires is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
 
- GLPI is distributed in the hope that it will be useful,
+ Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with GLPI; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ along with Archires. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
-// ----------------------------------------------------------------------
-// Original Author of file: CAILLAUD Xavier & COLLET Remi & LASSON Nelly & PRUDHOMME Sebastien
-// Purpose of file: plugin archires v1.9.0 - GLPI 0.80
-// ----------------------------------------------------------------------
  */
 
 $title = "Network Architecture";

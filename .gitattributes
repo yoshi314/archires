@@ -1,4 +1,5 @@
 * text=auto !eol
+/LICENSE -text
 ajax/dropdownAllItems.php -text
 ajax/dropdownValue.php -text
 front/appliancequery.form.php -text
