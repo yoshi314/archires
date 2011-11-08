@@ -123,6 +123,7 @@ global $LANG;
    return array('name'           => $LANG['plugin_archires']['title'][0],
                 'version'        => '2.0.0',
                 'author'         => 'Xavier CAILLAUD, Remi COLLET, Nelly MAHU-LASSON, Sebastien PRUDHOMME',
+                'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/show/archires',
                 'minGlpiVersion' => '0.83');
 }
