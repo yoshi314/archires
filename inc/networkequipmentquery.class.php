@@ -84,7 +84,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       $tab[4]['name']      = $LANG['plugin_archires']['search'][5];
 
       $tab[5]['table']     = 'glpi_groups';
-      $tab[5]['field']     = 'name';
+      $tab[5]['field']     = 'completename';
       $tab[5]['name']      = $LANG['common'][35];
 
       $tab[6]['table']     = 'glpi_vlans';

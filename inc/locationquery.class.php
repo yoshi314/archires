@@ -89,7 +89,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       $tab[5]['name']      = $LANG['plugin_archires']['search'][5];
 
       $tab[6]['table']     = 'glpi_groups';
-      $tab[6]['field']     = 'name';
+      $tab[6]['field']     = 'completename';
       $tab[6]['name']      = $LANG['common'][35];
 
       $tab[7]['table']     = 'glpi_vlans';
