@@ -102,12 +102,6 @@ function plugin_init_archires() {
          }
          $PLUGIN_HOOKS['use_massive_action']['archires'] = 1;
       }
-/*
-      // Headings
-      if (plugin_archires_haveRight("archires","r") || Session::haveRight("config","w")) {
-         $PLUGIN_HOOKS['headings']['archires']        = 'plugin_get_headings_archires';
-         $PLUGIN_HOOKS['headings_action']['archires'] = 'plugin_headings_actions_archires';
-      }*/
       // Config page
       if (plugin_archires_haveRight("archires","w") || Session::haveRight("config","w")) {
          $PLUGIN_HOOKS['config_page']['archires'] = 'front/config.form.php';

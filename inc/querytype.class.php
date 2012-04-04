@@ -192,7 +192,9 @@ class PluginArchiresQueryType extends CommonDBTM {
                if ($number==1) {
                   echo "<tr class='tab_bg_1'>";
                }
+
                $item      = new $ligne["itemtype"]();
+               
                echo "<td>".$item->getTypeName()."</td>";
                $class     = $ligne["itemtype"]."Type";
                $typeclass = new $class();
