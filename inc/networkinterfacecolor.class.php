@@ -190,7 +190,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             echo "<div class='center'><input type='submit' name='add_color_networkinterface' value=\"".
                   $LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
             echo "</table>";
-            echo "</form>";
+            Html::closeForm();
          }
       }
    }

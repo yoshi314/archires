@@ -156,7 +156,7 @@ class PluginArchiresQueryType extends CommonDBTM {
          echo "<input type='submit' name='addtype' value=\"".$LANG['buttons'][2]."\" class='submit'>";
          echo "</td></tr>";
          echo "</table>";
-         echo "</form>";
+         Html::closeForm();
       }
 
       $query = "SELECT *
@@ -194,7 +194,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                }
 
                $item      = new $ligne["itemtype"]();
-               
+
                echo "<td>".$item->getTypeName()."</td>";
                $class     = $ligne["itemtype"]."Type";
                $typeclass = new $class();
@@ -227,7 +227,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                echo "</table>";
             }
             echo "</div>";
-            echo "</form>";
+            Html::closeForm();
          }
       }
    }

@@ -189,7 +189,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
             echo "<td class='center'><input type='submit' name='add_color_vlan' value=\"".
                   $LANG['buttons'][2]."\" class='submit'></td></tr>";
             echo "</table>";
-            echo "</form>";
+            Html::closeForm();
          }
       }
    }
