@@ -239,7 +239,7 @@ class PluginArchiresView extends CommonDBTM {
          echo "</td>";
          echo "</tr>";
          echo "</table>";
-         echo "</form>";
+         Html::closeForm();
       }
       echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".
             self::PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype.

@@ -32,7 +32,8 @@ function plugin_init_archires() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
 
    Plugin::registerClass('PluginArchiresProfile', array('addtabon' => array('Profile')));
-
+   
+   $PLUGIN_HOOKS['csrf_compliant']['archires'] = true;
    $PLUGIN_HOOKS['change_profile']['archires'] = array('PluginArchiresProfile','changeProfile');
    $PLUGIN_HOOKS['pre_item_purge']['archires'] = array('Profile' => array('PluginArchiresProfile',
                                                        'purgeProfiles'));
@@ -115,19 +116,19 @@ function plugin_version_archires() {
 global $LANG;
 
    return array('name'           => $LANG['plugin_archires']['title'][0],
-                'version'        => '2.0.0',
+                'version'        => '2.0.1',
                 'author'         => 'Xavier Caillaud, Remi Collet, Nelly Mahu-Masson, Sebastien Prudhomme',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/archires',
-                'minGlpiVersion' => '0.83');
+                'minGlpiVersion' => '0.83.3');
 }
 
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_archires_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.83','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
-      echo "This plugin requires GLPI >= 0.83";
+   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
+      echo "This plugin requires GLPI >= 0.83.3";
       return false;
    }
    return true;

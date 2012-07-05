@@ -131,7 +131,7 @@ class PluginArchiresImageItem extends CommonDBTM {
       echo "<div class='center'><input type='submit' name='add' value=\"".$LANG['buttons'][2].
             "\" class='submit'></div></td></tr>";
       echo "</table>";
-      echo "</form>";
+      Html::closeForm();
 
       $query = "SELECT *
                 FROM `".$this->getTable()."`
@@ -197,7 +197,7 @@ class PluginArchiresImageItem extends CommonDBTM {
                   href='#'>".$LANG['buttons'][19]."</a> ";
             Html::closeArrowMassives(array('delete' => $LANG['buttons'][6]));
             echo "</div>";
-            echo "</form>";
+            Html::closeForm();
          }
       }
    }

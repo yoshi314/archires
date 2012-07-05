@@ -187,7 +187,7 @@ class PluginArchiresStateColor extends CommonDBTM {
                                     'linktarget' => '_blank'));
             echo "<td class='center'>";
             Html::closeArrowMassives(array('add_color_state' => $LANG['buttons'][2]));
-            echo "</form>";
+            Html::closeForm();
          }
       }
    }

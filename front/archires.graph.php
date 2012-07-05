@@ -30,7 +30,9 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-if (!isset($_GET["id"])) $_GET["id"] = "";
+if (!isset($_GET["id"])) {
+   $_GET["id"] = "";
+}
 
 $PluginArchiresView      = new PluginArchiresView();
 $PluginArchiresPrototype = new PluginArchiresPrototype();
