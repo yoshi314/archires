@@ -30,12 +30,13 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-Html::header($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][5],
+Html::header(PluginArchiresArchires::getTypeName()." ".PluginArchiresNetworkEquipmentQuery::getTypeName(),
              '',"plugins","archires","networkequipment");
 
 $PluginArchiresNetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery();
 
-if ($PluginArchiresNetworkEquipmentQuery->canView() || Session::haveRight("config","w")) {
+if ($PluginArchiresNetworkEquipmentQuery->canView() 
+      || Session::haveRight("config","w")) {
    Search::show("PluginArchiresNetworkEquipmentQuery");
 
 } else {

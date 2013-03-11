@@ -29,7 +29,7 @@
 
 // Init the hooks of the plugins -Needed
 function plugin_init_archires() {
-   global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
+   global $PLUGIN_HOOKS,$CFG_GLPI;
 
    $PLUGIN_HOOKS['csrf_compliant']['archires'] = true;
 
@@ -44,37 +44,42 @@ function plugin_init_archires() {
          $PLUGIN_HOOKS['menu_entry']['archires'] = 'front/archires.php';
          //summary
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['summary']['title']
-                  = $LANG['plugin_archires']['menu'][0];
+                  = __('Summary', 'archires');
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['summary']['page']
                   = '/plugins/archires/front/archires.php';
          //views
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['title']
-                  = $LANG['plugin_archires']['title'][3];
+                  = _n('View', 'Viewes', 2, 'archires');
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['page']
                   = '/plugins/archires/front/view.php';
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['search']
                   = '/plugins/archires/front/view.php';
          //locations
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['title']
-                  = $LANG['plugin_archires']['title'][4];
+                  = __('Location');
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['page']
                   = '/plugins/archires/front/locationquery.php';
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['links']['search']
                   = '/plugins/archires/front/locationquery.php';
          //networkequipments
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['title']
-                  = $LANG['plugin_archires']['title'][5];
+                  = __('Network Equipment');
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['page']
                   = '/plugins/archires/front/networkequipmentquery.php';
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['search']
                   = '/plugins/archires/front/networkequipmentquery.php';
          //appliances
+         
+         if (class_exists('PluginAppliancesAppliance')) {
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['title']
-                  = $LANG['plugin_archires']['title'][8];
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['page']
+                  = PluginAppliancesAppliance::getTypeName(1);
+
+            $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['page']
                   = '/plugins/archires/front/appliancequery.php';
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['search']
+         
+            $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['search']
                   = '/plugins/archires/front/appliancequery.php';
+         }
       }
 
       if (plugin_archires_haveRight("archires","w")) {
@@ -114,22 +119,22 @@ function plugin_init_archires() {
 
 // Get the name and the version of the plugin - Needed
 function plugin_version_archires() {
-global $LANG;
 
-   return array('name'           => $LANG['plugin_archires']['title'][0],
-                'version'        => '2.0.1',
+   return array('name'           => _n('Network Architecture', 'Network Architectures', 2, 'archires'),
+                'version'        => '2.1.0',
                 'author'         => 'Xavier Caillaud, Remi Collet, Nelly Mahu-Masson, Sebastien Prudhomme',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/archires',
-                'minGlpiVersion' => '0.83.3');
+                'minGlpiVersion' => '0.84');
 }
 
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_archires_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
-      echo "This plugin requires GLPI >= 0.83.3";
+   if (version_compare(GLPI_VERSION,'0.84','lt') 
+         || version_compare(GLPI_VERSION,'0.84.1','ge')) {
+      _e('This plugin requires GLPI >= 0.84', 'archires');
       return false;
    }
    return true;

@@ -76,7 +76,7 @@ if (isset($_POST["add"])) {
 
    $PluginArchiresView->checkGlobal("r");
 
-   Html::header($LANG['plugin_archires']['title'][3],'',"plugins","archires","view");
+   Html::header(PluginArchiresView::getTypeName(),'',"plugins","archires","view");
 
    $PluginArchiresView->showForm($_GET["id"]);
 

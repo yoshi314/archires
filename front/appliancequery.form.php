@@ -101,7 +101,7 @@ if (isset($_POST["add"])) {
 
    $PluginArchiresApplianceQuery->checkGlobal("r");
 
-   Html::header($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][8],
+   Html::header(PluginArchiresArchires::getTypeName()." ".PluginAppliancesAppliance::getTypeName(),
                 '',"plugins","archires","appliance");
 
    $PluginArchiresApplianceQuery->showForm($_GET["id"]);

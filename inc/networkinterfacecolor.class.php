@@ -34,12 +34,12 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
 
 
-   function canCreate() {
+   static function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
 
@@ -96,13 +96,8 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
    }
 
 
-   function deleteNetworkInterfaceColor($ID) {
-      $this->delete(array('id' => $ID));
-   }
-
-
    function showConfigForm($canupdate=false) {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB;
 
       $query = "SELECT *
                 FROM `".$this->getTable()."`
@@ -120,11 +115,11 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             echo "<div id='liste_color'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
-            echo "<th class='left'>".$LANG['plugin_archires'][19]."</th>";
-            echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
+            echo "<th class='left'>".__('Type of network', 'archires')."</th>";
+            echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             if ($number > 1) {
-               echo "<th class='left'>".$LANG['plugin_archires'][19]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
+               echo "<th class='left'>".__('Type of network', 'archires')."</th>";
+               echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             }
             echo "</tr>";
 
@@ -164,11 +159,11 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
 
                echo "<a onclick= \"if (markCheckboxes('massiveaction_form_networkinterface_color')) ".
                      "return false;\" href='#'>".
-                     $LANG['buttons'][18]."</a>";
+                     __('Select all')."</a>";
                echo " - <a onclick= \"if (unMarkCheckboxes('massiveaction_form_networkinterface_color')) ".
                      "return false;\" href='#'>".
-                     $LANG['buttons'][19]."</a> ";
-               Html::closeArrowMassives(array('delete_color_networkinterface' => $LANG['buttons'][6]));
+                     __('Deselect all')."</a> ";
+               Html::closeArrowMassives(array('delete_color_networkinterface' => _sx('button', 'Delete permanently')));
             } else {
                echo "</table>";
             }
@@ -177,18 +172,18 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
 
          if ($canupdate) {
             echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
-            echo $LANG['plugin_archires']['setup'][8]." : </th></tr>";
+            echo __('Associate colors with network types', 'archires')."</th></tr>";
             echo "<tr class='tab_bg_1'><td>";
             $this->dropdownNetworkInterface($used);
             echo "</td><td>";
             echo "<input type='text' name=\"color\">";
             echo "&nbsp;";
-            Html::showToolTip(nl2br($LANG['plugin_archires']['setup'][12]),
+            Html::showToolTip(nl2br(__('Please use this color format', 'archires')),
                                     array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
                                           'linktarget' => '_blank'));
             echo "<td>";
             echo "<div class='center'><input type='submit' name='add_color_networkinterface' value=\"".
-                  $LANG['buttons'][2]."\" class='submit' ></div></td></tr>";
+                  _sx('button', 'Add')."\" class='submit' ></div></td></tr>";
             echo "</table>";
             Html::closeForm();
          }
@@ -197,7 +192,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
 
 
    function dropdownNetworkInterface($used=array()) {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB;
 
       $limit = $_SESSION["glpidropdown_chars_limit"];
 
@@ -222,7 +217,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
       if ($number >0) {
          echo "<select name='networkinterfaces_id'>\n";
          echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
-         echo "<option value='-1'>".$LANG['plugin_archires'][21]."</option>\n";
+         echo "<option value='-1'>".__('All types of network')."</option>\n";
          while ($data= mysql_fetch_array($result)) {
             $output = $data["name"];
             if (Toolbox::strlen($output)>$limit) {

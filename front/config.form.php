@@ -60,7 +60,7 @@ if ($plugin->isActivated("archires")) {
 
       foreach ($_POST["item"] as $key => $val) {
          if ($val == 1) {
-            $PluginArchiresImageItem->deleteItemImage($key);
+            $PluginArchiresImageItem->delete(array('id' => $key));
          }
       }
       Html::back();
@@ -80,7 +80,7 @@ if ($plugin->isActivated("archires")) {
 
       foreach ($_POST["item_color"] as $key => $val) {
          if ($val == 1) {
-            $PluginArchiresNetworkInterfaceColor->deleteNetworkInterfaceColor($key);
+            $PluginArchiresNetworkInterfaceColor->delete(array('id' => $key));
          }
       }
       Html::back();
@@ -97,7 +97,7 @@ if ($plugin->isActivated("archires")) {
 
       foreach ($_POST["item_color"] as $key => $val) {
          if ($val == 1) {
-            $PluginArchiresStateColor->deleteStateColor($key);
+            $PluginArchiresStateColor->delete(array('id' => $key));
          }
       }
       Html::back();
@@ -114,13 +114,13 @@ if ($plugin->isActivated("archires")) {
 
       foreach ($_POST["item_color"] as $key => $val) {
          if ($val==1) {
-            $PluginArchiresVlanColor->deleteVlanColor($key);
+            $PluginArchiresVlanColor->delete(array('id' => $key));
          }
       }
       Html::back();
 
    } else {
-      Html::header($LANG['plugin_archires']['title'][0], '', "plugins",
+      Html::header(PluginArchiresArchires::getTypeName(), '', "plugins",
                    "archires", "summary");
 
       $PluginArchiresImageItem->showConfigForm();
@@ -135,10 +135,10 @@ if ($plugin->isActivated("archires")) {
    }
 
 } else {
-   Html::header($LANG["common"][12],'',"config","plugins");
-   echo "<div class='center'><br><br>";
-   echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
-   echo "<b>Please activate the plugin</b></div>";
+   Html::header(__('Setup'), '', "config", "plugins");
+   echo "<div class='center'><br><br>".
+         "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
+   echo "<b>".__('Please activate the plugin','addressing')."</b></div>";
    Html::footer();
 }
 ?>

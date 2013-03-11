@@ -34,19 +34,17 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresProfile extends CommonDBTM {
 
 
-   static function getTypeName() {
-      global $LANG;
-
-      return $LANG['plugin_archires']['profile'][0];
+   public static function getTypeName($nb=0) {
+      return __('Rights management', 'accounts');
    }
 
 
-   function canCreate() {
+   static function canCreate() {
       return Session::haveRight('profile', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return Session::haveRight('profile', 'r');
    }
 
@@ -108,7 +106,6 @@ class PluginArchiresProfile extends CommonDBTM {
 
    //profiles modification
    function showForm($ID, $options=array()) {
-      global $LANG;
 
       $target = $this->getFormURL();
       if (isset($options['target'])) {
@@ -127,15 +124,20 @@ class PluginArchiresProfile extends CommonDBTM {
       }
       echo "<form action='".$target."' method='post'>";
       echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='2' class='center b'>".$LANG['plugin_archires']['profile'][0]." ".
-            Dropdown::getDropdownName("glpi_profiles", $ID)."</th></tr>";
+      
+      echo "<tr class='tab_bg_2'>";
+
+      echo "<th colspan='2'>" . sprintf(__('%1$s - %2$s'), __('Rights management', 'accounts'),
+               $prof->fields["name"])."</th>";
+
+      echo "</tr>";
 
       echo "<tr class='tab_bg_2'>";
-      echo "<td>".$LANG['plugin_archires']['profile'][3]." : </td><td>";
+      echo "<td>".__('Generate graphs', 'archires')."</td><td>";
       if ($prof->fields['interface'] != 'helpdesk') {
          Profile::dropdownNoneReadWrite("archires", $this->fields["archires"],1,1,1);
       } else {
-         echo $LANG['profiles'][12]; // No access;
+         _e('No access'); // No access;
       }
       echo "</td>";
       echo "</tr>";
@@ -148,11 +150,10 @@ class PluginArchiresProfile extends CommonDBTM {
 
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
 
       if ($item->getType() == 'Profile') {
          if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
-            return array(1 => $LANG['plugin_archires']['title'][0]);
+            return PluginArchiresArchires::getTypeName(2);
          }
       }
       return '';

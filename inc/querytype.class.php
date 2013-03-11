@@ -34,12 +34,12 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresQueryType extends CommonDBTM {
 
 
-   function canCreate() {
+   static function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
 
@@ -99,11 +99,6 @@ class PluginArchiresQueryType extends CommonDBTM {
    }
 
 
-   function deleteType($ID) {
-      $this->delete(array('id' => $ID));
-   }
-
-
    function queryTypeCheck($querytype, $plugin_archires_views_id, $val) {
       global $DB;
 
@@ -128,10 +123,9 @@ class PluginArchiresQueryType extends CommonDBTM {
 
 
    static function showTypes($item) {
-      global $CFG_GLPI, $DB, $LANG;
+      global $DB;
 
       $type     = $item->getType();
-      $showtype = new self();
       $ID       = $item->getID();
 
       if ($type == 'PluginArchiresLocationQuery') {
@@ -144,23 +138,23 @@ class PluginArchiresQueryType extends CommonDBTM {
 
       $PluginArchiresArchires = new PluginArchiresArchires();
 
-      if ($showtype->canCreate()) {
+      if (plugin_archires_haveRight('archires', 'w')) {
          echo "<form method='post'  action=\"./".$page.".form.php\">";
          echo "<table class='tab_cadre' cellpadding='5' width='34%'><tr><th colspan='2'>";
-         echo $LANG['plugin_archires'][2]." : </th></tr>";
+         echo __('Display types of items', 'archires')."</th></tr>";
          echo "<tr class='tab_bg_1'><td>";
          $PluginArchiresArchires->showAllItems("type", 0, 0, $_SESSION["glpiactive_entity"]);
          echo "</td>";
          echo "<td>";
          echo "<input type='hidden' name='query' value='$ID'>";
-         echo "<input type='submit' name='addtype' value=\"".$LANG['buttons'][2]."\" class='submit'>";
+         echo "<input type='submit' name='addtype' value=\""._sx('button', 'Add')."\" class='submit'>";
          echo "</td></tr>";
          echo "</table>";
          Html::closeForm();
       }
 
       $query = "SELECT *
-                FROM `".$showtype->getTable()."`
+                FROM `glpi_plugin_archires_querytypes`
                 WHERE `plugin_archires_queries_id` = '$ID'
                       AND `querytype` = '$type'
                 ORDER BY `itemtype`, `type` ASC";
@@ -175,15 +169,15 @@ class PluginArchiresQueryType extends CommonDBTM {
             echo "<div id='liste'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
-            echo "<th class='left'>".$LANG['plugin_archires'][12]."</th>";
-            echo "<th class='left'>".$LANG['plugin_archires'][13]."</th><th></th>";
+            echo "<th class='left'>".__('Item')."</th>";
+            echo "<th class='left'>".__('Item type')."</th><th></th>";
             if ($number > 1) {
-               echo "<th class='left'>".$LANG['plugin_archires'][12]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][13]."</th><th></th>";
+               echo "<th class='left'>".__('Item')."</th>";
+               echo "<th class='left'>".__('Item type')."</th><th></th>";
             }
             echo "</tr>";
 
-            while ($ligne= mysql_fetch_array($result)) {
+            while ($ligne= $DB->fetch_assoc($result)) {
                $ID = $ligne["id"];
 
                if ($i % 2==0 && $number>1) {
@@ -210,7 +204,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
             }
 
-            if ($showtype->canCreate()) {
+            if (plugin_archires_haveRight('archires', 'w')) {
                echo "<tr class='tab_bg_1'>";
                if ($number > 1) {
                   echo "<td colspan='6' class='center'>";
@@ -219,10 +213,10 @@ class PluginArchiresQueryType extends CommonDBTM {
                }
 
                echo "<a onclick= \"if (markCheckboxes('massiveaction_form$rand')) return false;\"
-                     href='#'>".$LANG['buttons'][18]."</a>";
+                     href='#'>".__('Select all')."</a>";
                echo " - <a onclick= \"if (unMarkCheckboxes('massiveaction_form$rand')) return false;\"
-                     href='#'>".$LANG['buttons'][19]."</a> ";
-               Html::closeArrowMassives(array('deletetype' => $LANG['buttons'][6]));
+                     href='#'>".__('Deselect all')."</a> ";
+               Html::closeArrowMassives(array('deletetype' => _sx('button', 'Delete permanently')));
             } else {
                echo "</table>";
             }
@@ -247,14 +241,14 @@ class PluginArchiresQueryType extends CommonDBTM {
 
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
 
-      if (!$withtemplate && plugin_archires_haveRight('archires', 'r')) {
+      if (!$withtemplate 
+            && plugin_archires_haveRight('archires', 'r')) {
          switch ($item->getType()) {
             case 'PluginArchiresApplianceQuery' :
             case 'PluginArchiresLocationQuery' :
             case 'PluginArchiresNetworkEquipmentQuery' :
-               return $LANG['plugin_archires'][13];
+               return __('Item type');
          }
       }
       return '';

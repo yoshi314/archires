@@ -77,13 +77,13 @@ $result = $DB->query($query);
 echo "<select id='dropdown_".$_POST["myname"].$_POST["rand"]."' name=\"".$_POST['myname']."\">";
 
 if ($_POST['searchText'] != $CFG_GLPI["ajax_wildcard"] && $DB->numrows($result)==$NBMAX) {
-   echo "<option value='0\'>--".$LANG['common'][11]."--</option>";
+   echo "<option value='0\'>--".__('Limited view')."--</option>";
 } else {
    echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>";
 }
 $number = $DB->numrows($result);
 if ($number != 0) {
-   echo "<option value=\"".$_POST['itemtype'].";-1\">".$LANG['plugin_archires'][18]."</option>";
+   echo "<option value=\"".$_POST['itemtype'].";-1\">".__('All types', 'archires')."</option>";
 }
 $output = Dropdown::getDropdownName($_POST['table'],$_POST['value']);
 if (!empty($output)&&$output!="&nbsp;") {

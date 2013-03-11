@@ -30,47 +30,19 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-Html::header($LANG['plugin_archires']['title'][0],'',"plugins","archires","summary");
+Html::header(PluginArchiresArchires::getTypeName(),'',"plugins","archires","summary");
 
 $PluginArchiresArchires = new PluginArchiresArchires();
 
-if ($PluginArchiresArchires->canView() || Session::haveRight("config","w")) {
-   echo "<div class='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
-   echo "<tr><th>".$LANG['plugin_archires']['menu'][0]."</th></tr>";
-
-   if (countElementsInTable('glpi_plugin_archires_views',
-                            "`entities_id`='".$_SESSION["glpiactive_entity"]."'") >0) {
-      echo "<tr class='tab_bg_1'><td>";
-      echo "<a href='view.php'>".$LANG['plugin_archires']['title'][3]."</a>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>";
-      echo "<a href='locationquery.php'>".$LANG['plugin_archires']['menu'][2]." ".
-            $LANG['plugin_archires']['title'][4]."</a>";
-      echo "</td></tr>";
-
-      echo "<tr class='tab_bg_1'><td>";
-      echo "<a href='networkequipmentquery.php'>".$LANG['plugin_archires']['menu'][2]." ".
-            $LANG['plugin_archires']['title'][5]."</a>";
-      echo "</td></tr>";
-
-      $plugin = new Plugin();
-      if ($plugin->isActivated("appliances")) {
-         echo "<tr class='tab_bg_1'><td>";
-         echo "<a href='appliancequery.php'>".$LANG['plugin_archires']['menu'][2]." ".
-               $LANG['plugin_archires']['title'][8]."</a>";
-         echo "</td></tr>";
-      }
-   } else {
-      echo "<tr class='tab_bg_1'><td>";
-      echo "<a href='view.form.php?new=1'>".$LANG['plugin_archires']['title'][1]."</a>";
-      echo "</td></tr>";
-   }
-   echo "</table></div>";
+if ($PluginArchiresArchires->canView() 
+      || Session::haveRight("config","w")) {
+   
+   PluginArchiresArchires::showSummary();
 
 } else {
    Html::displayRightError();
 }
 
 Html::footer();
+
 ?>

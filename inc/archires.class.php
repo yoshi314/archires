@@ -33,19 +33,63 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresArchires extends CommonDBTM {
 
+   
+   static function getTypeName($nb=0) {
 
-   function canCreate() {
+      return _n('Network Architecture', 'Network Architectures', $nb, 'archires');
+   }
+   
+   static function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
 
+   static function showSummary() {
+      
+      echo "<div class='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
+      echo "<tr><th>".__('Summary', 'archires')."</th></tr>";
+      
+      
+      if (countElementsInTable('glpi_plugin_archires_views',
+                               "`entities_id`='".$_SESSION["glpiactive_entity"]."'") >0) {
+         
+         
+         
+         echo "<tr class='tab_bg_1'><td>";
+         echo "<a href='view.php'>".PluginArchiresView::getTypeName(2)."</a>";
+         echo "</td></tr>";
 
+         echo "<tr class='tab_bg_1'><td>";
+         echo "<a href='locationquery.php'>".self::getTypeName(1)." - ".
+               PluginArchiresLocationQuery::getTypeName(1)."</a>";
+         echo "</td></tr>";
+
+         echo "<tr class='tab_bg_1'><td>";
+         echo "<a href='networkequipmentquery.php'>".self::getTypeName(1)." - ".
+               PluginArchiresNetworkEquipmentQuery::getTypeName(1)."</a>";
+         echo "</td></tr>";
+
+         $plugin = new Plugin();
+         if ($plugin->isActivated("appliances")) {
+            echo "<tr class='tab_bg_1'><td>";
+            echo "<a href='appliancequery.php'>".self::getTypeName(1)." - ".
+                  PluginAppliancesAppliance::getTypeName(1)."</a>";
+            echo "</td></tr>";
+         }
+      } else {
+         echo "<tr class='tab_bg_1'><td>";
+         echo "<a href='view.form.php?new=1'>".__('Add view', 'archires')."</a>";
+         echo "</td></tr>";
+      }
+      echo "</table></div>";
+   }
+   
    function showAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB,$CFG_GLPI;
 
       $types = array('Computer','NetworkEquipment','Peripheral','Phone','Printer');
       $rand  = mt_rand();
@@ -89,4 +133,5 @@ class PluginArchiresArchires extends CommonDBTM {
       return $rand;
    }
 }
+
 ?>

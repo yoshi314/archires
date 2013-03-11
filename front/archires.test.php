@@ -36,4 +36,5 @@ $output_data             = $PluginArchiresPrototype->testGraphviz();
 header("Content-Type: image/png");
 header("Content-Length: " . strlen($output_data));
 echo $output_data;
+
 ?>

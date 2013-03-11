@@ -34,12 +34,12 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresStateColor extends CommonDBTM {
 
 
-   function canCreate() {
+   static function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
 
@@ -97,13 +97,8 @@ class PluginArchiresStateColor extends CommonDBTM {
    }
 
 
-   function deleteStateColor($ID) {
-      $this->delete(array('id' => $ID));
-   }
-
-
    function showConfigForm($canupdate=false) {
-      global $DB, $LANG, $CFG_GLPI;
+      global $DB;
 
       $query = "SELECT *
                 FROM `".$this->getTable()."`
@@ -122,15 +117,15 @@ class PluginArchiresStateColor extends CommonDBTM {
             echo "<div id='liste_color'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
-            echo "<th class='left'>".$LANG['plugin_archires'][27]."</th>";
-            echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
+            echo "<th class='left'>".__('Status')."</th>";
+            echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             if ($number > 1) {
-               echo "<th class='left'>".$LANG['plugin_archires'][27]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
+               echo "<th class='left'>".__('Status')."</th>";
+               echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             }
             echo "</tr>";
 
-            while ($ligne= mysql_fetch_array($result)) {
+            while ($ligne= $DB->fetch_assoc($result)) {
                $ID        = $ligne["id"];
                $states_id = $ligne["states_id"];
                $used[]    = $states_id;
@@ -163,11 +158,11 @@ class PluginArchiresStateColor extends CommonDBTM {
 
                echo "<a onclick= \"if (markCheckboxes ('massiveaction_form_state_color')) ".
                      "return false;\" href='#'>".
-                     $LANG['buttons'][18]."</a>";
+                     __('Select all')."</a>";
                echo " - <a onclick= \"if (unMarkCheckboxes ('massiveaction_form_state_color')) ".
                      "return false;\" href='#'>".
-                     $LANG['buttons'][19]."</a> ";
-               Html::closeArrowMassives(array('delete_color_state' => $LANG['buttons'][6]));
+                     __('Deselect all')."</a> ";
+               Html::closeArrowMassives(array('delete_color_state' => _sx('button', 'Delete permanently')));
             } else {
                echo "</table>";
             }
@@ -176,17 +171,17 @@ class PluginArchiresStateColor extends CommonDBTM {
 
          if ($canupdate) {
             echo "<table class='tab_cadre' cellpadding='5'>";
-            echo "<tr><th colspan='3'>".$LANG['plugin_archires']['setup'][19]." : </th></tr>";
+            echo "<tr><th colspan='3'>".__('Associate colors with items statuses', 'archires')."</th></tr>";
             echo "<tr class='tab_bg_1'><td>";
             $this->dropdownState($used);
             echo "</td>";
             echo "<td><input type='text' name='color'>";
             echo "&nbsp;";
-            Html::showToolTip(nl2br($LANG['plugin_archires']['setup'][12]),
+            Html::showToolTip(nl2br(__('Please use this color format', 'archires')),
                               array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
                                     'linktarget' => '_blank'));
             echo "<td class='center'>";
-            Html::closeArrowMassives(array('add_color_state' => $LANG['buttons'][2]));
+            Html::closeArrowMassives(array('add_color_state' => _sx('button', 'Add')));
             Html::closeForm();
          }
       }
@@ -194,7 +189,7 @@ class PluginArchiresStateColor extends CommonDBTM {
 
 
    function dropdownState($used=array()) {
-      global $DB, $LANG, $CFG_GLPI;
+      global $DB;
 
       $limit = $_SESSION["glpidropdown_chars_limit"];
       $where = "";
@@ -217,7 +212,7 @@ class PluginArchiresStateColor extends CommonDBTM {
       if ($number !="0") {
          echo "<select name='states_id'>\n";
          echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
-         echo "<option value='-1'>".$LANG['plugin_archires'][15]."</option>\n";
+         echo "<option value='-1'>".__('All statuses', 'archires')."</option>\n";
          while ($data= mysql_fetch_array($result)) {
             $output = $data["name"];
             if (Toolbox::strlen($output) > $limit) {
@@ -231,7 +226,7 @@ class PluginArchiresStateColor extends CommonDBTM {
 
 
    function displayColorState($device) {
-      global $CFG_GLPI,$DB,$LANG;
+      global $DB;
 
       $graph ="";
       $query_state = "SELECT *

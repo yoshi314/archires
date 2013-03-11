@@ -34,12 +34,12 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresImageItem extends CommonDBTM {
 
 
-   function canCreate() {
+   static function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
 
@@ -100,17 +100,12 @@ class PluginArchiresImageItem extends CommonDBTM {
    }
 
 
-   function deleteItemImage($ID) {
-      $this->delete(array('id' => $ID));
-   }
-
-
    function showConfigForm() {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB,$CFG_GLPI;
 
       echo "<form method='post' action='./config.form.php'>";
       echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='4'>";
-      echo $LANG['plugin_archires']['setup'][2]." : </th></tr>";
+      echo __('Associate pictures with item types', 'archires')."</th></tr>";
       echo "<tr class='tab_bg_1'><td>";
       $PluginArchiresArchires = new PluginArchiresArchires();
       $PluginArchiresArchires->showAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
@@ -126,9 +121,9 @@ class PluginArchiresImageItem extends CommonDBTM {
       }
       echo "</select>&nbsp;";
       closedir($dir);
-      Html::showToolTip(nl2br($LANG['plugin_archires']['setup'][21]));
+      Html::showToolTip(nl2br(__('Some types of items must be created so that the association can exist', 'archires')));
       echo "<td>";
-      echo "<div class='center'><input type='submit' name='add' value=\"".$LANG['buttons'][2].
+      echo "<div class='center'><input type='submit' name='add' value=\""._sx('button', 'Add').
             "\" class='submit'></div></td></tr>";
       echo "</table>";
       Html::closeForm();
@@ -146,17 +141,17 @@ class PluginArchiresImageItem extends CommonDBTM {
             echo "<div id='liste'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
-            echo "<th class='left'>".$LANG['plugin_archires'][12]."</th>";
-            echo "<th class='left'>".$LANG['plugin_archires'][13]."</th>";
-            echo "<th class='left'>".$LANG['plugin_archires'][14]."</th><th></th>";
+            echo "<th class='left'>".__('Item')."</th>";
+            echo "<th class='left'>".__('Item type')."</th>";
+            echo "<th class='left'>".__('Picture')."</th><th></th>";
             if ($number > 1) {
-               echo "<th class='left'>".$LANG['plugin_archires'][12]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][13]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][14]."</th><th></th>";
+               echo "<th class='left'>".__('Item')."</th>";
+               echo "<th class='left'>".__('Item type')."</th>";
+               echo "<th class='left'>".__('Picture')."</th><th></th>";
             }
             echo "</tr>";
 
-            while($ligne= mysql_fetch_array($result)) {
+            while($ligne= $DB->fetch_assoc($result)) {
                $ID = $ligne["id"];
                if ($i  % 2==0 && $number>1) {
                   echo "<tr class='tab_bg_1'>";
@@ -192,10 +187,10 @@ class PluginArchiresImageItem extends CommonDBTM {
                echo "<td colspan='4' class='center'>";
             }
             echo "<a onclick= \"if (markCheckboxes ('massiveaction_form')) return false;\"
-                  href='#'>".$LANG['buttons'][18]."</a>";
+                  href='#'>".__('Select all')."</a>";
             echo " - <a onclick= \"if ( unMarkCheckboxes ('massiveaction_form') ) return false;\"
-                  href='#'>".$LANG['buttons'][19]."</a> ";
-            Html::closeArrowMassives(array('delete' => $LANG['buttons'][6]));
+                  href='#'>".__('Deselect all')."</a> ";
+            Html::closeArrowMassives(array('delete' => _sx('button', 'Delete permanently')));
             echo "</div>";
             Html::closeForm();
          }

@@ -43,111 +43,107 @@ class PluginArchiresView extends CommonDBTM {
    const PLUGIN_ARCHIRES_SVG_FORMAT  = 3;
 
 
-   static function getTypeName() {
-      global $LANG;
+   static function getTypeName($nb=0) {
 
-      return $LANG['plugin_archires']['title'][3];
+      return _n('View', 'Viewes', $nb, 'archires');
    }
 
 
-   function canCreate() {
+   static function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
 
 
    function getSearchOptions() {
-      global $LANG;
 
       $tab = array();
-      $tab['common'] = $LANG['plugin_archires']['title'][3];
+      
+      $tab['common']             = self::getTypeName();
 
-      $tab[1]['table']         = $this->getTable();
-      $tab[1]['field']         = 'name';
-      $tab[1]['name']          = $LANG['plugin_archires']['search'][1];
-      $tab[1]['datatype']      = 'itemlink';
-      $tab[1]['itemlink_type'] = $this->getType();
+      $tab[1]['table']           = $this->getTable();
+      $tab[1]['field']           = 'name';
+      $tab[1]['name']            = __('Name');
+      $tab[1]['datatype']        = 'itemlink';
+      $tab[1]['itemlink_type']   = $this->getType();
 
-      $tab[2]['table']     = $this->getTable();
-      $tab[2]['field']     = 'computer';
-      $tab[2]['name']      = $LANG['plugin_archires'][6];
-      $tab[2]['datatype']  = 'bool';
+      $tab[2]['table']           = $this->getTable();
+      $tab[2]['field']           = 'computer';
+      $tab[2]['name']            = _n('Computer', 'Computers', 2);
+      $tab[2]['datatype']        = 'bool';
 
-      $tab[3]['table']     = $this->getTable();
-      $tab[3]['field']     = 'networking';
-      $tab[3]['name']      = $LANG['plugin_archires'][7];
-      $tab[3]['datatype']  = 'bool';
+      $tab[3]['table']           = $this->getTable();
+      $tab[3]['field']           = 'networking';
+      $tab[3]['name']            = _n('Network equipment', 'Network equipments', 2);
+      $tab[3]['datatype']        = 'bool';
 
-      $tab[4]['table']     = $this->getTable();
-      $tab[4]['field']     = 'printer';
-      $tab[4]['name']      = $LANG['plugin_archires'][8];
-      $tab[4]['datatype']  = 'bool';
+      $tab[4]['table']           = $this->getTable();
+      $tab[4]['field']           = 'printer';
+      $tab[4]['name']            = _n('Printer', 'Printers', 2);
+      $tab[4]['datatype']        = 'bool';
 
-      $tab[5]['table']     = $this->getTable();
-      $tab[5]['field']     = 'peripheral';
-      $tab[5]['name']      = $LANG['plugin_archires'][9];
-      $tab[5]['datatype']  = 'bool';
+      $tab[5]['table']           = $this->getTable();
+      $tab[5]['field']           = 'peripheral';
+      $tab[5]['name']            = _n('Peripheral', 'Peripherals', 2);
+      $tab[5]['datatype']        = 'bool';
 
-      $tab[6]['table']     = $this->getTable();
-      $tab[6]['field']     = 'phone';
-      $tab[6]['name']      = $LANG['plugin_archires'][10];
-      $tab[6]['datatype']  = 'bool';
+      $tab[6]['table']           = $this->getTable();
+      $tab[6]['field']           = 'phone';
+      $tab[6]['name']            = _n('Phone', 'Phones', 2);
+      $tab[6]['datatype']        = 'bool';
 
-      $tab[7]['table']     = $this->getTable();
-      $tab[7]['field']     = 'display_ports';
-      $tab[7]['name']      = $LANG['plugin_archires'][16];
-      $tab[7]['datatype']  = 'text';
+      $tab[7]['table']           = $this->getTable();
+      $tab[7]['field']           = 'display_ports';
+      $tab[7]['name']            = __('Display sockets', 'archires');
+      $tab[7]['datatype']        = 'text';
 
-      $tab[8]['table']     = $this->getTable();
-      $tab[8]['field']     = 'display_ip';
-      $tab[8]['name']      = $LANG['plugin_archires'][23];
-      $tab[8]['datatype']  = 'bool';
+      $tab[8]['table']           = $this->getTable();
+      $tab[8]['field']           = 'display_ip';
+      $tab[8]['name']            = __('Display IP/Mask', 'archires');
+      $tab[8]['datatype']        = 'bool';
 
-      $tab[9]['table']     = $this->getTable();
-      $tab[9]['field']     = 'display_type';
-      $tab[9]['name']      = $LANG['plugin_archires'][25];
-      $tab[9]['datatype']  = 'bool';
+      $tab[9]['table']           = $this->getTable();
+      $tab[9]['field']           = 'display_type';
+      $tab[9]['name']            = __('Display item types', 'archires');
+      $tab[9]['datatype']        = 'bool';
 
-      $tab[10]['table']     = $this->getTable();
-      $tab[10]['field']     = 'display_state';
-      $tab[10]['name']      = $LANG['plugin_archires'][26];
-      $tab[10]['datatype']  = 'bool';
+      $tab[10]['table']          = $this->getTable();
+      $tab[10]['field']          = 'display_state';
+      $tab[10]['name']           = __('Display item statuses', 'archires');
+      $tab[10]['datatype']       = 'bool';
 
-      $tab[11]['table']     = $this->getTable();
-      $tab[11]['field']     = 'display_location';
-      $tab[11]['name']      = $LANG['plugin_archires'][31];
-      $tab[11]['datatype']  = 'bool';
+      $tab[11]['table']          = $this->getTable();
+      $tab[11]['field']          = 'display_location';
+      $tab[11]['name']           = __('Display item locations', 'archires');
+      $tab[11]['datatype']       = 'bool';
 
-      $tab[12]['table']     = $this->getTable();
-      $tab[12]['field']     = 'display_entity';
-      $tab[12]['name']      = $LANG['plugin_archires'][32];
-      $tab[12]['datatype']  = 'bool';
+      $tab[12]['table']          = $this->getTable();
+      $tab[12]['field']          = 'display_entity';
+      $tab[12]['name']           = __('Display item entities', 'archires');
+      $tab[12]['datatype']       = 'bool';
 
-      $tab[13]['table']     = $this->getTable();
-      $tab[13]['field']     = 'engine';
-      $tab[13]['name']      = $LANG['plugin_archires']['setup'][13];
-      $tab[13]['datatype']  = 'text';
+      $tab[13]['table']          = $this->getTable();
+      $tab[13]['field']          = 'engine';
+      $tab[13]['name']           = __('Rendering engine', 'archires');
 
-      $tab[14]['table']     = $this->getTable();
-      $tab[14]['field']     = 'format';
-      $tab[14]['name']      = $LANG['plugin_archires']['setup'][15];
-      $tab[14]['datatype']  = 'text';
+      $tab[14]['table']          = $this->getTable();
+      $tab[14]['field']          = 'format';
+      $tab[14]['name']           = __('Image format', 'archires');
 
-      $tab[15]['table']     = $this->getTable();
-      $tab[15]['field']     = 'color';
-      $tab[15]['name']      = $LANG['plugin_archires']['setup'][25];
-      $tab[15]['datatype']  = 'text';
+      $tab[15]['table']          = $this->getTable();
+      $tab[15]['field']          = 'color';
+      $tab[15]['name']           = __('Color', 'archires');
 
       return $tab;
    }
 
 
    function dropdownObject($obj) {
-      global $LANG,$DB,$CFG_GLPI;
+      global $DB;
 
       $ID = $obj->fields["id"];
 
@@ -173,8 +169,8 @@ class PluginArchiresView extends CommonDBTM {
    }
 
 
-	function dropdownView($obj,$default) {
-      global $DB,$CFG_GLPI;
+	/*function dropdownView($obj,$default) {
+      global $DB;
 
       if (isset($obj->fields["id"])) {
          $default = $obj->fields["plugin_archires_views_id"];
@@ -196,21 +192,20 @@ class PluginArchiresView extends CommonDBTM {
          }
       }
       echo "</select>";
-   }
+   }*/
 
 
    static function linkToAllViews($item) {
-      global $LANG;
 
       echo "<div class='center'>";
       echo "<a href=\"./archires.graph.php?id=".$item->getID()."&querytype=".$item->getType()."\">".
-             $LANG['plugin_archires'][1];
+             __('See all views', 'archires');
       echo "</a></div>";
    }
 
 
    function viewSelect($obj,$plugin_archires_views_id,$select=0) {
-      global $CFG_GLPI,$LANG,$DB;
+      global $CFG_GLPI,$DB;
 
       $querytype   = get_class($obj);
       $ID          = $obj->fields["id"];
@@ -225,18 +220,18 @@ class PluginArchiresView extends CommonDBTM {
          echo "<table class='tab_cadre' cellpadding='5'>";
          echo "<tr class='tab_bg_1'>";
 
-         echo "<td class='center'>". $LANG['plugin_archires'][0]." : ";
+         echo "<td class='center'>". __('Display', 'archires')." : ";
          $this->dropdownObject($obj);
          echo "</td>";
 
-         echo "<td class='center'>".$LANG['plugin_archires']['title'][3]." : ";
+         echo "<td class='center'>".self::getTypeName(2)." : ";
          $this->dropdownView(-1,$plugin_archires_views_id);
          echo "</td>";
 
          echo "<td>";
          echo "<input type='hidden' name='querytype' value=\"".$querytype."\"> ";
          echo "<input type='submit' class='submit'  name='displayview' value=\"".
-                $LANG['buttons'][2]."\"> ";
+                _sx('button', 'Add')."\"> ";
          echo "</td>";
          echo "</tr>";
          echo "</table>";
@@ -245,107 +240,100 @@ class PluginArchiresView extends CommonDBTM {
       echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".
             self::PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype.
             "&amp;plugin_archires_views_id=".
-            $plugin_archires_views_id."'>".$LANG['plugin_archires']['setup'][16]."</a>";
+            $plugin_archires_views_id."'>".__('[SVG]', 'archires')."</a>";
    }
 
 
    function showForm ($ID, $options=array()) {
-      global $CFG_GLPI, $LANG;
 
-      if ($ID>0) {
-         $this->check($ID,'r');
-      } else {
-         $this->check(-1,'w');
-         $this->getEmpty();
-      }
-
+      $this->initForm($ID, $options);
       $this->showTabs($options);
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td colspan='1'>".$LANG['plugin_archires']['search'][1]." : </td>";
+      echo "<td colspan='1'>".__('Name')."</td>";
       echo "<td colspan='3'>";
       Html::autocompletionTextField($this, "name", array('size' => 20));
       echo "</td></tr>";
 
-      echo "<tr class='tab_bg_1'><th colspan='4'>".$LANG['plugin_archires'][3]."</th></tr>";
+      echo "<tr class='tab_bg_2'><th colspan='4'>".__('Display of items', 'archires')."</th></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires'][6]." : </td>";
+      echo "<td>"._n('Computer', 'Computers', 2)."</td>";
       echo "<td>";
       Dropdown::showYesNo("computer",$this->fields["computer"]);
       echo "</td>";
-      echo "<td>".$LANG['plugin_archires'][7]." : </td>";
+      echo "<td>"._n('Network equipment', 'Network equipments', 2)."</td>";
       echo "<td>";
       Dropdown::showYesNo("networking",$this->fields["networking"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires'][8]." : </td>";
+      echo "<td>"._n('Printer', 'Printers', 2)."</td>";
       echo "<td>";
       Dropdown::showYesNo("printer",$this->fields["printer"]);
       echo "</td>";
-      echo "<td>".$LANG['plugin_archires'][9].": </td>";
+      echo "<td>"._n('Peripheral', 'Peripherals', 2)."</td>";
       echo "<td>";
       Dropdown::showYesNo("peripheral",$this->fields["peripheral"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires'][10]." : </td>";
+      echo "<td>"._n('Phone', 'Phones', 2)."</td>";
       echo "<td colspan='3'>";
       Dropdown::showYesNo("phone",$this->fields["phone"]);
       echo "</td></tr>";
 
-      echo "<tr class='tab_bg_1'><th colspan='4'>".$LANG['plugin_archires'][24]."</th></tr>";
+      echo "<tr class='tab_bg_2'><th colspan='4'>".__('Display description', 'archires')."</th></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires'][16]." : </td>";
+      echo "<td>".__('Display sockets', 'archires')."</td>";
       echo "<td><select name='display_ports'> ";
       echo "<option ";
       if ($this->fields["display_ports"]=='0') {
          echo "selected ";
       }
-      echo "value='0'>".$LANG['choice'][0]."</option>";
+      echo "value='0'>".__('No')."</option>";
       echo "<option ";
       if ($this->fields["display_ports"]=='1') {
          echo "selected ";
       }
-      echo "value='1'>".$LANG['plugin_archires'][29]."</option>";
+      echo "value='1'>".__('See numbers', 'archires')."</option>";
       echo "<option ";
       if ($this->fields["display_ports"]=='2') {
          echo "selected ";
       }
-      echo "value='2'>".$LANG['plugin_archires'][33]."</option>";
+      echo "value='2'>".__('See names', 'archires')."</option>";
       echo "</select></td>";
-      echo "<td>".$LANG['plugin_archires'][23]." : </td>";
+      echo "<td>".__('Display IP/Mask', 'archires')."</td>";
       echo "<td>";
       Dropdown::showYesNo("display_ip",$this->fields["display_ip"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires'][25]." : </td>";
+      echo "<td>".__('Display item types', 'archires')."</td>";
       echo "<td>";
       Dropdown::showYesNo("display_type",$this->fields["display_type"]);
       echo "</td>";
-      echo "<td>".$LANG['plugin_archires'][26]." : </td>";
+      echo "<td>".__('Display item statuses', 'archires')."</td>";
       echo "<td>";
       Dropdown::showYesNo("display_state",$this->fields["display_state"]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires'][31]." : </td>";
+      echo "<td>".__('Display item locations', 'archires')."</td>";
       echo "<td>";
       Dropdown::showYesNo("display_location",$this->fields["display_location"]);
       echo "</td>";
-      echo "<td>".$LANG['plugin_archires'][32]." : </td>";
+      echo "<td>".__('Display item entities', 'archires')."</td>";
       echo "<td>";
       Dropdown::showYesNo("display_entity",$this->fields["display_entity"]);
       echo "</td></tr>";
 
-      echo "<tr class='tab_bg_1'><th colspan='4'>".$LANG['plugin_archires']['search'][6]."</th></tr>";
+      echo "<tr class='tab_bg_2'><th colspan='4'>".__('Generation', 'archires')."</th></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires']['setup'][13]." : </td>";
+      echo "<td>".__('Rendering engine', 'archires')."</td>";
       echo "<td><select name='engine'> ";
       echo "<option ";
       if ($this->fields["engine"]=='0') {
@@ -358,9 +346,9 @@ class PluginArchiresView extends CommonDBTM {
       }
       echo "value='1'>Neato</option>";
       echo "</select>&nbsp;";
-      Html::showToolTip(nl2br($LANG['plugin_archires']['setup'][14]));
+      Html::showToolTip(nl2br(__('With neato, the sockets will not be displayed', 'archires')));
       echo "</td>";
-      echo "<td>".$LANG['plugin_archires']['setup'][15]." : </td>";
+      echo "<td>".__('Image format', 'archires')."</td>";
       echo "<td><select name='format'> ";
       echo "<option ";
       if ($this->fields["format"]==self::PLUGIN_ARCHIRES_JPEG_FORMAT) {
@@ -380,18 +368,18 @@ class PluginArchiresView extends CommonDBTM {
       echo "</select></td>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires']['setup'][25]." : </td>";
+      echo "<td>".__('Color', 'archires')."</td>";
       echo "<td colspan='3'><select name='color'> ";
       echo "<option ";
       if ($this->fields["color"]=='0') {
          echo "selected ";
       }
-      echo "value='0'>".$LANG['plugin_archires'][19]."</option>";
+      echo "value='0'>".__('Type of network', 'archires')."</option>";
       echo "<option ";
       if ($this->fields["color"]=='1') {
          echo "selected ";
       }
-      echo "value='1'>".$LANG['plugin_archires'][35]."</option>";
+      echo "value='1'>".__('VLAN')."</option>";
       echo "</select></td></tr>";
 
       $this->showFormButtons($options);
@@ -402,7 +390,7 @@ class PluginArchiresView extends CommonDBTM {
 
 
    static function showView($item) {
-      global $CFG_GLPI,$DB,$LANG;
+      global $DB;
 
       $plugin_archires_views_id = $item->fields["plugin_archires_views_id"];
 
@@ -416,102 +404,104 @@ class PluginArchiresView extends CommonDBTM {
 
       echo "<table class='tab_cadre_fixe' cellpadding='2'width='75%'>";
       echo "<tr>";
-      echo "<th colspan='3'>".$LANG['plugin_archires']['setup'][20]." : ".$name_config;
+      echo "<th colspan='3'>".self::getTypeName(1)." : ".$name_config;
       echo "</th></tr>";
 
-      echo "<tr class='tab_bg_2 top'><th>".$LANG['plugin_archires'][3]."</th>";
-      echo "<th>".$LANG['plugin_archires'][24]."</th><th>".$LANG['plugin_archires']['search'][6].
+      echo "<tr class='tab_bg_2 top'>";
+      echo "<th>".__('Display of items', 'archires')."</th>";
+      echo "<th>".__('Display description', 'archires')."</th>";
+      echo "<th>".__('Generation', 'archires').
            "</th></tr>";
 
       echo "<tr class='tab_bg_1 top'><td class='center'>";
       if ($view->fields["computer"] != 0) {
-         echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][1];
+         echo _n('Computer', 'Computers', 2)." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][6]." : ".$LANG['choice'][0];
+         echo _n('Computer', 'Computers', 2)." : ".__('No');
       }
       echo "<br>";
 
       if ($view->fields["networking"]!=0) {
-         echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][1];
+         echo _n('Network equipment', 'Network equipments', 2)." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][7]." : ".$LANG['choice'][0];
+         echo _n('Network equipment', 'Network equipments', 2)." : ".__('No');
       }
       echo "<br>";
 
       if ($view->fields["printer"]!=0) {
-         echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][1];
+         echo _n('Printer', 'Printers', 2)." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][8]." : ".$LANG['choice'][0];
+         echo _n('Printer', 'Printers', 2)." : ".__('No');
       }
       echo "<br>";
 
       if ($view->fields["peripheral"]!=0) {
-         echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][1];
+         echo _n('Peripheral', 'Peripherals', 2)." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][9]." : ".$LANG['choice'][0];
+         echo _n('Peripheral', 'Peripherals', 2)." : ".__('No');
       }
       echo "<br>";
 
       if ($view->fields["phone"]!=0) {
-         echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][1];
+         echo _n('Phone', 'Phones', 2)." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][10]." : ".$LANG['choice'][0];
+         echo _n('Phone', 'Phones', 2)." : ".__('No');
       }
       echo "</td>";
 
       echo "<td class='center'>";
       if ($view->fields["display_ports"]!=0) {
-         echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][1];
+         echo __('Display sockets', 'archires')." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][16]." : ".$LANG['choice'][0];
+         echo __('Display sockets', 'archires')." : ".__('No');
       }
       echo "<br>";
 
       if ($view->fields["display_ip"]!=0) {
-         echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][1];
+         echo __('Display IP/Mask', 'archires')." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][23]." : ".$LANG['choice'][0];
+         echo __('Display IP/Mask', 'archires')." : ".__('No');
       }
       echo "<br>";
 
       if ($view->fields["display_type"]!=0) {
-         echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][1];
+         echo __('Display item types', 'archires')." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][25]." : ".$LANG['choice'][0];
+         echo __('Display item types', 'archires')." : ".__('No');
       }
       echo "<br>";
 
       if ($view->fields["display_state"]!=0) {
-         echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][1];
+         echo __('Display item statuses', 'archires')." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][26]." : ".$LANG['choice'][0];
+         echo __('Display item statuses', 'archires')." : ".__('No');
       }
       echo "<br>";
 
       if ($view->fields["display_location"]!=0) {
-         echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][1];
+         echo __('Display item locations', 'archires')." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][31]." : ".$LANG['choice'][0];
+         echo __('Display item locations', 'archires')." : ".__('No');
       }
       echo "<br>";
 
       if ($view->fields["display_entity"]!=0) {
-         echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][1];
+         echo __('Display item entities', 'archires')." : ".__('Yes');
       } else {
-         echo $LANG['plugin_archires'][32]." : ".$LANG['choice'][0];
+         echo __('Display item entities', 'archires')." : ".__('No');
       }
       echo "</td>";
 
       //
-      echo "<td class='center'>".$LANG['plugin_archires']['setup'][11]." : ";
-      echo $LANG['plugin_archires']['setup'][13]." : ";
+      echo "<td class='center'>".__('All')." : ";
+      echo __('Rendering engine', 'archires')." : ";
       if ($view->fields["engine"]!=0) {
          echo "Neato";
       } else {
          echo "Dot";
       }
       echo "<br>";
-      echo $LANG['plugin_archires']['setup'][15]." : ";
+      echo __('Image format', 'archires')." : ";
       if ($view->fields["format"] == self::PLUGIN_ARCHIRES_JPEG_FORMAT) {
          $format_graph = "jpeg";
       } else if ($view->fields["format"] == self::PLUGIN_ARCHIRES_PNG_FORMAT) {
@@ -544,14 +534,13 @@ class PluginArchiresView extends CommonDBTM {
 
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
 
       if (!$withtemplate && plugin_archires_haveRight('archires', 'r')) {
          switch ($item->getType()) {
             case 'PluginArchiresApplianceQuery' :
             case 'PluginArchiresLocationQuery' :
             case 'PluginArchiresNetworkEquipmentQuery' :
-               return array('1' => $LANG['plugin_archires']['setup'][20]);
+               return self::getTypeName(1);
          }
       }
       return '';

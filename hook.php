@@ -747,7 +747,6 @@ function plugin_archires_getDatabaseRelations() {
 ////// SEARCH FUNCTIONS ///////() {
 
 function plugin_archires_giveItem($type,$ID,$data,$num) {
-   global $LANG;
 
    $searchopt = &Search::getOptions($type);
 
@@ -757,7 +756,7 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
    switch ($table.'.'.$field) {
       case "glpi_locations.completename" :
          if (empty($data["ITEM_$num"])) {
-            $out = $LANG['plugin_archires'][30];
+            $out = __('All root locations', 'archires');
          } else {
             $out = $data["ITEM_$num"];
          }
@@ -767,7 +766,7 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
       case "glpi_states.name" :
       case "glpi_vlans.name" :
          if (empty($data["ITEM_$num"])) {
-            $out = $LANG['plugin_archires'][11];
+            $out = __('All');
          } else {
             $out = $data["ITEM_$num"];
          }
@@ -776,7 +775,7 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
       case "glpi_networkequipments.name" :
       case "glpi_plugin_appliances_appliances.name" :
          if (empty($data["ITEM_$num"])) {
-            $out = $LANG['plugin_archires'][34];
+            $out = __('None');
          } else {
             $out = $data["ITEM_$num"];
          }
@@ -784,11 +783,11 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 
       case "glpi_plugin_archires_views.display_ports" :
          if (empty($data["ITEM_$num"])) {
-            $out = $LANG['choice'][0];
+            $out = __('No');
          } else if ($data["ITEM_$num"]=='1') {
-            $out = $LANG['plugin_archires'][29];
+            $out = __('See numbers');
          } else if ($data["ITEM_$num"]=='2') {
-            $out = $LANG['plugin_archires'][33];
+            $out = __('See names');
          }
          return $out;
 
@@ -812,9 +811,9 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 
       case "glpi_plugin_archires_views.color" :
          if (empty($data["ITEM_$num"])) {
-            $out = $LANG['plugin_archires'][19];
+            $out = __('Type of network', 'archires');
          } else if ($data["ITEM_$num"]=='1') {
-            $out = $LANG['plugin_archires'][35];
+            $out = __('VLAN');
          }
          return $out;
    }
@@ -825,7 +824,6 @@ function plugin_archires_giveItem($type,$ID,$data,$num) {
 ////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////
 
 function plugin_archires_MassiveActions($type) {
-   global $LANG;
 
    // Specific one
    switch ($type) {
@@ -833,8 +831,8 @@ function plugin_archires_MassiveActions($type) {
       case 'PluginArchiresNetworkEquipmentQuery' :
       case 'PluginArchiresApplianceQuery' :
       case 'PluginArchiresView' :
-         return array("plugin_archires_duplicate" => $LANG['plugin_archires'][28],
-                      "plugin_archires_transfert" => $LANG['buttons'][48]);
+         return array("plugin_archires_duplicate" => __('Duplicate'),
+                      "plugin_archires_transfert" => __('Transfert'));
    }
    return array();
 }
@@ -842,7 +840,6 @@ function plugin_archires_MassiveActions($type) {
 
 // How to display specific actions ?
 function plugin_archires_MassiveActionsDisplay($options=array()) {
-   global $LANG;
 
    switch ($options['itemtype']) {
       case 'PluginArchiresLocationQuery':

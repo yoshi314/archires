@@ -30,12 +30,13 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-Html::header($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][4],
+Html::header(PluginArchiresArchires::getTypeName()." ".PluginArchiresLocationQuery::getTypeName(),
              '',"plugins","archires","location");
 
 $PluginArchiresLocationQuery=new PluginArchiresLocationQuery();
 
-if ($PluginArchiresLocationQuery->canView() || Session::haveRight("config","w")) {
+if ($PluginArchiresLocationQuery->canView() 
+      || Session::haveRight("config","w")) {
    Search::show("PluginArchiresLocationQuery");
 
 } else {

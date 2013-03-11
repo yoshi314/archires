@@ -34,12 +34,12 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresVlanColor extends CommonDBTM {
 
 
-   function canCreate() {
+   static function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
 
@@ -98,13 +98,8 @@ class PluginArchiresVlanColor extends CommonDBTM {
    }
 
 
-   function deleteVlanColor($ID) {
-      $this->delete(array('id' => $ID));
-   }
-
-
    function showConfigForm($canupdate=false) {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB;
 
       $query = "SELECT *
                 FROM `".$this->getTable()."`
@@ -123,15 +118,15 @@ class PluginArchiresVlanColor extends CommonDBTM {
             echo "<div id='liste_vlan'>";
             echo "<table class='tab_cadre' cellpadding='5'>";
             echo "<tr>";
-            echo "<th class='left'>".$LANG['plugin_archires'][35]."</th>";
-            echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
+            echo "<th class='left'>".__('VLAN')."</th>";
+            echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             if ($number > 1) {
-               echo "<th class='left'>".$LANG['plugin_archires'][35]."</th>";
-               echo "<th class='left'>".$LANG['plugin_archires'][20]."</th><th></th>";
+               echo "<th class='left'>".__('VLAN')."</th>";
+               echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             }
             echo "</tr>";
 
-            while($ligne= mysql_fetch_array($result)) {
+            while($ligne= $DB->fetch_assoc($result)) {
                $ID  =$ligne["id"];
                $vlans_id = $ligne["vlans_id"];
                $used[] = $vlans_id;
@@ -164,11 +159,11 @@ class PluginArchiresVlanColor extends CommonDBTM {
 
                echo "<a onclick= \"if (markCheckboxes ('massiveaction_form_vlan_color')) ".
                      "return false;\" href='#'>".
-                     $LANG['buttons'][18]."</a>";
+                     __('Select all')."</a>";
                echo " - <a onclick= \"if (unMarkCheckboxes ('massiveaction_form_vlan_color')) ".
                      "return false;\" href='#'>".
-                     $LANG['buttons'][19]."</a> ";
-               Html::closeArrowMassives(array('delete_color_vlan' => $LANG['buttons'][6]));
+                     __('Deselect all')."</a> ";
+               Html::closeArrowMassives(array('delete_color_vlan' => _sx('button', 'Delete permanently')));
             } else {
                echo "</table>";
             }
@@ -177,17 +172,17 @@ class PluginArchiresVlanColor extends CommonDBTM {
 
          if ($canupdate) {
             echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
-            echo $LANG['plugin_archires']['setup'][23]." : </th></tr>";
+            echo __('Associate colors to VLANs', 'archires')."</th></tr>";
             echo "<tr class='tab_bg_1'><td>";
             $this->dropdownVlan($used);
             echo "</td>";
             echo "<td><input type='text' name='color'>";
             echo "&nbsp;";
-            Html::showToolTip(nl2br($LANG['plugin_archires']['setup'][12]),
+            Html::showToolTip(nl2br(__('Please use this color format', 'archires')),
                               array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
                                     'linktarget' => '_blank'));
             echo "<td class='center'><input type='submit' name='add_color_vlan' value=\"".
-                  $LANG['buttons'][2]."\" class='submit'></td></tr>";
+                  _sx('button', 'Add')."\" class='submit'></td></tr>";
             echo "</table>";
             Html::closeForm();
          }
@@ -196,7 +191,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
 
 
    function dropdownVlan($used=array()) {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB;
 
       $limit = $_SESSION["glpidropdown_chars_limit"];
       $where = "";
@@ -219,7 +214,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
       if ($number !="0") {
          echo "<select name='vlans_id'>\n";
          echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
-         echo "<option value='-1'>".$LANG['plugin_archires'][36]."</option>\n";
+         echo "<option value='-1'>".__('All VLANs', 'archires')."</option>\n";
          while ($data= mysql_fetch_array($result)) {
             $output = $data["name"];
             if (Toolbox::strlen($output) > $limit) {

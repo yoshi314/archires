@@ -103,7 +103,7 @@ if (isset($_POST["add"])) {
 
    $PluginArchiresNetworkEquipmentQuery->checkGlobal("r");
 
-   Html::header($LANG['plugin_archires']['menu'][2]." ".$LANG['plugin_archires']['title'][5],
+   Html::header(PluginArchiresArchires::getTypeName()." ".PluginArchiresNetworkEquipmentQuery::getTypeName(),
                 '',"plugins","archires","networkequipment");
 
    $PluginArchiresNetworkEquipmentQuery->showForm($_GET["id"]);

@@ -34,19 +34,18 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresLocationQuery extends CommonDBTM {
 
 
-   static function getTypeName() {
-      global $LANG;
+   static function getTypeName($nb=0) {
 
-      return $LANG['plugin_archires']['title'][4];
+      return __('Location');
    }
 
 
-   function canCreate() {
+   static function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return plugin_archires_haveRight('archires', 'r');
    }
 
@@ -59,64 +58,70 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
 
    function getSearchOptions() {
-      global $LANG;
 
       $tab = array();
 
-      $tab['common'] = $LANG['plugin_archires']['title'][4];
+      $tab['common']             = self::getTypeName();
 
-      $tab[1]['table']         = $this->getTable();
-      $tab[1]['field']         = 'name';
-      $tab[1]['name']          = $LANG['plugin_archires']['search'][1];
-      $tab[1]['datatype']      = 'itemlink';
-      $tab[1]['itemlink_type'] = $this->getType();
+      $tab[1]['table']           = $this->getTable();
+      $tab[1]['field']           = 'name';
+      $tab[1]['name']            = __('Name');
+      $tab[1]['datatype']        = 'itemlink';
+      $tab[1]['itemlink_type']   = $this->getType();
 
-      $tab[2]['table']     = $this->getTable();
-      $tab[2]['field']     = 'child';
-      $tab[2]['name']      = $LANG['plugin_archires']['search'][3];
-      $tab[2]['datatype']  = 'bool';
+      $tab[2]['table']           = $this->getTable();
+      $tab[2]['field']           = 'child';
+      $tab[2]['name']            = __('Childs', 'archires');
+      $tab[2]['datatype']        = 'bool';
 
-      $tab[3]['table']     = 'glpi_locations';
-      $tab[3]['field']     = 'completename';
-      $tab[3]['name']      = $LANG['plugin_archires']['search'][2];
+      $tab[3]['table']           = 'glpi_locations';
+      $tab[3]['field']           = 'completename';
+      $tab[3]['name']            = __('Location');
 
-      $tab[4]['table']     = 'glpi_networks';
-      $tab[4]['field']     = 'name';
-      $tab[4]['name']      = $LANG['plugin_archires']['search'][4];
+      $tab[4]['table']           = 'glpi_networks';
+      $tab[4]['field']           = 'name';
+      $tab[4]['name']            = __('Network');
+      $tab[4]['datatype']        = 'dropdown';
 
-      $tab[5]['table']     = 'glpi_states';
-      $tab[5]['field']     = 'name';
-      $tab[5]['name']      = $LANG['plugin_archires']['search'][5];
+      $tab[5]['table']           = 'glpi_states';
+      $tab[5]['field']           = 'name';
+      $tab[5]['name']            = _('State');
+      $tab[5]['datatype']        = 'dropdown';
 
-      $tab[6]['table']     = 'glpi_groups';
-      $tab[6]['field']     = 'completename';
-      $tab[6]['name']      = $LANG['common'][35];
+      $tab[6]['table']           = 'glpi_groups';
+      $tab[6]['field']           = 'completename';
+      $tab[6]['name']            = _('Group');
+      $tab[6]['datatype']        = 'dropdown';
 
-      $tab[7]['table']     = 'glpi_vlans';
-      $tab[7]['field']     = 'name';
-      $tab[7]['name']      = $LANG['networking'][56];
+      $tab[7]['table']           = 'glpi_vlans';
+      $tab[7]['field']           = 'name';
+      $tab[7]['name']            = _('VLAN');
+      $tab[7]['datatype']        = 'dropdown';
 
-      $tab[8]['table']     = 'glpi_plugin_archires_views';
-      $tab[8]['field']     = 'name';
-      $tab[8]['name']      = $LANG['plugin_archires']['setup'][20];
+      $tab[8]['table']           = 'glpi_plugin_archires_views';
+      $tab[8]['field']           = 'name';
+      $tab[8]['name']            = PluginArchiresView::getTypeName(1);
+      $tab[8]['datatype']        = 'dropdown';
 
-      $tab[30]['table']    = $this->getTable();
-      $tab[30]['field']    = 'id';
-      $tab[30]['name']     = $LANG['common'][2];
+      $tab[30]['table']          = $this->getTable();
+      $tab[30]['field']          = 'id';
+      $tab[30]['name']           = __('ID');
+      $tab[30]['datatype']       = 'number';
 
-      $tab[80]['table']    = 'glpi_entities';
-      $tab[80]['field']    = 'completename';
-      $tab[80]['name']     = $LANG['entity'][0];
+      $tab[80]['table']          = 'glpi_entities';
+      $tab[80]['field']          = 'completename';
+      $tab[80]['name']           = __('Entity');
+      $tab[80]['datatype']       = 'dropdown';
 
       return $tab;
    }
 
 
    function prepareInputForAdd($input) {
-      global $LANG;
 
-      if (!isset ($input["plugin_archires_views_id"]) || $input["plugin_archires_views_id"] == 0) {
-         Session::addMessageAfterRedirect($LANG['plugin_archires'][4], false, ERROR);
+      if (!isset ($input["plugin_archires_views_id"]) 
+            || $input["plugin_archires_views_id"] == 0) {
+         Session::addMessageAfterRedirect(__('Thanks to specify a default used view', 'archires'), false, ERROR);
          return array ();
       }
       return $input;
@@ -124,7 +129,6 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
 
    function defineTabs($options=array()) {
-      global $LANG;
 
       $ong = array();
       $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
@@ -136,58 +140,50 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
 
    function showForm ($ID, $options=array()) {
-      global $CFG_GLPI,$DB,$LANG;
 
-      if ($ID > 0) {
-       $this->check($ID,'r');
-      } else {
-       // Create item
-       $this->check(-1,'w');
-       $this->getEmpty();
-      }
-
+      $this->initForm($ID, $options);
       $this->showTabs($options);
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires']['search'][1]." :</td>";
+      echo "<td>".__('Name')."</td>";
       echo "<td>";
       Html::autocompletionTextField($this,"name");
       echo "</td>";
-      echo "<td>".$LANG['plugin_archires']['search'][5]." : </td><td>";
+      echo "<td>".__('State')."</td><td>";
       Dropdown::show('State', array('name'  => "states_id",
                                     'value' => $this->fields["states_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires']['search'][2]." : </td><td>";
+      echo "<td>".__('Location')."</td><td>";
       $this->dropdownLocation($this,$ID);
       echo "</td>";
-      echo "<td>".$LANG['common'][35]." : </td><td>";
+      echo "<td>".__('Group')."</td><td>";
       Dropdown::show('Group', array('name'   => "groups_id",
                                     'value'  => $this->fields["groups_id"],
                                     'entity' => $this->fields["entities_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires']['search'][3]." : </td>";
+      echo "<td>".__('Childs', 'archires')."</td>";
       echo "<td>";
       Dropdown::showYesNo("child",$this->fields["child"]);
       echo "</td>";
-      echo "<td>".$LANG['networking'][56]." : </td><td>";
+      echo "<td>".__('VLAN')."</td><td>";
       Dropdown::show('Vlan', array('name'  => "vlans_id",
                                    'value' => $this->fields["vlans_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG['plugin_archires']['search'][4]." : </td><td>";
+      echo "<td>".__('Network')."</td><td>";
       Dropdown::show('Network', array('name'  => "networks_id",
                                       'value' => $this->fields["networks_id"]));
       echo "</td>";
-      echo "<td>".$LANG['plugin_archires']['setup'][20]." : </td><td>";
-      //view
-      $PluginArchiresView = new PluginArchiresView();
-      $PluginArchiresView->dropdownView($this,-1);
+      echo "<td>".PluginArchiresView::getTypeName(1)."</td><td>";
+      //View
+      Dropdown::show('PluginArchiresView', array('name'  => "plugin_archires_views_id",
+                                   'value' => $this->fields["plugin_archires_views_id"]));
       echo "</td></tr>";
 
       $this->showFormButtons($options);
@@ -198,7 +194,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
 
    function dropdownLocation($object,$ID) {
-      global $DB, $CFG_GLPI, $LANG;
+      global $DB;
 
       $obj          = new $object();
       $locations_id = -1;
@@ -214,7 +210,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       echo "<select name='locations_id'>";
       echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
       echo "<option option value='-1' ".($locations_id=="-1"?" selected ":"").">".
-             $LANG['plugin_archires'][30]."</option>";
+             __('All root locations', 'archires')."</option>";
 
       if ($result0 = $DB->query($query0)) {
          while ($ligne0 = mysql_fetch_array($result0)) {
@@ -242,7 +238,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
 
    function Query ($ID,$PluginArchiresView,$for) {
-      global $DB,$CFG_GLPI,$LANG;
+      global $DB;
 
       $this->getFromDB($ID);
 
