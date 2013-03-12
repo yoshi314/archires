@@ -145,7 +145,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                echo "</td>";
 
                $i++;
-               if (($i  == $number) && ($number  % 2 !=0) && $number>1) {
+               if (($i == $number) && (($number % 2) != 0) && $number > 1) {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
                }
             }
@@ -164,7 +164,8 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                echo " - <a onclick= \"if (unMarkCheckboxes('massiveaction_form_networkinterface_color')) ".
                      "return false;\" href='#'>".
                      __('Deselect all')."</a> ";
-               Html::closeArrowMassives(array('delete_color_networkinterface' => _sx('button', 'Delete permanently')));
+               Html::closeArrowMassives(array('delete_color_networkinterface' => _sx('button',
+                                                                                     'Delete permanently')));
             } else {
                echo "</table>";
             }
@@ -218,7 +219,6 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
       if ($number >0) {
          echo "<select name='networkinterfaces_id'>\n";
          echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
-         echo "<option value='-1'>".__('All types of network')."</option>\n";
          while ($data= mysql_fetch_array($result)) {
             $output = $data["name"];
             if (Toolbox::strlen($output)>$limit) {
