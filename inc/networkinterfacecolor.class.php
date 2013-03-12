@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -127,7 +127,8 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
                $ID                   = $ligne["id"];
                $networkinterfaces_id = $ligne["networkinterfaces_id"];
                $used[]               = $networkinterfaces_id;
-               if ($i % 2 == 0 && $number > 1) {
+               if (($i % 2 == 0)
+                   && ($number > 1)) {
                   echo "<tr class='tab_bg_1'>";
                }
                if ($number == 1) {

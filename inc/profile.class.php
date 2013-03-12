@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -35,7 +35,7 @@ class PluginArchiresProfile extends CommonDBTM {
 
 
    public static function getTypeName($nb=0) {
-      return __('Rights management', 'accounts');
+      return __('Rights management', 'archires');
    }
 
 
@@ -88,7 +88,6 @@ class PluginArchiresProfile extends CommonDBTM {
 
 
    function createAccess($profile) {
-
       return $this->add(array('profiles_id' => $profile->getField('id')));
    }
 
@@ -124,11 +123,11 @@ class PluginArchiresProfile extends CommonDBTM {
       }
       echo "<form action='".$target."' method='post'>";
       echo "<table class='tab_cadre_fixe'>";
-      
+
       echo "<tr class='tab_bg_2'>";
 
-      echo "<th colspan='2'>" . sprintf(__('%1$s - %2$s'), __('Rights management', 'accounts'),
-               $prof->fields["name"])."</th>";
+      echo "<th colspan='2'>" . sprintf(__('%1$s - %2$s'), __('Rights management', 'archires'),
+                                        $prof->fields["name"])."</th>";
 
       echo "</tr>";
 
@@ -152,7 +151,8 @@ class PluginArchiresProfile extends CommonDBTM {
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
 
       if ($item->getType() == 'Profile') {
-         if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
+         if ($item->getField('id')
+             && ($item->getField('interface') != 'helpdesk')) {
             return PluginArchiresArchires::getTypeName(2);
          }
       }
@@ -164,7 +164,7 @@ class PluginArchiresProfile extends CommonDBTM {
 
       if ($item->getType() == 'Profile') {
          $prof = new self();
-         $ID = $item->getField('id');
+         $ID   = $item->getField('id');
          if (!$prof->getFromDBByProfile($ID)) {
             $prof->createAccess($item);
          }

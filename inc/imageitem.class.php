@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -101,11 +101,11 @@ class PluginArchiresImageItem extends CommonDBTM {
 
 
    function showConfigForm() {
-      global $DB,$CFG_GLPI;
+      global $DB, $CFG_GLPI;
 
       echo "<form method='post' action='./config.form.php'>";
-      echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='4'>";
-      echo __('Associate pictures with item types', 'archires')."</th></tr>";
+      echo "<table class='tab_cadre' cellpadding='5'>";
+      echo "<tr><th colspan='4'>".__('Associate pictures with item types', 'archires')."</th></tr>";
       echo "<tr class='tab_bg_1'><td>";
       $PluginArchiresArchires = new PluginArchiresArchires();
       $PluginArchiresArchires->showAllItems("type",0,0,$_SESSION["glpiactive_entity"]);
@@ -121,7 +121,8 @@ class PluginArchiresImageItem extends CommonDBTM {
       }
       echo "</select>&nbsp;";
       closedir($dir);
-      Html::showToolTip(nl2br(__('Some types of items must be created so that the association can exist', 'archires')));
+      Html::showToolTip(nl2br(__('Some types of items must be created so that the association can exist',
+                                 'archires')));
       echo "<td>";
       echo "<div class='center'><input type='submit' name='add' value=\""._sx('button', 'Add').
             "\" class='submit'></div></td></tr>";
@@ -132,7 +133,7 @@ class PluginArchiresImageItem extends CommonDBTM {
                 FROM `".$this->getTable()."`
                 ORDER BY `itemtype`,`type` ASC;";
 
-      $i     = 0;
+      $i = 0;
       if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
          if ($number != 0) {
@@ -143,26 +144,27 @@ class PluginArchiresImageItem extends CommonDBTM {
             echo "<tr>";
             echo "<th class='left'>".__('Item')."</th>";
             echo "<th class='left'>".__('Item type')."</th>";
-            echo "<th class='left'>".__('Picture')."</th><th></th>";
+            echo "<th class='left'>".__('Picture', 'archires')."</th><th></th>";
             if ($number > 1) {
                echo "<th class='left'>".__('Item')."</th>";
                echo "<th class='left'>".__('Item type')."</th>";
-               echo "<th class='left'>".__('Picture')."</th><th></th>";
+               echo "<th class='left'>".__('Picture', 'archires')."</th><th></th>";
             }
             echo "</tr>";
 
-            while($ligne= $DB->fetch_assoc($result)) {
+            while($ligne = $DB->fetch_assoc($result)) {
                $ID = $ligne["id"];
-               if ($i  % 2==0 && $number>1) {
+               if (($i % 2 == 0)
+                   && ($number > 1)) {
                   echo "<tr class='tab_bg_1'>";
                }
                if ($number == 1) {
                   echo "<tr class='tab_bg_1'>";
                }
                $PluginArchiresArchires = new PluginArchiresArchires();
-               $item = new $ligne["itemtype"]();
+               $item                   = new $ligne["itemtype"]();
                echo "<td>".$item->getTypeName()."</td>";
-               $class = $ligne["itemtype"]."Type";
+               $class     = $ligne["itemtype"]."Type";
                $typeclass = new $class();
                $typeclass->getFromDB($ligne["type"]);
                echo "<td>".$typeclass->fields["name"]."</td>";
@@ -174,7 +176,7 @@ class PluginArchiresImageItem extends CommonDBTM {
                echo "</td>";
 
                $i++;
-               if (($i == $number) && ($number % 2 !=0) && $number >1) {
+               if (($i == $number) && (($number % 2) !=0) && $number > 1) {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
                }
             }

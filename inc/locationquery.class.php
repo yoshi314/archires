@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -35,7 +35,6 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
 
    static function getTypeName($nb=0) {
-
       return __('Location');
    }
 
@@ -119,9 +118,10 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
    function prepareInputForAdd($input) {
 
-      if (!isset ($input["plugin_archires_views_id"]) 
-            || $input["plugin_archires_views_id"] == 0) {
-         Session::addMessageAfterRedirect(__('Thanks to specify a default used view', 'archires'), false, ERROR);
+      if (!isset ($input["plugin_archires_views_id"])
+          || $input["plugin_archires_views_id"] == 0) {
+         Session::addMessageAfterRedirect(__('Thanks to specify a default used view', 'archires'),
+                                          false, ERROR);
          return array ();
       }
       return $input;
@@ -151,8 +151,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       Html::autocompletionTextField($this,"name");
       echo "</td>";
       echo "<td>".__('State')."</td><td>";
-      Dropdown::show('State', array('name'  => "states_id",
-                                    'value' => $this->fields["states_id"]));
+      State::dropdown(array('name'  => "states_id",
+                            'value' => $this->fields["states_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -160,9 +160,9 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       $this->dropdownLocation($this,$ID);
       echo "</td>";
       echo "<td>".__('Group')."</td><td>";
-      Dropdown::show('Group', array('name'   => "groups_id",
-                                    'value'  => $this->fields["groups_id"],
-                                    'entity' => $this->fields["entities_id"]));
+      Group::dropdown(array('name'   => "groups_id",
+                            'value'  => $this->fields["groups_id"],
+                            'entity' => $this->fields["entities_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -171,19 +171,19 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       Dropdown::showYesNo("child",$this->fields["child"]);
       echo "</td>";
       echo "<td>".__('VLAN')."</td><td>";
-      Dropdown::show('Vlan', array('name'  => "vlans_id",
-                                   'value' => $this->fields["vlans_id"]));
+      Vlan::dropdown(array('name'  => "vlans_id",
+                           'value' => $this->fields["vlans_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__('Network')."</td><td>";
-      Dropdown::show('Network', array('name'  => "networks_id",
-                                      'value' => $this->fields["networks_id"]));
+      Network::dropdown(array('name'  => "networks_id",
+                              'value' => $this->fields["networks_id"]));
       echo "</td>";
       echo "<td>".PluginArchiresView::getTypeName(1)."</td><td>";
       //View
-      Dropdown::show('PluginArchiresView', array('name'  => "plugin_archires_views_id",
-                                   'value' => $this->fields["plugin_archires_views_id"]));
+      PluginArchiresView::dropdown(array('name'  => "plugin_archires_views_id",
+                                         'value' => $this->fields["plugin_archires_views_id"]));
       echo "</td></tr>";
 
       $this->showFormButtons($options);
@@ -223,11 +223,12 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                       ORDER BY `completename` ASC";
 
             if ($result = $DB->query($query)) {
-               while ($ligne= mysql_fetch_array($result)) {
-                  $location = $ligne["completename"];
+               while ($ligne = mysql_fetch_array($result)) {
+                  $location    = $ligne["completename"];
                   $location_id = $ligne["id"];
                   echo "<option value='".$location_id."' ".
-                        ($location_id=="".$locations_id.""?" selected ":"").">".$location."</option>";
+                        (($location_id == "".$locations_id."")?" selected ":"").">".$location.
+                       "</option>";
                }
             }
             echo "</optgroup>";
@@ -246,26 +247,26 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       $devices = array();
       $ports   = array();
 
-      if ($PluginArchiresView->fields["computer"]!=0) {
+      if ($PluginArchiresView->fields["computer"] != 0) {
          $types[]='Computer';
       }
-      if ($PluginArchiresView->fields["printer"]!=0) {
+      if ($PluginArchiresView->fields["printer"] != 0) {
          $types[]='Printer';
       }
-      if ($PluginArchiresView->fields["peripheral"]!=0) {
+      if ($PluginArchiresView->fields["peripheral"] != 0) {
          $types[]='Peripheral';
       }
-      if ($PluginArchiresView->fields["phone"]!=0) {
+      if ($PluginArchiresView->fields["phone"] != 0) {
          $types[]='Phone';
       }
-      if ($PluginArchiresView->fields["networking"]!=0) {
+      if ($PluginArchiresView->fields["networking"] != 0) {
          $types[]='NetworkEquipment';
       }
 
       foreach ($types as $key => $val) {
          $itemtable = getTableForItemType($val);
-         $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`networkinterfaces_id`,
-                      `np`.`ip`,`np`.`netmask`, `np`.`name` AS namep";
+         $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`instantiation_type`,
+                      `glpi_ipaddresses`.`name` AS ip, `ipn`.`netmask`, `np`.`name` AS namep";
 
          $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
                           `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
@@ -273,8 +274,16 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                           `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`,
                           `$itemtable`.`states_id`, `$itemtable`.`entities_id`,
                           `$itemtable`.`locations_id`
-
-                   FROM `glpi_networkports` np, `$itemtable`";
+                   FROM `glpi_networkports` np,
+                        `$itemtable`,
+                        `glpi_ipnetworks` AS ipn
+                   LEFT JOIN `glpi_networknames`
+                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
+                            AND `glpi_networkports`.`id` = `glpi_networknames`.`items_id`)
+                   LEFT JOIN `glpi_ipaddresses`
+                        ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
+                            AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
+                    WHERE `glpi_networkports`.`instantiation_type` = 'NetworkPortEthernet' ";
 
          if ($this->fields["vlans_id"] > "0") {
             $query .= ", `glpi_networkports_vlans` nv";
@@ -290,7 +299,9 @@ class PluginArchiresLocationQuery extends CommonDBTM {
             $query .= " AND `nv`.`networkports_id` = `np`.`id`
                         AND `vlans_id` = '".$this->fields["vlans_id"]."'";
          }
-         if ($this->fields["networks_id"] > "0" && $val != 'Phone' && $val != 'Peripheral') {
+         if (($this->fields["networks_id"] > "0")
+             && ($val != 'Phone')
+             && ($val != 'Peripheral')) {
             $query .= " AND `$itemtable`.`networks_id` = '".$this->fields["networks_id"]."'";
          }
          if ($this->fields["states_id"] > "0") {
@@ -299,9 +310,10 @@ class PluginArchiresLocationQuery extends CommonDBTM {
          if ($this->fields["groups_id"] > "0") {
             $query .= " AND `$itemtable`.`groups_id` = '".$this->fields["groups_id"]."'";
          }
-         if ($this->fields["locations_id"]!="-1") {
+         if ($this->fields["locations_id"] != "-1") {
             $query .= " AND `lc`.`id` = `$itemtable`.`locations_id` ";
-            if ($this->fields["child"] && !empty($this->fields["locations_id"])) {
+            if ($this->fields["child"]
+                && !empty($this->fields["locations_id"])) {
                $query .= " AND " . getRealQueryForTreeItem('glpi_locations',
                                                            $this->fields["locations_id"],
                                                            "`lc`.`id`");
@@ -320,7 +332,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
          //types
          $PluginArchiresQueryType = new PluginArchiresQueryType();
          $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(),$ID,$val);
-         $query .= "ORDER BY `np`.`ip` ASC ";
+         $query .= "ORDER BY `glpi_ipaddresses`.`name` ASC ";
 
          if ($result = $DB->query($query)) {
             while ($data = $DB->fetch_array($result)) {

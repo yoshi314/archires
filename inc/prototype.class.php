@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -43,8 +43,8 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       if (file_put_contents($graph_name, $graph)) {
          $command = "$engine -T$format -o\"$out_name\" \"$graph_name\" ";
-         $out = shell_exec($command);
-         $out = file_get_contents($out_name);
+         $out     = shell_exec($command);
+         $out     = file_get_contents($out_name);
          unlink($graph_name);
          unlink($out_name);
          //Toolbox::logDebug("command:", $command, "in:", $graph_name, "out:", $out_name, "Res:", strlen($out));
@@ -54,6 +54,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
 
    function testGraphviz() {
+
       $graph = "graph G {
                   a;
                   b;
@@ -74,12 +75,14 @@ class PluginArchiresPrototype extends CommonDBTM {
 
    static function displayTypeAndIP($PluginArchiresView,$itemtype,$device,$generation) {
 
-      $graph = "";
-
+      $graph                  = "";
       $PluginArchiresArchires = new PluginArchiresArchires();
-      if ($PluginArchiresView->fields["display_ip"]!=0 && isset($device["ip"])) {
 
-         if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
+      if (($PluginArchiresView->fields["display_ip"] != 0)
+          && isset($device["ip"])) {
+
+         if (($PluginArchiresView->fields["display_type"] != 0)
+             && !empty($device["type"])) {
             $class     = $itemtype."Type";
             $typeclass = new $class();
             $typeclass->getFromDB($device["type"]);

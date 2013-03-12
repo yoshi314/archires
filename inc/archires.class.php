@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -33,12 +33,12 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresArchires extends CommonDBTM {
 
-   
+
    static function getTypeName($nb=0) {
 
       return _n('Network Architecture', 'Network Architectures', $nb, 'archires');
    }
-   
+
    static function canCreate() {
       return plugin_archires_haveRight('archires', 'w');
    }
@@ -48,36 +48,38 @@ class PluginArchiresArchires extends CommonDBTM {
       return plugin_archires_haveRight('archires', 'r');
    }
 
+
    static function showSummary() {
-      
+
       echo "<div class='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
-      echo "<tr><th>".__('Summary', 'archires')."</th></tr>";
-      
-      
+      echo "<tr><th>".__('Summary')."</th></tr>";
+
+
       if (countElementsInTable('glpi_plugin_archires_views',
-                               "`entities_id`='".$_SESSION["glpiactive_entity"]."'") >0) {
-         
-         
-         
+                               "`entities_id`='".$_SESSION["glpiactive_entity"]."'") > 0) {
+
          echo "<tr class='tab_bg_1'><td>";
          echo "<a href='view.php'>".PluginArchiresView::getTypeName(2)."</a>";
          echo "</td></tr>";
 
          echo "<tr class='tab_bg_1'><td>";
-         echo "<a href='locationquery.php'>".self::getTypeName(1)." - ".
-               PluginArchiresLocationQuery::getTypeName(1)."</a>";
+         echo "<a href='locationquery.php'>".
+                sprintf(__('%1$s - %2$s'), self::getTypeName(1),
+                        PluginArchiresLocationQuery::getTypeName(1))."</a>";
          echo "</td></tr>";
 
          echo "<tr class='tab_bg_1'><td>";
-         echo "<a href='networkequipmentquery.php'>".self::getTypeName(1)." - ".
-               PluginArchiresNetworkEquipmentQuery::getTypeName(1)."</a>";
+         echo "<a href='networkequipmentquery.php'>".
+                sprintf(__('%1$s - %2$s'), self::getTypeName(1),
+                        PluginArchiresNetworkEquipmentQuery::getTypeName(1))."</a>";
          echo "</td></tr>";
 
          $plugin = new Plugin();
          if ($plugin->isActivated("appliances")) {
             echo "<tr class='tab_bg_1'><td>";
-            echo "<a href='appliancequery.php'>".self::getTypeName(1)." - ".
-                  PluginAppliancesAppliance::getTypeName(1)."</a>";
+            echo "<a href='appliancequery.php'>".
+                   sprintf(__('%1$s - %2$s'), self::getTypeName(1),
+                           PluginAppliancesAppliance::getTypeName(1))."</a>";
             echo "</td></tr>";
          }
       } else {
@@ -87,8 +89,9 @@ class PluginArchiresArchires extends CommonDBTM {
       }
       echo "</table></div>";
    }
-   
-   function showAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1) {
+
+
+   function showAllItems($myname, $value_type=0, $value=0, $entity_restrict=-1) {
       global $DB,$CFG_GLPI;
 
       $types = array('Computer','NetworkEquipment','Peripheral','Phone','Printer');
@@ -120,7 +123,7 @@ class PluginArchiresArchires extends CommonDBTM {
       echo "<span id='show_$myname$rand'>&nbsp;</span>\n";
       echo "</td></tr></table>\n";
 
-      if ($value>0) {
+      if ($value > 0) {
          echo "<script type='text/javascript' >\n";
          echo "document.getElementById('item_type$rand').value='".$value_type."';";
          echo "</script>\n";
@@ -133,5 +136,4 @@ class PluginArchiresArchires extends CommonDBTM {
       return $rand;
    }
 }
-
 ?>
