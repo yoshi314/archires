@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -44,8 +44,7 @@ class PluginArchiresView extends CommonDBTM {
 
 
    static function getTypeName($nb=0) {
-
-      return _n('View', 'Viewes', $nb, 'archires');
+      return _n('View', 'Views', $nb);
    }
 
 
@@ -62,7 +61,7 @@ class PluginArchiresView extends CommonDBTM {
    function getSearchOptions() {
 
       $tab = array();
-      
+
       $tab['common']             = self::getTypeName();
 
       $tab[1]['table']           = $this->getTable();
@@ -78,7 +77,7 @@ class PluginArchiresView extends CommonDBTM {
 
       $tab[3]['table']           = $this->getTable();
       $tab[3]['field']           = 'networking';
-      $tab[3]['name']            = _n('Network equipment', 'Network equipments', 2);
+      $tab[3]['name']            = _n('Network equipment', 'Network equipments', 2, 'archires');
       $tab[3]['datatype']        = 'bool';
 
       $tab[4]['table']           = $this->getTable();
@@ -157,10 +156,10 @@ class PluginArchiresView extends CommonDBTM {
       $query.=" ORDER BY `name` ASC";
 
       if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) >0) {
+         if ($DB->numrows($result) > 0) {
             echo "<select name='plugin_archires_queries_id' size='1'> ";
             while ($ligne = mysql_fetch_array($result)) {
-               echo "<option value='".$ligne["id"]."' ".($ligne["id"]=="".$ID.""?" selected ":"").">".
+               echo "<option value='".$ligne["id"]."' ".(($ligne["id"] == "".$ID."")?" selected ":"").">".
                      $ligne["name"]."</option>";
             }
             echo "</select>";
@@ -220,12 +219,12 @@ class PluginArchiresView extends CommonDBTM {
          echo "<table class='tab_cadre' cellpadding='5'>";
          echo "<tr class='tab_bg_1'>";
 
-         echo "<td class='center'>". __('Display', 'archires')." : ";
-         $this->dropdownObject($obj);
+         echo "<td class='center'>". sprintf(__('%1$s: %2$s'), __('Display', 'archires'),
+                                             $this->dropdownObject($obj));
          echo "</td>";
 
-         echo "<td class='center'>".self::getTypeName(2)." : ";
-         $this->dropdownView(-1,$plugin_archires_views_id);
+         echo "<td class='center'>".sprintf(__('%1$s: %2$s'), self::getTypeName(2),
+                                            $this->dropdownView(-1, $plugin_archires_views_id));
          echo "</td>";
 
          echo "<td>";
@@ -240,7 +239,7 @@ class PluginArchiresView extends CommonDBTM {
       echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/archires/front/archires.map.php?format=".
             self::PLUGIN_ARCHIRES_SVG_FORMAT."&amp;id=".$ID."&amp;querytype=".$querytype.
             "&amp;plugin_archires_views_id=".
-            $plugin_archires_views_id."'>".__('[SVG]', 'archires')."</a>";
+            $plugin_archires_views_id."'>[".__('SVG')."]</a>";
    }
 
 
@@ -263,7 +262,7 @@ class PluginArchiresView extends CommonDBTM {
       echo "<td>";
       Dropdown::showYesNo("computer",$this->fields["computer"]);
       echo "</td>";
-      echo "<td>"._n('Network equipment', 'Network equipments', 2)."</td>";
+      echo "<td>"._n('Network equipment', 'Network equipments', 2, 'archires')."</td>";
       echo "<td>";
       Dropdown::showYesNo("networking",$this->fields["networking"]);
       echo "</td></tr>";
@@ -290,17 +289,17 @@ class PluginArchiresView extends CommonDBTM {
       echo "<td>".__('Display sockets', 'archires')."</td>";
       echo "<td><select name='display_ports'> ";
       echo "<option ";
-      if ($this->fields["display_ports"]=='0') {
+      if ($this->fields["display_ports"] == '0') {
          echo "selected ";
       }
       echo "value='0'>".__('No')."</option>";
       echo "<option ";
-      if ($this->fields["display_ports"]=='1') {
+      if ($this->fields["display_ports"] == '1') {
          echo "selected ";
       }
       echo "value='1'>".__('See numbers', 'archires')."</option>";
       echo "<option ";
-      if ($this->fields["display_ports"]=='2') {
+      if ($this->fields["display_ports"] == '2') {
          echo "selected ";
       }
       echo "value='2'>".__('See names', 'archires')."</option>";
@@ -336,12 +335,12 @@ class PluginArchiresView extends CommonDBTM {
       echo "<td>".__('Rendering engine', 'archires')."</td>";
       echo "<td><select name='engine'> ";
       echo "<option ";
-      if ($this->fields["engine"]=='0') {
+      if ($this->fields["engine"] == '0') {
          echo "selected ";
       }
       echo "value='0'>Dot</option>";
       echo "<option ";
-      if ($this->fields["engine"]=='1') {
+      if ($this->fields["engine"] == '1') {
          echo "selected ";
       }
       echo "value='1'>Neato</option>";
@@ -351,7 +350,7 @@ class PluginArchiresView extends CommonDBTM {
       echo "<td>".__('Image format', 'archires')."</td>";
       echo "<td><select name='format'> ";
       echo "<option ";
-      if ($this->fields["format"]==self::PLUGIN_ARCHIRES_JPEG_FORMAT) {
+      if ($this->fields["format"] == self::PLUGIN_ARCHIRES_JPEG_FORMAT) {
          echo "selected ";
       }
       echo "value='0'>jpeg</option>";
@@ -376,7 +375,7 @@ class PluginArchiresView extends CommonDBTM {
       }
       echo "value='0'>".__('Type of network', 'archires')."</option>";
       echo "<option ";
-      if ($this->fields["color"]=='1') {
+      if ($this->fields["color"] == '1') {
          echo "selected ";
       }
       echo "value='1'>".__('VLAN')."</option>";
@@ -404,7 +403,7 @@ class PluginArchiresView extends CommonDBTM {
 
       echo "<table class='tab_cadre_fixe' cellpadding='2'width='75%'>";
       echo "<tr>";
-      echo "<th colspan='3'>".self::getTypeName(1)." : ".$name_config;
+      echo "<th colspan='3'>".sprintf(__('%1$s: %2$s'), self::getTypeName(1), $name_config);
       echo "</th></tr>";
 
       echo "<tr class='tab_bg_2 top'>";
@@ -415,93 +414,97 @@ class PluginArchiresView extends CommonDBTM {
 
       echo "<tr class='tab_bg_1 top'><td class='center'>";
       if ($view->fields["computer"] != 0) {
-         echo _n('Computer', 'Computers', 2)." : ".__('Yes');
+         printf(__('%1$s: %2$s'), _n('Computer', 'Computers', 2), __('Yes'));
       } else {
-         echo _n('Computer', 'Computers', 2)." : ".__('No');
+         printf(__('%1$s: %2$s'), _n('Computer', 'Computers', 2), __('No'));
       }
       echo "<br>";
 
-      if ($view->fields["networking"]!=0) {
-         echo _n('Network equipment', 'Network equipments', 2)." : ".__('Yes');
+      if ($view->fields["networking"] != 0) {
+         printf(__('%1$s: %2$s'), _n('Network equipment', 'Network equipments', 2, 'archires'),
+                __('Yes'));
       } else {
-         echo _n('Network equipment', 'Network equipments', 2)." : ".__('No');
+         printf(__('%1$s: %2$s'), _n('Network equipment', 'Network equipments', 2, 'archires'),
+                __('No'));
       }
       echo "<br>";
 
-      if ($view->fields["printer"]!=0) {
-         echo _n('Printer', 'Printers', 2)." : ".__('Yes');
+      if ($view->fields["printer"] !=0 ) {
+         printf(__('%1$s: %2$s'), _n('Printer', 'Printers', 2), __('Yes'));
       } else {
-         echo _n('Printer', 'Printers', 2)." : ".__('No');
+         printf(__('%1$s: %2$s'), _n('Printer', 'Printers', 2), __('No'));
       }
       echo "<br>";
 
       if ($view->fields["peripheral"]!=0) {
-         echo _n('Peripheral', 'Peripherals', 2)." : ".__('Yes');
+          printf(__('%1$s: %2$s'), _n('Peripheral', 'Peripherals', 2), __('Yes'));
       } else {
-         echo _n('Peripheral', 'Peripherals', 2)." : ".__('No');
+          printf(__('%1$s: %2$s'), _n('Peripheral', 'Peripherals', 2), __('No'));
       }
       echo "<br>";
 
-      if ($view->fields["phone"]!=0) {
-         echo _n('Phone', 'Phones', 2)." : ".__('Yes');
+      if ($view->fields["phone"] != 0) {
+          printf(__('%1$s: %2$s'), _n('Phone', 'Phones', 2), __('Yes'));
       } else {
-         echo _n('Phone', 'Phones', 2)." : ".__('No');
+          printf(__('%1$s: %2$s'), _n('Phone', 'Phones', 2), __('No'));
       }
       echo "</td>";
 
       echo "<td class='center'>";
-      if ($view->fields["display_ports"]!=0) {
-         echo __('Display sockets', 'archires')." : ".__('Yes');
+      if ($view->fields["display_ports"] != 0) {
+          printf(__('%1$s: %2$s'), __('Display sockets', 'archires'), __('Yes'));
       } else {
-         echo __('Display sockets', 'archires')." : ".__('No');
+          printf(__('%1$s: %2$s'), __('Display sockets', 'archires'), __('No'));
       }
       echo "<br>";
 
-      if ($view->fields["display_ip"]!=0) {
-         echo __('Display IP/Mask', 'archires')." : ".__('Yes');
+      if ($view->fields["display_ip"] != 0) {
+          printf(__('%1$s: %2$s'), __('Display IP/Mask', 'archires'), __('Yes'));
       } else {
-         echo __('Display IP/Mask', 'archires')." : ".__('No');
+          printf(__('%1$s: %2$s'), __('Display IP/Mask', 'archires'), __('No'));
       }
       echo "<br>";
 
-      if ($view->fields["display_type"]!=0) {
-         echo __('Display item types', 'archires')." : ".__('Yes');
+      if ($view->fields["display_type"] != 0) {
+          printf(__('%1$s: %2$s'), __('Display item types', 'archires'), __('Yes'));
       } else {
-         echo __('Display item types', 'archires')." : ".__('No');
+          printf(__('%1$s: %2$s'), __('Display item types', 'archires'), __('No'));
       }
       echo "<br>";
 
-      if ($view->fields["display_state"]!=0) {
-         echo __('Display item statuses', 'archires')." : ".__('Yes');
+      if ($view->fields["display_state"] != 0) {
+          printf(__('%1$s: %2$s'), __('Display item statuses', 'archires'), __('Yes'));
       } else {
-         echo __('Display item statuses', 'archires')." : ".__('No');
+          printf(__('%1$s: %2$s'), __('Display item statuses', 'archires'), __('No'));
       }
       echo "<br>";
 
-      if ($view->fields["display_location"]!=0) {
-         echo __('Display item locations', 'archires')." : ".__('Yes');
+      if ($view->fields["display_location"] != 0) {
+          printf(__('%1$s: %2$s'), __('Display item locations', 'archires'), __('Yes'));
       } else {
-         echo __('Display item locations', 'archires')." : ".__('No');
+          printf(__('%1$s: %2$s'), __('Display item locations', 'archires'), __('No'));
       }
       echo "<br>";
 
-      if ($view->fields["display_entity"]!=0) {
-         echo __('Display item entities', 'archires')." : ".__('Yes');
+      if ($view->fields["display_entity"] != 0) {
+          printf(__('%1$s: %2$s'), __('Display item entities', 'archires'), __('Yes'));
       } else {
-         echo __('Display item entities', 'archires')." : ".__('No');
+          printf(__('%1$s: %2$s'), __('Display item entities', 'archires'), __('No'));
       }
       echo "</td>";
 
-      //
-      echo "<td class='center'>".__('All')." : ";
-      echo __('Rendering engine', 'archires')." : ";
-      if ($view->fields["engine"]!=0) {
-         echo "Neato";
+      $engine = '';
+     if ($view->fields["engine"] != 0) {
+         $engine = "Neato";
       } else {
-         echo "Dot";
+         $engine = "Dot";
       }
+
+      echo "<td class='center'>". sprintf(__('%1$s: %2$s'), __('All'),
+                                          sprintf(__('%1$s %2$s'),
+                                                  __('Rendering engine', 'archires'), $engine));
       echo "<br>";
-      echo __('Image format', 'archires')." : ";
+      $format_graph = '';
       if ($view->fields["format"] == self::PLUGIN_ARCHIRES_JPEG_FORMAT) {
          $format_graph = "jpeg";
       } else if ($view->fields["format"] == self::PLUGIN_ARCHIRES_PNG_FORMAT) {
@@ -509,8 +512,7 @@ class PluginArchiresView extends CommonDBTM {
       } else if ($view->fields["format"] == self::PLUGIN_ARCHIRES_GIF_FORMAT) {
          $format_graph = "gif";
       }
-      echo $format_graph;
-
+      printf(__('%1$s: %2$s'), __('Image format', 'archires'), $format_graph);
       echo "</td></tr>";
       echo "</table>";
    }

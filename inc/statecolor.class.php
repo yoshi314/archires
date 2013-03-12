@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -129,7 +129,8 @@ class PluginArchiresStateColor extends CommonDBTM {
                $ID        = $ligne["id"];
                $states_id = $ligne["states_id"];
                $used[]    = $states_id;
-               if ($i % 2==0 && $number>1) {
+               if ((($i % 2) == 0)
+                   && ($number > 1)) {
                   echo "<tr class='tab_bg_1'>";
                }
                if ($number == 1) {
@@ -144,7 +145,7 @@ class PluginArchiresStateColor extends CommonDBTM {
                echo "</td>";
 
                $i++;
-               if (($i == $number) && ($number  % 2 !=0) && $number>1) {
+               if (($i == $number) && (($number % 2) != 0) && ($number > 1)) {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
                }
             }
@@ -171,7 +172,8 @@ class PluginArchiresStateColor extends CommonDBTM {
 
          if ($canupdate) {
             echo "<table class='tab_cadre' cellpadding='5'>";
-            echo "<tr><th colspan='3'>".__('Associate colors with items statuses', 'archires')."</th></tr>";
+            echo "<tr><th colspan='3'>".__('Associate colors with items statuses', 'archires').
+                 "</th></tr>";
             echo "<tr class='tab_bg_1'><td>";
             $this->dropdownState($used);
             echo "</td>";
@@ -235,12 +237,14 @@ class PluginArchiresStateColor extends CommonDBTM {
       $result_state = $DB->query($query_state);
       $number_state = $DB->numrows($result_state);
 
-      if ($number_state != 0 && $device["states_id"] > 0) {
+      if (($number_state != 0)
+          && ($device["states_id"] > 0)) {
          $color_state = $DB->result($result_state,0,"color");
          $graph ="<font color=\"$color_state\">".Dropdown::getDropdownName("glpi_states",
                                                                            $device["states_id"])
                 ."</font>";
-      } else if ($number_state == 0 && $device["states_id"] > 0) {
+      } else if (($number_state == 0)
+                 && ($device["states_id"] > 0)) {
          $graph = Dropdown::getDropdownName("glpi_states",$device["states_id"]);
       }
       return $graph;

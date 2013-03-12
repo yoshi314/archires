@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -70,7 +70,7 @@ class PluginArchiresQueryType extends CommonDBTM {
    function addType($querytype, $type, $itemtype, $plugin_archires_queries_id) {
       global $DB;
 
-      if ($type!='-1') {
+      if ($type != '-1') {
          if (!$this->getFromDBbyType($itemtype, $type, $querytype, $plugin_archires_queries_id)) {
             $this->add(array('itemtype'                   => $itemtype,
                              'type'                       => $type,
@@ -109,7 +109,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                        AND `itemtype` = '$val'";
       $result0 = $DB->query($query0);
       $query   = "";
-      if ($DB->numrows($result0)>0) {
+      if ($DB->numrows($result0) > 0) {
         $itemtable = getTableForItemType($val);
         $query     = "AND `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
                            IN (0 ";
@@ -177,17 +177,18 @@ class PluginArchiresQueryType extends CommonDBTM {
             }
             echo "</tr>";
 
-            while ($ligne= $DB->fetch_assoc($result)) {
+            while ($ligne = $DB->fetch_assoc($result)) {
                $ID = $ligne["id"];
 
-               if ($i % 2==0 && $number>1) {
+               if (($i % 2 == 0)
+                   && ($number > 1)) {
                   echo "<tr class='tab_bg_1'>";
                }
-               if ($number==1) {
+               if ($number == 1) {
                   echo "<tr class='tab_bg_1'>";
                }
 
-               $item      = new $ligne["itemtype"]();
+               $item = new $ligne["itemtype"]();
 
                echo "<td>".$item->getTypeName()."</td>";
                $class     = $ligne["itemtype"]."Type";
@@ -242,9 +243,10 @@ class PluginArchiresQueryType extends CommonDBTM {
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
 
-      if (!$withtemplate 
-            && plugin_archires_haveRight('archires', 'r')) {
-         switch ($item->getType()) {
+      if (!$withtemplate
+          && plugin_archires_haveRight('archires', 'r')) {
+
+          switch ($item->getType()) {
             case 'PluginArchiresApplianceQuery' :
             case 'PluginArchiresLocationQuery' :
             case 'PluginArchiresNetworkEquipmentQuery' :
@@ -255,5 +257,4 @@ class PluginArchiresQueryType extends CommonDBTM {
    }
 
 }
-
 ?>

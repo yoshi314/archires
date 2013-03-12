@@ -103,7 +103,8 @@ class PluginArchiresPrototype extends CommonDBTM {
          }
 
       } else {
-         if ($PluginArchiresView->fields["display_type"]!=0 && !empty($device["type"])) {
+         if (($PluginArchiresView->fields["display_type"] != 0)
+             && !empty($device["type"])) {
             $class     = $itemtype."Type";
             $typeclass = new $class();
             $typeclass->getFromDB($device["type"]);
@@ -146,7 +147,9 @@ class PluginArchiresPrototype extends CommonDBTM {
                                                                      $device["groups_id"])."</a>";
          }
 
-      } else if (!$device["users_id"] && !$device["groups_id"] && $device["contact"]) {
+      } else if (!$device["users_id"]
+                 && !$device["groups_id"]
+                 && $device["contact"]) {
          if ($generation) {
             $graph = "URL=\"".$url."\" tooltip=\"".$device["contact"]."\"";
          } else {
@@ -196,9 +199,10 @@ class PluginArchiresPrototype extends CommonDBTM {
       echo "<tr><th>".__('Graphviz name', 'archires')."</th>";
       echo "<th>".__('Associated picture', 'archires')."</th>";
       echo "<th>".__('Name of item', 'archires')."</th>";
-      echo "<th>".__('Type / IP', 'archires')."</th>";
+      echo "<th>".sprintf(__('%1$s / %2$s'), __('Type'), __('IP'))."</th>";
       echo "<th>".__('Status')."</th>";
-      echo "<th>".__('User / Group / Contact', 'archires')."</th></tr>";
+      echo "<th>".sprintf(__('%1$s / %2$s'), __('User'),
+                          sprintf(__('%1$s / %2$s'), __('Group'), __('Contact')))."</th></tr>";
 
       if ($type == 'PluginArchiresLocationQuery') {
          $devices = $PluginArchiresLocationQuery->Query($ID, $PluginArchiresView, true);
@@ -311,7 +315,7 @@ class PluginArchiresPrototype extends CommonDBTM {
                            __('Socket', 'archires')." ".$logical_number1."</td>";
                echo "<td class='center'><img src= \"../pics/socket.png\" alt='../pics/socket.png' />";
                echo "</td><td><a href='".$url_ports.$ID2."'>".$name2."</a> - ".
-                              __('Socket', 'archires')." ".$logical_number2."</td>";
+                               __('Socket', 'archires')." ".$logical_number2."</td>";
                if ($PluginArchiresView->fields["display_ip"]!=0) {
                   echo  "<td>".$ip2."</td>";
                } else {
@@ -422,14 +426,16 @@ class PluginArchiresPrototype extends CommonDBTM {
 
          } else if (!empty($networkinterfaces_id1)) {
             if ($PluginArchiresNetworkInterfaceColor->getFromDBbyNetworkInterface($networkinterfaces_id1)) {
-               $graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
+               $graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].",
+                                fontname=\"Verdana\", fontsize=\"5\"];\n";
             } else {
                $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
 
          } else {
             if ($PluginArchiresNetworkInterfaceColor->getFromDBbyNetworkInterface($networkinterfaces_id2)) {
-               $graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
+               $graph .= "edge [color=".$PluginArchiresNetworkInterfaceColor->fields["color"].",
+                                fontname=\"Verdana\", fontsize=\"5\"];\n";
             } else {
                $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
@@ -443,34 +449,35 @@ class PluginArchiresPrototype extends CommonDBTM {
 
          } else if (!empty($vlan1)) {
             if ($PluginArchiresVlanColor->getFromDBbyVlan($vlan1)) {
-               $graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
+               $graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].",
+                                fontname=\"Verdana\", fontsize=\"5\"];\n";
             } else {
                $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
 
          } else {
             if ($PluginArchiresVlanColor->getFromDBbyVlan($vlan2)) {
-               $graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].", fontname=\"Verdana\", fontsize=\"5\"];\n";
+               $graph .= "edge [color=".$PluginArchiresVlanColor->fields["color"].",
+                                fontname=\"Verdana\", fontsize=\"5\"];\n";
             } else {
                $graph .= "edge [color=black,arrowsize=1, fontname=\"Verdana\", fontsize=\"5\"];\n";
             }
          }
       }
       //Display Ports
-      if ($PluginArchiresView->fields["display_ports"]!=0
-          && $PluginArchiresView->fields["engine"]!=1) {
+      if (($PluginArchiresView->fields["display_ports"] != 0)
+          && ($PluginArchiresView->fields["engine"] != 1)) {
          $url_ports = $CFG_GLPI["root_doc"] . "/front/networkport.form.php?id=";
          $graph .= "\"".$device_unique_name1."\"";
          $graph .= " -- \"".$device_unique_name2."\"[label=";
          $graph .= "<<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\">";
          //display ip ports
-         if ($PluginArchiresView->fields["display_ip"]!=0) {
+         if ($PluginArchiresView->fields["display_ip"] != 0) {
             if (!empty($ip1)) {
                $graph .= "<tr><td>".$ip1;
-            }
-            if (!empty($ip1)&&!empty($netmask1)) {
-               $graph .= "/".$netmask1."</td></tr>";
-            } else if (!empty($ip1) && empty($netmask1)) {
+               if (!empty($netmask1)) {
+                  $graph = sprintf(__('%1$s / %2$s'), $graph, $netmask1);
+               }
                $graph .= "</td></tr>";
             }
          }
@@ -485,7 +492,7 @@ class PluginArchiresPrototype extends CommonDBTM {
          } else if ($PluginArchiresView->fields["display_ports"]==2) {
             $graph .= $name1;
             if ($_SESSION["glpiis_ids_visible"] || empty($name1)) {
-                $graph.= " (".$ID1.")";
+                $graph = sprintf(__('%1$s (%2$s)'), $graph, $ID1);
             }
          }
          $graph .= "</td></tr>";
@@ -507,19 +514,18 @@ class PluginArchiresPrototype extends CommonDBTM {
          } else if ($PluginArchiresView->fields["display_ports"]==2) {
             $graph .= $name2;
             if ($_SESSION["glpiis_ids_visible"] || empty($name2)) {
-               $graph.= " (".$ID2.")";
+               $graph = sprintf(__('%1$s (%2$s)'), $graph, $ID2);
             }
          }
          $graph .= "</td></tr>";
 
          //display ip ports
-         if ($PluginArchiresView->fields["display_ip"]!=0) {
+         if ($PluginArchiresView->fields["display_ip"] != 0) {
             if (!empty($ip2)) {
                $graph .= "<tr><td>".$ip2;
-            }
-            if (!empty($ip2) && !empty($netmask2)) {
-               $graph .= "/".$netmask2."</td></tr>";
-            } else if (!empty($ip2) && empty($netmask2)) {
+               if (!empty($netmask2)) {
+                  $graph = sprintf(__('%1$s / %2$s'), $graph, $netmask2);
+               }
                $graph .= "</td></tr>";
             }
          }
@@ -675,7 +681,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
    function generateGraphviz($graph, $format, $PluginArchiresView) {
 
-      if ($PluginArchiresView->fields["engine"]!=0) {
+      if ($PluginArchiresView->fields["engine"] != 0) {
          $engine_archires = "neato";
       } else {
          $engine_archires = "dot";

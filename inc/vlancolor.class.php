@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -68,7 +68,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
    function addVlanColor($vlan,$color) {
       global $DB;
 
-      if ($vlan!='-1') {
+      if ($vlan != '-1') {
          if ($this->GetfromDBbyVlan($vlan)) {
             $this->update(array('id'    => $this->fields['id'],
                                 'color' => $color));
@@ -127,10 +127,11 @@ class PluginArchiresVlanColor extends CommonDBTM {
             echo "</tr>";
 
             while($ligne= $DB->fetch_assoc($result)) {
-               $ID  =$ligne["id"];
+               $ID       = $ligne["id"];
                $vlans_id = $ligne["vlans_id"];
-               $used[] = $vlans_id;
-               if ($i % 2==0 && $number>1) {
+               $used[]   = $vlans_id;
+               if ((($i % 2) == 0)
+                   && ($number > 1)) {
                   echo "<tr class='tab_bg_1'>";
                }
                if ($number == 1) {
@@ -145,7 +146,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
                echo "</td>";
 
                $i++;
-               if (($i == $number) && ($number  % 2 !=0) && $number>1) {
+               if (($i == $number) && (($number % 2) != 0) && ($number > 1)) {
                   echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
                }
             }
@@ -158,12 +159,11 @@ class PluginArchiresVlanColor extends CommonDBTM {
                   echo "<td colspan='4' class='center'>";
 
                echo "<a onclick= \"if (markCheckboxes ('massiveaction_form_vlan_color')) ".
-                     "return false;\" href='#'>".
-                     __('Select all')."</a>";
+                     "return false;\" href='#'>".__('Select all')."</a>";
                echo " - <a onclick= \"if (unMarkCheckboxes ('massiveaction_form_vlan_color')) ".
-                     "return false;\" href='#'>".
-                     __('Deselect all')."</a> ";
-               Html::closeArrowMassives(array('delete_color_vlan' => _sx('button', 'Delete permanently')));
+                     "return false;\" href='#'>".__('Deselect all')."</a> ";
+               Html::closeArrowMassives(array('delete_color_vlan' => _sx('button',
+                                                                         'Delete permanently')));
             } else {
                echo "</table>";
             }
@@ -211,7 +211,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
       $result = $DB->query($query);
       $number = $DB->numrows($result);
 
-      if ($number !="0") {
+      if ($number != "0") {
          echo "<select name='vlans_id'>\n";
          echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
          echo "<option value='-1'>".__('All VLANs', 'archires')."</option>\n";
