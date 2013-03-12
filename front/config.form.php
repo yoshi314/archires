@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -28,8 +28,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   define('GLPI_ROOT', '../../..');
-   include (GLPI_ROOT . "/inc/includes.php");
+   include ("../../../inc/includes.php");
 }
 
 $plugin = new Plugin();
@@ -113,15 +112,14 @@ if ($plugin->isActivated("archires")) {
       $PluginArchiresVlanColor->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item_color"] as $key => $val) {
-         if ($val==1) {
+         if ($val == 1) {
             $PluginArchiresVlanColor->delete(array('id' => $key));
          }
       }
       Html::back();
 
    } else {
-      Html::header(PluginArchiresArchires::getTypeName(), '', "plugins",
-                   "archires", "summary");
+      Html::header(PluginArchiresArchires::getTypeName(), '', "plugins", "archires", "summary");
 
       $PluginArchiresImageItem->showConfigForm();
 

@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -29,8 +29,7 @@
 
 // Direct access to file
 if (strpos($_SERVER['PHP_SELF'],"dropdownValue.php")) {
-   define('GLPI_ROOT', '../../..');
-   include (GLPI_ROOT."/inc/includes.php");
+   include ("../../../inc/includes.php");
    header("Content-Type: text/html; charset=UTF-8");
    Html::header_nocache();
 }
@@ -76,7 +75,8 @@ $result = $DB->query($query);
 
 echo "<select id='dropdown_".$_POST["myname"].$_POST["rand"]."' name=\"".$_POST['myname']."\">";
 
-if ($_POST['searchText'] != $CFG_GLPI["ajax_wildcard"] && $DB->numrows($result)==$NBMAX) {
+if (($_POST['searchText'] != $CFG_GLPI["ajax_wildcard"])
+    && ($DB->numrows($result) == $NBMAX)) {
    echo "<option value='0\'>--".__('Limited view')."--</option>";
 } else {
    echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>";
@@ -86,20 +86,20 @@ if ($number != 0) {
    echo "<option value=\"".$_POST['itemtype'].";-1\">".__('All types', 'archires')."</option>";
 }
 $output = Dropdown::getDropdownName($_POST['table'],$_POST['value']);
-if (!empty($output)&&$output!="&nbsp;") {
+if (!empty($output) && ($output != "&nbsp;")) {
    echo "<option selected value='".$_POST['value']."'>".$output."</option>";
 }
 
 if ($DB->numrows($result)) {
    while ($data =$DB->fetch_array($result)) {
-      $output = $data[$field];
-      $ID = $data['id'];
+      $output     = $data[$field];
+      $ID         = $data['id'];
       $addcomment = "";
       if (isset($data["comment"])) {
          $addcomment = " - ".$data["comment"];
       }
-      if (empty($output)) {
-         $output = "($ID)";
+      if ($_SESSION['glpiis_ids_visible'] || empty($output)) {
+         $output = sprintf(__('%1$s (%2$s)'), $output, $ID);
       }
 
       echo "<option value=\"".$_POST['itemtype'].";$ID\" title=\"$output$addcomment\">".

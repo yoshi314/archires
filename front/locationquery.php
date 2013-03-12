@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -27,15 +27,14 @@
  --------------------------------------------------------------------------
 */
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT."/inc/includes.php");
+include ("../../../inc/includes.php");
 
 Html::header(PluginArchiresArchires::getTypeName()." ".PluginArchiresLocationQuery::getTypeName(),
              '',"plugins","archires","location");
 
-$PluginArchiresLocationQuery=new PluginArchiresLocationQuery();
+$PluginArchiresLocationQuery = new PluginArchiresLocationQuery();
 
-if ($PluginArchiresLocationQuery->canView() 
+if ($PluginArchiresLocationQuery->canView()
       || Session::haveRight("config","w")) {
    Search::show("PluginArchiresLocationQuery");
 

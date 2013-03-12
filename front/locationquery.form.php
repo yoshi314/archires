@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -27,8 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT."/inc/includes.php");
+include ("../../../inc/includes.php");
 
 if (!isset($_GET["id"])) {
    $_GET["id"] = "";
@@ -100,7 +99,6 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else {
-
    $PluginArchiresLocationQuery->checkGlobal("r");
 
    Html::header(PluginArchiresArchires::getTypeName()." ".PluginArchiresLocationQuery::getTypeName(),

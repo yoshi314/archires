@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -27,8 +27,7 @@
  --------------------------------------------------------------------------
 */
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT."/inc/includes.php");
+include ("../../../inc/includes.php");
 
 if (!isset($_GET["id"])) {
    $_GET["id"] = "";
@@ -53,7 +52,9 @@ if (isset($_GET["displayview"])) {
    $object_view = $obj->fields["plugin_archires_views_id"];
    $entities_id = $obj->fields["entities_id"];
 
-   if ($PluginArchiresView->getFromDB($object_view) && Session::haveAccessToEntity($entities_id)) {
+   if ($PluginArchiresView->getFromDB($object_view)
+       && Session::haveAccessToEntity($entities_id)) {
+
       if (!isset($_GET["plugin_archires_views_id"])) {
         $plugin_archires_views_id = $object_view;
       } else {

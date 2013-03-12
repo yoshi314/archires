@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  Archires plugin for GLPI
- Copyright (C) 2003-2011 by the archires Development Team.
+ Copyright (C) 2003-2013 by the archires Development Team.
 
  https://forge.indepnet.net/projects/archires
  -------------------------------------------------------------------------
@@ -27,8 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT."/inc/includes.php");
+include ("../../../inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
@@ -42,7 +41,7 @@ if (isset($_POST["typetable"])) {
    $rand     = mt_rand();
 
    $use_ajax = false;
-   if ($CFG_GLPI["use_ajax"] && countElementsInTable($table)>$CFG_GLPI["ajax_limit_count"]) {
+   if ($CFG_GLPI["use_ajax"] && (countElementsInTable($table) > $CFG_GLPI["ajax_limit_count"])) {
       $use_ajax=true;
    }
 
@@ -63,7 +62,7 @@ if (isset($_POST["typetable"])) {
               "</option></select>";
    Ajax::dropdown($use_ajax,"/plugins/archires/ajax/dropdownValue.php", $params, $default, $rand);
 
-   if (isset($_POST['value']) && $_POST['value'] >0) {
+   if (isset($_POST['value']) && ($_POST['value'] > 0)) {
       $params['searchText'] = $CFG_GLPI["ajax_wildcard"];
       echo "<script type='text/javascript' >\n";
       echo "document.getElementById('search_$rand').value='".$CFG_GLPI["ajax_wildcard"]."';";
