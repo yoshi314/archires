@@ -168,7 +168,7 @@ class PluginArchiresView extends CommonDBTM {
    }
 
 
-	/*function dropdownView($obj,$default) {
+   function dropdownView($obj,$default) {
       global $DB;
 
       if (isset($obj->fields["id"])) {
@@ -183,7 +183,7 @@ class PluginArchiresView extends CommonDBTM {
       echo "<select name='plugin_archires_views_id' size='1'> ";
       echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
       if ($result = $DB->query($query)) {
-         while ($ligne= mysql_fetch_array($result)) {
+         while ($ligne= $DB->fetch_array($result)) {
             $view_name = $ligne["name"];
             $view_id   = $ligne["id"];
             echo "<option value='".$view_id."' ".($view_id=="".$default.""?" selected ":"").">".
@@ -191,7 +191,7 @@ class PluginArchiresView extends CommonDBTM {
          }
       }
       echo "</select>";
-   }*/
+   }
 
 
    static function linkToAllViews($item) {
@@ -223,8 +223,9 @@ class PluginArchiresView extends CommonDBTM {
                                              $this->dropdownObject($obj));
          echo "</td>";
 
+         $vue = $this->dropdownView(-1, $plugin_archires_views_id);
          echo "<td class='center'>".sprintf(__('%1$s: %2$s'), self::getTypeName(2),
-                                            $this->dropdownView(-1, $plugin_archires_views_id));
+                                            $vue);
          echo "</td>";
 
          echo "<td>";

@@ -267,7 +267,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       foreach ($types as $key => $val) {
          $itemtable = getTableForItemType($val);
          $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`instantiation_type`,
-                      `glpi_ipaddresses`.`name` AS ip, `ipn`.`netmask`, `np`.`name` AS namep";
+                      `glpi_ipaddresses`.`name` AS ip, `glpi_ipnetworks`.`netmask`,
+                      `np`.`name` AS namep";
 
          $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
                           `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
@@ -275,26 +276,34 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                           `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`,
                           `$itemtable`.`states_id`, `$itemtable`.`entities_id`,
                           `$itemtable`.`locations_id`
-                   FROM `glpi_networkports` np,
-                        `$itemtable`,
-                        `glpi_ipnetworks` AS ipn
+                   FROM `glpi_networkports` np
+                   LEFT JOIN `glpi_networkportethernets`
+                        ON `glpi_networkportethernets`.`networkports_id` = `np`.`id`
                    LEFT JOIN `glpi_networknames`
                         ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
-                            AND `glpi_networkports`.`id` = `glpi_networknames`.`items_id`)
+                            AND `np`.`id` = `glpi_networknames`.`items_id`)
                    LEFT JOIN `glpi_ipaddresses`
                         ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
                             AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
-                    WHERE `glpi_networkports`.`instantiation_type` = 'NetworkPortEthernet' ";
+                   LEFT JOIN `glpi_ipaddresses_ipnetworks`
+                        ON `glpi_ipaddresses_ipnetworks`.`ipaddresses_id` = `glpi_ipaddresses`.`id`
+                   LEFT JOIN `glpi_ipnetworks`
+                        ON `glpi_ipnetworks`.`id` = `glpi_ipaddresses_ipnetworks`.`ipnetworks_id`
+                   LEFT JOIN `$itemtable`
+                        ON (`np`.`items_id` = `$itemtable`.`id`
+                            AND `$itemtable`.`is_deleted` = '0'
+                            AND `$itemtable`.`is_template` = '0'".
+                            getEntitiesRestrictRequest(" AND",$itemtable).")
+
+                  ";
 
          if ($this->fields["vlans_id"] > "0") {
             $query .= ", `glpi_networkports_vlans` nv";
          }
-         $query .= ", `glpi_locations` lc
-                    WHERE `np`.`itemtype` = '$val'
-                          AND `np`.`items_id` = `$itemtable`.`id`
-                          AND `$itemtable`.`is_deleted` = '0'
-                          AND `$itemtable`.`is_template` = '0'".
-                          getEntitiesRestrictRequest(" AND",$itemtable);
+         $query .= "LEFT JOIN `glpi_locations` lc
+                        ON `lc`.`id` = `$itemtable`.`locations_id`
+                    WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
+                          AND `np`.`itemtype` = '$val'";
 
          if ($this->fields["vlans_id"] > "0") {
             $query .= " AND `nv`.`networkports_id` = `np`.`id`
@@ -359,7 +368,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
                $ports[$data["id"]]["items_id"]             = $data["items_id"];
                $ports[$data["id"]]["logical_number"]       = $data["logical_number"];
-               $ports[$data["id"]]["networkinterfaces_id"] = $data["networkinterfaces_id"];
+               $ports[$data["id"]]["instantiation_type"]   = $data["instantiation_type"];
                $ports[$data["id"]]["ip"]                   = $data["ip"];
                $ports[$data["id"]]["netmask"]              = $data["netmask"];
                $ports[$data["id"]]["namep"]                = $data["namep"];
