@@ -35,7 +35,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
 
    static function getTypeName($nb=0) {
-      return __('Network equipment', 'archires');
+      return _n('Network equipment', 'Network equipments', 1, 'archires');
    }
 
 
@@ -69,7 +69,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
       $tab[2]['table']           = 'glpi_networkequipments';
       $tab[2]['field']           = 'name';
-      $tab[2]['name']            = __('Network equipment', 'archires');
+      $tab[2]['name']            = _n('Network equipment', 'Network equipments', 1, 'archires');
       $tab[2]['datatype']        = 'dropdown';
 
       $tab[3]['table']           = 'glpi_networks';
@@ -152,7 +152,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Network equipment')."</td><td>";
+      echo "<td>"._n('Network equipment', 'Network equipments', 1, 'archires')."</td><td>";
       NetworkEquipment::dropdown(array('name'   => "networkequipments_id",
                                        'value'  => $this->fields["networkequipments_id"],
                                        'entity' => $this->fields["entities_id"]));
@@ -169,8 +169,9 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       echo "</td>";
       echo "<td>".PluginArchiresView::getTypeName(1)."</td><td>";
       //View
-      PluginArchiresView::dropdown(array('name'  => "plugin_archires_views_id",
-                                         'value' => $this->fields["plugin_archires_views_id"]));
+      Dropdown::show('PluginArchiresView',
+                     array('name'  => "plugin_archires_views_id",
+                           'value' => $this->fields["plugin_archires_views_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";

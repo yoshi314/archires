@@ -182,8 +182,9 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       echo "</td>";
       echo "<td>".PluginArchiresView::getTypeName(1)."</td><td>";
       //View
-      PluginArchiresView::dropdown(array('name'  => "plugin_archires_views_id",
-                                         'value' => $this->fields["plugin_archires_views_id"]));
+      Dropdown::show('PluginArchiresView',
+                     array('name'  => "plugin_archires_views_id",
+                           'value' => $this->fields["plugin_archires_views_id"]));
       echo "</td></tr>";
 
       $this->showFormButtons($options);
@@ -213,7 +214,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
              __('All root locations', 'archires')."</option>";
 
       if ($result0 = $DB->query($query0)) {
-         while ($ligne0 = mysql_fetch_array($result0)) {
+         while ($ligne0 = $DB->fetch_array($result0)) {
             echo "<optgroup label='".Dropdown::getDropdownName("glpi_entities",
                                                                $ligne0["entities_id"])."'>";
 
@@ -223,7 +224,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                       ORDER BY `completename` ASC";
 
             if ($result = $DB->query($query)) {
-               while ($ligne = mysql_fetch_array($result)) {
+               while ($ligne = $DB->fetch_array($result)) {
                   $location    = $ligne["completename"];
                   $location_id = $ligne["id"];
                   echo "<option value='".$location_id."' ".

@@ -213,7 +213,7 @@ class PluginArchiresImageItem extends CommonDBTM {
                 WHERE `itemtype` = '$itemtype'";
 
       if ($result = $DB->query($query)) {
-         while ($ligne= mysql_fetch_array($result)) {
+         while ($ligne= $DB->fetch_array($result)) {
             $config_img = $ligne["img"];
             if ($type == $ligne["type"]) {
                $image_name = $path."pics/$config_img";

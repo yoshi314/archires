@@ -158,7 +158,7 @@ class PluginArchiresView extends CommonDBTM {
       if ($result = $DB->query($query)) {
          if ($DB->numrows($result) > 0) {
             echo "<select name='plugin_archires_queries_id' size='1'> ";
-            while ($ligne = mysql_fetch_array($result)) {
+            while ($ligne = $DB->fetch_array($result)) {
                echo "<option value='".$ligne["id"]."' ".(($ligne["id"] == "".$ID."")?" selected ":"").">".
                      $ligne["name"]."</option>";
             }

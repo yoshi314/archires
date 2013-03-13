@@ -215,7 +215,7 @@ class PluginArchiresStateColor extends CommonDBTM {
          echo "<select name='states_id'>\n";
          echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
          echo "<option value='-1'>".__('All statuses', 'archires')."</option>\n";
-         while ($data= mysql_fetch_array($result)) {
+         while ($data= $DB->fetch_array($result)) {
             $output = $data["name"];
             if (Toolbox::strlen($output) > $limit) {
                $output = Toolbox::substr($output,0,$limit)."&hellip;";

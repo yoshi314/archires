@@ -88,6 +88,12 @@ function plugin_archires_install() {
       if (!TableExists("glpi_plugin_archires_views")) {
          plugin_archires_updateTo180();
       }
+
+      // update to 2.1.0
+      if (TableExists("glpi_plugin_archires_appliancesqueries")
+          && FieldExists("glpi_plugin_archires_appliancesqueries", "appliances_id")) {
+         plugin_archires_updateTo210();
+      }
    }
 
    if ($update) {
@@ -633,6 +639,18 @@ function plugin_archires_updateTo180() {
    $DB->queryOrDie($query, __('1.8.0 delete glpi_displaypreferences (itemtype) ', 'archires')
                               .$DB->error());
 
+
+   $migration->executeMigration();
+}
+
+
+function plugin_archires_updateTo210() {
+
+   $migration = new Migration(210);
+
+   $migration->changeField("glpi_plugin_archires_appliancequeries", "appliances_id",
+                           "plugin_appliances_appliances_id",
+                           'integer', array('comment' => 'RELATION to glpi_plugin_appliances (id)'));
 
    $migration->executeMigration();
 }

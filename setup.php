@@ -49,7 +49,7 @@ function plugin_init_archires() {
                   = '/plugins/archires/front/archires.php';
          //views
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['title']
-                  = _n('View', 'Viewes', 2, 'archires');
+                  = _n('View', 'Views', 2);
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['page']
                   = '/plugins/archires/front/view.php';
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['search']
@@ -63,20 +63,20 @@ function plugin_init_archires() {
                   = '/plugins/archires/front/locationquery.php';
          //networkequipments
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['title']
-                  = __('Network Equipment');
+                  = _n('Network equipment', 'Network equipments', 1, 'archires');
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['page']
                   = '/plugins/archires/front/networkequipmentquery.php';
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['search']
                   = '/plugins/archires/front/networkequipmentquery.php';
          //appliances
-         
+
          if (class_exists('PluginAppliancesAppliance')) {
          $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['title']
                   = PluginAppliancesAppliance::getTypeName(1);
 
             $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['page']
                   = '/plugins/archires/front/appliancequery.php';
-         
+
             $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['search']
                   = '/plugins/archires/front/appliancequery.php';
          }
@@ -132,7 +132,7 @@ function plugin_version_archires() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_archires_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.84','lt') 
+   if (version_compare(GLPI_VERSION,'0.84','lt')
          || version_compare(GLPI_VERSION,'0.84.1','ge')) {
       _e('This plugin requires GLPI >= 0.84', 'archires');
       return false;

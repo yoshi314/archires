@@ -215,7 +215,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
          echo "<select name='vlans_id'>\n";
          echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
          echo "<option value='-1'>".__('All VLANs', 'archires')."</option>\n";
-         while ($data= mysql_fetch_array($result)) {
+         while ($data= $DB->fetch_array($result)) {
             $output = $data["name"];
             if (Toolbox::strlen($output) > $limit) {
                $output = Toolbox::substr($output,0,$limit)."&hellip;";

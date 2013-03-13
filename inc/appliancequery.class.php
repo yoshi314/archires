@@ -153,8 +153,8 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".PluginAppliancesAppliance::getTypeName(1)."</td><td>";
-      PluginAppliancesAppliance::dropdown(array('name'   => "appliances_id",
-                                                'value'  => $this->fields["appliances_id"],
+      Dropdown::show('PluginAppliancesAppliance',array('name'   => "appliances_id",
+                                                'value'  => $this->fields["plugin_appliances_appliances_id"],
                                                 'entity' => $this->fields["entities_id"]));
       echo "</td>";
       echo "<td>".__('VLAN')."</td><td>";
@@ -168,8 +168,9 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       echo "</td>";
       echo "<td>".PluginArchiresView::getTypeName(1)."</td><td>";
       //View
-      PluginArchiresView::dropdown(array('name'  => "plugin_archires_views_id",
-                                         'value' => $this->fields["plugin_archires_views_id"]));
+      Dropdown::show('PluginArchiresView',
+                     array('name'  => "plugin_archires_views_id",
+                           'value' => $this->fields["plugin_archires_views_id"]));
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'><td>".__('State')."</td><td colspan='3'>";

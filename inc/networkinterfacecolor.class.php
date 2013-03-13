@@ -123,7 +123,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             }
             echo "</tr>";
 
-            while ($ligne= mysql_fetch_array($result)) {
+            while ($ligne= $DB->fetch_array($result)) {
                $ID                   = $ligne["id"];
                $networkinterfaces_id = $ligne["networkinterfaces_id"];
                $used[]               = $networkinterfaces_id;
@@ -219,7 +219,7 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
       if ($number >0) {
          echo "<select name='networkinterfaces_id'>\n";
          echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
-         while ($data= mysql_fetch_array($result)) {
+         while ($data= $DB->fetch_array($result)) {
             $output = $data["name"];
             if (Toolbox::strlen($output)>$limit) {
                $output = Toolbox::substr($output, 0, $limit)."&hellip;";
