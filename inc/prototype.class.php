@@ -282,7 +282,7 @@ class PluginArchiresPrototype extends CommonDBTM {
             $logical_number1        = $ports[$wire["networkports_id_1"]]["logical_number"];
             $name1                  = $ports[$wire["networkports_id_1"]]["namep"];
             $ID1                    = $ports[$wire["networkports_id_1"]]["idp"];
-            $networkinterfaces_id1  = $ports[$wire["networkports_id_1"]]["networkinterfaces_id"];
+            $networkinterfaces_id1  = $ports[$wire["networkports_id_1"]]["instantiation_type"];
             $ip1                    = $ports[$wire["networkports_id_1"]]["ip"];
             $device_unique_name1    = $itemtype1 . "_" . $items_id1 . "_";
             $device_unique_name1   .= $devices[$itemtype1][$items_id1]["name"];
@@ -292,7 +292,7 @@ class PluginArchiresPrototype extends CommonDBTM {
             $logical_number2        = $ports[$wire["networkports_id_2"]]["logical_number"];
             $name2                  = $ports[$wire["networkports_id_2"]]["namep"];
             $ID2                    = $ports[$wire["networkports_id_2"]]["idp"];
-            $networkinterfaces_id2  = $ports[$wire["networkports_id_2"]]["networkinterfaces_id"];
+            $networkinterfaces_id2  = $ports[$wire["networkports_id_2"]]["instantiation_type"];
             $ip2                    = $ports[$wire["networkports_id_2"]]["ip"];
             $device_unique_name2    = $itemtype2 . "_" . $items_id2 . "_";
             $device_unique_name2   .= $devices[$itemtype2][$items_id2]["name"];
@@ -401,7 +401,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $logical_number1        = $ports[$wire["networkports_id_1"]]["logical_number"];
       $name1                  = $ports[$wire["networkports_id_1"]]["namep"];
       $ID1                    = $ports[$wire["networkports_id_1"]]["idp"];
-      $networkinterfaces_id1  = $ports[$wire["networkports_id_1"]]["networkinterfaces_id"];
+      $networkinterfaces_id1  = $ports[$wire["networkports_id_1"]]["instantiation_type"];
       $ip1                    = $ports[$wire["networkports_id_1"]]["ip"];
       $netmask1               = $ports[$wire["networkports_id_2"]]["netmask"];
       $device_unique_name1    = $itemtype1 . "_" . $items_id1 . "_";
@@ -412,7 +412,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       $logical_number2        = $ports[$wire["networkports_id_2"]]["logical_number"];
       $name2                  = $ports[$wire["networkports_id_2"]]["namep"];
       $ID2                    = $ports[$wire["networkports_id_2"]]["idp"];
-      $networkinterfaces_id2  = $ports[$wire["networkports_id_2"]]["networkinterfaces_id"];
+      $networkinterfaces_id2  = $ports[$wire["networkports_id_2"]]["instantiation_type"];
       $ip2                    = $ports[$wire["networkports_id_2"]]["ip"];
       $netmask2               = $ports[$wire["networkports_id_2"]]["netmask"];
       $device_unique_name2    = $itemtype2 . "_" . $items_id2 . "_";
