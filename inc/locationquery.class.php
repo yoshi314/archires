@@ -84,12 +84,12 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       $tab[5]['table']           = 'glpi_states';
       $tab[5]['field']           = 'name';
-      $tab[5]['name']            = _('State');
+      $tab[5]['name']            = _n('State', 'States', 1);
       $tab[5]['datatype']        = 'dropdown';
 
       $tab[6]['table']           = 'glpi_groups';
       $tab[6]['field']           = 'completename';
-      $tab[6]['name']            = _('Group');
+      $tab[6]['name']            = _n('Group', 'Groups', 1);
       $tab[6]['datatype']        = 'dropdown';
 
       $tab[7]['table']           = 'glpi_vlans';

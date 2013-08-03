@@ -87,7 +87,7 @@ class PluginArchiresView extends CommonDBTM {
 
       $tab[5]['table']           = $this->getTable();
       $tab[5]['field']           = 'peripheral';
-      $tab[5]['name']            = _n('Peripheral', 'Peripherals', 2);
+      $tab[5]['name']            = _n('Device', 'Devices', 2);
       $tab[5]['datatype']        = 'bool';
 
       $tab[6]['table']           = $this->getTable();
@@ -219,19 +219,18 @@ class PluginArchiresView extends CommonDBTM {
          echo "<table class='tab_cadre' cellpadding='5'>";
          echo "<tr class='tab_bg_1'>";
 
-         echo "<td class='center'>". sprintf(__('%1$s: %2$s'), __('Display', 'archires'),
-                                             $this->dropdownObject($obj));
+         echo "<td class='center'>".__('Display', 'archires');
+         $this->dropdownObject($obj);
          echo "</td>";
 
-         $vue = $this->dropdownView(-1, $plugin_archires_views_id);
-         echo "<td class='center'>".sprintf(__('%1$s: %2$s'), self::getTypeName(2),
-                                            $vue);
+         echo "<td class='center'>".self::getTypeName(2);
+         $this->dropdownView(-1, $plugin_archires_views_id);
          echo "</td>";
 
          echo "<td>";
          echo "<input type='hidden' name='querytype' value=\"".$querytype."\"> ";
          echo "<input type='submit' class='submit'  name='displayview' value=\"".
-                _sx('button', 'Add')."\"> ";
+                _sx('button', 'Post')."\"> ";
          echo "</td>";
          echo "</tr>";
          echo "</table>";
@@ -273,7 +272,7 @@ class PluginArchiresView extends CommonDBTM {
       echo "<td>";
       Dropdown::showYesNo("printer",$this->fields["printer"]);
       echo "</td>";
-      echo "<td>"._n('Peripheral', 'Peripherals', 2)."</td>";
+      echo "<td>"._n('Device', 'Devices', 2)."</td>";
       echo "<td>";
       Dropdown::showYesNo("peripheral",$this->fields["peripheral"]);
       echo "</td></tr>";
@@ -438,9 +437,9 @@ class PluginArchiresView extends CommonDBTM {
       echo "<br>";
 
       if ($view->fields["peripheral"]!=0) {
-          printf(__('%1$s: %2$s'), _n('Peripheral', 'Peripherals', 2), __('Yes'));
+          printf(__('%1$s: %2$s'), _n('Device', 'Devices', 2), __('Yes'));
       } else {
-          printf(__('%1$s: %2$s'), _n('Peripheral', 'Peripherals', 2), __('No'));
+          printf(__('%1$s: %2$s'), _n('Device', 'Devices', 2), __('No'));
       }
       echo "<br>";
 
