@@ -35,7 +35,7 @@ function plugin_archires_install() {
 
 
    if (!TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
-      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/empty-1.8.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/empty-2.1.0.sql");
 
    } else {
       $update = true;
@@ -90,8 +90,8 @@ function plugin_archires_install() {
       }
 
       // update to 2.1.0
-      if (TableExists("glpi_plugin_archires_appliancesqueries")
-          && FieldExists("glpi_plugin_archires_appliancesqueries", "appliances_id")) {
+      if (TableExists("glpi_plugin_archires_appliancequeries")
+          && !FieldExists("glpi_plugin_archires_appliancequeries", "plugin_appliances_appliances_id")) {
          plugin_archires_updateTo210();
       }
    }
