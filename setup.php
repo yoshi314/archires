@@ -133,7 +133,7 @@ function plugin_version_archires() {
 function plugin_archires_check_prerequisites() {
 
    if (version_compare(GLPI_VERSION,'0.84','lt')
-         || version_compare(GLPI_VERSION,'0.84.1','ge')) {
+         || version_compare(GLPI_VERSION,'0.85','ge')) {
       _e('This plugin requires GLPI >= 0.84', 'archires');
       return false;
    }
