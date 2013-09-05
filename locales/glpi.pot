@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-13 13:23+0100\n"
+"POT-Creation-Date: 2013-09-05 17:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,79 +17,79 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:155
+#: hook.php:161
 msgid "1.4 add glpi_plugin_archires_color "
 msgstr ""
 
-#: hook.php:168
+#: hook.php:174
 msgid "1.4 add glpi_plugin_archires_profiles "
 msgstr ""
 
-#: hook.php:176
+#: hook.php:182
 msgid "1.4 insert into glpi_plugin_archires_profiles "
 msgstr ""
 
-#: hook.php:199 hook.php:205
+#: hook.php:205 hook.php:211
 msgid "1.5 insert into glpi_plugin_archires_profiles "
 msgstr ""
 
-#: hook.php:220
+#: hook.php:226
 msgid "1.5 create glpi_plugin_archires_color_state "
 msgstr ""
 
-#: hook.php:240
+#: hook.php:246
 msgid "1.5 create glpi_plugin_archires_query_location "
 msgstr ""
 
-#: hook.php:259
+#: hook.php:265
 msgid "1.5 create glpi_plugin_archires_query_switch "
 msgstr ""
 
-#: hook.php:278
+#: hook.php:284
 msgid "1.5 create glpi_plugin_archires_query_applicatifs "
 msgstr ""
 
-#: hook.php:290
+#: hook.php:296
 msgid "1.5 create glpi_plugin_archires_query_type "
 msgstr ""
 
-#: hook.php:315
+#: hook.php:321
 msgid "1.5 create glpi_plugin_archires_config "
 msgstr ""
 
-#: hook.php:324
+#: hook.php:330
 msgid "1.5 insert into glpi_plugin_archires_config "
 msgstr ""
 
-#: hook.php:350
+#: hook.php:356
 msgid "1.5 insert into glpi_displaypreferences "
 msgstr ""
 
-#: hook.php:387
+#: hook.php:393
 msgid "1.7.0 create glpi_plugin_archires_color_vlan "
 msgstr ""
 
-#: hook.php:564 hook.php:570 hook.php:576
+#: hook.php:570 hook.php:576 hook.php:582
 msgid "1.8.0 update glpi_plugin_archires_querytypes (querytype) "
 msgstr ""
 
-#: hook.php:621 hook.php:627 hook.php:633
+#: hook.php:627 hook.php:633 hook.php:639
 msgid "1.8.0 delete glpi_displaypreferences (itemtype) "
 msgstr ""
 
-#: hook.php:751 inc/locationquery.class.php:213
+#: hook.php:769 inc/locationquery.class.php:214
 msgid "All root locations"
 msgstr ""
 
-#: hook.php:780 inc/view.class.php:300
+#: hook.php:798 inc/view.class.php:300
 msgid "See numbers"
 msgstr ""
 
-#: hook.php:782 inc/view.class.php:305
+#: hook.php:800 inc/view.class.php:305
 msgid "See names"
 msgstr ""
 
-#: hook.php:806 inc/networkinterfacecolor.class.php:118
+#: hook.php:824 inc/networkinterfacecolor.class.php:118
 #: inc/networkinterfacecolor.class.php:121 inc/view.class.php:376
 msgid "Type of network"
 msgstr ""
@@ -123,21 +123,6 @@ msgstr ""
 
 #: front/config.form.php:139
 msgid "Please activate the plugin"
-msgstr ""
-
-#: inc/appliancequery.class.php:82 inc/locationquery.class.php:87
-#: inc/networkequipmentquery.class.php:82
-msgid "State"
-msgstr ""
-
-#: inc/appliancequery.class.php:87 inc/locationquery.class.php:92
-#: inc/networkequipmentquery.class.php:87
-msgid "Group"
-msgstr ""
-
-#: inc/appliancequery.class.php:92 inc/locationquery.class.php:97
-#: inc/networkequipmentquery.class.php:92
-msgid "VLAN"
 msgstr ""
 
 #: inc/appliancequery.class.php:118 inc/locationquery.class.php:123

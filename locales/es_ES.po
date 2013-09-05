@@ -1,95 +1,95 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: GLPI Project - archires plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-13 10:12+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2013-09-05 17:26+0200\n"
+"PO-Revision-Date: 2013-09-05 15:25+0000\n"
+"Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
+"Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/glpi-project-archires-plugin/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: es_ES\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: hook.php:155
+#: hook.php:161
 msgid "1.4 add glpi_plugin_archires_color "
 msgstr ""
 
-#: hook.php:168
+#: hook.php:174
 msgid "1.4 add glpi_plugin_archires_profiles "
 msgstr ""
 
-#: hook.php:176
+#: hook.php:182
 msgid "1.4 insert into glpi_plugin_archires_profiles "
 msgstr ""
 
-#: hook.php:199 hook.php:205
+#: hook.php:205 hook.php:211
 msgid "1.5 insert into glpi_plugin_archires_profiles "
 msgstr ""
 
-#: hook.php:220
+#: hook.php:226
 msgid "1.5 create glpi_plugin_archires_color_state "
 msgstr ""
 
-#: hook.php:240
+#: hook.php:246
 msgid "1.5 create glpi_plugin_archires_query_location "
 msgstr ""
 
-#: hook.php:259
+#: hook.php:265
 msgid "1.5 create glpi_plugin_archires_query_switch "
 msgstr ""
 
-#: hook.php:278
+#: hook.php:284
 msgid "1.5 create glpi_plugin_archires_query_applicatifs "
 msgstr ""
 
-#: hook.php:290
+#: hook.php:296
 msgid "1.5 create glpi_plugin_archires_query_type "
 msgstr ""
 
-#: hook.php:315
+#: hook.php:321
 msgid "1.5 create glpi_plugin_archires_config "
 msgstr ""
 
-#: hook.php:324
+#: hook.php:330
 msgid "1.5 insert into glpi_plugin_archires_config "
 msgstr ""
 
-#: hook.php:350
+#: hook.php:356
 msgid "1.5 insert into glpi_displaypreferences "
 msgstr ""
 
-#: hook.php:387
+#: hook.php:393
 msgid "1.7.0 create glpi_plugin_archires_color_vlan "
 msgstr ""
 
-#: hook.php:564 hook.php:570 hook.php:576
+#: hook.php:570 hook.php:576 hook.php:582
 msgid "1.8.0 update glpi_plugin_archires_querytypes (querytype) "
 msgstr ""
 
-#: hook.php:621 hook.php:627 hook.php:633
+#: hook.php:627 hook.php:633 hook.php:639
 msgid "1.8.0 delete glpi_displaypreferences (itemtype) "
 msgstr ""
 
-#: hook.php:751 inc/locationquery.class.php:213
+#: hook.php:769 inc/locationquery.class.php:214
 msgid "All root locations"
 msgstr "Todos los lugares principales"
 
-#: hook.php:780 inc/view.class.php:300
+#: hook.php:798 inc/view.class.php:300
 msgid "See numbers"
 msgstr "See numbers"
 
-#: hook.php:782 inc/view.class.php:305
+#: hook.php:800 inc/view.class.php:305
 msgid "See names"
 msgstr "See names"
 
-#: hook.php:806 inc/networkinterfacecolor.class.php:118
+#: hook.php:824 inc/networkinterfacecolor.class.php:118
 #: inc/networkinterfacecolor.class.php:121 inc/view.class.php:376
 msgid "Type of network"
 msgstr "Tipo de red"
@@ -97,6 +97,15 @@ msgstr "Tipo de red"
 #: setup.php:47
 msgid "Summary"
 msgstr "Summary"
+
+#: setup.php:66 inc/networkequipmentquery.class.php:38
+#: inc/networkequipmentquery.class.php:72
+#: inc/networkequipmentquery.class.php:155 inc/view.class.php:80
+#: inc/view.class.php:265 inc/view.class.php:424 inc/view.class.php:427
+msgid "Network equipment"
+msgid_plural "Network equipments"
+msgstr[0] ""
+msgstr[1] ""
 
 #: setup.php:123 inc/archires.class.php:39
 msgid "Network Architecture"
@@ -115,21 +124,6 @@ msgstr "Todoss los tipos"
 #: front/config.form.php:139
 msgid "Please activate the plugin"
 msgstr ""
-
-#: inc/appliancequery.class.php:82 inc/locationquery.class.php:87
-#: inc/networkequipmentquery.class.php:82
-msgid "State"
-msgstr "Statut"
-
-#: inc/appliancequery.class.php:87 inc/locationquery.class.php:92
-#: inc/networkequipmentquery.class.php:87
-msgid "Group"
-msgstr ""
-
-#: inc/appliancequery.class.php:92 inc/locationquery.class.php:97
-#: inc/networkequipmentquery.class.php:92
-msgid "VLAN"
-msgstr "Vlan"
 
 #: inc/appliancequery.class.php:118 inc/locationquery.class.php:123
 #: inc/networkequipmentquery.class.php:118
@@ -155,14 +149,6 @@ msgstr "Imagen"
 #: inc/locationquery.class.php:73 inc/locationquery.class.php:169
 msgid "Childs"
 msgstr "Hijos"
-
-#: inc/networkequipmentquery.class.php:38
-#: inc/networkequipmentquery.class.php:72 inc/view.class.php:80
-#: inc/view.class.php:265 inc/view.class.php:424 inc/view.class.php:427
-msgid "Network equipment"
-msgid_plural "Network equipments"
-msgstr[0] ""
-msgstr[1] ""
 
 #: inc/networkinterfacecolor.class.php:119
 #: inc/networkinterfacecolor.class.php:122 inc/statecolor.class.php:121
