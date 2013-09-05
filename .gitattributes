@@ -23,3 +23,4 @@ sql/empty-1.7.0.sql -text
 sql/empty-1.7.2.sql -text
 sql/empty-1.8.0.sql -text
 sql/empty-2.1.0.sql -text
+tools/HEADER -text
