@@ -94,7 +94,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       $tab[7]['table']           = 'glpi_vlans';
       $tab[7]['field']           = 'name';
-      $tab[7]['name']            = _('VLAN');
+      $tab[7]['name']            = __('VLAN');
       $tab[7]['datatype']        = 'dropdown';
 
       $tab[8]['table']           = 'glpi_plugin_archires_views';

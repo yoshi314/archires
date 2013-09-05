@@ -122,7 +122,7 @@ function plugin_version_archires() {
 
    return array('name'           => _n('Network Architecture', 'Network Architectures', 2, 'archires'),
                 'version'        => '2.1.0',
-                'author'         => 'Xavier Caillaud, Remi Collet, Nelly Mahu-Masson, Sebastien Prudhomme',
+                'author'         => 'Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson, Sebastien Prudhomme',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/archires',
                 'minGlpiVersion' => '0.84');

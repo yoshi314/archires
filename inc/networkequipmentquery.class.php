@@ -79,17 +79,17 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
       $tab[4]['table']           = 'glpi_states';
       $tab[4]['field']           = 'name';
-      $tab[4]['name']            = _('State');
+      $tab[4]['name']            = __('State');
       $tab[4]['datatype']        = 'dropdown';
 
       $tab[5]['table']           = 'glpi_groups';
       $tab[5]['field']           = 'completename';
-      $tab[5]['name']            = _('Group');
+      $tab[5]['name']            = __('Group');
       $tab[5]['datatype']        = 'dropdown';
 
       $tab[6]['table']           = 'glpi_vlans';
       $tab[6]['field']           = 'name';
-      $tab[6]['name']            = _('VLAN');
+      $tab[6]['name']            = __('VLAN');
       $tab[6]['datatype']        = 'dropdown';
 
       $tab[7]['table']           = 'glpi_plugin_archires_views';
