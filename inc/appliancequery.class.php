@@ -258,7 +258,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
             $query .= " AND `$itemtable`.`groups_id` = '".$this->fields["groups_id"]."'";
          }
 
-         $query .= " AND `app`.`plugin_appliances_appliances_id` = '".$this->fields["appliances_id"]."'
+         $query .= " AND `app`.`plugin_appliances_appliances_id` = '".$this->fields["plugin_appliances_appliances_id"]."'
                      AND `app`.`itemtype` = '$val' ";
 
          $PluginArchiresQueryType = new PluginArchiresQueryType();
