@@ -298,7 +298,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                   ";
 
          if ($this->fields["vlans_id"] > "0") {
-            $query .= ", `glpi_networkports_vlans` nv";
+            $query .= ", `glpi_networkports_vlans` nv ";
          }
          $query .= "LEFT JOIN `glpi_locations` lc
                         ON `lc`.`id` = `$itemtable`.`locations_id`

@@ -247,7 +247,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                         `glpi_ipnetworks` AS ipn
                    LEFT JOIN `glpi_networknames`
                         ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
-                            AND `glpi_networkports`.`id` = `glpi_networknames`.`items_id`)
+                            AND `np`.`id` = `glpi_networknames`.`items_id`)
                    LEFT JOIN `glpi_ipaddresses`
                         ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
                             AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
@@ -324,9 +324,9 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       }
       //The networking
       $query = "SELECT `n`.`id` AS `idn`, `np`.`id`, `np`.`items_id`, `np`.`logical_number`,
-                       `np`.`networkinterfaces_id` , `glpi_ipaddresses`.`name` AS ip,
+                       `np`.`instantiation_type`, `glpi_ipaddresses`.`name` AS ip,
                        `np`.`name` AS `namep`,
-                       `n`.`ip` AS `nip`,`ipn`.`netmask`, `n`.`name`,
+                       `ipn`.`netmask`, `n`.`name`,
                        `n`.`networkequipmenttypes_id` AS `type`, `n`.`users_id`, `n`.`groups_id`,
                        `n`.`contact`, `n`.`states_id`, `n`.`entities_id`,`n`.`locations_id`
                 FROM `glpi_networkports` `np`, `glpi_networkequipments` `n`,
@@ -341,7 +341,8 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       if ($this->fields["vlans_id"] > "0") {
          $query .= ", `glpi_networkports_vlans` nv ";
       }
-      $query .= "WHERE `np`.`itemtype` = 'NetworkEquipment'
+      $query .= "WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
+                       AND `np`.`itemtype` = 'NetworkEquipment'
                        AND `np`.`items_id` = `n`.`id`
                        AND `n`.`id` = '".$this->fields["networkequipments_id"]."'
                        AND `n`.`is_deleted` = '0'
