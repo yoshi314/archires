@@ -1,5 +1,8 @@
 * text=auto !eol
 /LICENSE -text
+inc/menu.class.php -text
+locales/da_DK.mo -text
+locales/da_DK.po -text
 locales/de_DE.mo -text
 locales/de_DE.po -text
 locales/en_GB.mo -text
@@ -9,10 +12,16 @@ locales/es_ES.po -text
 locales/fr_FR.mo -text
 locales/fr_FR.po -text
 locales/glpi.pot -text
+locales/hr_HR.mo -text
+locales/hr_HR.po -text
 locales/it_IT.mo -text
 locales/it_IT.po -text
+locales/ro_RO.mo -text
+locales/ro_RO.po -text
 locales/ru_RU.mo -text
 locales/ru_RU.po -text
+locales/tr_TR.mo -text
+locales/tr_TR.po -text
 pics/archires.png -text
 pics/mini_archires.png -text
 pics/nothing.png -text
@@ -23,4 +32,5 @@ sql/empty-1.7.0.sql -text
 sql/empty-1.7.2.sql -text
 sql/empty-1.8.0.sql -text
 sql/empty-2.1.0.sql -text
+sql/empty-2.2.sql -text
 tools/HEADER -text

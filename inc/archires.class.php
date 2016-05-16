@@ -2,28 +2,30 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @author    Nelly Mahu-Lasson, Xavier Caillaud
+ @copyright Copyright (c) 2016 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/archires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -33,19 +35,13 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresArchires extends CommonDBTM {
 
+   static $rightname             = "plugin_archires";
+
+   protected $usenotepadrights   = true;
+
 
    static function getTypeName($nb=0) {
-
       return _n('Network Architecture', 'Network Architectures', $nb, 'archires');
-   }
-
-   static function canCreate() {
-      return plugin_archires_haveRight('archires', 'w');
-   }
-
-
-   static function canView() {
-      return plugin_archires_haveRight('archires', 'r');
    }
 
 
@@ -97,43 +93,37 @@ class PluginArchiresArchires extends CommonDBTM {
       $types = array('Computer','NetworkEquipment','Peripheral','Phone','Printer');
       $rand  = mt_rand();
 
-      echo "<table border='0'><tr><td>\n";
-
-      echo "<select name='type' id='item_type$rand'>\n";
-      echo "<option value='0;0'>".Dropdown::EMPTY_VALUE."</option>\n";
-
-      foreach ($types as $type => $label) {
+      $params = array(0 => Dropdown::EMPTY_VALUE);
+      foreach ($types as $label) {
          $item = new $label();
-         echo "<option value='".$label.";".getTableForItemType($label."Type")."'>".
-               $item->getTypeName()."</option>\n";
+         $params[$label] = $item->getTypeName();
       }
 
-      echo "</select>";
+      Dropdown::showFromArray('_itemtype', $params, array('width'   => '80%',
+                                                          'rand'    => $rand));
 
-      $params = array('typetable'       => '__VALUE__',
+      $field_id = Html::cleanId("dropdown__itemtype$rand");
+
+      $params = array('itemtype'       => '__VALUE__',
                       'value'           => $value,
                       'myname'          => $myname,
-                      'entity_restrict' => $entity_restrict);
+                      'entity' => $entity_restrict);
 
-      Ajax::updateItemOnSelectEvent("item_type$rand", "show_$myname$rand",
+      echo "<span id='show_$myname$rand'>&nbsp;</span>\n";
+      Ajax::updateItemOnSelectEvent($field_id, "show_$myname$rand",
                                     $CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",
                                     $params);
-
-      echo "</td><td>\n"	;
-      echo "<span id='show_$myname$rand'>&nbsp;</span>\n";
-      echo "</td></tr></table>\n";
-
+/*
       if ($value > 0) {
-         echo "<script type='text/javascript' >\n";
-         echo "document.getElementById('item_type$rand').value='".$value_type."';";
+         echo Html::jsSetDropdownValue('itemtype$rand',$value_type);
          echo "</script>\n";
 
-         $params["typetable"]=$value_type;
+         $params["typetable"] = $value_type;
          Ajax::updateItem("show_$myname$rand",
                           $CFG_GLPI["root_doc"]."/plugins/archires/ajax/dropdownAllItems.php",
-                          $params);
+                          $params, false);
       }
+*/
       return $rand;
    }
 }
-?>

@@ -2,28 +2,30 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @author    Nelly Mahu-Lasson, Xavier Caillaud
+ @copyright Copyright (c) 2016 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/archires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -33,15 +35,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
 
-
-   static function canCreate() {
-      return plugin_archires_haveRight('archires', 'w');
-   }
-
-
-   static function canView() {
-      return plugin_archires_haveRight('archires', 'r');
-   }
+   static $rightname             = "plugin_archires";
 
 
    function getFromDBbyNetworkInterface($networkinterfaces_id) {
@@ -110,10 +104,11 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             echo "<form method='post' name='massiveaction_form_networkinterface_color' id='".
                   "massiveaction_form_networkinterface_color' action='./config.form.php'>";
          }
+
          $used = array();
          if ($number != 0) {
             echo "<div id='liste_color'>";
-            echo "<table class='tab_cadre' cellpadding='5'>";
+            echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
             echo "<tr>";
             echo "<th class='left'>".__('Type of network', 'archires')."</th>";
             echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
@@ -173,9 +168,9 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
          }
 
          if ($canupdate) {
-            echo "<table class='tab_cadre' cellpadding='5'><tr ><th colspan='3'>";
+            echo "<table class='tab_cadre' cellpadding='5' width='50%'><tr ><th colspan='3'>";
             echo __('Associate colors with network types', 'archires')."</th></tr>";
-            echo "<tr class='tab_bg_1'><td>";
+            echo "<tr class='tab_bg_1'><td width='70%'>";
             $this->dropdownNetworkInterface($used);
             echo "</td><td>";
             echo "<input type='text' name=\"color\">";
@@ -196,8 +191,6 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
    function dropdownNetworkInterface($used=array()) {
       global $DB;
 
-      $limit = $_SESSION["glpidropdown_chars_limit"];
-
       $where = "";
 
       if (count($used)) {
@@ -217,17 +210,11 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
       $number = $DB->numrows($result);
 
       if ($number >0) {
-         echo "<select name='networkinterfaces_id'>\n";
-         echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
+         $values = array(0 => Dropdown::EMPTY_VALUE);
          while ($data= $DB->fetch_array($result)) {
-            $output = $data["name"];
-            if (Toolbox::strlen($output)>$limit) {
-               $output = Toolbox::substr($output, 0, $limit)."&hellip;";
-            }
-            echo "<option value='".$data["id"]."'>".$output."</option>";
+            $values[$data['id']] = $data["name"];
          }
-         echo "</select>";
+         Dropdown::showFromArray('networkinterfaces_id', $values, array('width' => '80%'));
       }
    }
 }
-?>
