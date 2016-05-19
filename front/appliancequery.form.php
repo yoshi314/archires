@@ -102,10 +102,10 @@ if (isset($_POST["add"])) {
 
    $PluginArchiresApplianceQuery->checkGlobal(READ);
 
-   Html::header(PluginArchiresArchires::getTypeName()." ".PluginAppliancesAppliance::getTypeName(),
-                '',"plugins","archires","appliances");
+   Html::header(PluginArchiresArchires::getTypeName()." ".PluginArchiresApplianceQuery::getTypeName(),
+                '',"tools","pluginarchiresmenu", "appliance");
 
-   $PluginArchiresApplianceQuery->showForm($_GET["id"]);
+   $PluginArchiresApplianceQuery->display($_GET);
 
    Html::footer();
 }

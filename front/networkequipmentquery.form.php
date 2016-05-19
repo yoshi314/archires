@@ -38,7 +38,7 @@ if (isset($_GET["start"])) {
 } else {
    $start = 0;
 }
-toolbox::logdebug("pst", $_POST);
+
 $PluginArchiresNetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery();
 $PluginArchiresQueryType             = new PluginArchiresQueryType();
 

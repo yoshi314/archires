@@ -126,6 +126,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
       $this->addStandardTab('PluginArchiresView', $ong, $options);
       $this->addStandardTab('PluginArchiresPrototype', $ong, $options);
+      $this->addStandardTab('Notepad',$ong, $options);
       return $ong;
    }
 

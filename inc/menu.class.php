@@ -63,6 +63,12 @@ class PluginArchiresMenu extends CommonGLPI {
       $menu['options']['networkequipment']['links']['add']    = '/plugins/archires/front/networkequipmentquery.form.php';
       $menu['options']['networkequipment']['links']['search'] = '/plugins/archires/front/networkequipmentquery.php';
 
+      if (class_exists('PluginAppliancesAppliance')) {
+         $menu['options']['appliance']['title']           = __('appliances');
+         $menu['options']['appliance']['page']            = '/plugins/archires/front/appliancequery.php';
+         $menu['options']['appliance']['links']['add']    = '/plugins/archires/front/appliancequery.form.php?new=1';
+         $menu['options']['appliance']['links']['search'] = '/plugins/archires/front/appliancequery.php';
+      }
       return $menu;
    }
 

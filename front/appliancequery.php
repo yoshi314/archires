@@ -31,15 +31,13 @@
 
 include ("../../../inc/includes.php");
 
-Html::header(PluginArchiresArchires::getTypeName()." ".PluginAppliancesAppliance::getTypeName(),
-             '',"tools","pluginarchiresmenu");
+Html::header(PluginArchiresArchires::getTypeName()." ".PluginArchiresApplianceQuery::getTypeName(),
+             '',"tools","pluginarchiresmenu", "appliance");
 
 $PluginArchiresApplianceQuery = new PluginArchiresApplianceQuery();
 
-if ($PluginArchiresApplianceQuery->canView()
-    || Session::haveRight("config", UPDATE)) {
+if ($PluginArchiresApplianceQuery->canView() || Session::haveRight("config", UPDATE)) {
    Search::show("PluginArchiresApplianceQuery");
-
 } else {
    Html::displayRightError();
 }

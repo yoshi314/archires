@@ -43,46 +43,9 @@ function plugin_init_archires() {
    if (Session::getLoginUserID()) {
       if (Session::haveRight("plugin_archires", READ)) {
          $PLUGIN_HOOKS["menu_toadd"]['archires'] = array('tools' => 'PluginArchiresMenu');
-         //summary
-
-         //appliances
-         if (class_exists('PluginAppliancesAppliance')) {
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['title']
-                  = PluginAppliancesAppliance::getTypeName(1);
-
-            $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['page']
-                  = '/plugins/archires/front/appliancequery.php';
-
-            $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['search']
-                  = '/plugins/archires/front/appliancequery.php';
-         }
-      }
+     }
 
       if (Session::haveRight("plugin_archires", CREATE)) {
-         //summary
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['add']
-                  = '/plugins/archires/front/view.form.php?new=1';
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['view']['links']['config']
-                  = '/plugins/archires/front/config.form.php';
-         //locations
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['links']['add']
-                  = '/plugins/archires/front/locationquery.form.php?new=1';
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['location']['links']['config']
-                  = '/plugins/archires/front/config.form.php';
-         //networkequipments
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['add']
-                  = '/plugins/archires/front/networkequipmentquery.form.php?new=1';
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['networkequipment']['links']['config']
-                  = '/plugins/archires/front/config.form.php';
-         //appliances
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['add']
-                  = '/plugins/archires/front/appliancequery.form.php?new=1';
-         $PLUGIN_HOOKS['submenu_entry']['archires']['options']['appliance']['links']['config']
-                  = '/plugins/archires/front/config.form.php';
-
-         if (Session::haveRight("config", UPDATE)) {
-            $PLUGIN_HOOKS['submenu_entry']['archires']['config'] = 'front/config.form.php';
-         }
          $PLUGIN_HOOKS['use_massive_action']['archires'] = 1;
       }
       // Config page
@@ -109,7 +72,7 @@ function plugin_version_archires() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_archires_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'9.2','ge')) {
+   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'86','ge')) {
       echo "This plugin requires GLPI >= 0.85";
       return false;
    }
