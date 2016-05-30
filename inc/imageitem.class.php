@@ -2,28 +2,30 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @author    Nelly Mahu-Lasson, Xavier Caillaud
+ @copyright Copyright (c) 2016 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/aarchires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -33,15 +35,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresImageItem extends CommonDBTM {
 
-
-   static function canCreate() {
-      return plugin_archires_haveRight('archires', 'w');
-   }
-
-
-   static function canView() {
-      return plugin_archires_haveRight('archires', 'r');
-   }
+   static $rightname  = "plugin_archires";
 
 
    function getFromDBbyType($itemtype, $type) {
@@ -104,7 +98,7 @@ class PluginArchiresImageItem extends CommonDBTM {
       global $DB, $CFG_GLPI;
 
       echo "<form method='post' action='./config.form.php'>";
-      echo "<table class='tab_cadre' cellpadding='5'>";
+      echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
       echo "<tr><th colspan='4'>".__('Associate pictures with item types', 'archires')."</th></tr>";
       echo "<tr class='tab_bg_1'><td>";
       $PluginArchiresArchires = new PluginArchiresArchires();
@@ -113,17 +107,17 @@ class PluginArchiresImageItem extends CommonDBTM {
       //file
       $rep = "../pics/";
       $dir = opendir($rep);
-      echo "<select name=\"img\">";
+
       while ($f = readdir($dir)) {
          if (is_file($rep.$f)) {
-            echo "<option value='".$f."'>".$f."</option>";
+            $values[$f] = $f;
          }
       }
-      echo "</select>&nbsp;";
+      Dropdown::showFromArray('img', $values);
       closedir($dir);
       Html::showToolTip(nl2br(__('Some types of items must be created so that the association can exist',
                                  'archires')));
-      echo "<td>";
+      echo "</td><td>";
       echo "<div class='center'><input type='submit' name='add' value=\""._sx('button', 'Add').
             "\" class='submit'></div></td></tr>";
       echo "</table>";
@@ -140,7 +134,7 @@ class PluginArchiresImageItem extends CommonDBTM {
             echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action='".
                   "./config.form.php'>";
             echo "<div id='liste'>";
-            echo "<table class='tab_cadre' cellpadding='5'>";
+            echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
             echo "<tr>";
             echo "<th class='left'>".__('Item')."</th>";
             echo "<th class='left'>".__('Item type')."</th>";
@@ -152,7 +146,7 @@ class PluginArchiresImageItem extends CommonDBTM {
             }
             echo "</tr>";
 
-            while($ligne = $DB->fetch_assoc($result)) {
+            while ($ligne = $DB->fetch_assoc($result)) {
                $ID = $ligne["id"];
                if (($i % 2 == 0)
                    && ($number > 1)) {
@@ -224,4 +218,3 @@ class PluginArchiresImageItem extends CommonDBTM {
    }
 
 }
-?>

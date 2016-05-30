@@ -2,28 +2,30 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @author    Nelly Mahu-Lasson, Xavier Caillaud
+ @copyright Copyright (c) 2016 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/archires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -35,7 +37,7 @@ function plugin_archires_install() {
 
 
    if (!TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
-      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/empty-2.1.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/empty-2.2.sql");
 
    } else {
       $update = true;
@@ -94,46 +96,27 @@ function plugin_archires_install() {
           && !FieldExists("glpi_plugin_archires_appliancequeries", "plugin_appliances_appliances_id")) {
          plugin_archires_updateTo210();
       }
-   }
 
-   if ($update) {
+      // Update 2.2
+      if (TableExists("glpi_plugin_archires_profiles")) {
+         //Add new rights in glpi_profilerights table
+         $profileRight = new ProfileRight();
+         $query = "SELECT *
+                   FROM `glpi_plugin_archires_profiles`";
 
-      $table = "glpi_plugin_archires_statecolors";
-      $index = "state";
-      if (isIndex($table, $index)) {
-         $query = "ALTER TABLE `$table` DROP INDEX `$index`;";
-         $result = $DB->query($query);
-      }
-
-      $query_  = "SELECT *
-                  FROM `glpi_plugin_archires_profiles` ";
-      $result_ = $DB->query($query_);
-      if ($DB->numrows($result_) > 0) {
-
-         while ($data=$DB->fetch_array($result_)) {
-            $query = "UPDATE `glpi_plugin_archires_profiles`
-                      SET `profiles_id` = '".$data["id"]."'
-                      WHERE `id` = '".$data["id"]."';";
-            $result = $DB->query($query);
-
+         foreach ($DB->request($query) as $data) {
+            $right['profiles_id']   = $data['profiles_id'];
+            $right['name']          = "plugin_archires";
+            $droit                  = $data['archires'];
+            if ($droit == 'r') {
+               $right['rights'] = 1;
+            } else if ($droit == 'w') {
+               $right['rights'] = ALLSTANDARDRIGHT;
+            }
+            $profileRight->add($right);
          }
+         $DB->query("DROP TABLE `glpi_plugin_archires_profiles`");
       }
-
-      if (FieldExists("glpi_plugin_archires_profiles", "name")) {
-         $query  = "ALTER TABLE `glpi_plugin_archires_profiles`
-                    DROP `name`";
-      }
-      $result = $DB->query($query);
-
-      Plugin::migrateItemType(array(3000 => 'PluginArchiresLocationQuery',
-                                    3001 => 'PluginArchiresNetworkEquipmentQuery',
-                                    3002 => 'PluginArchiresApplianceQuery',
-                                    3003 => 'PluginArchiresView'),
-                              array("glpi_bookmarks", "glpi_bookmarks_users",
-                                    "glpi_displaypreferences", "glpi_documents_items",
-                                    "glpi_infocoms", "glpi_logs", "glpi_tickets"),
-                              array("glpi_plugin_archires_querytypes",
-                                    "glpi_plugin_archires_imageitems"));
    }
 
    $rep_files_archires = realpath(GLPI_PLUGIN_DOC_DIR)."/archires";
@@ -158,7 +141,7 @@ function plugin_archires_updateTo14() {
                   `iface` INT( 11 ) NOT NULL ,
                   `color` VARCHAR( 50 ) collate utf8_unicode_ci NOT NULL
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie($query, __('1.4 add glpi_plugin_archires_color ', 'archires').$DB->error());
+      $DB->queryOrDie($query,'1.4 add glpi_plugin_archires_color '.$DB->error());
    }
 
    if (!TableExists("glpi_plugin_archires_profiles")) {
@@ -171,7 +154,7 @@ function plugin_archires_updateTo14() {
                   PRIMARY KEY  (`ID`),
                   KEY `interface` (`interface`)
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryorDie($query, __('1.4 add glpi_plugin_archires_profiles ', 'archires').$DB->error());
+      $DB->queryorDie($query,'1.4 add glpi_plugin_archires_profiles '.$DB->error());
 
       $query = "INSERT INTO `glpi_plugin_archires_profiles`
                        (`ID`, `name` , `interface`, `is_default`, `archires`)
@@ -179,8 +162,7 @@ function plugin_archires_updateTo14() {
                        ('2', 'normal', 'archires', '0', NULL),
                        ('3', 'admin', 'archires', '0', 'r'),
                        ('4', 'super-admin', 'archires', '0', 'r')";
-      $DB->queryOrDie($query, __('1.4 insert into glpi_plugin_archires_profiles ', 'archires')
-                                 .$DB->error());
+      $DB->queryOrDie($query, '1.4 insert into glpi_plugin_archires_profiles '.$DB->error());
    }
 
    $migration->addField("glpi_plugin_archires_display", "display_ip",
@@ -202,14 +184,12 @@ function plugin_archires_updateTo15() {
    $query = "UPDATE `glpi_plugin_archires_profiles`
              SET `is_default` = '0'
              WHERE `is_default` = '1'";
-   $DB->queryOrDie($query, __('1.5 insert into glpi_plugin_archires_profiles ', 'archires')
-                              .$DB->error());
+   $DB->queryOrDie($query,'1.5 insert into glpi_plugin_archires_profiles '.$DB->error());
 
    $query = "UPDATE `glpi_plugin_archires_profiles`
              SET `is_default` = '1'
              WHERE `is_default` = '2'";
-   $DB->queryOrDie($query, __('1.5 insert into glpi_plugin_archires_profiles ', 'archires')
-                              .$DB->error());
+   $DB->queryOrDie($query, '1.5 insert into glpi_plugin_archires_profiles '.$DB->error());
 
    $migration->renameTable("glpi_plugin_archires_color", "glpi_plugin_archires_color_iface");
 
@@ -223,8 +203,7 @@ function plugin_archires_updateTo15() {
                   `state` INT( 11 ) NOT NULL ,
                   `color` VARCHAR( 50 ) collate utf8_unicode_ci NOT NULL
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie($query, __('1.5 create glpi_plugin_archires_color_state ', 'archires')
-                                 .$DB->error());
+      $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_color_state '.$DB->error());
    }
 
    if (!TableExists("glpi_plugin_archires_query_location")) {
@@ -243,8 +222,7 @@ function plugin_archires_updateTo15() {
                   `notes` LONGTEXT,
                   `deleted` smallint(6) NOT NULL default '0'
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie($query, __('1.5 create glpi_plugin_archires_query_location ', 'archires')
-                                 .$DB->error());
+      $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_query_location '.$DB->error());
    }
 
    if (!TableExists("glpi_plugin_archires_query_switch")) {
@@ -262,8 +240,7 @@ function plugin_archires_updateTo15() {
                   `notes` LONGTEXT,
                   `deleted` smallint(6) NOT NULL default '0'
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie($query, __('1.5 create glpi_plugin_archires_query_switch ', 'archires')
-                                 .$DB->error());
+      $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_query_switch '.$DB->error());
    }
 
    if (!TableExists("glpi_plugin_archires_query_applicatifs")) {
@@ -281,8 +258,7 @@ function plugin_archires_updateTo15() {
                   `notes` LONGTEXT,
                   `deleted` smallint(6) NOT NULL default '0'
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie($query, __('1.5 create glpi_plugin_archires_query_applicatifs ', 'archires')
-                                 .$DB->error());
+      $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_query_applicatifs '.$DB->error());
    }
 
    if (!TableExists("glpi_plugin_archires_query_type")) {
@@ -293,8 +269,7 @@ function plugin_archires_updateTo15() {
                   `device_type` INT( 11 ) NOT NULL,
                   `FK_query` INT( 11 ) NOT NULL
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie($query, __('1.5 create glpi_plugin_archires_query_type ', 'archires')
-                                 .$DB->error());
+      $DB->queryOrDie($query,'1.5 create glpi_plugin_archires_query_type '.$DB->error());
    }
 
    if (!TableExists("glpi_plugin_archires_config")) {
@@ -318,7 +293,7 @@ function plugin_archires_updateTo15() {
                   `format` smallint(6) NOT NULL default '0',
                   `deleted` smallint(6) NOT NULL default '0'
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie($query, __('1.5 create glpi_plugin_archires_config ', 'archires').$DB->error());
+      $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_config '.$DB->error());
    }
 
    $query = "INSERT INTO `glpi_plugin_archires_config`
@@ -327,7 +302,7 @@ function plugin_archires_updateTo15() {
                      `display_location`, `display_entity`, `system`,`engine`, `format`)
              VALUES ('1', '0', 'default', '1', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0',
                      '0', '0', '1')";
-   $DB->queryOrDie($query, __('1.5 insert into glpi_plugin_archires_config ', 'archires').$DB->error());
+   $DB->queryOrDie($query, '1.5 insert into glpi_plugin_archires_config '.$DB->error());
 
    $query = "INSERT INTO `glpi_displaypreferences`
                     (`ID` , `type` , `num` , `rank` , `FK_users` )
@@ -353,7 +328,7 @@ function plugin_archires_updateTo15() {
                     (NULL, '3002', '6', '5', '0'),
                     (NULL, '3002', '7', '6', '0'),
                     (NULL, '3002', '8', '7', '0')";
-   $DB->queryOrDie($query, __('1.5 insert into glpi_displaypreferences ', 'archires').$DB->error());
+   $DB->queryOrDie($query, '1.5 insert into glpi_displaypreferences '.$DB->error());
 
    $migration->executeMigration();
 }
@@ -390,8 +365,7 @@ function plugin_archires_updateTo170() {
                   `color` VARCHAR( 50 ) collate utf8_unicode_ci NOT NULL,
                   PRIMARY KEY  (`ID`)
                 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-      $DB->queryOrDie($query, __('1.7.0 create glpi_plugin_archires_color_vlan ', 'archires')
-                                 .$DB->error());
+      $DB->queryOrDie($query, '1.7.0 create glpi_plugin_archires_color_vlan '.$DB->error());
    }
 
    $migration->dropField("glpi_plugin_archires_profiles", "interface");
@@ -567,20 +541,17 @@ function plugin_archires_updateTo180() {
    $query = "UPDATE `glpi_plugin_archires_querytypes`
              SET `querytype` = 'PluginArchiresLocationQuery'
              WHERE `querytype` = 0";
-   $DB->queryOrDie($query, __('1.8.0 update glpi_plugin_archires_querytypes (querytype) ',
-                              'archires').$DB->error());
+   $DB->queryOrDie($query, '1.8.0 update glpi_plugin_archires_querytypes (querytype) '.$DB->error());
 
    $query = "UPDATE `glpi_plugin_archires_querytypes`
              SET `querytype` = 'PluginArchiresNetworkEquipmentQuery'
              WHERE `querytype` = 1";
-   $DB->queryOrDie($query, __('1.8.0 update glpi_plugin_archires_querytypes (querytype) ',
-                              'archires').$DB->error());
+   $DB->queryOrDie($query, '1.8.0 update glpi_plugin_archires_querytypes (querytype) '.$DB->error());
 
    $query = "UPDATE `glpi_plugin_archires_querytypes`
              SET `querytype` = 'PluginArchiresApplianceQuery'
              WHERE `querytype` = 2";
-   $DB->queryOrDie($query, __('1.8.0 update glpi_plugin_archires_querytypes (querytype) ',
-                              'archires').$DB->error());
+   $DB->queryOrDie($query, '1.8.0 update glpi_plugin_archires_querytypes (querytype) '.$DB->error());
 
 
    $migration->dropKey("glpi_plugin_archires_networkinterfacecolors", "iface");
@@ -620,24 +591,20 @@ function plugin_archires_updateTo180() {
    $migration->changeField("glpi_plugin_archires_profiles", "archires", "archires", 'char');
    $migration->addKey("glpi_plugin_archires_profiles", "profiles_id");
 
-
    $query = "DELETE
              FROM `glpi_displaypreferences`
              WHERE `itemtype` = 3000 AND `num` = 9";
-   $DB->queryOrDie($query, __('1.8.0 delete glpi_displaypreferences (itemtype) ', 'archires')
-                              .$DB->error());
+   $DB->queryOrDie($query, '1.8.0 delete glpi_displaypreferences (itemtype) '.$DB->error());
 
    $query = "DELETE
              FROM `glpi_displaypreferences`
              WHERE `itemtype` = 3001 AND `num` = 8";
-   $DB->queryOrDie($query, __('1.8.0 delete glpi_displaypreferences (itemtype) ', 'archires')
-                              .$DB->error());
+   $DB->queryOrDie($query, '1.8.0 delete glpi_displaypreferences (itemtype) '.$DB->error());
 
    $query = "DELETE
              FROM `glpi_displaypreferences`
              WHERE `itemtype` = 3002 AND `num` = 8";
-   $DB->queryOrDie($query, __('1.8.0 delete glpi_displaypreferences (itemtype) ', 'archires')
-                              .$DB->error());
+   $DB->queryOrDie($query, '1.8.0 delete glpi_displaypreferences (itemtype) '.$DB->error());
 
 
    $migration->executeMigration();

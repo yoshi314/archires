@@ -2,28 +2,30 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @author    Nelly Mahu-Lasson, Xavier Caillaud
+ @copyright Copyright (c) 2016 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/archires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -33,15 +35,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresStateColor extends CommonDBTM {
 
-
-   static function canCreate() {
-      return plugin_archires_haveRight('archires', 'w');
-   }
-
-
-   static function canView() {
-      return plugin_archires_haveRight('archires', 'r');
-   }
+   static $rightname = "plugin_archires";
 
 
    function getFromDBbyState($state) {
@@ -67,7 +61,7 @@ class PluginArchiresStateColor extends CommonDBTM {
    function addStateColor($state,$color) {
       global $DB;
 
-      if ($state!='-1') {
+      if ($state != '-1') {
          if ($this->GetfromDBbyState($state)) {
             $this->update(array('id'    => $this->fields['id'],
                                 'color' => $color));
@@ -115,7 +109,7 @@ class PluginArchiresStateColor extends CommonDBTM {
          }
          if ($number != 0) {
             echo "<div id='liste_color'>";
-            echo "<table class='tab_cadre' cellpadding='5'>";
+            echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
             echo "<tr>";
             echo "<th class='left'>".__('Status')."</th>";
             echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
@@ -171,10 +165,10 @@ class PluginArchiresStateColor extends CommonDBTM {
          }
 
          if ($canupdate) {
-            echo "<table class='tab_cadre' cellpadding='5'>";
+            echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
             echo "<tr><th colspan='3'>".__('Associate colors with items statuses', 'archires').
                  "</th></tr>";
-            echo "<tr class='tab_bg_1'><td>";
+            echo "<tr class='tab_bg_1'><td width='60%'>";
             $this->dropdownState($used);
             echo "</td>";
             echo "<td><input type='text' name='color'>";
@@ -193,7 +187,6 @@ class PluginArchiresStateColor extends CommonDBTM {
    function dropdownState($used=array()) {
       global $DB;
 
-      $limit = $_SESSION["glpidropdown_chars_limit"];
       $where = "";
 
       if (count($used)) {
@@ -212,17 +205,12 @@ class PluginArchiresStateColor extends CommonDBTM {
       $number = $DB->numrows($result);
 
       if ($number !="0") {
-         echo "<select name='states_id'>\n";
-         echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
-         echo "<option value='-1'>".__('All statuses', 'archires')."</option>\n";
+         $values = array(0 => Dropdown::EMPTY_VALUE,
+                         1 => __('All statuses', 'archires'));
          while ($data= $DB->fetch_array($result)) {
-            $output = $data["name"];
-            if (Toolbox::strlen($output) > $limit) {
-               $output = Toolbox::substr($output,0,$limit)."&hellip;";
-            }
-            echo "<option value='".$data["id"]."'>".$output."</option>";
+            $values[$data['id']] = $data["name"];
          }
-         echo "</select>";
+         Dropdown::showFromArray('states_id', $values, array('width' => '80%'));
       }
    }
 
@@ -251,4 +239,3 @@ class PluginArchiresStateColor extends CommonDBTM {
    }
 
 }
-?>
