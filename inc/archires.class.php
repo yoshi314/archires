@@ -35,9 +35,9 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresArchires extends CommonDBTM {
 
-   static $rightname             = "plugin_archires";
+   static $rightname       = "plugin_archires";
 
-   protected $usenotepadrights   = true;
+   protected $usenotepad   = true;
 
 
    static function getTypeName($nb=0) {

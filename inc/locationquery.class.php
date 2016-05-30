@@ -35,8 +35,8 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresLocationQuery extends CommonDBTM {
 
-   static $rightname             = "plugin_archires";
-   protected $usenotepadrights   = true;
+   static $rightname      = "plugin_archires";
+   protected $usenotepad  = true;
 
 
 

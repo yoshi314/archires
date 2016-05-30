@@ -35,8 +35,9 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
-   static $rightname             = "plugin_archires";
-   protected $usenotepadrights   = true;
+   static $rightname      = "plugin_archires";
+   protected $usenotepad  = true;
+
 
    static function getTypeName($nb=0) {
       return _n('Network equipment', 'Network equipments', 1, 'archires');
