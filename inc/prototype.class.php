@@ -254,7 +254,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       echo "</table>";
 
       echo "<br><table class='tab_cadre_fixe' cellpadding='2' width='75%'>";
-      echo "<tr><th colspan='6'>"._n('Link', 'Links', 2)."</th></tr>";
+      echo "<tr><th colspan='6'>"._n('Link', 'Links', 2, 'archires')."</th></tr>";
       echo "<tr><th>".__('Graphviz links', 'archires')."</th>";
       echo "<th>".__('IP item 1', 'archires')."</th>";
       echo "<th>".__('Socket item 1', 'archires')."</th>";

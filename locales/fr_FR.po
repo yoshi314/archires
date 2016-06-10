@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Nelly Mahu-Lasson <nini.lasson@orange.fr>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - archires plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-16 17:10+0200\n"
-"PO-Revision-Date: 2016-05-16 15:08+0000\n"
+"POT-Creation-Date: 2016-06-10 12:22+0200\n"
+"PO-Revision-Date: 2016-06-10 10:22+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/yllen/glpi-project-archires-plugin/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +35,7 @@ msgstr "Voir les noms"
 msgid "Type of network"
 msgstr "Type de réseau"
 
-#: setup.php:100 inc/archires.class.php:44 inc/menu.class.php:38
+#: setup.php:63 inc/archires.class.php:44 inc/menu.class.php:38
 msgid "Network Architecture"
 msgid_plural "Network Architectures"
 msgstr[0] "Architecture réseau"
@@ -45,7 +46,7 @@ msgid "Please activate the plugin"
 msgstr "Merci d'activer le plugin"
 
 #: inc/appliancequery.class.php:114 inc/locationquery.class.php:119
-#: inc/networkequipmentquery.class.php:112
+#: inc/networkequipmentquery.class.php:113
 msgid "Thanks to specify a default used view"
 msgstr "Merci de spécifier une vue utilisée par défaut"
 
@@ -69,9 +70,9 @@ msgstr "Image"
 msgid "Childs"
 msgstr "Enfants"
 
-#: inc/menu.class.php:61 inc/networkequipmentquery.class.php:42
-#: inc/networkequipmentquery.class.php:66
-#: inc/networkequipmentquery.class.php:149 inc/view.class.php:73
+#: inc/menu.class.php:61 inc/networkequipmentquery.class.php:43
+#: inc/networkequipmentquery.class.php:67
+#: inc/networkequipmentquery.class.php:150 inc/view.class.php:73
 #: inc/view.class.php:257 inc/view.class.php:414 inc/view.class.php:417
 msgid "Network equipment"
 msgid_plural "Network equipments"
@@ -109,6 +110,12 @@ msgstr "Image associée"
 #: inc/prototype.class.php:204
 msgid "Name of item"
 msgstr "Nom du matériel"
+
+#: inc/prototype.class.php:257
+msgid "Link"
+msgid_plural "Links"
+msgstr[0] "Lien"
+msgstr[1] "Liens"
 
 #: inc/prototype.class.php:258
 msgid "Graphviz links"
