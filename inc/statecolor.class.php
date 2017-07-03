@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016 Archires plugin team
+ @copyright Copyright (c) 2016-2017 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -94,120 +94,101 @@ class PluginArchiresStateColor extends CommonDBTM {
    function showConfigForm($canupdate=false) {
       global $DB;
 
+      if ($canupdate) {
+         echo "<div class='firstbloc'>";
+         echo "<form method='post' name='state_color' action='./config.form.php'>";
+         echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
+         echo "<tr><th colspan='3'>".__('Associate colors with items statuses', 'archires').
+              "</th></tr>";
+
+         echo "<tr class='tab_bg_1'><td width='70%'>";
+         $this->dropdownState();
+         echo "</td>";
+         echo "<td><input type='text' name='color'>";
+         echo "&nbsp;";
+         Html::showToolTip(nl2br(__('Please use this color format', 'archires')),
+                           array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
+                                 'linktarget' => '_blank'));
+         echo "</td><td></div>";
+         echo "<div class='center'><input type='submit' name='add_color_state' value=\"".
+                                    _sx('button', 'Add')."\" class='submit' ></div></td></tr>";
+         echo "</table></div>";
+         Html::closeForm();
+      }
+
       $query = "SELECT *
                 FROM `".$this->getTable()."`
-                ORDER BY `states_id` ASC;";
-      $i    = 0;
-      $used = array();
+                ORDER BY `states_id` ASC";
 
       if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
 
-         if ($canupdate) {
-            echo "<form method='post' name='massiveaction_form_state_color' id='".
-                  "massiveaction_form_state_color' action='./config.form.php'>";
-         }
          if ($number != 0) {
-            echo "<div id='liste_color'>";
+            if ($canupdate) {
+               $rand = mt_rand();
+               echo "<div id='liste_color'>";
+               Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+               $massiveactionparams = array('num_displayed'    => $number,
+                                            'container'        => 'mass'.__CLASS__.$rand);
+               Html::showMassiveActions($massiveactionparams);
+            }
             echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
             echo "<tr>";
+            if ($canupdate) {
+               echo "<th width='10'>";
+               Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+               echo "</th>";
+            }
             echo "<th class='left'>".__('Status')."</th>";
             echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
-            if ($number > 1) {
-               echo "<th class='left'>".__('Status')."</th>";
-               echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
-            }
             echo "</tr>";
 
             while ($ligne= $DB->fetch_assoc($result)) {
                $ID        = $ligne["id"];
-               $states_id = $ligne["states_id"];
-               $used[]    = $states_id;
-               if ((($i % 2) == 0)
-                   && ($number > 1)) {
-                  echo "<tr class='tab_bg_1'>";
+               echo "<tr class='tab_bg_1'>";
+               echo "<td width='10'>";
+               if ($canupdate) {
+                  Html::showMassiveActionCheckBox(__CLASS__, $ID);
+               } else {
+                  echo "&nbsp;";
                }
-               if ($number == 1) {
-                  echo "<tr class='tab_bg_1'>";
-               }
-               echo "<td>".Dropdown::getDropdownName("glpi_states",$ligne["states_id"])."</td>";
+               echo "</td><td>".Dropdown::getDropdownName("glpi_states",$ligne["states_id"])."</td>";
                echo "<td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";
                echo "<td><input type='hidden' name='id' value='$ID'>";
-               if ($canupdate) {
-                  echo "<input type='checkbox' name='item_color[$ID]' value='1'>";
-               }
-               echo "</td>";
-
-               $i++;
-               if (($i == $number) && (($number % 2) != 0) && ($number > 1)) {
-                  echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-               }
             }
 
+            echo "</table>";
             if ($canupdate) {
-               echo "<tr class='tab_bg_1'>";
-               if ($number > 1)
-                  echo "<td colspan='8' class='center'>";
-               else
-                  echo "<td colspan='4' class='center'>";
-
-               echo "<a onclick= \"if (markCheckboxes ('massiveaction_form_state_color')) ".
-                     "return false;\" href='#'>".
-                     __('Select all')."</a>";
-               echo " - <a onclick= \"if (unMarkCheckboxes ('massiveaction_form_state_color')) ".
-                     "return false;\" href='#'>".
-                     __('Deselect all')."</a> ";
-               Html::closeArrowMassives(array('delete_color_state' => _sx('button', 'Delete permanently')));
-            } else {
-               echo "</table>";
+              $massiveactionparams['ontop'] = false;
+               Html::showMassiveActions($massiveactionparams);
             }
             echo "</div>";
-         }
-
-         if ($canupdate) {
-            echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
-            echo "<tr><th colspan='3'>".__('Associate colors with items statuses', 'archires').
-                 "</th></tr>";
-            echo "<tr class='tab_bg_1'><td width='60%'>";
-            $this->dropdownState($used);
-            echo "</td>";
-            echo "<td><input type='text' name='color'>";
-            echo "&nbsp;";
-            Html::showToolTip(nl2br(__('Please use this color format', 'archires')),
-                              array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
-                                    'linktarget' => '_blank'));
-            echo "<td class='center'>";
-            Html::closeArrowMassives(array('add_color_state' => _sx('button', 'Add')));
             Html::closeForm();
          }
       }
    }
 
 
-   function dropdownState($used=array()) {
+   function dropdownState() {
       global $DB;
 
-      $where = "";
-
-      if (count($used)) {
-         $where = "WHERE `id` NOT IN (0";
-         foreach ($used as $ID) {
-            $where .= ", $ID";
-         }
-         $where .= ")";
+      $colors = array();
+      foreach($DB->request("glpi_plugin_archires_statecolors") as $color) {
+         $colors[] = $color['states_id'];
       }
 
       $query = "SELECT *
                 FROM `glpi_states`
-                $where
+                WHERE `id` NOT IN ('".implode("','",$colors)."')
                 ORDER BY `name`";
+
       $result = $DB->query($query);
       $number = $DB->numrows($result);
 
       if ($number !="0") {
          $values = array(0 => Dropdown::EMPTY_VALUE,
                          1 => __('All statuses', 'archires'));
-         while ($data= $DB->fetch_array($result)) {
+         while ($data = $DB->fetch_array($result)) {
             $values[$data['id']] = $data["name"];
          }
          Dropdown::showFromArray('states_id', $values, array('width' => '80%'));
@@ -236,6 +217,15 @@ class PluginArchiresStateColor extends CommonDBTM {
          $graph = Dropdown::getDropdownName("glpi_states",$device["states_id"]);
       }
       return $graph;
+   }
+
+
+
+   function getForbiddenStandardMassiveAction() {
+
+      $forbidden   = parent::getForbiddenStandardMassiveAction();
+      $forbidden[] = 'update';
+      return $forbidden;
    }
 
 }
