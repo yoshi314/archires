@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2013,2015
+# Kaya Zeren <kayazeren@gmail.com>, 2013,2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - archires plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-16 17:10+0200\n"
-"PO-Revision-Date: 2016-05-17 05:09+0000\n"
+"POT-Creation-Date: 2017-07-04 13:09+0200\n"
+"PO-Revision-Date: 2016-06-11 05:43+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/yllen/glpi-project-archires-plugin/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -30,22 +30,21 @@ msgstr "Sayılara bakın"
 msgid "See names"
 msgstr "Adlara bakın"
 
-#: hook.php:791 inc/networkinterfacecolor.class.php:113
-#: inc/networkinterfacecolor.class.php:116 inc/view.class.php:368
+#: hook.php:791 inc/networkinterfacecolor.class.php:142 inc/view.class.php:368
 msgid "Type of network"
 msgstr "Ağ tipi"
 
-#: setup.php:100 inc/archires.class.php:44 inc/menu.class.php:38
+#: setup.php:63 inc/archires.class.php:44 inc/menu.class.php:38
 msgid "Network Architecture"
 msgid_plural "Network Architectures"
 msgstr[0] "Ağ Mimarisi"
 
-#: front/config.form.php:135
+#: front/config.form.php:134
 msgid "Please activate the plugin"
 msgstr "Lütfen uygulama ekini etkinleştirin"
 
 #: inc/appliancequery.class.php:114 inc/locationquery.class.php:119
-#: inc/networkequipmentquery.class.php:112
+#: inc/networkequipmentquery.class.php:113
 msgid "Thanks to specify a default used view"
 msgstr "Varsayılan olarak kullanılan görünüm belirtildiği için"
 
@@ -57,11 +56,11 @@ msgstr "Görünüm ekleyin"
 msgid "Associate pictures with item types"
 msgstr "Öge tiplerine görseller atayın"
 
-#: inc/imageitem.class.php:118
+#: inc/imageitem.class.php:119
 msgid "Some types of items must be created so that the association can exist"
 msgstr "Görsel atayabilmek için öge tipleri oluşturulmalıdır"
 
-#: inc/imageitem.class.php:141 inc/imageitem.class.php:145
+#: inc/imageitem.class.php:150
 msgid "Picture"
 msgstr "Görsel"
 
@@ -69,31 +68,29 @@ msgstr "Görsel"
 msgid "Childs"
 msgstr "Alt ögeler"
 
-#: inc/menu.class.php:61 inc/networkequipmentquery.class.php:42
-#: inc/networkequipmentquery.class.php:66
-#: inc/networkequipmentquery.class.php:149 inc/view.class.php:73
+#: inc/menu.class.php:61 inc/networkequipmentquery.class.php:43
+#: inc/networkequipmentquery.class.php:67
+#: inc/networkequipmentquery.class.php:150 inc/view.class.php:73
 #: inc/view.class.php:257 inc/view.class.php:414 inc/view.class.php:417
 msgid "Network equipment"
 msgid_plural "Network equipments"
 msgstr[0] "Ağ aygıtı"
 
-#: inc/networkinterfacecolor.class.php:114
-#: inc/networkinterfacecolor.class.php:117 inc/statecolor.class.php:115
-#: inc/statecolor.class.php:118 inc/view.class.php:131 inc/view.class.php:362
-#: inc/vlancolor.class.php:116 inc/vlancolor.class.php:119
-msgid "Color"
-msgstr "Renk"
-
-#: inc/networkinterfacecolor.class.php:172
+#: inc/networkinterfacecolor.class.php:100
 msgid "Associate colors with network types"
 msgstr "Ağ tiplerine renk atayın"
 
-#: inc/networkinterfacecolor.class.php:178 inc/statecolor.class.php:176
-#: inc/vlancolor.class.php:175
+#: inc/networkinterfacecolor.class.php:107 inc/statecolor.class.php:109
+#: inc/vlancolor.class.php:108
 msgid "Please use this color format"
 msgstr "Lütfen şu renk biçimini kullanın"
 
-#: inc/profile.class.php:88
+#: inc/networkinterfacecolor.class.php:143 inc/statecolor.class.php:143
+#: inc/view.class.php:131 inc/view.class.php:362 inc/vlancolor.class.php:141
+msgid "Color"
+msgstr "Renk"
+
+#: inc/profile.class.php:84
 msgid "Generate graphs"
 msgstr "Çizelge oluşturma"
 
@@ -108,6 +105,11 @@ msgstr "Atanmış görsel"
 #: inc/prototype.class.php:204
 msgid "Name of item"
 msgstr "Öge adı"
+
+#: inc/prototype.class.php:257
+msgid "Link"
+msgid_plural "Links"
+msgstr[0] "Bağlantı"
 
 #: inc/prototype.class.php:258
 msgid "Graphviz links"
@@ -146,11 +148,11 @@ msgstr "Oluşturma"
 msgid "Display types of items"
 msgstr "Öge tipleri görüntülensin "
 
-#: inc/statecolor.class.php:169
+#: inc/statecolor.class.php:101
 msgid "Associate colors with items statuses"
 msgstr "Öge durumlarına renk atayın"
 
-#: inc/statecolor.class.php:209
+#: inc/statecolor.class.php:189
 msgid "All statuses"
 msgstr "Tüm durumlar"
 
@@ -212,10 +214,10 @@ msgstr "Görünüm açıklaması"
 msgid "With neato, the sockets will not be displayed"
 msgstr "Neato ile soketler görüntülenemez"
 
-#: inc/vlancolor.class.php:169
+#: inc/vlancolor.class.php:102
 msgid "Associate colors to VLANs"
 msgstr "VLAN renkleri atayın"
 
-#: inc/vlancolor.class.php:209
+#: inc/vlancolor.class.php:186
 msgid "All VLANs"
 msgstr "Tüm VLAN"

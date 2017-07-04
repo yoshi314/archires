@@ -153,7 +153,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__('Location')."</td><td>";
-      $this->dropdownLocation($this,$ID);
+      $this->dropdownLocation($this, $ID);
       echo "</td>";
       echo "<td>".__('Group')."</td><td>";
       Group::dropdown(array('name'   => "groups_id",
@@ -277,27 +277,27 @@ class PluginArchiresLocationQuery extends CommonDBTM {
             $query .= ", `glpi_networkports_vlans` nv ";
          }
 
-         $query .= "LEFT JOIN `glpi_networkportethernets`
+         $query .= " LEFT JOIN `glpi_networkportethernets`
                         ON `glpi_networkportethernets`.`networkports_id` = `np`.`id`
-                    LEFT JOIN `glpi_networknames`
+                     LEFT JOIN `glpi_networknames`
                         ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
                             AND `np`.`id` = `glpi_networknames`.`items_id`)
-                    LEFT JOIN `glpi_ipaddresses`
+                     LEFT JOIN `glpi_ipaddresses`
                         ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
                             AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
-                    LEFT JOIN `glpi_ipaddresses_ipnetworks`
+                     LEFT JOIN `glpi_ipaddresses_ipnetworks`
                         ON `glpi_ipaddresses_ipnetworks`.`ipaddresses_id` = `glpi_ipaddresses`.`id`
-                    LEFT JOIN `glpi_ipnetworks`
+                     LEFT JOIN `glpi_ipnetworks`
                         ON `np`.`id` = `glpi_ipaddresses_ipnetworks`.`ipnetworks_id`
-                    LEFT JOIN `$itemtable`
+                     LEFT JOIN `$itemtable`
                         ON (`np`.`items_id` = `$itemtable`.`id`
                             AND `$itemtable`.`is_deleted` = '0'
                             AND `$itemtable`.`is_template` = '0'".
                             getEntitiesRestrictRequest(" AND",$itemtable).")
-                    LEFT JOIN `glpi_locations` lc
+                     LEFT JOIN `glpi_locations` lc
                         ON `lc`.`id` = `$itemtable`.`locations_id`
-                    WHERE `glpi_networkports`.`instantiation_type` = 'NetworkPortEthernet'
-                          AND `np`.`itemtype` = '$val'";
+                     WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
+                           AND `np`.`itemtype` = '$val'";
 
          if ($this->fields["vlans_id"] > "0") {
             $query .= " AND `nv`.`networkports_id` = np`.`id`

@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016 Archires plugin team
+ @copyright Copyright (c) 2016-2017 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -61,19 +61,19 @@ function plugin_init_archires() {
 function plugin_version_archires() {
 
    return array('name'           => _n('Network Architecture', 'Network Architectures', 2, 'archires'),
-                'version'        => '2.3',
+                'version'        => '2.3.1',
                 'author'         => 'Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson, Sebastien Prudhomme',
                 'license'        => 'AGPLv3+',
                 'homepage'       => ' https://forge.glpi-project.org/projects/archires',
-                'minGlpiVersion' => '0.90');
+                'minGlpiVersion' => '0.91');
 }
 
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_archires_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.90','lt') || version_compare(GLPI_VERSION,'9.1','ge')) {
-      echo "This plugin requires GLPI >= 0.90";
+   if (version_compare(GLPI_VERSION,'0.91','lt') || version_compare(GLPI_VERSION,'9.2','ge')) {
+      echo "This plugin requires GLPI >= 0.91";
       return false;
    }
    return true;

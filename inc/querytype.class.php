@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016 Archires plugin team
+ @copyright Copyright (c) 2016-2017 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -133,7 +133,7 @@ class PluginArchiresQueryType extends CommonDBTM {
       $PluginArchiresArchires = new PluginArchiresArchires();
 
       if (Session::haveRight("plugin_archires", UPDATE)) {
-         echo "<form method='post'  action=\"./".$page.".form.php\">";
+         echo "<form method='post' action=\"./".$page.".form.php\">";
          echo "<table class='tab_cadre' cellpadding='5' width='34%'><tr><th colspan='2'>";
          echo __('Display types of items', 'archires')."</th></tr>";
          echo "<tr class='tab_bg_1'><td>";
@@ -153,37 +153,38 @@ class PluginArchiresQueryType extends CommonDBTM {
                       AND `querytype` = '$type'
                 ORDER BY `itemtype`, `type` ASC";
 
-      $i    = 0;
-      $rand = mt_rand();
       if ($result = $DB->query($query)) {
          $number = $DB->numrows($result);
          if ($number != 0) {
-            echo "<form method='post' name='massiveaction_form$rand' id='massiveaction_form$rand' ".
-                  "action=\"./".$page.".form.php\">";
             echo "<div id='liste'>";
-            echo "<table class='tab_cadre' cellpadding='5'>";
+            if (Session::haveRight("plugin_archires", UPDATE)) {
+               $rand = mt_rand();
+               Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
+               $massiveactionparams = array('num_displayed'    => $number,
+                                            'container'        => 'mass'.__CLASS__.$rand);
+               Html::showMassiveActions($massiveactionparams);
+            }
+            echo "<table class='tab_cadre' cellpadding='5' width='63%'>";
             echo "<tr>";
+            if (Session::haveRight("plugin_archires", UPDATE)) {
+               echo "<th width='10'>";
+               Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
+               echo "</th>";
+            }
             echo "<th class='left'>".__('Item')."</th>";
             echo "<th class='left'>".__('Item type')."</th><th></th>";
-            if ($number > 1) {
-               echo "<th class='left'>".__('Item')."</th>";
-               echo "<th class='left'>".__('Item type')."</th><th></th>";
-            }
             echo "</tr>";
 
             while ($ligne = $DB->fetch_assoc($result)) {
                $ID = $ligne["id"];
-
-               if (($i % 2 == 0)
-                   && ($number > 1)) {
-                  echo "<tr class='tab_bg_1'>";
+               echo "<tr class='tab_bg_1'>";
+               echo "<td width='10'>";
+               if (Session::haveRight("plugin_archires", UPDATE)) {
+                  Html::showMassiveActionCheckBox(__CLASS__, $ID);
+               } else {
+                  echo "&nbsp;";
                }
-               if ($number == 1) {
-                  echo "<tr class='tab_bg_1'>";
-               }
-
                $item = new $ligne["itemtype"]();
-
                echo "<td>".$item->getTypeName()."</td>";
                $class     = $ligne["itemtype"]."Type";
                $typeclass = new $class();
@@ -191,29 +192,13 @@ class PluginArchiresQueryType extends CommonDBTM {
                echo "<td>".$typeclass->fields["name"]."</td>";
                echo "<td>";
                echo "<input type='hidden' name='id' value='$ID'>";
-               echo "<input type='checkbox' name='item[$ID]' value='1'>";
                echo "</td>";
-
-               $i++;
-               if (($i  == $number) && ($number  % 2 !=0) && $number>1)
-                  echo "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
             }
 
+            echo "</table>";
             if (Session::haveRight("plugin_archires", UPDATE)) {
-               echo "<tr class='tab_bg_1'>";
-               if ($number > 1) {
-                  echo "<td colspan='6' class='center'>";
-               } else {
-                  echo "<td colspan='3' class='center'>";
-               }
-
-               echo "<a onclick= \"if (markCheckboxes('massiveaction_form$rand')) return false;\"
-                     href='#'>".__('Select all')."</a>";
-               echo " - <a onclick= \"if (unMarkCheckboxes('massiveaction_form$rand')) return false;\"
-                     href='#'>".__('Deselect all')."</a> ";
-               Html::closeArrowMassives(array('deletetype' => _sx('button', 'Delete permanently')));
-            } else {
-               echo "</table>";
+               $massiveactionparams['ontop'] = false;
+               Html::showMassiveActions($massiveactionparams);
             }
             echo "</div>";
             Html::closeForm();
@@ -248,4 +233,11 @@ class PluginArchiresQueryType extends CommonDBTM {
       return '';
    }
 
+
+   function getForbiddenStandardMassiveAction() {
+
+      $forbidden   = parent::getForbiddenStandardMassiveAction();
+      $forbidden[] = 'update';
+      return $forbidden;
+   }
 }

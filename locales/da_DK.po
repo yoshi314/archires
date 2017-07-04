@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Jens Hyllegaard <jens.hyllegaard@gmail.com>, 2013
+# Jens Hyllegaard <jens.hyllegaard@gmail.com>, 2013,2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - archires plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-16 17:10+0200\n"
-"PO-Revision-Date: 2016-05-16 15:08+0000\n"
-"Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
+"POT-Creation-Date: 2017-07-04 13:09+0200\n"
+"PO-Revision-Date: 2017-01-03 14:38+0000\n"
+"Last-Translator: Jens Hyllegaard <jens.hyllegaard@gmail.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/yllen/glpi-project-archires-plugin/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,23 +30,22 @@ msgstr "Se antal"
 msgid "See names"
 msgstr "Se navne"
 
-#: hook.php:791 inc/networkinterfacecolor.class.php:113
-#: inc/networkinterfacecolor.class.php:116 inc/view.class.php:368
+#: hook.php:791 inc/networkinterfacecolor.class.php:142 inc/view.class.php:368
 msgid "Type of network"
 msgstr "Netværkstype"
 
-#: setup.php:100 inc/archires.class.php:44 inc/menu.class.php:38
+#: setup.php:63 inc/archires.class.php:44 inc/menu.class.php:38
 msgid "Network Architecture"
 msgid_plural "Network Architectures"
 msgstr[0] "Netværksarkitektur"
 msgstr[1] "Netværksarkitekturer"
 
-#: front/config.form.php:135
+#: front/config.form.php:134
 msgid "Please activate the plugin"
 msgstr "Aktivér venligst udvidelsen"
 
 #: inc/appliancequery.class.php:114 inc/locationquery.class.php:119
-#: inc/networkequipmentquery.class.php:112
+#: inc/networkequipmentquery.class.php:113
 msgid "Thanks to specify a default used view"
 msgstr "Angiv venligst en standardvisning"
 
@@ -58,11 +57,11 @@ msgstr "Tilføj visning"
 msgid "Associate pictures with item types"
 msgstr "Tilknyt billeder til emnetyper"
 
-#: inc/imageitem.class.php:118
+#: inc/imageitem.class.php:119
 msgid "Some types of items must be created so that the association can exist"
 msgstr "Der skal oprettes nogle emnetyper for at tilknytningen kan eksistere"
 
-#: inc/imageitem.class.php:141 inc/imageitem.class.php:145
+#: inc/imageitem.class.php:150
 msgid "Picture"
 msgstr "Billede"
 
@@ -70,32 +69,30 @@ msgstr "Billede"
 msgid "Childs"
 msgstr "Børn"
 
-#: inc/menu.class.php:61 inc/networkequipmentquery.class.php:42
-#: inc/networkequipmentquery.class.php:66
-#: inc/networkequipmentquery.class.php:149 inc/view.class.php:73
+#: inc/menu.class.php:61 inc/networkequipmentquery.class.php:43
+#: inc/networkequipmentquery.class.php:67
+#: inc/networkequipmentquery.class.php:150 inc/view.class.php:73
 #: inc/view.class.php:257 inc/view.class.php:414 inc/view.class.php:417
 msgid "Network equipment"
 msgid_plural "Network equipments"
 msgstr[0] "Netværksudstyr"
 msgstr[1] "Netværksudstyr"
 
-#: inc/networkinterfacecolor.class.php:114
-#: inc/networkinterfacecolor.class.php:117 inc/statecolor.class.php:115
-#: inc/statecolor.class.php:118 inc/view.class.php:131 inc/view.class.php:362
-#: inc/vlancolor.class.php:116 inc/vlancolor.class.php:119
-msgid "Color"
-msgstr "Farve"
-
-#: inc/networkinterfacecolor.class.php:172
+#: inc/networkinterfacecolor.class.php:100
 msgid "Associate colors with network types"
 msgstr "Tilknyt farver til netværkstyper"
 
-#: inc/networkinterfacecolor.class.php:178 inc/statecolor.class.php:176
-#: inc/vlancolor.class.php:175
+#: inc/networkinterfacecolor.class.php:107 inc/statecolor.class.php:109
+#: inc/vlancolor.class.php:108
 msgid "Please use this color format"
 msgstr "Brug venligst dette farveformat"
 
-#: inc/profile.class.php:88
+#: inc/networkinterfacecolor.class.php:143 inc/statecolor.class.php:143
+#: inc/view.class.php:131 inc/view.class.php:362 inc/vlancolor.class.php:141
+msgid "Color"
+msgstr "Farve"
+
+#: inc/profile.class.php:84
 msgid "Generate graphs"
 msgstr "Generer grafik"
 
@@ -110,6 +107,12 @@ msgstr "Tilknyttet billede"
 #: inc/prototype.class.php:204
 msgid "Name of item"
 msgstr "Emnenavn"
+
+#: inc/prototype.class.php:257
+msgid "Link"
+msgid_plural "Links"
+msgstr[0] "Link"
+msgstr[1] "Links"
 
 #: inc/prototype.class.php:258
 msgid "Graphviz links"
@@ -148,11 +151,11 @@ msgstr "Generering"
 msgid "Display types of items"
 msgstr "Vis emnetyper"
 
-#: inc/statecolor.class.php:169
+#: inc/statecolor.class.php:101
 msgid "Associate colors with items statuses"
 msgstr "Tilnyt farver til emners status"
 
-#: inc/statecolor.class.php:209
+#: inc/statecolor.class.php:189
 msgid "All statuses"
 msgstr "Alle status"
 
@@ -214,10 +217,10 @@ msgstr "Vis beskrivelse"
 msgid "With neato, the sockets will not be displayed"
 msgstr "Ved neato, vil stik ikke blive vist"
 
-#: inc/vlancolor.class.php:169
+#: inc/vlancolor.class.php:102
 msgid "Associate colors to VLANs"
 msgstr "Tilknyt farver til VLANs"
 
-#: inc/vlancolor.class.php:209
+#: inc/vlancolor.class.php:186
 msgid "All VLANs"
 msgstr "Alle VLANs"

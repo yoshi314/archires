@@ -122,9 +122,9 @@ class PluginArchiresVlanColor extends CommonDBTM {
          $number = $DB->numrows($result);
 
          if ($number != 0) {
+            echo "<div id='liste_vlan'>";
             if ($canupdate) {
                $rand = mt_rand();
-               echo "<div id='liste_vlan'>";
                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
                $massiveactionparams = array('num_displayed'    => $number,
                                             'container'        => 'mass'.__CLASS__.$rand);
@@ -144,11 +144,10 @@ class PluginArchiresVlanColor extends CommonDBTM {
             while($ligne = $DB->fetch_assoc($result)) {
                $ID = $ligne["id"];
                echo "<tr class='tab_bg_1'>";
-               echo "<td width='10'>";
                if ($canupdate) {
+                  echo "<td width='10'>";
                   Html::showMassiveActionCheckBox(__CLASS__, $ID);
-               } else {
-                  echo "&nbsp;";
+                  echo "</td>";
                }
                echo "<td>".Dropdown::getDropdownName("glpi_vlans", $ligne["vlans_id"])."</td>";
                echo "<td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";
@@ -162,7 +161,6 @@ class PluginArchiresVlanColor extends CommonDBTM {
             }
             echo "</div>";
             Html::closeForm();
-
          }
       }
    }
@@ -194,7 +192,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
    }
 
 
-  function getVlanbyNetworkPort ($ID) {
+   function getVlanbyNetworkPort ($ID) {
     global $DB;
 
       $query = "SELECT `glpi_vlans`.`id`

@@ -124,9 +124,9 @@ class PluginArchiresStateColor extends CommonDBTM {
          $number = $DB->numrows($result);
 
          if ($number != 0) {
+            echo "<div id='liste_color'>";
             if ($canupdate) {
                $rand = mt_rand();
-               echo "<div id='liste_color'>";
                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
                $massiveactionparams = array('num_displayed'    => $number,
                                             'container'        => 'mass'.__CLASS__.$rand);
@@ -139,18 +139,17 @@ class PluginArchiresStateColor extends CommonDBTM {
                Html::getCheckAllAsCheckbox('mass'.__CLASS__.$rand);
                echo "</th>";
             }
-            echo "<th class='left'>".__('Status')."</th>";
+            echo "<th class='left' widht='50%'>".__('Status')."</th>";
             echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             echo "</tr>";
 
             while ($ligne= $DB->fetch_assoc($result)) {
                $ID        = $ligne["id"];
                echo "<tr class='tab_bg_1'>";
-               echo "<td width='10'>";
-               if ($canupdate) {
+                if ($canupdate) {
+                  echo "<td width='10'>";
                   Html::showMassiveActionCheckBox(__CLASS__, $ID);
-               } else {
-                  echo "&nbsp;";
+                  echo "</td>";
                }
                echo "</td><td>".Dropdown::getDropdownName("glpi_states",$ligne["states_id"])."</td>";
                echo "<td bgcolor='".$ligne["color"]."'>".$ligne["color"]."</td>";
@@ -199,7 +198,7 @@ class PluginArchiresStateColor extends CommonDBTM {
    function displayColorState($device) {
       global $DB;
 
-      $graph ="";
+      $graph       = "";
       $query_state = "SELECT *
                       FROM `".$this->getTable()."`
                       WHERE `states_id`= '".$device["states_id"]."'";

@@ -20,7 +20,7 @@
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
 
  @package   archires
- @copyright Copyright (c) 2016 Archires plugin team
+ @copyright Copyright (c) 2016-2017 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -74,14 +74,9 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else if (isset($_POST["addtype"])) {
-   $test = explode(";", $_POST['_itemtype']);
-   if (isset($test[0])) {
-      $_POST['itemtype'] = $test[0];
-
-      if ($PluginArchiresQueryType->canCreate()) {
-         $PluginArchiresQueryType->addType('PluginArchiresNetworkEquipmentQuery', $_POST['type'],
-                                           $_POST['itemtype'], $_POST['query']);
-      }
+   if ($PluginArchiresQueryType->canCreate()) {
+      $PluginArchiresQueryType->addType('PluginArchiresNetworkEquipmentQuery', $_POST['type'],
+                                        $_POST['itemtype'], $_POST['query']);
    }
    Html::back();
 

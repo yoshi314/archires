@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016 Archires plugin team
+ @copyright Copyright (c) 2016-2017 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -37,6 +37,7 @@ class PluginArchiresPrototype extends CommonDBTM {
 
    static $rightname = "plugin_archires";
 
+
    private static function dotIt($engine, $graph, $format) {
 
       $out         = '';
@@ -50,7 +51,6 @@ class PluginArchiresPrototype extends CommonDBTM {
          $out     = file_get_contents($out_name);
          unlink($graph_name);
          unlink($out_name);
-         //Toolbox::logDebug("command:", $command, "in:", $graph_name, "out:", $out_name, "Res:", strlen($out));
       }
       return $out;
    }
@@ -576,7 +576,7 @@ class PluginArchiresPrototype extends CommonDBTM {
       }
       //legend
       if (isset($ID) && !empty($ID)) {
-         echo "<div align='center'>";
+         echo "<div class='center'>";
          echo "<table cellpadding='5'>";
          echo "<tr><td class='top'>";
          if ( $PluginArchiresView->fields["color"] == 0 ) {

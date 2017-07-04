@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016 Archires plugin team
+ @copyright Copyright (c) 2016-2017 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -51,7 +51,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
    }
 
 
-  function getSearchOptions() {
+   function getSearchOptions() {
 
       $tab = array();
 
@@ -149,9 +149,10 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".PluginAppliancesAppliance::getTypeName(1)."</td><td>";
-      Dropdown::show('PluginAppliancesAppliance',array('name'   => "appliances_id",
-                                                'value'  => $this->fields["plugin_appliances_appliances_id"],
-                                                'entity' => $this->fields["entities_id"]));
+      Dropdown::show('PluginAppliancesAppliance',
+                     array('name'   => "appliances_id",
+                           'value'  => $this->fields["plugin_appliances_appliances_id"],
+                           'entity' => $this->fields["entities_id"]));
       echo "</td>";
       echo "<td>".__('VLAN')."</td><td>";
       Vlan::dropdown(array('name'  => "vlans_id",
@@ -216,26 +217,26 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
                           `$itemtable`.`locations_id`
                    FROM `glpi_networkports` np,
                         `$itemtable`,
-                        `glpi_ipnetworks` AS ipn
-                   LEFT JOIN `glpi_networknames`
-                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
-                            AND `glpi_networkports`.`id` = `glpi_networknames`.`items_id`)
-                   LEFT JOIN `glpi_ipaddresses`
-                        ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
-                            AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
-                    WHERE `glpi_networkports`.`instantiation_type` = 'NetworkPortEthernet' ";
+                        `glpi_ipnetworks` AS ipn,
+                        `glpi_plugin_appliances_appliances_items` app";
 
          if ($this->fields["vlans_id"] > "0") {
             $query .= ", `glpi_networkports_vlans` nv";
          }
 
-         $query .= ", `glpi_plugin_appliances_appliances_items` app
-                   WHERE `np`.`itemtype` = '$val'
-                         AND `np`.`items_id` = `$itemtable`.`id`
-                         AND `app`.`items_id` = `$itemtable`.`id`
-                         AND `$itemtable`.`is_deleted` = '0'
-                         AND `$itemtable`.`is_template` = '0'".
-                         getEntitiesRestrictRequest(" AND",$itemtable);
+         $query .= " LEFT JOIN `glpi_networknames`
+                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort')
+                     LEFT JOIN `glpi_ipaddresses`
+                        ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
+                            AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
+                     WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
+                           AND `np`.`itemtype` = '$val'
+                           AND `np`.`items_id` = `$itemtable`.`id`
+                           AND `app`.`items_id` = `$itemtable`.`id`
+                           AND `$itemtable`.`is_deleted` = '0'
+                           AND `$itemtable`.`is_template` = '0'
+                           AND `np`.`id` = `glpi_networknames`.`items_id`".
+                           getEntitiesRestrictRequest(" AND",$itemtable);
 
          if ($this->fields["vlans_id"] > "0") {
             $query .= " AND `nv`.`networkports_id` = `np`.`id`

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-10 12:22+0200\n"
+"POT-Creation-Date: 2017-07-04 13:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,8 +29,7 @@ msgstr ""
 msgid "See names"
 msgstr ""
 
-#: hook.php:791 inc/networkinterfacecolor.class.php:113
-#: inc/networkinterfacecolor.class.php:116 inc/view.class.php:368
+#: hook.php:791 inc/networkinterfacecolor.class.php:142 inc/view.class.php:368
 msgid "Type of network"
 msgstr ""
 
@@ -40,7 +39,7 @@ msgid_plural "Network Architectures"
 msgstr[0] ""
 msgstr[1] ""
 
-#: front/config.form.php:135
+#: front/config.form.php:134
 msgid "Please activate the plugin"
 msgstr ""
 
@@ -57,11 +56,11 @@ msgstr ""
 msgid "Associate pictures with item types"
 msgstr ""
 
-#: inc/imageitem.class.php:118
+#: inc/imageitem.class.php:119
 msgid "Some types of items must be created so that the association can exist"
 msgstr ""
 
-#: inc/imageitem.class.php:141 inc/imageitem.class.php:145
+#: inc/imageitem.class.php:150
 msgid "Picture"
 msgstr ""
 
@@ -78,23 +77,21 @@ msgid_plural "Network equipments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/networkinterfacecolor.class.php:114
-#: inc/networkinterfacecolor.class.php:117 inc/statecolor.class.php:115
-#: inc/statecolor.class.php:118 inc/view.class.php:131 inc/view.class.php:362
-#: inc/vlancolor.class.php:116 inc/vlancolor.class.php:119
-msgid "Color"
-msgstr ""
-
-#: inc/networkinterfacecolor.class.php:172
+#: inc/networkinterfacecolor.class.php:100
 msgid "Associate colors with network types"
 msgstr ""
 
-#: inc/networkinterfacecolor.class.php:178 inc/statecolor.class.php:176
-#: inc/vlancolor.class.php:175
+#: inc/networkinterfacecolor.class.php:107 inc/statecolor.class.php:109
+#: inc/vlancolor.class.php:108
 msgid "Please use this color format"
 msgstr ""
 
-#: inc/profile.class.php:88
+#: inc/networkinterfacecolor.class.php:143 inc/statecolor.class.php:143
+#: inc/view.class.php:131 inc/view.class.php:362 inc/vlancolor.class.php:141
+msgid "Color"
+msgstr ""
+
+#: inc/profile.class.php:84
 msgid "Generate graphs"
 msgstr ""
 
@@ -153,11 +150,11 @@ msgstr ""
 msgid "Display types of items"
 msgstr ""
 
-#: inc/statecolor.class.php:169
+#: inc/statecolor.class.php:101
 msgid "Associate colors with items statuses"
 msgstr ""
 
-#: inc/statecolor.class.php:209
+#: inc/statecolor.class.php:189
 msgid "All statuses"
 msgstr ""
 
@@ -219,10 +216,10 @@ msgstr ""
 msgid "With neato, the sockets will not be displayed"
 msgstr ""
 
-#: inc/vlancolor.class.php:169
+#: inc/vlancolor.class.php:102
 msgid "Associate colors to VLANs"
 msgstr ""
 
-#: inc/vlancolor.class.php:209
+#: inc/vlancolor.class.php:186
 msgid "All VLANs"
 msgstr ""

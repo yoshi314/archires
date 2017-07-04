@@ -111,8 +111,9 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
          echo "<div class='center'>";
          echo "<input type='submit' name='add_color_networkinterface' value=\"".
             _sx('button', 'Add')."\" class='submit' ></div></td></tr>";
-         echo "</table></div>";
+         echo "</table>";
          Html::closeForm();
+         echo "</div>";
       }
 
       $query = "SELECT *
@@ -123,9 +124,9 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
          $number = $DB->numrows($result);
 
          if ($number != 0) {
+            echo "<div id='liste_color' class='spaced center'>";
             if ($canupdate) {
                $rand = mt_rand();
-               echo "<div id='liste_color' class='spaced'>";
                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
                $massiveactionparams = array('num_displayed'    => $number,
                                             'container'        => 'mass'.__CLASS__.$rand);
@@ -145,11 +146,11 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             while ($ligne = $DB->fetch_array($result)) {
                $ID = $ligne["id"];
                echo "<tr class='tab_bg_1'>";
-               echo "<td width='10'>";
+
                if ($canupdate) {
+                  echo "<td width='10'>";
                   Html::showMassiveActionCheckBox(__CLASS__, $ID);
-               } else {
-                  echo "&nbsp;";
+                  echo "</td>";
                }
                echo "</td><td>".Dropdown::getDropdownName("glpi_networkinterfaces",
                                                      $ligne["networkinterfaces_id"])."</td><";

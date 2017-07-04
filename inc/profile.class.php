@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016 Archires plugin team
+ @copyright Copyright (c) 2016-2017 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -36,8 +36,6 @@ if (!defined('GLPI_ROOT')) {
 class PluginArchiresProfile extends Profile {
 
    static $rightname = "profile";
-
-
 
 
    //if profile deleted
@@ -69,14 +67,12 @@ class PluginArchiresProfile extends Profile {
 
 
    static function createFirstAccess($ID) {
-
       self::addDefaultProfileInfos($ID,array('plugin_archires' => ALLSTANDARDRIGHT), true);
    }
 
 
    //profiles modification
    function showForProfile(Profile $prof){
-
 
       $canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE));
 
@@ -93,7 +89,8 @@ class PluginArchiresProfile extends Profile {
                                                        'title'         => __('General')));
 
       echo "<table class='tab_cadre_fixehov'>";
-      $effective_rights = ProfileRight::getProfileRights($prof->getField('id'), array('plugin_archires'));
+      $effective_rights = ProfileRight::getProfileRights($prof->getField('id'),
+                                                         array('plugin_archires'));
       echo Html::hidden('id', array('value' => $prof->getField('id')));
       echo "</table>";
 
@@ -132,7 +129,7 @@ class PluginArchiresProfile extends Profile {
    }
 
 
-      static function addDefaultProfileInfos($profiles_id, $rights) {
+   static function addDefaultProfileInfos($profiles_id, $rights) {
 
       $profileRight = new ProfileRight();
       foreach ($rights as $right => $value) {

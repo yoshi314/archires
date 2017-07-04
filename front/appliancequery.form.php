@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016 Archires plugin team
+ @copyright Copyright (c) 2016-2017 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -76,14 +76,9 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else if (isset($_POST["addtype"])) {
-   $test = explode(";", $_POST['type']);
-   if (isset($test[0]) && isset($test[1])) {
-      $_POST['type']     = $test[1];
-      $_POST['itemtype'] = $test[0];
-      if ($PluginArchiresQueryType->canCreate()) {
-         $PluginArchiresQueryType->addType('PluginArchiresApplianceQuery', $_POST['type'],
-                                           $_POST['itemtype'], $_POST['query']);
-      }
+   if ($PluginArchiresQueryType->canCreate()) {
+      $PluginArchiresQueryType->addType('PluginArchiresApplianceQuery', $_POST['type'],
+                                        $_POST['_itemtype'], $_POST['query']);
    }
    Html::back();
 
