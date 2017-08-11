@@ -2,28 +2,30 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @author    Nelly Mahu-Lasson, Xavier Caillaud
+ @copyright Copyright (c) 2016-2017 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/archires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -33,6 +35,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresView extends CommonDBTM {
 
+   static $rightname = "plugin_archires";
 
    const PLUGIN_ARCHIRES_NETWORK_COLOR = 0;
    const PLUGIN_ARCHIRES_VLAN_COLOR    = 1;
@@ -45,16 +48,6 @@ class PluginArchiresView extends CommonDBTM {
 
    static function getTypeName($nb=0) {
       return _n('View', 'Views', $nb);
-   }
-
-
-   static function canCreate() {
-      return plugin_archires_haveRight('archires', 'w');
-   }
-
-
-   static function canView() {
-      return plugin_archires_haveRight('archires', 'r');
    }
 
 
@@ -243,10 +236,9 @@ class PluginArchiresView extends CommonDBTM {
    }
 
 
-   function showForm ($ID, $options=array()) {
+   function showForm($ID, $options=array()) {
 
       $this->initForm($ID, $options);
-      $this->showTabs($options);
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
@@ -279,9 +271,9 @@ class PluginArchiresView extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>"._n('Phone', 'Phones', 2)."</td>";
-      echo "<td colspan='3'>";
+      echo "<td>";
       Dropdown::showYesNo("phone",$this->fields["phone"]);
-      echo "</td></tr>";
+      echo "</td><td>&nbsp;</td></tr>";
 
       echo "<tr class='tab_bg_2'><th colspan='4'>".__('Display description', 'archires')."</th></tr>";
 
@@ -382,8 +374,6 @@ class PluginArchiresView extends CommonDBTM {
       echo "</select></td></tr>";
 
       $this->showFormButtons($options);
-      $this->addDivForTabs();
-
       return true;
    }
 
@@ -537,7 +527,7 @@ class PluginArchiresView extends CommonDBTM {
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
 
-      if (!$withtemplate && plugin_archires_haveRight('archires', 'r')) {
+      if (!$withtemplate && Session::haveRight("plugin_archires", READ)) {
          switch ($item->getType()) {
             case 'PluginArchiresApplianceQuery' :
             case 'PluginArchiresLocationQuery' :
@@ -549,4 +539,3 @@ class PluginArchiresView extends CommonDBTM {
    }
 
 }
-?>

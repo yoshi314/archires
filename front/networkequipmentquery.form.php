@@ -2,28 +2,29 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @copyright Copyright (c) 2016-2017 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/archires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -42,47 +43,40 @@ $PluginArchiresNetworkEquipmentQuery = new PluginArchiresNetworkEquipmentQuery()
 $PluginArchiresQueryType             = new PluginArchiresQueryType();
 
 if (isset($_POST["add"])) {
-   $PluginArchiresNetworkEquipmentQuery->check(-1,'w',$_POST);
+   $PluginArchiresNetworkEquipmentQuery->check(-1,CREATE,$_POST);
    $PluginArchiresNetworkEquipmentQuery->add($_POST);
    Html::back();
 
 } else if (isset($_POST["delete"])) {
-   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
+   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],DELETE);
    $PluginArchiresNetworkEquipmentQuery->delete($_POST);
    Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["restore"])) {
-   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
+   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],PURGE);
    $PluginArchiresNetworkEquipmentQuery->restore($_POST);
    Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["purge"])) {
-   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
+   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],PURGE);
    $PluginArchiresNetworkEquipmentQuery->delete($_POST,1);
    Html::redirect(Toolbox::getItemTypeSearchURL('PluginArchiresNetworkEquipmentQuery'));
 
 } else if (isset($_POST["update"])) {
-   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
+   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],UPDATE);
    $PluginArchiresNetworkEquipmentQuery->update($_POST);
    Html::back();
 
 } else if (isset($_POST["duplicate"])) {
-   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],'w');
+   $PluginArchiresNetworkEquipmentQuery->check($_POST['id'],CREATE);
    unset($_POST['id']);
    $PluginArchiresNetworkEquipmentQuery->add($_POST);
    Html::back();
 
 } else if (isset($_POST["addtype"])) {
-   $test = explode(";", $_POST['type']);
-
-   if (isset($test[0]) && isset($test[1])) {
-      $_POST['type'] = $test[1];
-      $_POST['itemtype'] = $test[0];
-
-      if ($PluginArchiresQueryType->canCreate()) {
-         $PluginArchiresQueryType->addType('PluginArchiresNetworkEquipmentQuery', $_POST['type'],
-                                           $_POST['itemtype'], $_POST['query']);
-      }
+   if ($PluginArchiresQueryType->canCreate()) {
+      $PluginArchiresQueryType->addType('PluginArchiresNetworkEquipmentQuery', $_POST['type'],
+                                        $_POST['itemtype'], $_POST['query']);
    }
    Html::back();
 
@@ -92,20 +86,19 @@ if (isset($_POST["add"])) {
 
       foreach ($_POST["item"] as $key => $val) {
          if ($val == 1) {
-            $PluginArchiresQueryType->deleteType($key);
+            $PluginArchiresQueryType->delete(array('id' => $key));
          }
       }
    }
    Html::back();
 
 } else {
-   $PluginArchiresNetworkEquipmentQuery->checkGlobal("r");
+   $PluginArchiresNetworkEquipmentQuery->checkGlobal(READ);
 
    Html::header(PluginArchiresArchires::getTypeName()." ".PluginArchiresNetworkEquipmentQuery::getTypeName(),
-                '',"plugins","archires","networkequipment");
+                '',"tools","pluginarchiresmenu","networkequipment");
 
-   $PluginArchiresNetworkEquipmentQuery->showForm($_GET["id"]);
+   $PluginArchiresNetworkEquipmentQuery->display($_GET);
 
    Html::footer();
 }
-?>

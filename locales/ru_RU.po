@@ -7,294 +7,225 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - archires plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-05 17:26+0200\n"
-"PO-Revision-Date: 2013-09-05 15:25+0000\n"
+"POT-Creation-Date: 2017-08-11 14:01+0200\n"
+"PO-Revision-Date: 2017-08-03 17:55+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
-"Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/glpi-project-archires-plugin/language/ru_RU/)\n"
+"Language-Team: Russian (Russia) (http://www.transifex.com/yllen/glpi-project-archires-plugin/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru_RU\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: hook.php:161
-msgid "1.4 add glpi_plugin_archires_color "
-msgstr ""
-
-#: hook.php:174
-msgid "1.4 add glpi_plugin_archires_profiles "
-msgstr ""
-
-#: hook.php:182
-msgid "1.4 insert into glpi_plugin_archires_profiles "
-msgstr ""
-
-#: hook.php:205 hook.php:211
-msgid "1.5 insert into glpi_plugin_archires_profiles "
-msgstr ""
-
-#: hook.php:226
-msgid "1.5 create glpi_plugin_archires_color_state "
-msgstr ""
-
-#: hook.php:246
-msgid "1.5 create glpi_plugin_archires_query_location "
-msgstr ""
-
-#: hook.php:265
-msgid "1.5 create glpi_plugin_archires_query_switch "
-msgstr ""
-
-#: hook.php:284
-msgid "1.5 create glpi_plugin_archires_query_applicatifs "
-msgstr ""
-
-#: hook.php:296
-msgid "1.5 create glpi_plugin_archires_query_type "
-msgstr ""
-
-#: hook.php:321
-msgid "1.5 create glpi_plugin_archires_config "
-msgstr ""
-
-#: hook.php:330
-msgid "1.5 insert into glpi_plugin_archires_config "
-msgstr ""
-
-#: hook.php:356
-msgid "1.5 insert into glpi_displaypreferences "
-msgstr ""
-
-#: hook.php:393
-msgid "1.7.0 create glpi_plugin_archires_color_vlan "
-msgstr ""
-
-#: hook.php:570 hook.php:576 hook.php:582
-msgid "1.8.0 update glpi_plugin_archires_querytypes (querytype) "
-msgstr ""
-
-#: hook.php:627 hook.php:633 hook.php:639
-msgid "1.8.0 delete glpi_displaypreferences (itemtype) "
-msgstr ""
-
-#: hook.php:769 inc/locationquery.class.php:214
+#: hook.php:736 inc/locationquery.class.php:209
 msgid "All root locations"
 msgstr "Все местонахождения"
 
-#: hook.php:798 inc/view.class.php:300
+#: hook.php:765 inc/view.class.php:292
 msgid "See numbers"
 msgstr "See numbers"
 
-#: hook.php:800 inc/view.class.php:305
+#: hook.php:767 inc/view.class.php:297
 msgid "See names"
 msgstr "See names"
 
-#: hook.php:824 inc/networkinterfacecolor.class.php:118
-#: inc/networkinterfacecolor.class.php:121 inc/view.class.php:376
+#: hook.php:791 inc/networkinterfacecolor.class.php:142 inc/view.class.php:368
 msgid "Type of network"
 msgstr "Тип сети"
 
-#: setup.php:47
-msgid "Summary"
-msgstr "Сводка"
-
-#: setup.php:66 inc/networkequipmentquery.class.php:38
-#: inc/networkequipmentquery.class.php:72
-#: inc/networkequipmentquery.class.php:155 inc/view.class.php:80
-#: inc/view.class.php:265 inc/view.class.php:424 inc/view.class.php:427
-msgid "Network equipment"
-msgid_plural "Network equipments"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-#: setup.php:123 inc/archires.class.php:39
+#: setup.php:63 inc/archires.class.php:44 inc/menu.class.php:38
 msgid "Network Architecture"
 msgid_plural "Network Architectures"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
-#: setup.php:137
-msgid "This plugin requires GLPI >= 0.84"
-msgstr ""
-
-#: ajax/dropdownValue.php:86
-msgid "All types"
-msgstr "Все типы"
-
-#: front/config.form.php:139
+#: front/config.form.php:134
 msgid "Please activate the plugin"
 msgstr ""
 
-#: inc/appliancequery.class.php:118 inc/locationquery.class.php:123
-#: inc/networkequipmentquery.class.php:118
+#: inc/appliancequery.class.php:114 inc/locationquery.class.php:119
+#: inc/networkequipmentquery.class.php:113
 msgid "Thanks to specify a default used view"
 msgstr "Thanks to specify a default used view"
 
-#: inc/archires.class.php:87
+#: inc/archires.class.php:83
 msgid "Add view"
 msgstr "Добавить вид"
 
-#: inc/imageitem.class.php:108
+#: inc/imageitem.class.php:102
 msgid "Associate pictures with item types"
 msgstr "Назначить изображения типам объектов"
 
-#: inc/imageitem.class.php:124
+#: inc/imageitem.class.php:119
 msgid "Some types of items must be created so that the association can exist"
 msgstr "Some types of items must be created so that the association can exist"
 
-#: inc/imageitem.class.php:147 inc/imageitem.class.php:151
+#: inc/imageitem.class.php:150
 msgid "Picture"
 msgstr "Изображение"
 
-#: inc/locationquery.class.php:73 inc/locationquery.class.php:169
+#: inc/locationquery.class.php:69 inc/locationquery.class.php:165
 msgid "Childs"
 msgstr "Подчинённые"
 
-#: inc/networkinterfacecolor.class.php:119
-#: inc/networkinterfacecolor.class.php:122 inc/statecolor.class.php:121
-#: inc/statecolor.class.php:124 inc/view.class.php:138 inc/view.class.php:370
-#: inc/vlancolor.class.php:122 inc/vlancolor.class.php:125
-msgid "Color"
-msgstr "Цвет"
+#: inc/menu.class.php:61 inc/networkequipmentquery.class.php:43
+#: inc/networkequipmentquery.class.php:67
+#: inc/networkequipmentquery.class.php:150 inc/view.class.php:73
+#: inc/view.class.php:257 inc/view.class.php:414 inc/view.class.php:417
+msgid "Network equipment"
+msgid_plural "Network equipments"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
-#: inc/networkinterfacecolor.class.php:177
+#: inc/networkinterfacecolor.class.php:100
 msgid "Associate colors with network types"
 msgstr "Назначить цвет для типа сети"
 
-#: inc/networkinterfacecolor.class.php:183 inc/statecolor.class.php:182
-#: inc/vlancolor.class.php:181
+#: inc/networkinterfacecolor.class.php:107 inc/statecolor.class.php:109
+#: inc/vlancolor.class.php:108
 msgid "Please use this color format"
 msgstr "Используйте данный формат цвета"
 
-#: inc/profile.class.php:38 inc/profile.class.php:129
-msgid "Rights management"
-msgstr "Права настройки"
+#: inc/networkinterfacecolor.class.php:143 inc/statecolor.class.php:143
+#: inc/view.class.php:131 inc/view.class.php:362 inc/vlancolor.class.php:141
+msgid "Color"
+msgstr "Цвет"
 
-#: inc/profile.class.php:135
+#: inc/profile.class.php:84
 msgid "Generate graphs"
 msgstr "Формирование"
 
-#: inc/prototype.class.php:199
+#: inc/prototype.class.php:202
 msgid "Graphviz name"
 msgstr "Graphviz имя"
 
-#: inc/prototype.class.php:200 inc/prototype.class.php:258
+#: inc/prototype.class.php:203 inc/prototype.class.php:261
 msgid "Associated picture"
 msgstr "Назначено изображение"
 
-#: inc/prototype.class.php:201
+#: inc/prototype.class.php:204
 msgid "Name of item"
 msgstr "Название"
 
-#: inc/prototype.class.php:255
+#: inc/prototype.class.php:257
+msgid "Link"
+msgid_plural "Links"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: inc/prototype.class.php:258
 msgid "Graphviz links"
 msgstr "Graphviz связи"
 
-#: inc/prototype.class.php:256
+#: inc/prototype.class.php:259
 msgid "IP item 1"
 msgstr "IP material 1"
 
-#: inc/prototype.class.php:257
+#: inc/prototype.class.php:260
 msgid "Socket item 1"
 msgstr "Socket material 1"
 
-#: inc/prototype.class.php:259
+#: inc/prototype.class.php:262
 msgid "Socket item 2"
 msgstr "Socket material 2"
 
-#: inc/prototype.class.php:260
+#: inc/prototype.class.php:263
 msgid "IP item 2"
 msgstr "IP material 2"
 
-#: inc/prototype.class.php:315 inc/prototype.class.php:318
-#: inc/prototype.class.php:491 inc/prototype.class.php:513
+#: inc/prototype.class.php:318 inc/prototype.class.php:321
+#: inc/prototype.class.php:494 inc/prototype.class.php:516
 msgid "Socket"
 msgstr "Порт"
 
-#: inc/prototype.class.php:334
+#: inc/prototype.class.php:337
 msgid "Test Graphviz"
 msgstr "Тестирование Graphviz"
 
-#: inc/prototype.class.php:725 inc/view.class.php:332 inc/view.class.php:412
+#: inc/prototype.class.php:728 inc/view.class.php:324 inc/view.class.php:402
 msgid "Generation"
 msgstr "Сформировать"
 
-#: inc/querytype.class.php:144
+#: inc/querytype.class.php:138
 msgid "Display types of items"
 msgstr "Показывать тип"
 
-#: inc/statecolor.class.php:175
+#: inc/statecolor.class.php:101
 msgid "Associate colors with items statuses"
 msgstr "Назначить цвета по статусу объектов"
 
-#: inc/statecolor.class.php:217
+#: inc/statecolor.class.php:189
 msgid "All statuses"
 msgstr "Все статусы"
 
-#: inc/view.class.php:100 inc/view.class.php:289 inc/view.class.php:455
-#: inc/view.class.php:457
+#: inc/view.class.php:93 inc/view.class.php:281 inc/view.class.php:445
+#: inc/view.class.php:447
 msgid "Display sockets"
 msgstr "Показывать количество портов"
 
-#: inc/view.class.php:105 inc/view.class.php:307 inc/view.class.php:462
-#: inc/view.class.php:464
+#: inc/view.class.php:98 inc/view.class.php:299 inc/view.class.php:452
+#: inc/view.class.php:454
 msgid "Display IP/Mask"
 msgstr "Показывать IP/Mask"
 
-#: inc/view.class.php:110 inc/view.class.php:313 inc/view.class.php:469
-#: inc/view.class.php:471
+#: inc/view.class.php:103 inc/view.class.php:305 inc/view.class.php:459
+#: inc/view.class.php:461
 msgid "Display item types"
 msgstr "Показывать тип объекта"
 
-#: inc/view.class.php:115 inc/view.class.php:317 inc/view.class.php:476
-#: inc/view.class.php:478
+#: inc/view.class.php:108 inc/view.class.php:309 inc/view.class.php:466
+#: inc/view.class.php:468
 msgid "Display item statuses"
 msgstr "Показывать статус объекта"
 
-#: inc/view.class.php:120 inc/view.class.php:323 inc/view.class.php:483
-#: inc/view.class.php:485
+#: inc/view.class.php:113 inc/view.class.php:315 inc/view.class.php:473
+#: inc/view.class.php:475
 msgid "Display item locations"
 msgstr "Показывать расположение"
 
-#: inc/view.class.php:125 inc/view.class.php:327 inc/view.class.php:490
-#: inc/view.class.php:492
+#: inc/view.class.php:118 inc/view.class.php:319 inc/view.class.php:480
+#: inc/view.class.php:482
 msgid "Display item entities"
 msgstr "Показывать организацию"
 
-#: inc/view.class.php:130 inc/view.class.php:335 inc/view.class.php:505
+#: inc/view.class.php:123 inc/view.class.php:327 inc/view.class.php:495
 msgid "Rendering engine"
 msgstr "Rendering engine"
 
-#: inc/view.class.php:134 inc/view.class.php:350 inc/view.class.php:515
+#: inc/view.class.php:127 inc/view.class.php:342 inc/view.class.php:505
 msgid "Image format"
 msgstr "Формат изображения"
 
-#: inc/view.class.php:201
+#: inc/view.class.php:194
 msgid "See all views"
 msgstr "See all views"
 
-#: inc/view.class.php:222
+#: inc/view.class.php:215
 msgid "Display"
 msgstr "Показать"
 
-#: inc/view.class.php:258 inc/view.class.php:410
+#: inc/view.class.php:250 inc/view.class.php:400
 msgid "Display of items"
 msgstr "Показывать объекты"
 
-#: inc/view.class.php:286 inc/view.class.php:411
+#: inc/view.class.php:278 inc/view.class.php:401
 msgid "Display description"
 msgstr "Показывать описание"
 
-#: inc/view.class.php:348
+#: inc/view.class.php:340
 msgid "With neato, the sockets will not be displayed"
 msgstr "При использовании neato порты не отображаются"
 
-#: inc/vlancolor.class.php:175
+#: inc/vlancolor.class.php:102
 msgid "Associate colors to VLANs"
 msgstr "Associer des couleurs aux VLAN"
 
-#: inc/vlancolor.class.php:217
+#: inc/vlancolor.class.php:186
 msgid "All VLANs"
 msgstr "Tous les VLANs"

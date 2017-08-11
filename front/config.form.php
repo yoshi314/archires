@@ -2,28 +2,30 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @author    Nelly Mahu-Lasson, Xavier Caillaud
+ @copyright Copyright (c) 2016-2017 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/archires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -33,28 +35,21 @@ if (!defined('GLPI_ROOT')) {
 
 $plugin = new Plugin();
 if ($plugin->isActivated("archires")) {
-   Session::checkRight("config","w");
-
+   Session::checkRight("config", UPDATE);
    $PluginArchiresImageItem             = new PluginArchiresImageItem();
    $PluginArchiresNetworkInterfaceColor = new PluginArchiresNetworkInterfaceColor();
    $PluginArchiresVlanColor             = new PluginArchiresVlanColor();
    $PluginArchiresStateColor            = new PluginArchiresStateColor();
 
-   if (isset($_POST["add"]) && isset($_POST['type'])) {
-      $test = explode(";", $_POST['type']);
-      if (isset($test[0])) {
-         $_POST['type']     = $test[1];
-         $_POST['itemtype'] = $test[0];
-
-         if ($PluginArchiresImageItem->canCreate()) {
-            $PluginArchiresImageItem->addItemImage($_POST['type'], $_POST['itemtype'],
-                                                   $_POST['img']);
-         }
+   if (isset($_POST["add"]) && isset($_POST['_itemtype'])) {
+      if ($PluginArchiresImageItem->canCreate()) {
+         $PluginArchiresImageItem->addItemImage($_POST['type'], $_POST['_itemtype'],
+                                                $_POST['img']);
       }
       Html::back();
 
    } else if (isset($_POST["delete"])) {
-      Session::checkRight("config","w");
+      Session::checkRight("config", UPDATE);
       $PluginArchiresImageItem->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item"] as $key => $val) {
@@ -74,7 +69,7 @@ if ($plugin->isActivated("archires")) {
       Html::back();
 
    } else if (isset($_POST["delete_color_networkinterface"])) {
-      Session::checkRight("config","w");
+      Session::checkRight("config", UPDATE);
       $PluginArchiresNetworkInterfaceColor->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item_color"] as $key => $val) {
@@ -91,7 +86,7 @@ if ($plugin->isActivated("archires")) {
       Html::back();
 
    } else if (isset($_POST["delete_color_state"])) {
-      Session::checkRight("config","w");
+      Session::checkRight("config", UPDATE);
       $PluginArchiresStateColor->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item_color"] as $key => $val) {
@@ -108,7 +103,7 @@ if ($plugin->isActivated("archires")) {
       Html::back();
 
    } else if (isset($_POST["delete_color_vlan"])) {
-      Session::checkRight("config","w");
+      Session::checkRight("config", UPDATE);
       $PluginArchiresVlanColor->getFromDB($_POST["id"],-1);
 
       foreach ($_POST["item_color"] as $key => $val) {
@@ -119,7 +114,7 @@ if ($plugin->isActivated("archires")) {
       Html::back();
 
    } else {
-      Html::header(PluginArchiresArchires::getTypeName(), '', "plugins", "archires", "summary");
+      Html::header(PluginArchiresArchires::getTypeName(), '', "tools", "pluginarchiresmenu");
 
       $PluginArchiresImageItem->showConfigForm();
 
@@ -139,4 +134,3 @@ if ($plugin->isActivated("archires")) {
    echo "<b>".__('Please activate the plugin','addressing')."</b></div>";
    Html::footer();
 }
-?>

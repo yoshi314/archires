@@ -2,28 +2,30 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @author    Nelly Mahu-Lasson, Xavier Caillaud
+ @copyright Copyright (c) 2016 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/archires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -33,19 +35,12 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
+   static $rightname      = "plugin_archires";
+   protected $usenotepad  = true;
+
 
    static function getTypeName($nb=0) {
       return _n('Network equipment', 'Network equipments', 1, 'archires');
-   }
-
-
-   static function canCreate() {
-      return plugin_archires_haveRight('archires', 'w');
-   }
-
-
-   static function canView() {
-      return plugin_archires_haveRight('archires', 'r');
    }
 
 
@@ -126,10 +121,11 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
    function defineTabs($options=array()) {
 
       $ong = array();
+      $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
       $this->addStandardTab('PluginArchiresView', $ong, $options);
       $this->addStandardTab('PluginArchiresPrototype', $ong, $options);
-      $this->addStandardTab('Note', $ong, $options);
+      $this->addStandardTab('Notepad',$ong, $options);
       return $ong;
    }
 
@@ -137,7 +133,6 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
    function showForm ($ID, $options=array()) {
 
       $this->initForm($ID, $options);
-      $this->showTabs($options);
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
@@ -181,13 +176,12 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       echo "</td></tr>";
 
       $this->showFormButtons($options);
-      $this->addDivForTabs();
 
       return true;
    }
 
 
-   function Query ($ID,$PluginArchiresView,$for) {
+   function Query($ID,$PluginArchiresView,$for) {
       global $DB;
 
       $this->getFromDB($ID);
@@ -212,12 +206,12 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
          $types[] = 'NetworkEquipment';
       }
 
-      $query_switch = "SELECT `glpi_networkports`.`name` AS port,
-                              `glpi_networkports`.`id` AS idport
+      $query_switch = "SELECT `np`.`name` AS port,
+                              `np`.`id` AS idport
                        FROM `glpi_networkequipments`
-                       LEFT JOIN `glpi_networkports`
-                           ON (`glpi_networkports`.`itemtype` = 'NetworkEquipment'
-                               AND `glpi_networkports`.`items_id` = `glpi_networkequipments`.`id`)
+                       LEFT JOIN `glpi_networkports` np
+                           ON (`np`.`itemtype` = 'NetworkEquipment'
+                               AND `np`.`items_id` = `glpi_networkequipments`.`id`)
                        WHERE `glpi_networkequipments`.`id` = '".$this->fields["networkequipments_id"]."'
                              AND `glpi_networkequipments`.`is_deleted` = '0'
                              AND `glpi_networkequipments`.`is_template` = '0'".
@@ -251,7 +245,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                    LEFT JOIN `glpi_ipaddresses`
                         ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
                             AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
-                    WHERE `glpi_networkports`.`instantiation_type` = 'NetworkPortEthernet' ";
+                    WHERE `np`.`instantiation_type` = 'NetworkPortEthernet' ";
 
                   if ($this->fields["vlans_id"] > "0") {
                      $query .= ", `glpi_networkports_vlans` nv";
@@ -332,8 +326,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                 FROM `glpi_networkports` `np`, `glpi_networkequipments` `n`,
                      `glpi_ipnetworks` AS ipn
                 LEFT JOIN `glpi_networknames`
-                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
-                            AND `glpi_networkports`.`id` = `glpi_networknames`.`items_id`)
+                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort')
                 LEFT JOIN `glpi_ipaddresses`
                         ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
                             AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)";
@@ -346,13 +339,14 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                        AND `np`.`items_id` = `n`.`id`
                        AND `n`.`id` = '".$this->fields["networkequipments_id"]."'
                        AND `n`.`is_deleted` = '0'
-                       AND `n`.`is_template` = '0'";
+                       AND `n`.`is_template` = '0'
+                       AND `glpi_networknames`.`items_id` = `np`.`id`";
 
       if ($this->fields["vlans_id"] > "0") {
          $query .= " AND `nv`.`networkports_id` = `np`.`id`
                      AND vlans_id= '".$this->fields["vlans_id"]."' ";
       }
-      $query .= "ORDER BY `np`.`ip` ASC ";
+      $query .= "ORDER BY `ip` ASC ";
 
       if ($result = $DB->query($query)) {
          while ($data = $DB->fetch_array($result)) {
@@ -384,4 +378,3 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       return $ports;
    }
 }
-?>

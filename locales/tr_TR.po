@@ -3,70 +3,70 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Kaya Zeren <kayazeren@gmail.com>, 2013,2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - archires plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-11 14:01+0200\n"
 "PO-Revision-Date: 2017-08-03 17:55+0000\n"
-"Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
-"Language-Team: Spanish (Spain) (http://www.transifex.com/yllen/glpi-project-archires-plugin/language/es_ES/)\n"
+"Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/yllen/glpi-project-archires-plugin/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_ES\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: tr_TR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: hook.php:736 inc/locationquery.class.php:209
 msgid "All root locations"
-msgstr "Todos los lugares principales"
+msgstr "Tüm kök konumlar"
 
 #: hook.php:765 inc/view.class.php:292
 msgid "See numbers"
-msgstr "See numbers"
+msgstr "Sayılara bakın"
 
 #: hook.php:767 inc/view.class.php:297
 msgid "See names"
-msgstr "See names"
+msgstr "Adlara bakın"
 
 #: hook.php:791 inc/networkinterfacecolor.class.php:142 inc/view.class.php:368
 msgid "Type of network"
-msgstr "Tipo de red"
+msgstr "Ağ tipi"
 
 #: setup.php:63 inc/archires.class.php:44 inc/menu.class.php:38
 msgid "Network Architecture"
 msgid_plural "Network Architectures"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ağ Mimarisi"
 
 #: front/config.form.php:134
 msgid "Please activate the plugin"
-msgstr ""
+msgstr "Lütfen uygulama ekini etkinleştirin"
 
 #: inc/appliancequery.class.php:114 inc/locationquery.class.php:119
 #: inc/networkequipmentquery.class.php:113
 msgid "Thanks to specify a default used view"
-msgstr "Thanks to specify a default used view"
+msgstr "Varsayılan olarak kullanılan görünüm belirtildiği için"
 
 #: inc/archires.class.php:83
 msgid "Add view"
-msgstr "Añadir una vista"
+msgstr "Görünüm ekleyin"
 
 #: inc/imageitem.class.php:102
 msgid "Associate pictures with item types"
-msgstr "Asociar las imágenes a los tipos de material"
+msgstr "Öge tiplerine görseller atayın"
 
 #: inc/imageitem.class.php:119
 msgid "Some types of items must be created so that the association can exist"
-msgstr "Des types de matériels doivent être créés pour que l'association puisse exister"
+msgstr "Görsel atayabilmek için öge tipleri oluşturulmalıdır"
 
 #: inc/imageitem.class.php:150
 msgid "Picture"
-msgstr "Imagen"
+msgstr "Görsel"
 
 #: inc/locationquery.class.php:69 inc/locationquery.class.php:165
 msgid "Childs"
-msgstr "Hijos"
+msgstr "Alt ögeler"
 
 #: inc/menu.class.php:61 inc/networkequipmentquery.class.php:43
 #: inc/networkequipmentquery.class.php:67
@@ -74,152 +74,150 @@ msgstr "Hijos"
 #: inc/view.class.php:257 inc/view.class.php:414 inc/view.class.php:417
 msgid "Network equipment"
 msgid_plural "Network equipments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ağ aygıtı"
 
 #: inc/networkinterfacecolor.class.php:100
 msgid "Associate colors with network types"
-msgstr "Asociar los colores a los tipos de redes"
+msgstr "Ağ tiplerine renk atayın"
 
 #: inc/networkinterfacecolor.class.php:107 inc/statecolor.class.php:109
 #: inc/vlancolor.class.php:108
 msgid "Please use this color format"
-msgstr "Utilizar este formato para introducir el color"
+msgstr "Lütfen şu renk biçimini kullanın"
 
 #: inc/networkinterfacecolor.class.php:143 inc/statecolor.class.php:143
 #: inc/view.class.php:131 inc/view.class.php:362 inc/vlancolor.class.php:141
 msgid "Color"
-msgstr "Color"
+msgstr "Renk"
 
 #: inc/profile.class.php:84
 msgid "Generate graphs"
-msgstr "Generar un gráfico"
+msgstr "Çizelge oluşturma"
 
 #: inc/prototype.class.php:202
 msgid "Graphviz name"
-msgstr "Nombre Graphviz"
+msgstr "Graphviz adı"
 
 #: inc/prototype.class.php:203 inc/prototype.class.php:261
 msgid "Associated picture"
-msgstr "Imagen asociada"
+msgstr "Atanmış görsel"
 
 #: inc/prototype.class.php:204
 msgid "Name of item"
-msgstr "Nombre del material"
+msgstr "Öge adı"
 
 #: inc/prototype.class.php:257
 msgid "Link"
 msgid_plural "Links"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Bağlantı"
 
 #: inc/prototype.class.php:258
 msgid "Graphviz links"
-msgstr "Enlaces Graphviz"
+msgstr "Graphviz bağlantıları"
 
 #: inc/prototype.class.php:259
 msgid "IP item 1"
-msgstr "IP material 1"
+msgstr "IP ögesi 1"
 
 #: inc/prototype.class.php:260
 msgid "Socket item 1"
-msgstr "Puerto material 2"
+msgstr "Soket ögesi 1"
 
 #: inc/prototype.class.php:262
 msgid "Socket item 2"
-msgstr "Puerto material 2"
+msgstr "Soket ögesi 2"
 
 #: inc/prototype.class.php:263
 msgid "IP item 2"
-msgstr "IP material 2"
+msgstr "IP ögesi 2"
 
 #: inc/prototype.class.php:318 inc/prototype.class.php:321
 #: inc/prototype.class.php:494 inc/prototype.class.php:516
 msgid "Socket"
-msgstr "Puerto"
+msgstr "Soket"
 
 #: inc/prototype.class.php:337
 msgid "Test Graphviz"
-msgstr "Probar Graphviz"
+msgstr "Graphviz Sınayın"
 
 #: inc/prototype.class.php:728 inc/view.class.php:324 inc/view.class.php:402
 msgid "Generation"
-msgstr "Generación"
+msgstr "Oluşturma"
 
 #: inc/querytype.class.php:138
 msgid "Display types of items"
-msgstr "Mostrar los tipos de materiales"
+msgstr "Öge tipleri görüntülensin "
 
 #: inc/statecolor.class.php:101
 msgid "Associate colors with items statuses"
-msgstr "Asociar los colores a los estados de los materiales"
+msgstr "Öge durumlarına renk atayın"
 
 #: inc/statecolor.class.php:189
 msgid "All statuses"
-msgstr "Todos los estados"
+msgstr "Tüm durumlar"
 
 #: inc/view.class.php:93 inc/view.class.php:281 inc/view.class.php:445
 #: inc/view.class.php:447
 msgid "Display sockets"
-msgstr "Ver los puertos"
+msgstr "Soketler görüntülensin"
 
 #: inc/view.class.php:98 inc/view.class.php:299 inc/view.class.php:452
 #: inc/view.class.php:454
 msgid "Display IP/Mask"
-msgstr "Ver IP/Máscara"
+msgstr "IP/Maske görüntülensin"
 
 #: inc/view.class.php:103 inc/view.class.php:305 inc/view.class.php:459
 #: inc/view.class.php:461
 msgid "Display item types"
-msgstr "Ver el tipo de material"
+msgstr "Öge tipleri görüntülensin"
 
 #: inc/view.class.php:108 inc/view.class.php:309 inc/view.class.php:466
 #: inc/view.class.php:468
 msgid "Display item statuses"
-msgstr "Ver el estado del material"
+msgstr "Öge durumları görüntülensin"
 
 #: inc/view.class.php:113 inc/view.class.php:315 inc/view.class.php:473
 #: inc/view.class.php:475
 msgid "Display item locations"
-msgstr "Ver lugar del material"
+msgstr "Öge konumları görüntülensin"
 
 #: inc/view.class.php:118 inc/view.class.php:319 inc/view.class.php:480
 #: inc/view.class.php:482
 msgid "Display item entities"
-msgstr "Ver la entidad del material"
+msgstr "Öge birimleri görüntülensin"
 
 #: inc/view.class.php:123 inc/view.class.php:327 inc/view.class.php:495
 msgid "Rendering engine"
-msgstr "Motor de renderizado"
+msgstr "Görüntüleme motoru"
 
 #: inc/view.class.php:127 inc/view.class.php:342 inc/view.class.php:505
 msgid "Image format"
-msgstr "Formato de la imagen"
+msgstr "Görsel biçimi"
 
 #: inc/view.class.php:194
 msgid "See all views"
-msgstr "See all views"
+msgstr "Tüm görünümlere bakın"
 
 #: inc/view.class.php:215
 msgid "Display"
-msgstr "Mostrar"
+msgstr "Görünüm"
 
 #: inc/view.class.php:250 inc/view.class.php:400
 msgid "Display of items"
-msgstr "Mostrar los materiales"
+msgstr "Öge görünümü"
 
 #: inc/view.class.php:278 inc/view.class.php:401
 msgid "Display description"
-msgstr "Ver Descripción"
+msgstr "Görünüm açıklaması"
 
 #: inc/view.class.php:340
 msgid "With neato, the sockets will not be displayed"
-msgstr "Con neato, los puertos no serań visibles"
+msgstr "Neato ile soketler görüntülenemez"
 
 #: inc/vlancolor.class.php:102
 msgid "Associate colors to VLANs"
-msgstr "Associer des couleurs aux VLAN"
+msgstr "VLAN renkleri atayın"
 
 #: inc/vlancolor.class.php:186
 msgid "All VLANs"
-msgstr "Tous les VLANs"
+msgstr "Tüm VLAN"

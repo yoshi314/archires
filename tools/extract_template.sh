@@ -3,7 +3,7 @@
 soft='GLPI - Archires plugin'
 version='0.84'
 email=glpi-translation@gna.org
-copyright='INDEPNET Development Team'
+copyright='plugin Development Team'
 
 #xgettext *.php */*.php -copyright-holder='$copyright' --package-name=$soft --package-version=$version --msgid-bugs-address=$email -o locales/en_GB.po -L PHP --from-code=UTF-8 --force-po  -i --keyword=_n:1,2 --keyword=__ --keyword=_e
 

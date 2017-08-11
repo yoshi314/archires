@@ -2,28 +2,30 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Archires plugin for GLPI
- Copyright (C) 2003-2013 by the archires Development Team.
-
- https://forge.indepnet.net/projects/archires
- -------------------------------------------------------------------------
-
  LICENSE
 
- This file is part of archires.
+ This file is part of Archires plugin for GLPI.
 
- Archires is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Archires is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
  Archires is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+ You should have received a copy of the GNU Affero General Public License
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   archires
+ @author    Nelly Mahu-Lasson, Xavier Caillaud
+ @copyright Copyright (c) 2016-2017 Archires plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.glpi-project.org/projects/archires
+ @since     version 2.2
  --------------------------------------------------------------------------
  */
 
@@ -33,19 +35,13 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginArchiresLocationQuery extends CommonDBTM {
 
+   static $rightname      = "plugin_archires";
+   protected $usenotepad  = true;
+
+
 
    static function getTypeName($nb=0) {
       return __('Location');
-   }
-
-
-   static function canCreate() {
-      return plugin_archires_haveRight('archires', 'w');
-   }
-
-
-   static function canView() {
-      return plugin_archires_haveRight('archires', 'r');
    }
 
 
@@ -131,10 +127,11 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    function defineTabs($options=array()) {
 
       $ong = array();
+      $this->addDefaultFormTab($ong);
       $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
       $this->addStandardTab('PluginArchiresView', $ong, $options);
       $this->addStandardTab('PluginArchiresPrototype', $ong, $options);
-      $this->addStandardTab('Note', $ong, $options);
+      $this->addStandardTab('Notepad',$ong, $options);
       return $ong;
    }
 
@@ -142,7 +139,6 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    function showForm ($ID, $options=array()) {
 
       $this->initForm($ID, $options);
-      $this->showTabs($options);
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
@@ -157,7 +153,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__('Location')."</td><td>";
-      $this->dropdownLocation($this,$ID);
+      $this->dropdownLocation($this, $ID);
       echo "</td>";
       echo "<td>".__('Group')."</td><td>";
       Group::dropdown(array('name'   => "groups_id",
@@ -188,7 +184,6 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       echo "</td></tr>";
 
       $this->showFormButtons($options);
-      $this->addDivForTabs();
 
       return true;
    }
@@ -239,7 +234,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    }
 
 
-   function Query ($ID,$PluginArchiresView,$for) {
+   function Query($ID,$PluginArchiresView,$for) {
       global $DB;
 
       $this->getFromDB($ID);
@@ -276,37 +271,36 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                           `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`,
                           `$itemtable`.`states_id`, `$itemtable`.`entities_id`,
                           `$itemtable`.`locations_id`
-                   FROM `glpi_networkports` np
-                   LEFT JOIN `glpi_networkportethernets`
-                        ON `glpi_networkportethernets`.`networkports_id` = `np`.`id`
-                   LEFT JOIN `glpi_networknames`
-                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
-                            AND `np`.`id` = `glpi_networknames`.`items_id`)
-                   LEFT JOIN `glpi_ipaddresses`
-                        ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
-                            AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
-                   LEFT JOIN `glpi_ipaddresses_ipnetworks`
-                        ON `glpi_ipaddresses_ipnetworks`.`ipaddresses_id` = `glpi_ipaddresses`.`id`
-                   LEFT JOIN `glpi_ipnetworks`
-                        ON `glpi_ipnetworks`.`id` = `glpi_ipaddresses_ipnetworks`.`ipnetworks_id`
-                   LEFT JOIN `$itemtable`
-                        ON (`np`.`items_id` = `$itemtable`.`id`
-                            AND `$itemtable`.`is_deleted` = '0'
-                            AND `$itemtable`.`is_template` = '0'".
-                            getEntitiesRestrictRequest(" AND",$itemtable).")
-
-                  ";
+                   FROM `glpi_networkports` np";
 
          if ($this->fields["vlans_id"] > "0") {
             $query .= ", `glpi_networkports_vlans` nv ";
          }
-         $query .= "LEFT JOIN `glpi_locations` lc
+
+         $query .= " LEFT JOIN `glpi_networkportethernets`
+                        ON `glpi_networkportethernets`.`networkports_id` = `np`.`id`
+                     LEFT JOIN `glpi_networknames`
+                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
+                            AND `np`.`id` = `glpi_networknames`.`items_id`)
+                     LEFT JOIN `glpi_ipaddresses`
+                        ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
+                            AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
+                     LEFT JOIN `glpi_ipaddresses_ipnetworks`
+                        ON `glpi_ipaddresses_ipnetworks`.`ipaddresses_id` = `glpi_ipaddresses`.`id`
+                     LEFT JOIN `glpi_ipnetworks`
+                        ON `np`.`id` = `glpi_ipaddresses_ipnetworks`.`ipnetworks_id`
+                     LEFT JOIN `$itemtable`
+                        ON (`np`.`items_id` = `$itemtable`.`id`
+                            AND `$itemtable`.`is_deleted` = '0'
+                            AND `$itemtable`.`is_template` = '0'".
+                            getEntitiesRestrictRequest(" AND",$itemtable).")
+                     LEFT JOIN `glpi_locations` lc
                         ON `lc`.`id` = `$itemtable`.`locations_id`
-                    WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
-                          AND `np`.`itemtype` = '$val'";
+                     WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
+                           AND `np`.`itemtype` = '$val'";
 
          if ($this->fields["vlans_id"] > "0") {
-            $query .= " AND `nv`.`networkports_id` = `np`.`id`
+            $query .= " AND `nv`.`networkports_id` = np`.`id`
                         AND `vlans_id` = '".$this->fields["vlans_id"]."'";
          }
          if (($this->fields["networks_id"] > "0")
@@ -384,4 +378,3 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       return $ports;
    }
 }
-?>
