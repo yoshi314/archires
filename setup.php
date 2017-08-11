@@ -61,11 +61,11 @@ function plugin_init_archires() {
 function plugin_version_archires() {
 
    return array('name'           => _n('Network Architecture', 'Network Architectures', 2, 'archires'),
-                'version'        => '2.3.1',
-                'author'         => 'Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson, Sebastien Prudhomme',
+                'version'        => '2.4',
+                'author'         => 'Xavier Caillaud, Nelly Mahu-Lasson',
                 'license'        => 'AGPLv3+',
                 'homepage'       => ' https://forge.glpi-project.org/projects/archires',
-                'minGlpiVersion' => '0.91');
+                'minGlpiVersion' => '9.1');
 }
 
 
