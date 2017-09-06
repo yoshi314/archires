@@ -76,7 +76,7 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["addtype"])) {
    if ($PluginArchiresQueryType->canCreate()) {
       $PluginArchiresQueryType->addType('PluginArchiresNetworkEquipmentQuery', $_POST['type'],
-                                        $_POST['itemtype'], $_POST['query']);
+                                        $_POST['_itemtype'], $_POST['query']);
    }
    Html::back();
 

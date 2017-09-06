@@ -212,7 +212,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                        LEFT JOIN `glpi_networkports` np
                            ON (`np`.`itemtype` = 'NetworkEquipment'
                                AND `np`.`items_id` = `glpi_networkequipments`.`id`)
-                       WHERE `glpi_networkequipments`.`id` = '".$this->fields["networkequipments_id"]."'
+                       WHERE `glpi_networkequipments`.`id` = ".$this->fields["networkequipments_id"]."
                              AND `glpi_networkequipments`.`is_deleted` = '0'
                              AND `glpi_networkequipments`.`is_template` = '0'".
                              getEntitiesRestrictRequest(" AND","glpi_networkequipments");
@@ -236,26 +236,26 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                                    `$itemtable`.`users_id`, `$itemtable`.`groups_id`,
                                    `$itemtable`.`contact`, `$itemtable`.`states_id`,
                                    `$itemtable`.`entities_id`,`$itemtable`.`locations_id`
-                   FROM `glpi_networkports` np,
-                        `$itemtable`,
-                        `glpi_ipnetworks` AS ipn
-                   LEFT JOIN `glpi_networknames`
-                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
-                            AND `np`.`id` = `glpi_networknames`.`items_id`)
-                   LEFT JOIN `glpi_ipaddresses`
-                        ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
-                            AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
-                    WHERE `np`.`instantiation_type` = 'NetworkPortEthernet' ";
+                            FROM `$itemtable`,
+                                 `glpi_ipnetworks` AS ipn,
+                                 `glpi_networkports` np
+                           LEFT JOIN `glpi_networknames`
+                                 ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
+                                     AND `np`.`id` = `glpi_networknames`.`items_id`)
+                           LEFT JOIN `glpi_ipaddresses`
+                                 ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
+                                     AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
+                           WHERE `np`.`instantiation_type` = 'NetworkPortEthernet' ";
 
                   if ($this->fields["vlans_id"] > "0") {
                      $query .= ", `glpi_networkports_vlans` nv";
                   }
-                  $query .= " WHERE `np`.`itemtype` = '$val'
-                                    AND `np`.`items_id` = `$itemtable`.`id`
-                                    AND `np`.`id` ='$end'
-                                    AND `$itemtable`.`is_deleted` = '0'
-                                    AND `$itemtable`.`is_template` = '0'".
-                                    getEntitiesRestrictRequest(" AND",$itemtable);
+                  $query .= " AND `np`.`itemtype` = '$val'
+                              AND `np`.`items_id` = `$itemtable`.`id`
+                              AND `np`.`id` ='$end'
+                              AND `$itemtable`.`is_deleted` = '0'
+                              AND `$itemtable`.`is_template` = '0'".
+                              getEntitiesRestrictRequest(" AND",$itemtable);
 
                   if ($this->fields["vlans_id"] > "0") {
                      $query .= " AND `nv`.`networkports_id` = `np`.`id`
@@ -276,7 +276,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                   //types
                   $PluginArchiresQueryType = new PluginArchiresQueryType();
                   $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(), $ID, $val);
-                  $query .= "ORDER BY `np`.`ip` ASC ";
+                  $query .= "ORDER BY `np`.`id` ASC ";
 
                   if ($result = $DB->query($query)) {
                      while ($data = $DB->fetch_array($result)) {
@@ -320,11 +320,11 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       $query = "SELECT `n`.`id` AS `idn`, `np`.`id`, `np`.`items_id`, `np`.`logical_number`,
                        `np`.`instantiation_type`, `glpi_ipaddresses`.`name` AS ip,
                        `np`.`name` AS `namep`,
-                       `ipn`.`netmask`, `n`.`name`,
+                       `ipn`.`address` AS `nip`, `ipn`.`netmask`, `n`.`name`,
                        `n`.`networkequipmenttypes_id` AS `type`, `n`.`users_id`, `n`.`groups_id`,
                        `n`.`contact`, `n`.`states_id`, `n`.`entities_id`,`n`.`locations_id`
                 FROM `glpi_networkports` `np`, `glpi_networkequipments` `n`,
-                     `glpi_ipnetworks` AS ipn
+                     `glpi_ipnetworks` `ipn`
                 LEFT JOIN `glpi_networknames`
                         ON (`glpi_networknames`.`itemtype` = 'NetworkPort')
                 LEFT JOIN `glpi_ipaddresses`
@@ -363,7 +363,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
             $devices['NetworkEquipment'][$data["items_id"]]["locations_id"] = $data["locations_id"];
             $ports[$data["id"]]["items_id"]                                 = $data["items_id"];
             $ports[$data["id"]]["logical_number"]                           = $data["logical_number"];
-            $ports[$data["id"]]["networkinterfaces_id"]                     = $data["networkinterfaces_id"];
+            $ports[$data["id"]]["networkinterfaces"]                        = $data["instantiation_type"];
             $ports[$data["id"]]["ip"]                                       = $data["ip"];
             $ports[$data["id"]]["netmask"]                                  = $data["netmask"];
             $ports[$data["id"]]["namep"]                                    = $data["namep"];
