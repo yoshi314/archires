@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -36,15 +36,15 @@ function plugin_archires_install() {
    $update = false;
 
 
-   if (!TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
+   if (!$DB->TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/empty-2.2.sql");
 
    } else {
       $update = true;
 
       // update to 1.3
-      if (TableExists("glpi_plugin_archires_display")
-          && !FieldExists("glpi_plugin_archires_display","display_ports")) {
+      if ($DB->TableExists("glpi_plugin_archires_display")
+          && !$DB->FieldExists("glpi_plugin_archires_display","display_ports")) {
 
          $migration = new Migration(13);
 
@@ -55,29 +55,29 @@ function plugin_archires_install() {
       }
 
       // update to 1.4
-      if (TableExists("glpi_plugin_archires_display")
-          && !TableExists("glpi_plugin_archires_profiles")) {
+      if ($DB->TableExists("glpi_plugin_archires_display")
+          && !$DB->TableExists("glpi_plugin_archires_profiles")) {
 
          plugin_archires_updateTo14();
       }
 
       // update to 1.5
-      if (TableExists("glpi_plugin_archires_display")
-          && !TableExists("glpi_plugin_archires_image_device")) {
+      if ($DB->TableExists("glpi_plugin_archires_display")
+          && !$DB->TableExists("glpi_plugin_archires_image_device")) {
 
          plugin_archires_updateTo15();
       }
 
       // update to 1.7.0
-      if (TableExists("glpi_plugin_archires_profiles")
-          && FieldExists("glpi_plugin_archires_profiles","interface")) {
+      if ($DB->TableExists("glpi_plugin_archires_profiles")
+          && $DB->FieldExists("glpi_plugin_archires_profiles","interface")) {
 
          plugin_archires_updateTo170();
       }
 
       // update to 1.7.2
-      if (TableExists("glpi_plugin_archires_config")
-          && FieldExists("glpi_plugin_archires_config","system")) {
+      if ($DB->TableExists("glpi_plugin_archires_config")
+          && $DB->FieldExists("glpi_plugin_archires_config","system")) {
 
          $migration = new Migration(172);
 
@@ -87,22 +87,21 @@ function plugin_archires_install() {
       }
 
       // update to 1.8.0
-      if (!TableExists("glpi_plugin_archires_views")) {
+      if (!$DB->TableExists("glpi_plugin_archires_views")) {
          plugin_archires_updateTo180();
       }
 
       // update to 2.1.0
-      if (TableExists("glpi_plugin_archires_appliancequeries")
-          && !FieldExists("glpi_plugin_archires_appliancequeries", "plugin_appliances_appliances_id")) {
+      if ($DB->TableExists("glpi_plugin_archires_appliancequeries")
+            && !$DB->FieldExists("glpi_plugin_archires_appliancequeries", "plugin_appliances_appliances_id")) {
          plugin_archires_updateTo210();
       }
 
       // Update 2.2
-      if (TableExists("glpi_plugin_archires_profiles")) {
+      if ($DB->TableExists("glpi_plugin_archires_profiles")) {
          //Add new rights in glpi_profilerights table
          $profileRight = new ProfileRight();
-         $query = "SELECT *
-                   FROM `glpi_plugin_archires_profiles`";
+         $query = ['FROM' => 'glpi_plugin_archires_profiles'];
 
          foreach ($DB->request($query) as $data) {
             $right['profiles_id']   = $data['profiles_id'];
@@ -132,10 +131,11 @@ function plugin_archires_install() {
 
 
 function plugin_archires_updateTo14() {
+   global $DB;
 
    $migration = new Migration(14);
 
-   if (!TableExists("glpi_plugin_archires_color")) {
+   if (!$DB->TableExists("glpi_plugin_archires_color")) {
       $query = "CREATE TABLE `glpi_plugin_archires_color` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `iface` INT( 11 ) NOT NULL ,
@@ -144,7 +144,7 @@ function plugin_archires_updateTo14() {
       $DB->queryOrDie($query,'1.4 add glpi_plugin_archires_color '.$DB->error());
    }
 
-   if (!TableExists("glpi_plugin_archires_profiles")) {
+   if (!$DB->TableExists("glpi_plugin_archires_profiles")) {
       $query = "CREATE TABLE `glpi_plugin_archires_profiles` (
                   `ID` int(11) NOT NULL auto_increment,
                   `name` varchar(255) collate utf8_unicode_ci default NULL,
@@ -175,6 +175,7 @@ function plugin_archires_updateTo14() {
 
 
 function plugin_archires_updateTo15() {
+   global $DB;
 
    $migration = new Migration(15);
 
@@ -197,7 +198,7 @@ function plugin_archires_updateTo15() {
 
    $migration->dropTable("glpi_plugin_archires_display");
 
-   if (!TableExists("glpi_plugin_archires_color_state")) {
+   if (!$DB->TableExists("glpi_plugin_archires_color_state")) {
       $query = "CREATE TABLE `glpi_plugin_archires_color_state` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `state` INT( 11 ) NOT NULL ,
@@ -206,7 +207,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_color_state '.$DB->error());
    }
 
-   if (!TableExists("glpi_plugin_archires_query_location")) {
+   if (!$DB->TableExists("glpi_plugin_archires_query_location")) {
       $query = "CREATE TABLE `glpi_plugin_archires_query_location` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `FK_entities` int(11) NOT NULL default '0',
@@ -225,7 +226,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_query_location '.$DB->error());
    }
 
-   if (!TableExists("glpi_plugin_archires_query_switch")) {
+   if (!$DB->TableExists("glpi_plugin_archires_query_switch")) {
       $query = "CREATE TABLE `glpi_plugin_archires_query_switch` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `FK_entities` int(11) NOT NULL default '0',
@@ -243,7 +244,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_query_switch '.$DB->error());
    }
 
-   if (!TableExists("glpi_plugin_archires_query_applicatifs")) {
+   if (!$DB->TableExists("glpi_plugin_archires_query_applicatifs")) {
       $query = "CREATE TABLE `glpi_plugin_archires_query_applicatifs` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `FK_entities` int(11) NOT NULL default '0',
@@ -261,7 +262,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_query_applicatifs '.$DB->error());
    }
 
-   if (!TableExists("glpi_plugin_archires_query_type")) {
+   if (!$DB->TableExists("glpi_plugin_archires_query_type")) {
       $query = "CREATE TABLE `glpi_plugin_archires_query_type` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `type_query` INT( 11 ) NOT NULL ,
@@ -272,7 +273,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query,'1.5 create glpi_plugin_archires_query_type '.$DB->error());
    }
 
-   if (!TableExists("glpi_plugin_archires_config")) {
+   if (!$DB->TableExists("glpi_plugin_archires_config")) {
       $query = "CREATE TABLE `glpi_plugin_archires_config` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `FK_entities` int(11) NOT NULL default '0',
@@ -335,6 +336,7 @@ function plugin_archires_updateTo15() {
 
 
 function plugin_archires_updateTo170() {
+   global $DB;
 
    $migration = new Migration(170);
 
@@ -358,7 +360,7 @@ function plugin_archires_updateTo170() {
    $migration->addKey("glpi_plugin_archires_config", "name");
    $migration->addField("glpi_plugin_archires_config", "color", "smallint(6) NOT NULL default '0'");
 
-   if (!TableExists("glpi_plugin_archires_color_vlan")) {
+   if (!$DB->TableExists("glpi_plugin_archires_color_vlan")) {
       $query = "CREATE TABLE `glpi_plugin_archires_color_vlan` (
                   `ID` INT( 11 ) NOT NULL auto_increment,
                   `vlan` INT( 11 ) NOT NULL ,
@@ -626,32 +628,32 @@ function plugin_archires_updateTo210() {
 function plugin_archires_uninstall() {
    global $DB;
 
-   $tables = array("glpi_plugin_archires_imageitems",
-                   "glpi_plugin_archires_views",
-                   "glpi_plugin_archires_networkinterfacecolors",
-                   "glpi_plugin_archires_vlancolors",
-                   "glpi_plugin_archires_statecolors",
-                   "glpi_plugin_archires_profiles",
-                   "glpi_plugin_archires_locationqueries",
-                   "glpi_plugin_archires_networkequipmentqueries",
-                   "glpi_plugin_archires_appliancequeries",
-                   "glpi_plugin_archires_querytypes");
+   $tables = ["glpi_plugin_archires_imageitems",
+              "glpi_plugin_archires_views",
+              "glpi_plugin_archires_networkinterfacecolors",
+              "glpi_plugin_archires_vlancolors",
+              "glpi_plugin_archires_statecolors",
+              "glpi_plugin_archires_profiles",
+              "glpi_plugin_archires_locationqueries",
+              "glpi_plugin_archires_networkequipmentqueries",
+              "glpi_plugin_archires_appliancequeries",
+              "glpi_plugin_archires_querytypes"];
 
-   foreach($tables as $table) {
+   foreach ($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");
    }
    //old versions
-   $tables = array("glpi_plugin_archires_query_location",
-                   "glpi_plugin_archires_query_switch",
-                   "glpi_plugin_archires_query_applicatifs",
-                   "glpi_plugin_archires_image_device",
-                   "glpi_plugin_archires_query_type",
-                   "glpi_plugin_archires_color_iface",
-                   "glpi_plugin_archires_color_state",
-                   "glpi_plugin_archires_config",
-                   "glpi_plugin_archires_color_vlan");
+   $tables = ["glpi_plugin_archires_query_location",
+              "glpi_plugin_archires_query_switch",
+              "glpi_plugin_archires_query_applicatifs",
+              "glpi_plugin_archires_image_device",
+              "glpi_plugin_archires_query_type",
+              "glpi_plugin_archires_color_iface",
+              "glpi_plugin_archires_color_state",
+              "glpi_plugin_archires_config",
+              "glpi_plugin_archires_color_vlan"];
 
-   foreach($tables as $table) {
+   foreach ($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");
    }
 
@@ -659,12 +661,12 @@ function plugin_archires_uninstall() {
 
    Toolbox::deleteDir($rep_files_archires);
 
-   $tables_glpi = array("glpi_displaypreferences",
-                        "glpi_documents_items",
-                        "glpi_bookmarks",
-                        "glpi_logs");
+   $tables_glpi = ["glpi_displaypreferences",
+                   "glpi_documents_items",
+                   "glpi_bookmarks",
+                   "glpi_logs"];
 
-   foreach($tables_glpi as $table_glpi)
+   foreach ($tables_glpi as $table_glpi)
       $DB->query("DELETE FROM `$table_glpi`
                   WHERE `itemtype` = 'PluginArchiresLocationQuery'
                         OR `itemtype` = 'PluginArchiresNetworkEquipmentQuery'
@@ -680,44 +682,45 @@ function plugin_archires_getDatabaseRelations() {
 
    $plugin = new Plugin();
    if ($plugin->isActivated("archires")) {
-      return array("glpi_locations"
-                        => array("glpi_plugin_archires_locationqueries" => "locations_id"),
-                   "glpi_networks"
-                        => array("glpi_plugin_archires_locationqueries"         => "networks_id",
-                                 "glpi_plugin_archires_appliancequeries"        => "networks_id",
-                                 "glpi_plugin_archires_networkequipmentqueries" => "networks_id"),
-                   "glpi_states"
-                        => array("glpi_plugin_archires_locationqueries"          => "states_id",
-                                 "glpi_plugin_archires_appliancequeries"         => "states_id",
-                                 "glpi_plugin_archires_networkequipmentqueries"  => "states_id",
-                                 "glpi_plugin_archires_statecolors"              => "states_id"),
-                   "glpi_groups"
-                        => array("glpi_plugin_archires_locationqueries"          => "groups_id",
-                                 "glpi_plugin_archires_appliancequeries"         => "groups_id",
-                                 "glpi_plugin_archires_networkequipmentqueries"  => "groups_id"),
-                   "glpi_vlans"
-                        => array("glpi_plugin_archires_locationqueries"          => "vlans_id",
-                                 "glpi_plugin_archires_appliancequeries"         => "vlans_id",
-                                 "glpi_plugin_archires_networkequipmentqueries"  => "vlans_id",
-                                 "glpi_plugin_archires_vlancolors"               => "vlans_id"),
-                   "glpi_entities"
-                        => array("glpi_plugin_archires_locationqueries"          => "entities_id",
-                                 "glpi_plugin_archires_networkequipmentqueries"  => "entities_id",
-                                 "glpi_plugin_archires_appliancequeries"         => "entities_id",
-                                 "glpi_plugin_archires_views"                    => "entities_id"),
-                   "glpi_plugin_archires_views"
-                        => array("glpi_plugin_archires_locationqueries"         => "plugin_archires_views_id",
-                                 "glpi_plugin_archires_networkequipmentqueries" => "plugin_archires_views_id",
-                                 "glpi_plugin_archires_appliancequeries"        => "plugin_archires_views_id"),
-                   "glpi_plugin_appliances_appliances"
-                        => array("glpi_plugin_archires_appliancequeries" => "appliances_id"),
-                   "glpi_profiles"
-                        => array("glpi_plugin_addressing_profiles" => "profiles_id"),
-                   "glpi_networkinterfaces"
-                        => array("glpi_plugin_archires_networkinterfacecolors" => "networkinterfaces_id"));
-   } else {
-      return array();
+      return ["glpi_locations" => ["glpi_plugin_archires_locationqueries" => "locations_id"],
+
+              "glpi_networks"  => ["glpi_plugin_archires_locationqueries"         => "networks_id",
+                                   "glpi_plugin_archires_appliancequeries"        => "networks_id",
+                                   "glpi_plugin_archires_networkequipmentqueries" => "networks_id"],
+
+              "glpi_states"    => ["glpi_plugin_archires_locationqueries"          => "states_id",
+                                   "glpi_plugin_archires_appliancequeries"         => "states_id",
+                                   "glpi_plugin_archires_networkequipmentqueries"  => "states_id",
+                                   "glpi_plugin_archires_statecolors"              => "states_id"],
+
+              "glpi_groups"    => ["glpi_plugin_archires_locationqueries"          => "groups_id",
+                                   "glpi_plugin_archires_appliancequeries"         => "groups_id",
+                                   "glpi_plugin_archires_networkequipmentqueries"  => "groups_id"],
+
+              "glpi_vlans"     => ["glpi_plugin_archires_locationqueries"          => "vlans_id",
+                                   "glpi_plugin_archires_appliancequeries"         => "vlans_id",
+                                   "glpi_plugin_archires_networkequipmentqueries"  => "vlans_id",
+                                   "glpi_plugin_archires_vlancolors"               => "vlans_id"],
+
+              "glpi_entities"  => ["glpi_plugin_archires_locationqueries"          => "entities_id",
+                                   "glpi_plugin_archires_networkequipmentqueries"  => "entities_id",
+                                   "glpi_plugin_archires_appliancequeries"         => "entities_id",
+                                   "glpi_plugin_archires_views"                    => "entities_id"],
+
+              "glpi_plugin_archires_views"
+                               => ["glpi_plugin_archires_locationqueries"         => "plugin_archires_views_id",
+                                   "glpi_plugin_archires_networkequipmentqueries" => "plugin_archires_views_id",
+                                   "glpi_plugin_archires_appliancequeries"        => "plugin_archires_views_id"],
+
+              "glpi_plugin_appliances_appliances"
+                               => ["glpi_plugin_archires_appliancequeries" => "appliances_id"],
+
+              "glpi_profiles"  => ["glpi_plugin_addressing_profiles" => "profiles_id"],
+
+              "glpi_networkinterfaces"
+                               => ["glpi_plugin_archires_networkinterfacecolors" => "networkinterfaces_id"]];
    }
+   return [];
 }
 
 
@@ -808,10 +811,10 @@ function plugin_archires_MassiveActions($type) {
       case 'PluginArchiresNetworkEquipmentQuery' :
       case 'PluginArchiresApplianceQuery' :
       case 'PluginArchiresView' :
-         return array("plugin_archires_duplicate" => __('Duplicate'),
-                      "plugin_archires_transfert" => __('Transfer'));
+         return ["plugin_archires_duplicate" => __('Duplicate'),
+                 "plugin_archires_transfert" => __('Transfer')];
    }
-   return array();
+   return [];
 }
 
 
@@ -881,4 +884,3 @@ function plugin_archires_MassiveActionsProcess($data) {
          break;
    }
 }
-?>

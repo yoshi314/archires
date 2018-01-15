@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -54,7 +54,7 @@ if ($plugin->isActivated("archires")) {
 
       foreach ($_POST["item"] as $key => $val) {
          if ($val == 1) {
-            $PluginArchiresImageItem->delete(array('id' => $key));
+            $PluginArchiresImageItem->delete(['id' => $key]);
          }
       }
       Html::back();
@@ -74,7 +74,7 @@ if ($plugin->isActivated("archires")) {
 
       foreach ($_POST["item_color"] as $key => $val) {
          if ($val == 1) {
-            $PluginArchiresNetworkInterfaceColor->delete(array('id' => $key));
+            $PluginArchiresNetworkInterfaceColor->delete(['id' => $key]);
          }
       }
       Html::back();
@@ -91,7 +91,7 @@ if ($plugin->isActivated("archires")) {
 
       foreach ($_POST["item_color"] as $key => $val) {
          if ($val == 1) {
-            $PluginArchiresStateColor->delete(array('id' => $key));
+            $PluginArchiresStateColor->delete(['id' => $key]);
          }
       }
       Html::back();
@@ -108,7 +108,7 @@ if ($plugin->isActivated("archires")) {
 
       foreach ($_POST["item_color"] as $key => $val) {
          if ($val == 1) {
-            $PluginArchiresVlanColor->delete(array('id' => $key));
+            $PluginArchiresVlanColor->delete(['id' => $key]);
          }
       }
       Html::back();

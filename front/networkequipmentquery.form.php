@@ -20,7 +20,7 @@
  along with Archires. If not, see <http://www.gnu.org/licenses/>.
 
  @package   archires
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -86,7 +86,7 @@ if (isset($_POST["add"])) {
 
       foreach ($_POST["item"] as $key => $val) {
          if ($val == 1) {
-            $PluginArchiresQueryType->delete(array('id' => $key));
+            $PluginArchiresQueryType->delete(['id' => $key]);
          }
       }
    }
