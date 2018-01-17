@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -35,14 +35,14 @@ function plugin_init_archires() {
 
    $PLUGIN_HOOKS['csrf_compliant']['archires'] = true;
 
-   Plugin::registerClass('PluginArchiresProfile', array('addtabon' => array('Profile')));
+   Plugin::registerClass('PluginArchiresProfile', ['addtabon' => ['Profile']]);
 
-   $PLUGIN_HOOKS['pre_item_purge']['archires'] = array('Profile' => array('PluginArchiresProfile',
-                                                       'purgeProfiles'));
+   $PLUGIN_HOOKS['pre_item_purge']['archires'] = ['Profile' => ['PluginArchiresProfile',
+                                                                'purgeProfiles']];
 
    if (Session::getLoginUserID()) {
       if (Session::haveRight("plugin_archires", READ)) {
-         $PLUGIN_HOOKS["menu_toadd"]['archires'] = array('tools' => 'PluginArchiresMenu');
+         $PLUGIN_HOOKS["menu_toadd"]['archires'] = ['tools' => 'PluginArchiresMenu'];
      }
 
       if (Session::haveRight("plugin_archires", CREATE)) {
@@ -60,20 +60,22 @@ function plugin_init_archires() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_archires() {
 
-   return array('name'           => _n('Network Architecture', 'Network Architectures', 2, 'archires'),
-                'version'        => '2.4',
-                'author'         => 'Xavier Caillaud, Nelly Mahu-Lasson',
-                'license'        => 'AGPLv3+',
-                'homepage'       => ' https://forge.glpi-project.org/projects/archires',
-                'minGlpiVersion' => '9.1');
+   return ['name'           => _n('Network Architecture', 'Network Architectures', 2, 'archires'),
+           'version'        => '2.5.0',
+           'author'         => 'Xavier Caillaud, Nelly Mahu-Lasson',
+           'license'        => 'AGPLv3+',
+           'homepage'       => ' https://forge.glpi-project.org/projects/archires',
+           'minGlpiVersion' => '9.2',
+           'requirements'   => ['glpi' => ['min' => '9.2',
+                                           'max' => '9.3']]];
 }
 
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_archires_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.91','lt') || version_compare(GLPI_VERSION,'9.2','ge')) {
-      echo "This plugin requires GLPI >= 0.91";
+   if (version_compare(GLPI_VERSION,'9.2','lt') || version_compare(GLPI_VERSION,'9.3','ge')) {
+      echo "This plugin requires GLPI >= 9.2";
       return false;
    }
    return true;

@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -41,15 +41,14 @@ class PluginArchiresStateColor extends CommonDBTM {
    function getFromDBbyState($state) {
       global $DB;
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                WHERE `states_id` = '$state'";
+      $query = ['FROM'  => $this->getTable(),
+                'WHERE' => ['states_id' => $state]];
 
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
+      if ($result = $DB->request($query)) {
+         if (count($result) != 1) {
             return false;
          }
-         $this->fields = $DB->fetch_assoc($result);
+         $this->fields = $result->next();
          if (is_array($this->fields) && count($this->fields)) {
             return true;
          }
@@ -63,27 +62,26 @@ class PluginArchiresStateColor extends CommonDBTM {
 
       if ($state != '-1') {
          if ($this->GetfromDBbyState($state)) {
-            $this->update(array('id'    => $this->fields['id'],
-                                'color' => $color));
+            $this->update(['id'    => $this->fields['id'],
+                           'color' => $color]);
          } else {
-            $this->add(array('states_id' => $state,
-                             'color'     => $color));
+            $this->add(['states_id' => $state,
+                        'color'     => $color]);
          }
       } else {
-         $query  = "SELECT *
-                    FROM `glpi_states`";
-         $result = $DB->query($query);
-         $number = $DB->numrows($result);
+         $query  = ['FROM' => 'glpi_states'];
+         $result = $DB->request($query);
          $i      = 0;
 
-         while ($i < $number) {
-            $state_table = $DB->result($result, $i, "id");
+         while ($i < count($result)) {
+            $row = $result->next();
+            $state_table = $row['id'];
             if ($this->GetfromDBbyState($state_table)) {
-               $this->update(array('id'    => $this->fields['id'],
-                                   'color' => $color));
+               $this->update(['id'    => $this->fields['id'],
+                              'color' => $color]);
             } else {
-               $this->add(array('states_id' => $state_table,
-                                'color'     => $color));
+               $this->add(['states_id' => $state_table,
+                           'color'     => $color]);
             }
             $i++;
          }
@@ -107,8 +105,8 @@ class PluginArchiresStateColor extends CommonDBTM {
          echo "<td><input type='text' name='color'>";
          echo "&nbsp;";
          Html::showToolTip(nl2br(__('Please use this color format', 'archires')),
-                           array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
-                                 'linktarget' => '_blank'));
+                           ['link'       => 'http://www.graphviz.org/doc/info/colors.html',
+                            'linktarget' => '_blank']);
          echo "</td><td></div>";
          echo "<div class='center'><input type='submit' name='add_color_state' value=\"".
                                     _sx('button', 'Add')."\" class='submit' ></div></td></tr>";
@@ -116,20 +114,19 @@ class PluginArchiresStateColor extends CommonDBTM {
          Html::closeForm();
       }
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                ORDER BY `states_id` ASC";
+      $query = ['FROM'  => $this->getTable(),
+                'ORDER' => ['states_id ASC']];
 
-      if ($result = $DB->query($query)) {
-         $number = $DB->numrows($result);
+      if ($result = $DB->request($query)) {
+         $number = count($result);
 
-         if ($number != 0) {
+         if ($number) {
             echo "<div id='liste_color'>";
             if ($canupdate) {
                $rand = mt_rand();
                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-               $massiveactionparams = array('num_displayed'    => $number,
-                                            'container'        => 'mass'.__CLASS__.$rand);
+               $massiveactionparams = ['num_displayed'    => $number,
+                                       'container'        => 'mass'.__CLASS__.$rand];
                Html::showMassiveActions($massiveactionparams);
             }
             echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
@@ -143,8 +140,8 @@ class PluginArchiresStateColor extends CommonDBTM {
             echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             echo "</tr>";
 
-            while ($ligne= $DB->fetch_assoc($result)) {
-               $ID        = $ligne["id"];
+            while ($ligne = $result->next()) {
+               $ID = $ligne["id"];
                echo "<tr class='tab_bg_1'>";
                 if ($canupdate) {
                   echo "<td width='10'>";
@@ -171,26 +168,24 @@ class PluginArchiresStateColor extends CommonDBTM {
    function dropdownState() {
       global $DB;
 
-      $colors = array();
-      foreach($DB->request("glpi_plugin_archires_statecolors") as $color) {
+      $colors = [];
+      foreach ($DB->request("glpi_plugin_archires_statecolors") as $color) {
          $colors[] = $color['states_id'];
       }
 
-      $query = "SELECT *
-                FROM `glpi_states`
-                WHERE `id` NOT IN ('".implode("','",$colors)."')
-                ORDER BY `name`";
+      $query = ['FROM'  => 'glpi_states',
+                'WHERE' => ['NOT' => ['id' => [implode("','",$colors)]]],
+                'ORDER' => 'name'];
 
-      $result = $DB->query($query);
-      $number = $DB->numrows($result);
+      $result = $DB->request($query);
 
-      if ($number !="0") {
-         $values = array(0 => Dropdown::EMPTY_VALUE,
-                         1 => __('All statuses', 'archires'));
-         while ($data = $DB->fetch_array($result)) {
+      if (count($result)) {
+         $values = [1 => __('All statuses', 'archires')];
+         while ($data = $result->next()) {
             $values[$data['id']] = $data["name"];
          }
-         Dropdown::showFromArray('states_id', $values, array('width' => '80%'));
+         Dropdown::showFromArray('states_id', $values, ['width'               => '80%',
+                                                        'display_emptychoice' => true]);
       }
    }
 
@@ -199,20 +194,19 @@ class PluginArchiresStateColor extends CommonDBTM {
       global $DB;
 
       $graph       = "";
-      $query_state = "SELECT *
-                      FROM `".$this->getTable()."`
-                      WHERE `states_id`= '".$device["states_id"]."'";
-      $result_state = $DB->query($query_state);
-      $number_state = $DB->numrows($result_state);
+      $query_state = ['FROM'  => $this->getTable(),
+                      'WHERE' => ['states_id' => $device["states_id"]]];
 
-      if (($number_state != 0)
-          && ($device["states_id"] > 0)) {
-         $color_state = $DB->result($result_state,0,"color");
+      $result_state = $DB->request($query_state);
+      $number_state = count($result_state);
+
+      if ($number_state && ($device["states_id"] > 0)) {
+         $row = $result_state->next();
+         $color_state = $row['color'];
          $graph ="<font color=\"$color_state\">".Dropdown::getDropdownName("glpi_states",
                                                                            $device["states_id"])
                 ."</font>";
-      } else if (($number_state == 0)
-                 && ($device["states_id"] > 0)) {
+      } else if (!$number_state && ($device["states_id"] > 0)) {
          $graph = Dropdown::getDropdownName("glpi_states",$device["states_id"]);
       }
       return $graph;

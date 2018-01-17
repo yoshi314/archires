@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -41,15 +41,14 @@ class PluginArchiresVlanColor extends CommonDBTM {
    function getFromDBbyVlan($vlan) {
       global $DB;
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                WHERE `vlans_id` = '$vlan'";
+      $query = ['FROM'  => $this->getTable(),
+                'WHERE' => ['vlans_id' => $vlan]];
 
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
+      if ($result = $DB->request($query)) {
+         if (count($result) != 1) {
             return false;
          }
-         $this->fields = $DB->fetch_assoc($result);
+         $this->fields = $result->next();
          if (is_array($this->fields) && count($this->fields)) {
             return true;
          }
@@ -64,27 +63,25 @@ class PluginArchiresVlanColor extends CommonDBTM {
 
       if ($vlan != '-1') {
          if ($this->GetfromDBbyVlan($vlan)) {
-            $this->update(array('id'    => $this->fields['id'],
-                                'color' => $color));
+            $this->update(['id'    => $this->fields['id'],
+                           'color' => $color]);
          } else {
-            $this->add(array('vlans_id' => $vlan,
-                             'color'    => $color));
+            $this->add(['vlans_id' => $vlan,
+                        'color'    => $color]);
          }
       } else {
-         $query = "SELECT *
-                   FROM `glpi_vlans` ";
-         $result = $DB->query($query);
-         $number = $DB->numrows($result);
+         $query = ['FROM' => 'glpi_vlans'];
+         $result = $DB->request($query);
 
          $i = 0;
-         while ($i < $number) {
+         while ($i < count($result)) {
             $vlan_table=$DB->result($result, $i, "id");
             if ($this->GetfromDBbyVlan($vlan_table)) {
-               $this->update(array('id'    => $this->fields['id'],
-                                   'color' => $color));
+               $this->update(['id'    => $this->fields['id'],
+                              'color' => $color]);
             } else {
-               $this->add(array('vlans_id' => $vlan_table,
-                                'color'    => $color));
+               $this->add(['vlans_id' => $vlan_table,
+                           'color'    => $color]);
            }
            $i++;
          }
@@ -106,28 +103,27 @@ class PluginArchiresVlanColor extends CommonDBTM {
          echo "<td><input type='text' name='color'>";
          echo "&nbsp;";
          Html::showToolTip(nl2br(__('Please use this color format', 'archires')),
-                           array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
-                                 'linktarget' => '_blank'));
+                           ['link'       => 'http://www.graphviz.org/doc/info/colors.html',
+                            'linktarget' => '_blank']);
          echo "<td class='center'><input type='submit' name='add_color_vlan' value=\"".
                 _sx('button', 'Add')."\" class='submit'></td></tr>";
          echo "</table>";
          Html::closeForm();
       }
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                ORDER BY `vlans_id` ASC";
+      $query = ['FROM'  => $this->getTable(),
+                'ORDER' => 'vlans_id ASC'];
 
-      if ($result = $DB->query($query)) {
-         $number = $DB->numrows($result);
+      if ($result = $DB->request($query)) {
+         $number = count($result);
 
          if ($number != 0) {
             echo "<div id='liste_vlan'>";
             if ($canupdate) {
                $rand = mt_rand();
                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-               $massiveactionparams = array('num_displayed'    => $number,
-                                            'container'        => 'mass'.__CLASS__.$rand);
+               $massiveactionparams = ['num_displayed'    => $number,
+                                       'container'        => 'mass'.__CLASS__.$rand];
                Html::showMassiveActions($massiveactionparams);
             }
             echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
@@ -141,7 +137,7 @@ class PluginArchiresVlanColor extends CommonDBTM {
             echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             echo "</tr>";
 
-            while($ligne = $DB->fetch_assoc($result)) {
+            while($ligne = $result->next()) {
                $ID = $ligne["id"];
                echo "<tr class='tab_bg_1'>";
                if ($canupdate) {
@@ -169,25 +165,23 @@ class PluginArchiresVlanColor extends CommonDBTM {
    function dropdownVlan() {
       global $DB;
 
-      $colors = array();
+      $colors = [];
       foreach($DB->request("glpi_plugin_archires_vlancolors") as $color) {
          $colors[] = $color['vlans_id'];
       }
 
-      $query = "SELECT *
-                FROM `glpi_vlans`
-                WHERE `id` NOT IN ('".implode("','",$colors)."')
-                ORDER BY `name`";
-      $result = $DB->query($query);
-      $number = $DB->numrows($result);
+      $query = ['FROM'  => 'glpi_vlans',
+                'WHERE' =>  ['NOT' => ['id' => [implode("','",$colors)]]],
+                'ORDER' => 'name'];
+      $result = $DB->request($query);
 
-      if ($number != "0") {
-         $values = array(0 => Dropdown::EMPTY_VALUE,
-                         1 => __('All VLANs', 'archires'));
-         while ($data = $DB->fetch_array($result)) {
+      if (count($result)) {
+         $values = [1 => __('All VLANs', 'archires')];
+         while ($data = $result->next()) {
             $values[$data['id']] = $data["name"];
          }
-         Dropdown::showFromArray('vlans_id', $values, array('width' => '80%'));
+         Dropdown::showFromArray('vlans_id', $values, ['width'                => '80%',
+                                                       'display_emptychoice'  => true]);
       }
    }
 
@@ -195,15 +189,13 @@ class PluginArchiresVlanColor extends CommonDBTM {
    function getVlanbyNetworkPort ($ID) {
     global $DB;
 
-      $query = "SELECT `glpi_vlans`.`id`
-                FROM `glpi_vlans`, `glpi_networkports_vlans`
-                WHERE `glpi_networkports_vlans`.`vlans_id` = `glpi_vlans`.`id`
-                      AND `glpi_networkports_vlans`.`networkports_id` = '$ID' " ;
+      $query = ['SELECT'   => 'glpi_vlans.id',
+                'FROM'     => ['glpi_vlans', 'glpi_networkports_vlans'],
+                'WHERE'    => ['vlans_id'          => 'glpi_vlans.id',
+                               'networkports_id'   => $ID]];
 
-      $result = $DB->query($query);
-      $nb     = $DB->numrows($result);
-      if ($result = $DB->query($query)) {
-        $data_vlan = $DB->fetch_array($result) ;
+      if ($result = $DB->request($query)) {
+        $data_vlan = $result->next();
         $vlan      = $data_vlan["id"] ;
       }
       return $vlan;
