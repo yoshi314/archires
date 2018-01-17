@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Nikolay <techobsl@yandex.ru>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - archires plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-11 14:01+0200\n"
-"PO-Revision-Date: 2017-08-03 17:55+0000\n"
-"Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
+"PO-Revision-Date: 2017-10-19 18:15+0000\n"
+"Last-Translator: Nikolay <techobsl@yandex.ru>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/yllen/glpi-project-archires-plugin/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,11 +24,11 @@ msgstr "Все местонахождения"
 
 #: hook.php:765 inc/view.class.php:292
 msgid "See numbers"
-msgstr "See numbers"
+msgstr "Смотрите номера"
 
 #: hook.php:767 inc/view.class.php:297
 msgid "See names"
-msgstr "See names"
+msgstr "Смотрите названия"
 
 #: hook.php:791 inc/networkinterfacecolor.class.php:142 inc/view.class.php:368
 msgid "Type of network"
@@ -36,19 +37,19 @@ msgstr "Тип сети"
 #: setup.php:63 inc/archires.class.php:44 inc/menu.class.php:38
 msgid "Network Architecture"
 msgid_plural "Network Architectures"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Сетевая архитектура"
+msgstr[1] "Сетевые архитектуры"
+msgstr[2] "Сетевые архитектуры"
+msgstr[3] "Сетевые архитектуры"
 
 #: front/config.form.php:134
 msgid "Please activate the plugin"
-msgstr ""
+msgstr "Пожалуйста, активируйте этот плагин"
 
 #: inc/appliancequery.class.php:114 inc/locationquery.class.php:119
 #: inc/networkequipmentquery.class.php:113
 msgid "Thanks to specify a default used view"
-msgstr "Thanks to specify a default used view"
+msgstr "Благодаря указанному по умолчанию использываему виду"
 
 #: inc/archires.class.php:83
 msgid "Add view"
@@ -60,7 +61,7 @@ msgstr "Назначить изображения типам объектов"
 
 #: inc/imageitem.class.php:119
 msgid "Some types of items must be created so that the association can exist"
-msgstr "Some types of items must be created so that the association can exist"
+msgstr "Некоторые типы элементов должны быть созданы так, чтобы связи могли существовать"
 
 #: inc/imageitem.class.php:150
 msgid "Picture"
@@ -76,10 +77,10 @@ msgstr "Подчинённые"
 #: inc/view.class.php:257 inc/view.class.php:414 inc/view.class.php:417
 msgid "Network equipment"
 msgid_plural "Network equipments"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Сетевое оборудование"
+msgstr[1] "Сетевые оборудования"
+msgstr[2] "Сетевые оборудования"
+msgstr[3] "Сетевые оборудования"
 
 #: inc/networkinterfacecolor.class.php:100
 msgid "Associate colors with network types"
@@ -114,10 +115,10 @@ msgstr "Название"
 #: inc/prototype.class.php:257
 msgid "Link"
 msgid_plural "Links"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Связь"
+msgstr[1] "Связи"
+msgstr[2] "Связи"
+msgstr[3] "Связи"
 
 #: inc/prototype.class.php:258
 msgid "Graphviz links"
@@ -125,19 +126,19 @@ msgstr "Graphviz связи"
 
 #: inc/prototype.class.php:259
 msgid "IP item 1"
-msgstr "IP material 1"
+msgstr "IP номер  1"
 
 #: inc/prototype.class.php:260
 msgid "Socket item 1"
-msgstr "Socket material 1"
+msgstr "Разъем номер 1"
 
 #: inc/prototype.class.php:262
 msgid "Socket item 2"
-msgstr "Socket material 2"
+msgstr "Разъем номер 2"
 
 #: inc/prototype.class.php:263
 msgid "IP item 2"
-msgstr "IP material 2"
+msgstr "IP номер 2"
 
 #: inc/prototype.class.php:318 inc/prototype.class.php:321
 #: inc/prototype.class.php:494 inc/prototype.class.php:516
@@ -172,7 +173,7 @@ msgstr "Показывать количество портов"
 #: inc/view.class.php:98 inc/view.class.php:299 inc/view.class.php:452
 #: inc/view.class.php:454
 msgid "Display IP/Mask"
-msgstr "Показывать IP/Mask"
+msgstr "Показывать IP/Маску"
 
 #: inc/view.class.php:103 inc/view.class.php:305 inc/view.class.php:459
 #: inc/view.class.php:461
@@ -196,7 +197,7 @@ msgstr "Показывать организацию"
 
 #: inc/view.class.php:123 inc/view.class.php:327 inc/view.class.php:495
 msgid "Rendering engine"
-msgstr "Rendering engine"
+msgstr "Движок визуализации"
 
 #: inc/view.class.php:127 inc/view.class.php:342 inc/view.class.php:505
 msgid "Image format"
@@ -204,7 +205,7 @@ msgstr "Формат изображения"
 
 #: inc/view.class.php:194
 msgid "See all views"
-msgstr "See all views"
+msgstr "Посмотреть все виды"
 
 #: inc/view.class.php:215
 msgid "Display"
@@ -224,8 +225,8 @@ msgstr "При использовании neato порты не отобража
 
 #: inc/vlancolor.class.php:102
 msgid "Associate colors to VLANs"
-msgstr "Associer des couleurs aux VLAN"
+msgstr "Связать цвета с VLAN"
 
 #: inc/vlancolor.class.php:186
 msgid "All VLANs"
-msgstr "Tous les VLANs"
+msgstr "Все VLAN"

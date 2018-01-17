@@ -53,7 +53,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
    function getSearchOptionsNew() {
 
-      $tab = array()[];
+      $tab = [];
 
       $tab[] = ['id'             => 'common',
                 'name'           => self::getTypeName(2)];
@@ -198,7 +198,7 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
       $types   = [];
       $devices = [];
-      $ports   = []
+      $ports   = [];
 
       if ($PluginArchiresView->fields["computer"] != 0) {
          $types[] = 'Computer';
@@ -273,8 +273,8 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
          $query .= "ORDER BY `glpi_ipaddresses`.`name` ASC ";
 
-         if ($result = $DB->query($query)) {
-            while ($data = $DB->fetch_array($result)) {
+         if ($result = $DB->request($query)) {
+            while ($data = $result->next()) {
 
                if ($PluginArchiresView->fields["display_state"] != 0) {
                   $devices[$val][$data["items_id"]]["states_id"] = $data["states_id"];
@@ -298,7 +298,6 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
                $ports[$data["id"]]["items_id"]             = $data["items_id"];
                $ports[$data["id"]]["logical_number"]       = $data["logical_number"];
-               $ports[$data["id"]]["networkinterfaces_id"] = $data["networkinterfaces_id"];
                $ports[$data["id"]]["ip"]                   = $data["ip"];
                $ports[$data["id"]]["netmask"]              = $data["netmask"];
                $ports[$data["id"]]["namep"]                = $data["namep"];

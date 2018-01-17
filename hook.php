@@ -36,15 +36,16 @@ function plugin_archires_install() {
    $update = false;
 
 
-   if (!$DB->TableExists("glpi_plugin_archires_config") && !TableExists("glpi_plugin_archires_views")) {
+   if (!$DB->tableExists("glpi_plugin_archires_config")
+       && !$db->tableExists("glpi_plugin_archires_views")) {
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/empty-2.2.sql");
 
    } else {
       $update = true;
 
       // update to 1.3
-      if ($DB->TableExists("glpi_plugin_archires_display")
-          && !$DB->FieldExists("glpi_plugin_archires_display","display_ports")) {
+      if ($DB->tableExists("glpi_plugin_archires_display")
+          && !$DB->fieldExists("glpi_plugin_archires_display","display_ports")) {
 
          $migration = new Migration(13);
 
@@ -55,28 +56,28 @@ function plugin_archires_install() {
       }
 
       // update to 1.4
-      if ($DB->TableExists("glpi_plugin_archires_display")
-          && !$DB->TableExists("glpi_plugin_archires_profiles")) {
+      if ($DB->tableExists("glpi_plugin_archires_display")
+          && !$DB->tableExists("glpi_plugin_archires_profiles")) {
 
          plugin_archires_updateTo14();
       }
 
       // update to 1.5
-      if ($DB->TableExists("glpi_plugin_archires_display")
-          && !$DB->TableExists("glpi_plugin_archires_image_device")) {
+      if ($DB->tableExists("glpi_plugin_archires_display")
+          && !$DB->tableExists("glpi_plugin_archires_image_device")) {
 
          plugin_archires_updateTo15();
       }
 
       // update to 1.7.0
-      if ($DB->TableExists("glpi_plugin_archires_profiles")
-          && $DB->FieldExists("glpi_plugin_archires_profiles","interface")) {
+      if ($DB->tableExists("glpi_plugin_archires_profiles")
+          && $DB->fieldExists("glpi_plugin_archires_profiles","interface")) {
 
          plugin_archires_updateTo170();
       }
 
       // update to 1.7.2
-      if ($DB->TableExists("glpi_plugin_archires_config")
+      if ($DB->tableExists("glpi_plugin_archires_config")
           && $DB->FieldExists("glpi_plugin_archires_config","system")) {
 
          $migration = new Migration(172);
@@ -87,18 +88,18 @@ function plugin_archires_install() {
       }
 
       // update to 1.8.0
-      if (!$DB->TableExists("glpi_plugin_archires_views")) {
+      if (!$DB->tableExists("glpi_plugin_archires_views")) {
          plugin_archires_updateTo180();
       }
 
       // update to 2.1.0
-      if ($DB->TableExists("glpi_plugin_archires_appliancequeries")
-            && !$DB->FieldExists("glpi_plugin_archires_appliancequeries", "plugin_appliances_appliances_id")) {
+      if ($DB->tableExists("glpi_plugin_archires_appliancequeries")
+            && !$DB->fieldExists("glpi_plugin_archires_appliancequeries", "plugin_appliances_appliances_id")) {
          plugin_archires_updateTo210();
       }
 
       // Update 2.2
-      if ($DB->TableExists("glpi_plugin_archires_profiles")) {
+      if ($DB->tableExists("glpi_plugin_archires_profiles")) {
          //Add new rights in glpi_profilerights table
          $profileRight = new ProfileRight();
          $query = ['FROM' => 'glpi_plugin_archires_profiles'];
@@ -135,7 +136,7 @@ function plugin_archires_updateTo14() {
 
    $migration = new Migration(14);
 
-   if (!$DB->TableExists("glpi_plugin_archires_color")) {
+   if (!$DB->tableExists("glpi_plugin_archires_color")) {
       $query = "CREATE TABLE `glpi_plugin_archires_color` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `iface` INT( 11 ) NOT NULL ,
@@ -144,7 +145,7 @@ function plugin_archires_updateTo14() {
       $DB->queryOrDie($query,'1.4 add glpi_plugin_archires_color '.$DB->error());
    }
 
-   if (!$DB->TableExists("glpi_plugin_archires_profiles")) {
+   if (!$DB->tableExists("glpi_plugin_archires_profiles")) {
       $query = "CREATE TABLE `glpi_plugin_archires_profiles` (
                   `ID` int(11) NOT NULL auto_increment,
                   `name` varchar(255) collate utf8_unicode_ci default NULL,
@@ -198,7 +199,7 @@ function plugin_archires_updateTo15() {
 
    $migration->dropTable("glpi_plugin_archires_display");
 
-   if (!$DB->TableExists("glpi_plugin_archires_color_state")) {
+   if (!$DB->tableExists("glpi_plugin_archires_color_state")) {
       $query = "CREATE TABLE `glpi_plugin_archires_color_state` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `state` INT( 11 ) NOT NULL ,
@@ -207,7 +208,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_color_state '.$DB->error());
    }
 
-   if (!$DB->TableExists("glpi_plugin_archires_query_location")) {
+   if (!$DB->tableExists("glpi_plugin_archires_query_location")) {
       $query = "CREATE TABLE `glpi_plugin_archires_query_location` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `FK_entities` int(11) NOT NULL default '0',
@@ -226,7 +227,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_query_location '.$DB->error());
    }
 
-   if (!$DB->TableExists("glpi_plugin_archires_query_switch")) {
+   if (!$DB->tableExists("glpi_plugin_archires_query_switch")) {
       $query = "CREATE TABLE `glpi_plugin_archires_query_switch` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `FK_entities` int(11) NOT NULL default '0',
@@ -244,7 +245,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_query_switch '.$DB->error());
    }
 
-   if (!$DB->TableExists("glpi_plugin_archires_query_applicatifs")) {
+   if (!$DB->tableExists("glpi_plugin_archires_query_applicatifs")) {
       $query = "CREATE TABLE `glpi_plugin_archires_query_applicatifs` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `FK_entities` int(11) NOT NULL default '0',
@@ -262,7 +263,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query, '1.5 create glpi_plugin_archires_query_applicatifs '.$DB->error());
    }
 
-   if (!$DB->TableExists("glpi_plugin_archires_query_type")) {
+   if (!$DB->tableExists("glpi_plugin_archires_query_type")) {
       $query = "CREATE TABLE `glpi_plugin_archires_query_type` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `type_query` INT( 11 ) NOT NULL ,
@@ -273,7 +274,7 @@ function plugin_archires_updateTo15() {
       $DB->queryOrDie($query,'1.5 create glpi_plugin_archires_query_type '.$DB->error());
    }
 
-   if (!$DB->TableExists("glpi_plugin_archires_config")) {
+   if (!$DB->tableExists("glpi_plugin_archires_config")) {
       $query = "CREATE TABLE `glpi_plugin_archires_config` (
                   `ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                   `FK_entities` int(11) NOT NULL default '0',
@@ -360,7 +361,7 @@ function plugin_archires_updateTo170() {
    $migration->addKey("glpi_plugin_archires_config", "name");
    $migration->addField("glpi_plugin_archires_config", "color", "smallint(6) NOT NULL default '0'");
 
-   if (!$DB->TableExists("glpi_plugin_archires_color_vlan")) {
+   if (!$DB->tableExists("glpi_plugin_archires_color_vlan")) {
       $query = "CREATE TABLE `glpi_plugin_archires_color_vlan` (
                   `ID` INT( 11 ) NOT NULL auto_increment,
                   `vlan` INT( 11 ) NOT NULL ,

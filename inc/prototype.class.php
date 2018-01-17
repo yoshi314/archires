@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -193,8 +193,8 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       $PluginArchiresView->getFromDB($plugin_archires_views_id);
 
-      $devices = array();
-      $ports   = array();
+      $devices = [];
+      $ports   = [];
 
       echo "<br><div class='center'>";
       echo "<table class='tab_cadre_fixe'cellpadding='2' width='75%'>";
@@ -262,13 +262,13 @@ class PluginArchiresPrototype extends CommonDBTM {
       echo "<th>".__('Socket item 2', 'archires')."</th>";
       echo "<th>".__('IP item 2', 'archires')."</th></tr>";
 
-      $wires = array();
+      $wires = [];
 
-      $query = "SELECT `id`, `networkports_id_1`, `networkports_id_2`
-                FROM `glpi_networkports_networkports`";
+      $query = ['SELECT'   => ['id', 'networkports_id_1', 'networkports_id_2'],
+                'FROM'     => 'glpi_networkports_networkports'];
 
-      if ($result = $DB->query($query)) {
-         while ($data = $DB->fetch_array($result)) {
+      if ($result = $DB->request($query)) {
+         while ($data = $result->next()) {
             $wires[$data["id"]]["networkports_id_1"] = $data["networkports_id_1"];
             $wires[$data["id"]]["networkports_id_2"] = $data["networkports_id_2"];
          }
@@ -285,7 +285,6 @@ class PluginArchiresPrototype extends CommonDBTM {
             $logical_number1        = $ports[$wire["networkports_id_1"]]["logical_number"];
             $name1                  = $ports[$wire["networkports_id_1"]]["namep"];
             $ID1                    = $ports[$wire["networkports_id_1"]]["idp"];
-            $networkinterfaces_id1  = $ports[$wire["networkports_id_1"]]["instantiation_type"];
             $ip1                    = $ports[$wire["networkports_id_1"]]["ip"];
             $device_unique_name1    = $itemtype1 . "_" . $items_id1 . "_";
             $device_unique_name1   .= $devices[$itemtype1][$items_id1]["name"];
@@ -295,7 +294,6 @@ class PluginArchiresPrototype extends CommonDBTM {
             $logical_number2        = $ports[$wire["networkports_id_2"]]["logical_number"];
             $name2                  = $ports[$wire["networkports_id_2"]]["namep"];
             $ID2                    = $ports[$wire["networkports_id_2"]]["idp"];
-            $networkinterfaces_id2  = $ports[$wire["networkports_id_2"]]["instantiation_type"];
             $ip2                    = $ports[$wire["networkports_id_2"]]["ip"];
             $device_unique_name2    = $itemtype2 . "_" . $items_id2 . "_";
             $device_unique_name2   .= $devices[$itemtype2][$items_id2]["name"];
@@ -306,8 +304,8 @@ class PluginArchiresPrototype extends CommonDBTM {
                 && $PluginArchiresView->fields["engine"]!=1) {
 
                $url_ports = $CFG_GLPI["root_doc"] . "/front/networkport.form.php?id=";
-               echo  "<td>".$device_unique_name1;
-               echo  " -- " . $device_unique_name2 ."</td>";
+               echo  "<td>".printf(__('%1$s - %2$s'), $device_unique_name1, $device_unique_name2).
+                     "</td>";
 
                if ($PluginArchiresView->fields["display_ip"]!=0) {
                   echo  "<td>".$ip1."</td>";
@@ -364,20 +362,20 @@ class PluginArchiresPrototype extends CommonDBTM {
       //ip / type
       $graph .= self::displayTypeAndIP($PluginArchiresView, $itemtype, $device, true);
       //entity
-      if ($PluginArchiresView->fields["display_entity"]!=0 && isset($device["entity"])) {
+      if (($PluginArchiresView->fields["display_entity"] != 0) && isset($device["entity"])) {
          $graph .= "<tr><td>".$this->CleanField(Dropdown::getDropdownName("glpi_entities",
-                                                                         $device["entity"])).
+                                                                          $device["entity"])).
                    "</td></tr>";
       }
       //location
-      if ($PluginArchiresView->fields["display_location"]!=0 && isset($device["locations_id"])) {
+      if (($PluginArchiresView->fields["display_location"] != 0) && isset($device["locations_id"])) {
          $graph .= "<tr><td>".$this->CleanField(Dropdown::getDropdownName("glpi_locations",
-                                                                         $device["locations_id"])).
+                                                                          $device["locations_id"])).
                    "</td></tr>";
       }
 
       //state
-      if ($PluginArchiresView->fields["display_state"]!=0 && isset($device["states_id"])) {
+      if (($PluginArchiresView->fields["display_state"] !=0 ) && isset($device["states_id"])) {
          $graph .="<tr><td>".$PluginArchiresStateColor->displayColorState($device)."</td></tr>";
       }
 
@@ -404,7 +402,6 @@ class PluginArchiresPrototype extends CommonDBTM {
       $logical_number1        = $ports[$wire["networkports_id_1"]]["logical_number"];
       $name1                  = $ports[$wire["networkports_id_1"]]["namep"];
       $ID1                    = $ports[$wire["networkports_id_1"]]["idp"];
-      $networkinterfaces_id1  = $ports[$wire["networkports_id_1"]]["instantiation_type"];
       $ip1                    = $ports[$wire["networkports_id_1"]]["ip"];
       $netmask1               = $ports[$wire["networkports_id_2"]]["netmask"];
       $device_unique_name1    = $itemtype1 . "_" . $items_id1 . "_";
@@ -415,7 +412,6 @@ class PluginArchiresPrototype extends CommonDBTM {
       $logical_number2        = $ports[$wire["networkports_id_2"]]["logical_number"];
       $name2                  = $ports[$wire["networkports_id_2"]]["namep"];
       $ID2                    = $ports[$wire["networkports_id_2"]]["idp"];
-      $networkinterfaces_id2  = $ports[$wire["networkports_id_2"]]["instantiation_type"];
       $ip2                    = $ports[$wire["networkports_id_2"]]["ip"];
       $netmask2               = $ports[$wire["networkports_id_2"]]["netmask"];
       $device_unique_name2    = $itemtype2 . "_" . $items_id2 . "_";
@@ -636,11 +632,11 @@ class PluginArchiresPrototype extends CommonDBTM {
       }
       $wires = array();
 
-      $query = "SELECT `id`, `networkports_id_1`, `networkports_id_2`
-                FROM `glpi_networkports_networkports`";
+      $query = ['SELECT'   => ['id', 'networkports_id_1', 'networkports_id_2'],
+                'FROM'     => 'glpi_networkports_networkports'];
 
-      if ($result = $DB->query($query)) {
-         while ($data = $DB->fetch_array($result)) {
+      if ($result = $DB->request($query)) {
+         while ($data = $result->next()) {
             $wires[$data["id"]]["networkports_id_1"] = $data["networkports_id_1"];
             $wires[$data["id"]]["networkports_id_2"] = $data["networkports_id_2"];
          }
@@ -724,8 +720,8 @@ class PluginArchiresPrototype extends CommonDBTM {
             case 'PluginArchiresApplianceQuery' :
             case 'PluginArchiresLocationQuery' :
             case 'PluginArchiresNetworkEquipmentQuery' :
-               return array('1' => __('Test'),
-                            '2' => __('Generation', 'archires'));
+               return ['1' => __('Test'),
+                       '2' => __('Generation', 'archires')];
          }
       }
       return '';
