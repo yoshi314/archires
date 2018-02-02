@@ -37,7 +37,7 @@ function plugin_archires_install() {
 
 
    if (!$DB->tableExists("glpi_plugin_archires_config")
-       && !$db->tableExists("glpi_plugin_archires_views")) {
+       && !$DB->tableExists("glpi_plugin_archires_views")) {
       $DB->runFile(GLPI_ROOT ."/plugins/archires/sql/empty-2.2.sql");
 
    } else {
