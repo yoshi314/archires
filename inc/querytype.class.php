@@ -63,6 +63,8 @@ class PluginArchiresQueryType extends CommonDBTM {
    function addType($querytype, $type, $itemtype, $plugin_archires_queries_id) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       if ($type != '-1') {
          if (!$this->getFromDBbyType($itemtype, $type, $querytype, $plugin_archires_queries_id)) {
             $this->add(['itemtype'                   => $itemtype,
@@ -71,7 +73,7 @@ class PluginArchiresQueryType extends CommonDBTM {
                         'plugin_archires_queries_id' => $plugin_archires_queries_id]);
          }
       } else {
-         $query = ['FROM' => getTableForItemType($itemtype."Type")];
+         $query = ['FROM' => $dbu->getTableForItemType($itemtype."Type")];
          $result = $DB->request($query);
          $i      = 0;
 
@@ -94,6 +96,8 @@ class PluginArchiresQueryType extends CommonDBTM {
    function queryTypeCheck($querytype, $plugin_archires_views_id, $val) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       $query0 = ['FROM'    => $this->getTable(),
                  'WHERE'   => ['querytype'                  => $querytype,
                                'plugin_archires_queries_id' => $plugin_archires_views_id,
@@ -102,8 +106,8 @@ class PluginArchiresQueryType extends CommonDBTM {
       $query   = "";
 
       if (count($result0)) {
-        $itemtable = getTableForItemType($val);
-        $query     = "AND `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+        $itemtable = $dbu->getTableForItemType($val);
+        $query     = "AND `$itemtable`.`".getForeignKeyFieldForTable($dbu->getTableForItemType($val."Type"))."`
                            IN (0 ";
          while ($data0 = $result0->next()) {
             $query .= ", ".$data0["type"];

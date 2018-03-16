@@ -615,8 +615,8 @@ class PluginArchiresPrototype extends CommonDBTM {
 
       $PluginArchiresView->getFromDB($plugin_archires_views_id);
 
-      $devices = array();
-      $ports   = array();
+      $devices = [];
+      $ports   = [];
 
       if ($type == 'PluginArchiresLocationQuery') {
          $devices = $PluginArchiresLocationQuery->Query($ID, $PluginArchiresView, true);
@@ -630,7 +630,7 @@ class PluginArchiresPrototype extends CommonDBTM {
          $devices = $PluginArchiresApplianceQuery->Query($ID, $PluginArchiresView, true);
          $ports   = $PluginArchiresApplianceQuery->Query($ID, $PluginArchiresView, false);
       }
-      $wires = array();
+      $wires = [];
 
       $query = ['SELECT'   => ['id', 'networkports_id_1', 'networkports_id_2'],
                 'FROM'     => 'glpi_networkports_networkports'];

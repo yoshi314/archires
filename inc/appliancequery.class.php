@@ -194,6 +194,8 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
    function Query ($ID,$PluginArchiresView,$for) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       $this->getFromDB($ID);
 
       $types   = [];
@@ -219,9 +221,9 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
          $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`instantiation_type`,
                       `glpi_ipaddresses`.`name` AS ip, `ipn`.`netmask`, `np`.`name` AS namep";
 
-         $itemtable = getTableForItemType($val);
+         $itemtable = $dbu->getTableForItemType($val);
          $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                          `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+                          `$itemtable`.`".getForeignKeyFieldForTable($dbu->getTableForItemType($val."Type"))."`
                               AS `type`,
                           `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`,
                           `$itemtable`.`states_id`, `$itemtable`.`entities_id`,

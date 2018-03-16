@@ -417,18 +417,18 @@ function plugin_archires_updateTo180() {
    $migration->changeField("glpi_plugin_archires_locationqueries", "FK_entities", "entities_id",
                            'integer');
    $migration->changeField("glpi_plugin_archires_locationqueries", "location", "locations_id",
-                           'integer', array('comment' => 'RELATION to glpi_locations (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_locations (id)']);
    $migration->changeField("glpi_plugin_archires_locationqueries", "network", "networks_id",
-                           'integer', array('comment' => 'RELATION to glpi_networks (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_networks (id)']);
    $migration->changeField("glpi_plugin_archires_locationqueries", "state", "states_id",
-                           'integer', array('comment' => 'RELATION to glpi_states (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_states (id)']);
    $migration->changeField("glpi_plugin_archires_locationqueries", "FK_group", "groups_id",
-                           'integer', array('comment' => 'RELATION to glpi_groups (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_groups (id)']);
    $migration->changeField("glpi_plugin_archires_locationqueries", "FK_config",
                            "plugin_archires_views_id", 'integer',
-                           array('comment' => 'RELATION to glpi_plugin_archires_views (id)'));
+                           ['comment' => 'RELATION to glpi_plugin_archires_views (id)']);
    $migration->changeField("glpi_plugin_archires_locationqueries", "FK_vlan", "vlans_id",
-                           'integer', array('comment' => 'RELATION to glpi_vlans (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_vlans (id)']);
    $migration->changeField("glpi_plugin_archires_locationqueries", "deleted", "is_deleted", 'bool');
    $migration->changeField("glpi_plugin_archires_locationqueries", "notes", "notepad", 'longtext');
    $migration->dropField("glpi_plugin_archires_locationqueries", "link");
@@ -451,18 +451,18 @@ function plugin_archires_updateTo180() {
                            "entities_id", 'integer');
    $migration->changeField("glpi_plugin_archires_networkequipmentqueries", "switch",
                            "networkequipments_id", 'integer',
-                           array('comment' => 'RELATION to glpi_networkequipments (id)'));
+                           ['comment' => 'RELATION to glpi_networkequipments (id)']);
    $migration->changeField("glpi_plugin_archires_networkequipmentqueries", "network", "networks_id",
-                           'integer', array('comment' => 'RELATION to glpi_networks (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_networks (id)']);
    $migration->changeField("glpi_plugin_archires_networkequipmentqueries", "state", "states_id",
-                           'integer', array('comment' => 'RELATION to glpi_states (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_states (id)']);
    $migration->changeField("glpi_plugin_archires_networkequipmentqueries", "FK_group", "groups_id",
-                           'integer', array('comment' => 'RELATION to glpi_groups (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_groups (id)']);
    $migration->changeField("glpi_plugin_archires_networkequipmentqueries", "FK_config",
                            "plugin_archires_views_id", 'integer',
-                           array('comment' => 'RELATION to glpi_plugin_archires_views (id)'));
+                           ['comment' => 'RELATION to glpi_plugin_archires_views (id)']);
    $migration->changeField("glpi_plugin_archires_networkequipmentqueries", "FK_vlan", "vlans_id",
-                           'integer', array('comment' => 'RELATION to glpi_vlans (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_vlans (id)']);
    $migration->changeField("glpi_plugin_archires_networkequipmentqueries", "deleted", "is_deleted",
                            'bool');
    $migration->changeField("glpi_plugin_archires_networkequipmentqueries", "notes", "notepad",
@@ -485,18 +485,18 @@ function plugin_archires_updateTo180() {
    $migration->changeField("glpi_plugin_archires_appliancequeries", "FK_entities", "entities_id",
                            'integer');
    $migration->changeField("glpi_plugin_archires_appliancequeries", "applicatifs", "appliances_id",
-                           'integer', array('comment' => 'RELATION to glpi_plugin_appliances (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_plugin_appliances (id)']);
    $migration->changeField("glpi_plugin_archires_appliancequeries", "network", "networks_id",
-                           'integer', array('comment' => 'RELATION to glpi_networks (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_networks (id)']);
    $migration->changeField("glpi_plugin_archires_appliancequeries", "state", "states_id",
-                           'integer', array('comment' => 'RELATION to glpi_states (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_states (id)']);
    $migration->changeField("glpi_plugin_archires_appliancequeries", "FK_group", "groups_id",
-                           'integer', array('comment' => 'RELATION to glpi_groups (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_groups (id)']);
    $migration->changeField("glpi_plugin_archires_appliancequeries", "FK_config",
                            "plugin_archires_views_id", 'integer',
-                           array('comment' => 'RELATION to glpi_plugin_archires_views (id)'));
+                           ['comment' => 'RELATION to glpi_plugin_archires_views (id)']);
    $migration->changeField("glpi_plugin_archires_appliancequeries", "FK_vlan", "vlans_id",
-                           'integer', array('comment' => 'RELATION to glpi_vlans (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_vlans (id)']);
    $migration->changeField("glpi_plugin_archires_appliancequeries", "deleted", "is_deleted", 'bool');
    $migration->changeField("glpi_plugin_archires_appliancequeries", "notes", "notepad", 'longtext');
    $migration->dropField("glpi_plugin_archires_appliancequeries", "link");
@@ -516,7 +516,7 @@ function plugin_archires_updateTo180() {
    $migration->changeField("glpi_plugin_archires_imageitems", "type", "type", 'integer');
    $migration->changeField("glpi_plugin_archires_imageitems", "device_type", "itemtype",
                            "varchar(100) collate utf8_unicode_ci NOT NULL",
-                           array('comment' => 'see .class.php file'));
+                           ['comment' => 'see .class.php file']);
 
 
    $migration->dropKey("glpi_plugin_archires_querytypes", "FK_query");
@@ -526,14 +526,14 @@ function plugin_archires_updateTo180() {
    $migration->changeField("glpi_plugin_archires_querytypes", "ID", "id", 'autoincrement');
    $migration->changeField("glpi_plugin_archires_querytypes", "type_query", "querytype",
                            "varchar(100) collate utf8_unicode_ci NOT NULL",
-                           array('comment' => 'RELATION to the 3 type of archires (type)'));
+                           ['comment' => 'RELATION to the 3 type of archires (type)']);
    $migration->changeField("glpi_plugin_archires_querytypes", "type", "type", 'integer');
    $migration->changeField("glpi_plugin_archires_querytypes", "device_type", "itemtype",
                            "varchar(100) collate utf8_unicode_ci NOT NULL",
-                           array('comment' => 'see .class.php file'));
+                           ['comment' => 'see .class.php file']);
    $migration->changeField("glpi_plugin_archires_querytypes", "FK_query",
                            "plugin_archires_queries_id", 'integer',
-                           array('comment' => 'RELATION to the 3 queries tables (id)'));
+                           ['comment' => 'RELATION to the 3 queries tables (id)']);
    $migration->addKey("glpi_plugin_archires_querytypes", "querytype");
    $migration->addKey("glpi_plugin_archires_querytypes", "type");
    $migration->addKey("glpi_plugin_archires_querytypes", "itemtype");
@@ -562,19 +562,19 @@ function plugin_archires_updateTo180() {
                            'autoincrement');
    $migration->changeField("glpi_plugin_archires_networkinterfacecolors", "iface",
                            "networkinterfaces_id", 'integer',
-                           array('comment' => 'RELATION to glpi_networkinterfaces (id)'));
+                           ['comment' => 'RELATION to glpi_networkinterfaces (id)']);
    $migration->addKey("glpi_plugin_archires_networkinterfacecolors", "networkinterfaces_id");
 
 
    $migration->changeField("glpi_plugin_archires_statecolors", "ID", "id", 'autoincrement');
    $migration->changeField("glpi_plugin_archires_statecolors", "state", "states_id", 'integer',
-                           array('comment' => 'RELATION to glpi_states (id)'));
+                           ['comment' => 'RELATION to glpi_states (id)']);
    $migration->addKey("glpi_plugin_archires_statecolors", "states_id");
 
 
    $migration->changeField("glpi_plugin_archires_vlancolors", "ID", "id", 'autoincrement');
    $migration->changeField("glpi_plugin_archires_vlancolors", "vlan", "vlans_id", 'integer',
-                           array('comment' => 'RELATION to glpi_vlans (id)'));
+                           ['comment' => 'RELATION to glpi_vlans (id)']);
    $migration->addKey("glpi_plugin_archires_vlancolors", "vlans_id");
 
 
@@ -590,7 +590,7 @@ function plugin_archires_updateTo180() {
 
    $migration->changeField("glpi_plugin_archires_profiles", "ID", "id", 'autoincrement');
    $migration->addField("glpi_plugin_archires_profiles", "profiles_id", 'integer',
-                        array('comment' => 'RELATION to glpi_profiles (id)'));
+                        ['comment' => 'RELATION to glpi_profiles (id)']);
    $migration->changeField("glpi_plugin_archires_profiles", "archires", "archires", 'char');
    $migration->addKey("glpi_plugin_archires_profiles", "profiles_id");
 
@@ -620,7 +620,7 @@ function plugin_archires_updateTo210() {
 
    $migration->changeField("glpi_plugin_archires_appliancequeries", "appliances_id",
                            "plugin_appliances_appliances_id",
-                           'integer', array('comment' => 'RELATION to glpi_plugin_appliances (id)'));
+                           'integer', ['comment' => 'RELATION to glpi_plugin_appliances (id)']);
 
    $migration->executeMigration();
 }
@@ -820,7 +820,7 @@ function plugin_archires_MassiveActions($type) {
 
 
 // How to display specific actions ?
-function plugin_archires_MassiveActionsDisplay($options=array()) {
+function plugin_archires_MassiveActionsDisplay($options=[]) {
 
    switch ($options['itemtype']) {
       case 'PluginArchiresLocationQuery':

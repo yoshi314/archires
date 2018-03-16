@@ -61,6 +61,8 @@ class PluginArchiresImageItem extends CommonDBTM {
    function addItemImage($type,$itemtype,$img) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       if ($type != '-1') {
          if ($this->GetfromDBbyType($itemtype,$type)) {
             $this->update(['id'  => $this->fields['id'],
@@ -71,7 +73,7 @@ class PluginArchiresImageItem extends CommonDBTM {
                         'img'      => $img]);
          }
       } else {
-         $query  = ['FROM' => getTableForItemType($itemtype."Type")];
+         $query  = ['FROM' => $dbu->getTableForItemType($itemtype."Type")];
 
          $result = $DB->request($query);
          $i      = 0;

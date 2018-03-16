@@ -252,6 +252,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    function Query($ID,$PluginArchiresView,$for) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       $this->getFromDB($ID);
 
       $types   = [];
@@ -275,13 +277,13 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       }
 
       foreach ($types as $key => $val) {
-         $itemtable = getTableForItemType($val);
+         $itemtable = $dbu->getTableForItemType($val);
          $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`instantiation_type`,
                       `glpi_ipaddresses`.`name` AS ip, `glpi_ipnetworks`.`netmask`,
                       `np`.`name` AS namep";
 
          $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                          `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+                          `$itemtable`.`".getForeignKeyFieldForTable($dbu->getTableForItemType($val."Type"))."`
                               AS `type`,
                           `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`,
                           `$itemtable`.`states_id`, `$itemtable`.`entities_id`,
@@ -308,7 +310,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                         ON (`np`.`items_id` = `$itemtable`.`id`
                             AND `$itemtable`.`is_deleted` = '0'
                             AND `$itemtable`.`is_template` = '0'".
-                            getEntitiesRestrictRequest(" AND",$itemtable).")
+                            $dbu->getEntitiesRestrictRequest(" AND",$itemtable).")
                      LEFT JOIN `glpi_locations` lc
                         ON `lc`.`id` = `$itemtable`.`locations_id`
                      WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'

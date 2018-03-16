@@ -243,13 +243,13 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
             if ($end) {
                foreach ($types as $key => $val) {
-                  $itemtable = getTableForItemType($val);
+                  $itemtable = $dbu->getTableForItemType($val);
                   $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`,
                                `np`.`instantiation_type`, `glpi_ipaddresses`.`name` AS ip,
                                `ipn`.`netmask`, `np`.`name` AS namep";
 
                   $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                                   `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+                                   `$itemtable`.`".getForeignKeyFieldForTable($dbu->getTableForItemType($val."Type"))."`
                                        AS `type`,
                                    `$itemtable`.`users_id`, `$itemtable`.`groups_id`,
                                    `$itemtable`.`contact`, `$itemtable`.`states_id`,
@@ -274,7 +274,7 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                                  AND `np`.`id` ='$end'
                                  AND `$itemtable`.`is_deleted` = '0'
                                  AND `$itemtable`.`is_template` = '0' ".
-                                 getEntitiesRestrictRequest(" AND", $itemtable);
+                                 $dbu->getEntitiesRestrictRequest(" AND", $itemtable);
 
                   if ($this->fields["vlans_id"] > "0") {
                      $query .= " AND `nv`.`networkports_id` = `np`.`id`
