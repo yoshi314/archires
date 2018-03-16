@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -47,60 +47,72 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
    function cleanDBonPurge() {
 
       $querytype = new PluginArchiresQueryType;
-      $querytype->deleteByCriteria(array('plugin_archires_queries_id' => $this->fields['id']));
+      $querytype->deleteByCriteria(['plugin_archires_queries_id' => $this->fields['id']]);
    }
 
 
-   function getSearchOptions() {
-      $tab = array();
+   function getSearchOptionsNew() {
 
-      $tab['common']             = self::getTypeName();
+      $tab = [];
 
-      $tab[1]['table']           = $this->getTable();
-      $tab[1]['field']           = 'name';
-      $tab[1]['name']            = __('Name');
-      $tab[1]['datatype']        = 'itemlink';
-      $tab[1]['itemlink_type']   = $this->getType();
+      $tab[] = ['id'             => 'common',
+               'name'           => self::getTypeName(2)];
 
-      $tab[2]['table']           = 'glpi_networkequipments';
-      $tab[2]['field']           = 'name';
-      $tab[2]['name']            = _n('Network equipment', 'Network equipments', 1, 'archires');
-      $tab[2]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '1',
+               'table'          => $this->getTable(),
+               'field'          =>'name',
+               'name'           => __('Name'),
+               'datatype'       => 'itemlink',
+               'itemlink_type'  => $this->getType()];
 
-      $tab[3]['table']           = 'glpi_networks';
-      $tab[3]['field']           = 'name';
-      $tab[3]['name']            = __('Network');
-      $tab[4]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '2',
+               'table'          => 'glpi_networkequipments',
+               'field'          => 'name',
+               'name'           => _n('Network equipment', 'Network equipments', 1, 'archires'),
+               'datatype'       => 'dropdown'];
 
-      $tab[4]['table']           = 'glpi_states';
-      $tab[4]['field']           = 'name';
-      $tab[4]['name']            = __('State');
-      $tab[4]['datatype']        = 'dropdown';
 
-      $tab[5]['table']           = 'glpi_groups';
-      $tab[5]['field']           = 'completename';
-      $tab[5]['name']            = __('Group');
-      $tab[5]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '3',
+               'table'          => 'glpi_networks',
+               'field'          => 'name',
+               'name'           => __('Network'),
+               'datatype'       => 'dropdown'];
 
-      $tab[6]['table']           = 'glpi_vlans';
-      $tab[6]['field']           = 'name';
-      $tab[6]['name']            = __('VLAN');
-      $tab[6]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '4',
+               'table'          => 'glpi_states',
+               'field'          => 'name',
+               'name'           => __('State'),
+               'datatype'       => 'dropdown'];
 
-      $tab[7]['table']           = 'glpi_plugin_archires_views';
-      $tab[7]['field']           = 'name';
-      $tab[7]['name']            = PluginArchiresView::getTypeName(1);
-      $tab[7]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '5',
+               'table'          => 'glpi_groups',
+               'field'          => 'completename',
+               'name'           => __('Group'),
+               'datatype'       => 'dropdown'];
 
-      $tab[30]['table']          = $this->getTable();
-      $tab[30]['field']          = 'id';
-      $tab[30]['name']           = __('ID');
-      $tab[30]['datatype']       = 'number';
+      $tab[] = ['id'             => '6',
+               'table'          => 'glpi_vlans',
+               'field'          => 'name',
+               'name'           => __('VLAN'),
+               'datatype'       => 'dropdown'];
 
-      $tab[80]['table']          = 'glpi_entities';
-      $tab[80]['field']          = 'completename';
-      $tab[80]['name']           = __('Entity');
-      $tab[80]['datatype']       = 'dropdown';
+      $tab[] = ['id'             => '7',
+               'table'          => 'glpi_plugin_archires_views',
+               'field'          => 'name',
+               'name'           => PluginArchiresView::getTypeName(1),
+               'datatype'       => 'dropdown'];
+
+      $tab[] = ['id'             => '30',
+               'table'          => $this->getTable(),
+               'field'          => 'id',
+               'name'           => __('ID'),
+               'datatype'       => 'number'];
+
+      $tab[] = ['id'             => '80',
+               'table'          => 'glpi_entities',
+               'field'          => 'completename',
+               'name'           => __('Entity'),
+               'datatype'       => 'dropdown'];
 
       return $tab;
    }
@@ -112,25 +124,26 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
           || ($input["plugin_archires_views_id"] == 0)) {
          Session::addMessageAfterRedirect(__('Thanks to specify a default used view', 'archires'),
                                           false, ERROR);
-         return array ();
+         return [];
       }
       return $input;
    }
 
 
-   function defineTabs($options=array()) {
+   function defineTabs($options=[]) {
 
-      $ong = array();
-      $this->addDefaultFormTab($ong);
-      $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
-      $this->addStandardTab('PluginArchiresView', $ong, $options);
-      $this->addStandardTab('PluginArchiresPrototype', $ong, $options);
-      $this->addStandardTab('Notepad',$ong, $options);
+      $ong = [];
+      $this->addDefaultFormTab($ong)
+         ->addStandardTab('PluginArchiresQueryType', $ong, $options)
+         ->addStandardTab('PluginArchiresView', $ong, $options)
+         ->addStandardTab('PluginArchiresPrototype', $ong, $options)
+         ->addStandardTab('Notepad',$ong, $options);
+
       return $ong;
    }
 
 
-   function showForm ($ID, $options=array()) {
+   function showForm ($ID, $options=[]) {
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
@@ -141,38 +154,38 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       Html::autocompletionTextField($this,"name");
       echo "</td>";
       echo "<td>".__('Group')."</td><td>";
-      Group::dropdown(array('name'   => "groups_id",
-                            'value'  => $this->fields["groups_id"],
-                            'entity' => $this->fields["entities_id"]));
+      Group::dropdown(['name'   => "groups_id",
+                       'value'  => $this->fields["groups_id"],
+                       'entity' => $this->fields["entities_id"]]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>"._n('Network equipment', 'Network equipments', 1, 'archires')."</td><td>";
-      NetworkEquipment::dropdown(array('name'   => "networkequipments_id",
-                                       'value'  => $this->fields["networkequipments_id"],
-                                       'entity' => $this->fields["entities_id"]));
+      NetworkEquipment::dropdown(['name'   => "networkequipments_id",
+                                  'value'  => $this->fields["networkequipments_id"],
+                                  'entity' => $this->fields["entities_id"]]);
       echo "</td>";
       echo "<td>".__('VLAN')."</td><td>";
-      Vlan::dropdown(array('name' => "vlans_id",
-                           'value' => $this->fields["vlans_id"]));
+      Vlan::dropdown(['name' => "vlans_id",
+                      'value' => $this->fields["vlans_id"]]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__('Network')."</td><td>";
-      Network::dropdown(array('name'  => "networks_id",
-                              'value' => $this->fields["networks_id"]));
+      Network::dropdown(['name'  => "networks_id",
+                         'value' => $this->fields["networks_id"]]);
       echo "</td>";
       echo "<td>".PluginArchiresView::getTypeName(1)."</td><td>";
       //View
       Dropdown::show('PluginArchiresView',
-                     array('name'  => "plugin_archires_views_id",
-                           'value' => $this->fields["plugin_archires_views_id"]));
+                     ['name'  => "plugin_archires_views_id",
+                      'value' => $this->fields["plugin_archires_views_id"]]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__('State')."</td><td colspan='3'>";
-      State::dropdown(array('name'  => "states_id",
-                            'value' => $this->fields["states_id"]));
+      State::dropdown(['name'  => "states_id",
+                       'value' => $this->fields["states_id"]]);
       echo "</td></tr>";
 
       $this->showFormButtons($options);
@@ -184,11 +197,13 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
    function Query($ID,$PluginArchiresView,$for) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       $this->getFromDB($ID);
 
-      $types   = array();
-      $devices = array();
-      $ports   = array();
+      $types   = [];
+      $devices = [];
+      $ports   = [];
 
       if ($PluginArchiresView->fields["computer"] != 0) {
          $types[] = 'Computer';
@@ -206,56 +221,60 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
          $types[] = 'NetworkEquipment';
       }
 
-      $query_switch = "SELECT `np`.`name` AS port,
-                              `np`.`id` AS idport
-                       FROM `glpi_networkequipments`
-                       LEFT JOIN `glpi_networkports` np
-                           ON (`np`.`itemtype` = 'NetworkEquipment'
-                               AND `np`.`items_id` = `glpi_networkequipments`.`id`)
-                       WHERE `glpi_networkequipments`.`id` = '".$this->fields["networkequipments_id"]."'
-                             AND `glpi_networkequipments`.`is_deleted` = '0'
-                             AND `glpi_networkequipments`.`is_template` = '0'".
-                             getEntitiesRestrictRequest(" AND","glpi_networkequipments");
+      $query_switch = ['SELECT'     => ['glpi_networkports.name', 'glpi_networkports.id'],
+                       'FROM'       => 'glpi_networkports',
+                       'LEFT JOIN'  => ['glpi_networkequipments'
+                                        =>['FKEY' => ['glpi_networkports'  => 'items_id',
+                                                      'glpi_networkequipments' => 'id']]],
+                       'WHERE'      => ['glpi_networkequipments.is_deleted' => 0,
+                                        'is_template'                       => 0,
+                                        'itemtype'                          => 'NetworkEquipment',
+                                        $dbu->getEntitiesRestrictCriteria('glpi_networkequipments')]];
 
-      if ($result_switch = $DB->query($query_switch)) {
-         while ($ligne = $DB->fetch_array($result_switch)) {
-            $port = $ligne['port'];
+      if ($this->fields["networkequipments_id"]) {
+         $query_switch['WHERE']['glpi_networkequipments.id'] = $this->fields["networkequipments_id"];
+      }
+
+      if ($result_switch = $DB->request($query_switch)) {
+         while ($ligne = $result_switch->next()) {
+            $port = $ligne['name'];
             $nw   = new NetworkPort_NetworkPort();
-            $end  = $nw->getOppositeContact($ligne['idport']);
+            $end  = $nw->getOppositeContact($ligne['id']);
 
             if ($end) {
                foreach ($types as $key => $val) {
-                  $itemtable = getTableForItemType($val);
+                  $itemtable = $dbu->getTableForItemType($val);
                   $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`,
                                `np`.`instantiation_type`, `glpi_ipaddresses`.`name` AS ip,
                                `ipn`.`netmask`, `np`.`name` AS namep";
 
                   $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                                   `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+                                   `$itemtable`.`".getForeignKeyFieldForTable($dbu->getTableForItemType($val."Type"))."`
                                        AS `type`,
                                    `$itemtable`.`users_id`, `$itemtable`.`groups_id`,
                                    `$itemtable`.`contact`, `$itemtable`.`states_id`,
                                    `$itemtable`.`entities_id`,`$itemtable`.`locations_id`
-                   FROM `glpi_networkports` np,
-                        `$itemtable`,
-                        `glpi_ipnetworks` AS ipn
-                   LEFT JOIN `glpi_networknames`
-                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
-                            AND `np`.`id` = `glpi_networknames`.`items_id`)
-                   LEFT JOIN `glpi_ipaddresses`
-                        ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
-                            AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
-                    WHERE `np`.`instantiation_type` = 'NetworkPortEthernet' ";
+                            FROM `$itemtable`,
+                                 `glpi_ipnetworks` AS ipn,
+                                 `glpi_networkports` np";
 
                   if ($this->fields["vlans_id"] > "0") {
                      $query .= ", `glpi_networkports_vlans` nv";
                   }
-                  $query .= " WHERE `np`.`itemtype` = '$val'
-                                    AND `np`.`items_id` = `$itemtable`.`id`
-                                    AND `np`.`id` ='$end'
-                                    AND `$itemtable`.`is_deleted` = '0'
-                                    AND `$itemtable`.`is_template` = '0'".
-                                    getEntitiesRestrictRequest(" AND",$itemtable);
+
+                  $query .= " LEFT JOIN `glpi_networknames`
+                                 ON (`glpi_networknames`.`itemtype` = 'NetworkPort'
+                                     AND `np`.`id` = `glpi_networknames`.`items_id`)
+                              LEFT JOIN `glpi_ipaddresses`
+                                 ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
+                                     AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
+                              WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
+                                 AND `np`.`itemtype` = '$val'
+                                 AND `np`.`items_id` = `$itemtable`.`id`
+                                 AND `np`.`id` ='$end'
+                                 AND `$itemtable`.`is_deleted` = '0'
+                                 AND `$itemtable`.`is_template` = '0' ".
+                                 $dbu->getEntitiesRestrictRequest(" AND", $itemtable);
 
                   if ($this->fields["vlans_id"] > "0") {
                      $query .= " AND `nv`.`networkports_id` = `np`.`id`
@@ -276,10 +295,11 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
                   //types
                   $PluginArchiresQueryType = new PluginArchiresQueryType();
                   $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(), $ID, $val);
-                  $query .= "ORDER BY `np`.`ip` ASC ";
+                  $query .= "GROUP BY `np`.`id` ORDER BY `np`.`id` ASC ";
 
                   if ($result = $DB->query($query)) {
                      while ($data = $DB->fetch_array($result)) {
+
                         if ($PluginArchiresView->fields["display_state"] != 0) {
                            $devices[$val][$data["items_id"]]["states_id"] = $data["states_id"];
                         }
@@ -293,7 +313,6 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
 
                         $ports[$data["id"]]["items_id"]             = $data["items_id"];
                         $ports[$data["id"]]["logical_number"]       = $data["logical_number"];
-                        $ports[$data["id"]]["networkinterfaces_id"] = $data["networkinterfaces_id"];
                         $ports[$data["id"]]["ip"]                   = $data["ip"];
                         $ports[$data["id"]]["netmask"]              = $data["netmask"];
                         $ports[$data["id"]]["namep"]                = $data["namep"];
@@ -320,36 +339,38 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
       $query = "SELECT `n`.`id` AS `idn`, `np`.`id`, `np`.`items_id`, `np`.`logical_number`,
                        `np`.`instantiation_type`, `glpi_ipaddresses`.`name` AS ip,
                        `np`.`name` AS `namep`,
-                       `ipn`.`netmask`, `n`.`name`,
+                       `ipn`.`address` AS `nip`, `ipn`.`netmask`, `n`.`name`,
                        `n`.`networkequipmenttypes_id` AS `type`, `n`.`users_id`, `n`.`groups_id`,
                        `n`.`contact`, `n`.`states_id`, `n`.`entities_id`,`n`.`locations_id`
                 FROM `glpi_networkports` `np`, `glpi_networkequipments` `n`,
-                     `glpi_ipnetworks` AS ipn
-                LEFT JOIN `glpi_networknames`
-                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort')
-                LEFT JOIN `glpi_ipaddresses`
-                        ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
-                            AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)";
+                     `glpi_ipnetworks` `ipn`";
 
       if ($this->fields["vlans_id"] > "0") {
          $query .= ", `glpi_networkports_vlans` nv ";
       }
-      $query .= "WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
+
+      $query .= " LEFT JOIN `glpi_networknames`
+                        ON (`glpi_networknames`.`itemtype` = 'NetworkPort')
+                  LEFT JOIN `glpi_ipaddresses`
+                        ON (`glpi_ipaddresses`.`itemtype` = 'NetworkName'
+                            AND `glpi_networknames`.`id` = `glpi_ipaddresses`.`items_id`)
+                  WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
                        AND `np`.`itemtype` = 'NetworkEquipment'
                        AND `np`.`items_id` = `n`.`id`
-                       AND `n`.`id` = '".$this->fields["networkequipments_id"]."'
                        AND `n`.`is_deleted` = '0'
                        AND `n`.`is_template` = '0'
-                       AND `glpi_networknames`.`items_id` = `np`.`id`";
+                       AND `glpi_networknames`.`items_id` = `np`.`id`".
+                       $dbu->getEntitiesRestrictRequest(' AND', 'n')."
+                       AND `n`.`id` = '".$this->fields["networkequipments_id"]."' ";
 
       if ($this->fields["vlans_id"] > "0") {
          $query .= " AND `nv`.`networkports_id` = `np`.`id`
                      AND vlans_id= '".$this->fields["vlans_id"]."' ";
       }
-      $query .= "ORDER BY `ip` ASC ";
+      $query .= " ORDER BY `ip` ASC ";
 
-      if ($result = $DB->query($query)) {
-         while ($data = $DB->fetch_array($result)) {
+      if ($result = $DB->request($query)) {
+         while ($data = $result->next()) {
             if ($PluginArchiresView->fields["display_state"] != 0) {
                $devices['NetworkEquipment'][$data["items_id"]]["states_id"] = $data["states_id"];
             }
@@ -363,7 +384,6 @@ class PluginArchiresNetworkEquipmentQuery extends CommonDBTM {
             $devices['NetworkEquipment'][$data["items_id"]]["locations_id"] = $data["locations_id"];
             $ports[$data["id"]]["items_id"]                                 = $data["items_id"];
             $ports[$data["id"]]["logical_number"]                           = $data["logical_number"];
-            $ports[$data["id"]]["networkinterfaces_id"]                     = $data["networkinterfaces_id"];
             $ports[$data["id"]]["ip"]                                       = $data["ip"];
             $ports[$data["id"]]["netmask"]                                  = $data["netmask"];
             $ports[$data["id"]]["namep"]                                    = $data["namep"];

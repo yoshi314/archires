@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -41,18 +41,17 @@ class PluginArchiresQueryType extends CommonDBTM {
    function getFromDBbyType($itemtype, $type,$type_query,$query_ID) {
       global $DB;
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                WHERE `itemtype` = '$itemtype'
-                      AND `type` = '$type'
-                      AND `querytype` = '$type_query'
-                      AND `plugin_archires_queries_id` = '$query_ID'";
+      $query = ['FROM'  => $this->getTable(),
+                'WHERE' => ['itemtype'                   => $itemtype,
+                            'type'                       => $type,
+                            'querytype'                  => $type_query,
+                            'plugin_archires_queries_id' => $query_ID]];
 
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
+      if ($result = $DB->request($query)) {
+         if (count($result) != 1) {
             return false;
          }
-         $this->fields = $DB->fetch_assoc($result);
+         $this->fields = $result->next();
          if (is_array($this->fields) && count($this->fields)) {
             return true;
          }
@@ -64,28 +63,29 @@ class PluginArchiresQueryType extends CommonDBTM {
    function addType($querytype, $type, $itemtype, $plugin_archires_queries_id) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       if ($type != '-1') {
          if (!$this->getFromDBbyType($itemtype, $type, $querytype, $plugin_archires_queries_id)) {
-            $this->add(array('itemtype'                   => $itemtype,
-                             'type'                       => $type,
-                             'querytype'                  => $querytype,
-                             'plugin_archires_queries_id' => $plugin_archires_queries_id));
+            $this->add(['itemtype'                   => $itemtype,
+                        'type'                       => $type,
+                        'querytype'                  => $querytype,
+                        'plugin_archires_queries_id' => $plugin_archires_queries_id]);
          }
       } else {
-         $query = "SELECT *
-                   FROM `".getTableForItemType($itemtype."Type")."` ";
-         $result = $DB->query($query);
-         $number = $DB->numrows($result);
+         $query = ['FROM' => $dbu->getTableForItemType($itemtype."Type")];
+         $result = $DB->request($query);
          $i      = 0;
 
-         while ($i < $number) {
-            $type_table = $DB->result($result, $i, "id");
+         while ($i < count($result)) {
+            $row = $result->next();
+            $type_table = $row['id'];
             if (!$this->getFromDBbyType($itemtype, $type_table, $querytype,
                                         $plugin_archires_queries_id)) {
-               $this->add(array('itemtype'                   => $itemtype,
-                                'type'                       => $type_table,
-                                'querytype'                  => $querytype,
-                                'plugin_archires_queries_id' => $plugin_archires_queries_id));
+               $this->add(['itemtype'                   => $itemtype,
+                           'type'                       => $type_table,
+                           'querytype'                  => $querytype,
+                           'plugin_archires_queries_id' => $plugin_archires_queries_id]);
             }
             $i++;
          }
@@ -96,19 +96,21 @@ class PluginArchiresQueryType extends CommonDBTM {
    function queryTypeCheck($querytype, $plugin_archires_views_id, $val) {
       global $DB;
 
-      $query0 = "SELECT *
-                 FROM `".$this->getTable()."`
-                 WHERE `querytype` = '$querytype'
-                       AND `plugin_archires_queries_id` = '$plugin_archires_views_id'
-                       AND `itemtype` = '$val'";
-      $result0 = $DB->query($query0);
+      $dbu = new DbUtils();
+
+      $query0 = ['FROM'    => $this->getTable(),
+                 'WHERE'   => ['querytype'                  => $querytype,
+                               'plugin_archires_queries_id' => $plugin_archires_views_id,
+                               'itemtype'                   => $val]];
+      $result0 = $DB->request($query0);
       $query   = "";
-      if ($DB->numrows($result0) > 0) {
-        $itemtable = getTableForItemType($val);
-        $query     = "AND `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+
+      if (count($result0)) {
+        $itemtable = $dbu->getTableForItemType($val);
+        $query     = "AND `$itemtable`.`".getForeignKeyFieldForTable($dbu->getTableForItemType($val."Type"))."`
                            IN (0 ";
-         while ($data0=$DB->fetch_array($result0)) {
-            $query .= ",'".$data0["type"]."' ";
+         while ($data0 = $result0->next()) {
+            $query .= ", ".$data0["type"];
          }
          $query .= ") ";
       }
@@ -147,21 +149,20 @@ class PluginArchiresQueryType extends CommonDBTM {
          Html::closeForm();
       }
 
-      $query = "SELECT *
-                FROM `glpi_plugin_archires_querytypes`
-                WHERE `plugin_archires_queries_id` = '$ID'
-                      AND `querytype` = '$type'
-                ORDER BY `itemtype`, `type` ASC";
+      $query = ['FROM'  => 'glpi_plugin_archires_querytypes',
+                'WHERE' => ['plugin_archires_queries_id' => $ID,
+                            'querytype'                  => $type],
+                'ORDER' => ['itemtype ASC', 'type ASC']];
 
-      if ($result = $DB->query($query)) {
-         $number = $DB->numrows($result);
-         if ($number != 0) {
+      if ($result = $DB->request($query)) {
+         $number = count($result);
+         if ($number) {
             echo "<div id='liste'>";
             if (Session::haveRight("plugin_archires", UPDATE)) {
                $rand = mt_rand();
                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-               $massiveactionparams = array('num_displayed'    => $number,
-                                            'container'        => 'mass'.__CLASS__.$rand);
+               $massiveactionparams = ['num_displayed'    => $number,
+                                       'container'        => 'mass'.__CLASS__.$rand];
                Html::showMassiveActions($massiveactionparams);
             }
             echo "<table class='tab_cadre' cellpadding='5' width='63%'>";
@@ -175,7 +176,7 @@ class PluginArchiresQueryType extends CommonDBTM {
             echo "<th class='left'>".__('Item type')."</th><th></th>";
             echo "</tr>";
 
-            while ($ligne = $DB->fetch_assoc($result)) {
+            while ($ligne = $result->next()) {
                $ID = $ligne["id"];
                echo "<tr class='tab_bg_1'>";
                echo "<td width='10'>";

@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -42,22 +42,21 @@ class PluginArchiresProfile extends Profile {
    static function purgeProfiles(Profile $prof) {
 
       $plugprof = new self();
-      $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
+      $plugprof->deleteByCriteria(['profiles_id' => $prof->getField("id")]);
    }
 
 
    function getFromDBByProfile($profiles_id) {
       global $DB;
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                WHERE `profiles_id` = '" . $profiles_id . "' ";
+      $query = ['FROM'  => $this->getTable(),
+                'WHERE' => ['profiles_id' => $profiles_id]];
 
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
+      if ($result = $DB->request($query)) {
+         if (count($result) != 1) {
             return false;
          }
-         $this->fields = $DB->fetch_assoc($result);
+         $this->fields = $result->next();
          if (is_array($this->fields) && count($this->fields)) {
             return true;
          }
@@ -67,37 +66,36 @@ class PluginArchiresProfile extends Profile {
 
 
    static function createFirstAccess($ID) {
-      self::addDefaultProfileInfos($ID,array('plugin_archires' => ALLSTANDARDRIGHT), true);
+      self::addDefaultProfileInfos($ID, ['plugin_archires' => ALLSTANDARDRIGHT], true);
    }
 
 
    //profiles modification
    function showForProfile(Profile $prof){
 
-      $canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE));
+      $canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]);
 
       if ($canedit) {
          echo "<form method='post' action='".$prof->getFormURL()."'>";
       }
 
-      $rights = array(array('itemtype'  => 'PluginArchiresArchires',
-                            'label'     => __('Generate graphs', 'archires'),
-                            'field'     => 'plugin_archires'));
+      $rights = [['itemtype'  => 'PluginArchiresArchires',
+                  'label'     => __('Generate graphs', 'archires'),
+                  'field'     => 'plugin_archires']];
 
-      $prof->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
-                                                      'default_class' => 'tab_bg_2',
-                                                       'title'         => __('General')));
+      $prof->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
+                                                 'default_class' => 'tab_bg_2',
+                                                 'title'         => __('General')]);
 
       echo "<table class='tab_cadre_fixehov'>";
-      $effective_rights = ProfileRight::getProfileRights($prof->getField('id'),
-                                                         array('plugin_archires'));
-      echo Html::hidden('id', array('value' => $prof->getField('id')));
+      $effective_rights = ProfileRight::getProfileRights($prof->getField('id'), ['plugin_archires']);
+      echo Html::hidden('id', ['value' => $prof->getField('id')]);
       echo "</table>";
 
       if ($canedit) {
          echo "<div class='center'>";
-         echo Html::hidden('id', array('value' => $prof->getField('id')));
-         echo Html::submit(_sx('button', 'Save'), array('name' => 'update'));
+         echo Html::hidden('id', ['value' => $prof->getField('id')]);
+         echo Html::submit(_sx('button', 'Save'), ['name' => 'update']);
          echo "</div>\n";
          Html::closeForm();
       }
@@ -121,8 +119,7 @@ class PluginArchiresProfile extends Profile {
       if ($item->getType() == 'Profile') {
          $prof = new self();
          $ID   = $item->getField('id');
-         self::addDefaultProfileInfos($item->getID(),
-                                      array('plugin_archires' => 0));
+         self::addDefaultProfileInfos($item->getID(), ['plugin_archires' => 0]);
          $prof->showForProfile($item);
       }
       return true;
@@ -131,10 +128,13 @@ class PluginArchiresProfile extends Profile {
 
    static function addDefaultProfileInfos($profiles_id, $rights) {
 
+      $dbu = new DbUtils();
+
       $profileRight = new ProfileRight();
       foreach ($rights as $right => $value) {
-         if (!countElementsInTable('glpi_profilerights',
-                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
+         if (!$dbu->countElementsInTable('glpi_profilerights',
+                                         ['profiles_id' => $profiles_id,
+                                          'name'        => $right])) {
             $myright['profiles_id'] = $profiles_id;
             $myright['name']        = $right;
             $myright['rights']      = $value;

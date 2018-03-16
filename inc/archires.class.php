@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -47,12 +47,13 @@ class PluginArchiresArchires extends CommonDBTM {
 
    static function showSummary() {
 
+      $dbu = new DbUtils();
+
       echo "<div class='center'><table class='tab_cadre' cellpadding='5' width='50%'>";
       echo "<tr><th>".__('Summary')."</th></tr>";
 
-
-      if (countElementsInTable('glpi_plugin_archires_views',
-                               "`entities_id`='".$_SESSION["glpiactive_entity"]."'") > 0) {
+      if ($dbu->countElementsInTable('glpi_plugin_archires_views',
+                                     ['entities_id' => $_SESSION["glpiactive_entity"]]) > 0) {
 
          echo "<tr class='tab_bg_1'><td>";
          echo "<a href='view.php'>".PluginArchiresView::getTypeName(2)."</a>";
@@ -90,24 +91,24 @@ class PluginArchiresArchires extends CommonDBTM {
    function showAllItems($myname, $value_type=0, $value=0, $entity_restrict=-1) {
       global $DB,$CFG_GLPI;
 
-      $types = array('Computer','NetworkEquipment','Peripheral','Phone','Printer');
+      $types = ['Computer','NetworkEquipment','Peripheral','Phone','Printer'];
       $rand  = mt_rand();
 
-      $params = array(0 => Dropdown::EMPTY_VALUE);
       foreach ($types as $label) {
          $item = new $label();
          $params[$label] = $item->getTypeName();
       }
 
-      Dropdown::showFromArray('_itemtype', $params, array('width'   => '80%',
-                                                          'rand'    => $rand));
+      Dropdown::showFromArray('_itemtype', $params, ['width'               => '80%',
+                                                     'rand'                => $rand,
+                                                     'display_emptychoice' => true]);
 
       $field_id = Html::cleanId("dropdown__itemtype$rand");
 
-      $params = array('itemtype'       => '__VALUE__',
-                      'value'           => $value,
-                      'myname'          => $myname,
-                      'entity' => $entity_restrict);
+      $params = ['itemtype'       => '__VALUE__',
+                 'value'           => $value,
+                 'myname'          => $myname,
+                 'entity' => $entity_restrict];
 
       echo "<span id='show_$myname$rand'>&nbsp;</span>\n";
       Ajax::updateItemOnSelectEvent($field_id, "show_$myname$rand",

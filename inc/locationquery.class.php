@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -48,65 +48,76 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    function cleanDBonPurge() {
 
       $querytype = new PluginArchiresQueryType();
-      $querytype->deleteByCriteria(array('plugin_archires_queries_id' => $this->fields['id']));
+      $querytype->deleteByCriteria(['plugin_archires_queries_id' => $this->fields['id']]);
    }
 
 
-   function getSearchOptions() {
+   function getSearchOptionsNew() {
 
-      $tab = array();
+      $tab = [];
 
-      $tab['common']             = self::getTypeName();
+      $tab[] = ['id'             => 'common',
+               'name'           => self::getTypeName(2)];
 
-      $tab[1]['table']           = $this->getTable();
-      $tab[1]['field']           = 'name';
-      $tab[1]['name']            = __('Name');
-      $tab[1]['datatype']        = 'itemlink';
-      $tab[1]['itemlink_type']   = $this->getType();
+      $tab[] = ['id'             => '1',
+               'table'          => $this->getTable(),
+               'field'          =>'name',
+               'name'           => __('Name'),
+               'datatype'       => 'itemlink',
+               'itemlink_type'  => $this->getType()];
 
-      $tab[2]['table']           = $this->getTable();
-      $tab[2]['field']           = 'child';
-      $tab[2]['name']            = __('Childs', 'archires');
-      $tab[2]['datatype']        = 'bool';
+      $tab[] = ['id'             => '2',
+               'table'          => $this->getTable(),
+               'field'          => 'child',
+               'name'           => __('Childs', 'archires'),
+               'datatype'       => 'bool'];
 
-      $tab[3]['table']           = 'glpi_locations';
-      $tab[3]['field']           = 'completename';
-      $tab[3]['name']            = __('Location');
+      $tab[] = ['id'             => '3',
+               'table'          => 'glpi_locations',
+               'field'          => 'completename',
+               'name'           => __('Location')];
 
-      $tab[4]['table']           = 'glpi_networks';
-      $tab[4]['field']           = 'name';
-      $tab[4]['name']            = __('Network');
-      $tab[4]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '4',
+               'table'          => 'glpi_networks',
+               'field'          => 'name',
+               'name'           => __('Network'),
+               'datatype'       => 'dropdown'];
 
-      $tab[5]['table']           = 'glpi_states';
-      $tab[5]['field']           = 'name';
-      $tab[5]['name']            = _n('State', 'States', 1);
-      $tab[5]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '5',
+               'table'          => 'glpi_states',
+               'field'          => 'name',
+               'name'           => _n('State', 'States', 1),
+               'datatype'       => 'dropdown'];
 
-      $tab[6]['table']           = 'glpi_groups';
-      $tab[6]['field']           = 'completename';
-      $tab[6]['name']            = _n('Group', 'Groups', 1);
-      $tab[6]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '6',
+               'table'          => 'glpi_groups',
+               'field'          => 'completename',
+               'name'           => _n('Group', 'Groups', 1),
+               'datatype'       => 'dropdown'];
 
-      $tab[7]['table']           = 'glpi_vlans';
-      $tab[7]['field']           = 'name';
-      $tab[7]['name']            = __('VLAN');
-      $tab[7]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '7',
+               'table'          => 'glpi_vlans',
+               'field'          => 'name',
+               'name'           => __('VLAN'),
+               'datatype'       => 'dropdown'];
 
-      $tab[8]['table']           = 'glpi_plugin_archires_views';
-      $tab[8]['field']           = 'name';
-      $tab[8]['name']            = PluginArchiresView::getTypeName(1);
-      $tab[8]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '8',
+               'table'          => 'glpi_plugin_archires_views',
+               'field'          => 'name',
+               'name'           => PluginArchiresView::getTypeName(1),
+               'datatype'       => 'dropdown'];
 
-      $tab[30]['table']          = $this->getTable();
-      $tab[30]['field']          = 'id';
-      $tab[30]['name']           = __('ID');
-      $tab[30]['datatype']       = 'number';
+      $tab[] = ['id'             => '30',
+               'table'          => $this->getTable(),
+               'field'          => 'id',
+               'name'           => __('ID'),
+               'datatype'       => 'number'];
 
-      $tab[80]['table']          = 'glpi_entities';
-      $tab[80]['field']          = 'completename';
-      $tab[80]['name']           = __('Entity');
-      $tab[80]['datatype']       = 'dropdown';
+      $tab[] = ['id'             => '80',
+               'table'          => 'glpi_entities',
+               'field'          => 'completename',
+               'name'           => __('Entity'),
+               'datatype'       => 'dropdown'];
 
       return $tab;
    }
@@ -118,25 +129,26 @@ class PluginArchiresLocationQuery extends CommonDBTM {
           || $input["plugin_archires_views_id"] == 0) {
          Session::addMessageAfterRedirect(__('Thanks to specify a default used view', 'archires'),
                                           false, ERROR);
-         return array ();
+         return [];
       }
       return $input;
    }
 
 
-   function defineTabs($options=array()) {
+   function defineTabs($options=[]) {
 
-      $ong = array();
-      $this->addDefaultFormTab($ong);
-      $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
-      $this->addStandardTab('PluginArchiresView', $ong, $options);
-      $this->addStandardTab('PluginArchiresPrototype', $ong, $options);
-      $this->addStandardTab('Notepad',$ong, $options);
+      $ong = [];
+      $this->addDefaultFormTab($ong)
+         ->addStandardTab('PluginArchiresQueryType', $ong, $options)
+         ->addStandardTab('PluginArchiresView', $ong, $options)
+         ->addStandardTab('PluginArchiresPrototype', $ong, $options)
+         ->addStandardTab('Notepad',$ong, $options);
+
       return $ong;
    }
 
 
-   function showForm ($ID, $options=array()) {
+   function showForm ($ID, $options=[]) {
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
@@ -147,8 +159,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       Html::autocompletionTextField($this,"name");
       echo "</td>";
       echo "<td>".__('State')."</td><td>";
-      State::dropdown(array('name'  => "states_id",
-                            'value' => $this->fields["states_id"]));
+      State::dropdown(['name'  => "states_id",
+                       'value' => $this->fields["states_id"]]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -156,9 +168,9 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       $this->dropdownLocation($this, $ID);
       echo "</td>";
       echo "<td>".__('Group')."</td><td>";
-      Group::dropdown(array('name'   => "groups_id",
-                            'value'  => $this->fields["groups_id"],
-                            'entity' => $this->fields["entities_id"]));
+      Group::dropdown(['name'   => "groups_id",
+                       'value'  => $this->fields["groups_id"],
+                       'entity' => $this->fields["entities_id"]]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -167,20 +179,20 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       Dropdown::showYesNo("child",$this->fields["child"]);
       echo "</td>";
       echo "<td>".__('VLAN')."</td><td>";
-      Vlan::dropdown(array('name'  => "vlans_id",
-                           'value' => $this->fields["vlans_id"]));
+      Vlan::dropdown(['name'  => "vlans_id",
+                      'value' => $this->fields["vlans_id"]]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__('Network')."</td><td>";
-      Network::dropdown(array('name'  => "networks_id",
-                              'value' => $this->fields["networks_id"]));
+      Network::dropdown(['name'  => "networks_id",
+                         'value' => $this->fields["networks_id"]]);
       echo "</td>";
       echo "<td>".PluginArchiresView::getTypeName(1)."</td><td>";
       //View
       Dropdown::show('PluginArchiresView',
-                     array('name'  => "plugin_archires_views_id",
-                           'value' => $this->fields["plugin_archires_views_id"]));
+                     ['name'  => "plugin_archires_views_id",
+                      'value' => $this->fields["plugin_archires_views_id"]]);
       echo "</td></tr>";
 
       $this->showFormButtons($options);
@@ -193,33 +205,36 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       global $DB;
 
       $obj          = new $object();
+      $dbu          = new DbUtils();
       $locations_id = -1;
+
       if ($obj->getFromDB($ID)) {
          $locations_id = $obj->fields["locations_id"];
       }
-      $query0 = "SELECT `entities_id`
-                 FROM `glpi_locations` ".
-                 getEntitiesRestrictRequest(" WHERE","glpi_locations")."
-                 GROUP BY `entities_id`
-                 ORDER BY `entities_id`";
+      $where = '';
+      $query0 = ['SELECT'  => 'entities_id',
+                 'FROM'    => 'glpi_locations',
+                 'WHERE'   => [$dbu->getEntitiesRestrictCriteria('glpi_locations')],
+                 'GROUPBY' => 'entities_id',
+                 'ORDER'   => 'entities_id'];
 
       echo "<select name='locations_id'>";
       echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
       echo "<option option value='-1' ".($locations_id=="-1"?" selected ":"").">".
              __('All root locations', 'archires')."</option>";
 
-      if ($result0 = $DB->query($query0)) {
-         while ($ligne0 = $DB->fetch_array($result0)) {
+      if ($result0 = $DB->request($query0)) {
+         while ($ligne0 = $result0->next()) {
             echo "<optgroup label='".Dropdown::getDropdownName("glpi_entities",
                                                                $ligne0["entities_id"])."'>";
 
-            $query = "SELECT `id`, `completename`
-                      FROM `glpi_locations`
-                      WHERE `entities_id` = '".$ligne0["entities_id"]."'
-                      ORDER BY `completename` ASC";
+            $query = ['SELECT'   => ['id', 'completename'],
+                      'FROM'     => 'glpi_locations',
+                      'WHERE'    => ['entities_id' => $ligne0["entities_id"]],
+                      'ORDER'    => ['completename ASC']];
 
-            if ($result = $DB->query($query)) {
-               while ($ligne = $DB->fetch_array($result)) {
+            if ($result = $DB->request($query)) {
+               while ($ligne = $result->next()) {
                   $location    = $ligne["completename"];
                   $location_id = $ligne["id"];
                   echo "<option value='".$location_id."' ".
@@ -237,11 +252,13 @@ class PluginArchiresLocationQuery extends CommonDBTM {
    function Query($ID,$PluginArchiresView,$for) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       $this->getFromDB($ID);
 
-      $types   = array();
-      $devices = array();
-      $ports   = array();
+      $types   = [];
+      $devices = [];
+      $ports   = [];
 
       if ($PluginArchiresView->fields["computer"] != 0) {
          $types[]='Computer';
@@ -260,13 +277,13 @@ class PluginArchiresLocationQuery extends CommonDBTM {
       }
 
       foreach ($types as $key => $val) {
-         $itemtable = getTableForItemType($val);
+         $itemtable = $dbu->getTableForItemType($val);
          $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`instantiation_type`,
                       `glpi_ipaddresses`.`name` AS ip, `glpi_ipnetworks`.`netmask`,
                       `np`.`name` AS namep";
 
          $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                          `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+                          `$itemtable`.`".getForeignKeyFieldForTable($dbu->getTableForItemType($val."Type"))."`
                               AS `type`,
                           `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`,
                           `$itemtable`.`states_id`, `$itemtable`.`entities_id`,
@@ -293,7 +310,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                         ON (`np`.`items_id` = `$itemtable`.`id`
                             AND `$itemtable`.`is_deleted` = '0'
                             AND `$itemtable`.`is_template` = '0'".
-                            getEntitiesRestrictRequest(" AND",$itemtable).")
+                            $dbu->getEntitiesRestrictRequest(" AND",$itemtable).")
                      LEFT JOIN `glpi_locations` lc
                         ON `lc`.`id` = `$itemtable`.`locations_id`
                      WHERE `np`.`instantiation_type` = 'NetworkPortEthernet'
@@ -338,8 +355,8 @@ class PluginArchiresLocationQuery extends CommonDBTM {
          $query .= $PluginArchiresQueryType->queryTypeCheck($this->getType(),$ID,$val);
          $query .= "ORDER BY `glpi_ipaddresses`.`name` ASC ";
 
-         if ($result = $DB->query($query)) {
-            while ($data = $DB->fetch_array($result)) {
+         if ($result = $DB->request($query)) {
+            while ($data = $result->next()) {
                if ($PluginArchiresView->fields["display_state"] != 0) {
                   $devices[$val][$data["items_id"]]["states_id"] = $data["states_id"];
                }

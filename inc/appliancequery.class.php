@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -47,61 +47,71 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
    function cleanDBonPurge() {
 
       $querytype = new PluginArchiresQueryType();
-      $querytype->deleteByCriteria(array('plugin_archires_queries_id' => $this->fields['id']));
+      $querytype->deleteByCriteria(['plugin_archires_queries_id' => $this->fields['id']]);
    }
 
 
-   function getSearchOptions() {
+   function getSearchOptionsNew() {
 
-      $tab = array();
+      $tab = [];
 
-      $tab['common']             = self::getTypeName(2);
+      $tab[] = ['id'             => 'common',
+                'name'           => self::getTypeName(2)];
 
-      $tab[1]['table']           = $this->getTable();
-      $tab[1]['field']           = 'name';
-      $tab[1]['name']            = __('Name');
-      $tab[1]['datatype']        = 'itemlink';
-      $tab[1]['itemlink_type']   = $this->getType();
+      $tab[] = ['id'             => '1',
+                'table'          => $this->getTable(),
+                'field'          =>'name',
+                'name'           => __('Name'),
+                'datatype'       => 'itemlink',
+                'itemlink_type'  => $this->getType()];
 
-      $tab[2]['table']           = 'glpi_plugin_appliances_appliances';
-      $tab[2]['field']           = 'name';
-      $tab[2]['name']            = PluginAppliancesAppliance::getTypeName(1);
-      $tab[2]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '2',
+                'table'          => 'glpi_plugin_appliances_appliances',
+                'field'          => 'name',
+                'name'           => PluginAppliancesAppliance::getTypeName(1),
+                'datatype'       => 'dropdown'];
 
-      $tab[3]['table']           = 'glpi_networks';
-      $tab[3]['field']           = 'name';
-      $tab[3]['name']            = _n('Network', 'Networks', 2);
-      $tab[3]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '3',
+                'table'          => 'glpi_networks',
+                'field'          => 'name',
+                'name'           => _n('Network', 'Networks', 2),
+                'datatype'       => 'dropdown'];
 
-      $tab[4]['table']           = 'glpi_states';
-      $tab[4]['field']           = 'name';
-      $tab[4]['name']            = __('State');
-      $tab[4]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '4',
+                'table'          => 'glpi_states',
+                'field'          => 'name',
+                'name'           => __('State'),
+                'datatype'       => 'dropdown'];
 
-      $tab[5]['table']           = 'glpi_groups';
-      $tab[5]['field']           = 'completename';
-      $tab[5]['name']            = __('Group');
-      $tab[5]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '5',
+                'table'          => 'glpi_groups',
+                'field'          => 'completename',
+                'name'           => __('Group'),
+                'datatype'       => 'dropdown'];
 
-      $tab[6]['table']           = 'glpi_vlans';
-      $tab[6]['field']           = 'name';
-      $tab[6]['name']            = __('VLAN');
-      $tab[6]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '6',
+                'table'          => 'glpi_vlans',
+                'field'          => 'name',
+                'name'           => __('VLAN'),
+                'datatype'       => 'dropdown'];
 
-      $tab[7]['table']           = 'glpi_plugin_archires_views';
-      $tab[7]['field']           = 'name';
-      $tab[7]['name']            = PluginArchiresView::getTypeName(1);
-      $tab[7]['datatype']        = 'dropdown';
+      $tab[] = ['id'             => '7',
+               'table'           => 'glpi_plugin_archires_views',
+               'field'           => 'name',
+               'name'            => PluginArchiresView::getTypeName(1),
+               'datatype'        => 'dropdown'];
 
-      $tab[30]['table']          = $this->getTable();
-      $tab[30]['field']          = 'id';
-      $tab[30]['name']           = __('ID');
-      $tab[30]['datatype']       = 'number';
+      $tab[] = ['id'             => '30',
+               'table'           => $this->getTable(),
+               'field'           => 'id',
+               'name'            => __('ID'),
+               'datatype'        => 'number'];
 
-      $tab[80]['table']          = 'glpi_entities';
-      $tab[80]['field']          = 'completename';
-      $tab[80]['name']           = __('Entity');
-      $tab[80]['datatype']       = 'dropdown';
+      $tab[] = ['id'             => '80',
+               'table'           => 'glpi_entities',
+               'field'           => 'completename',
+               'name'            => __('Entity'),
+               'datatype'        => 'dropdown'];
 
    return $tab;
    }
@@ -113,25 +123,26 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
           || $input["plugin_archires_views_id"] == 0) {
          Session::addMessageAfterRedirect(__('Thanks to specify a default used view', 'archires'),
                                           false, ERROR);
-         return array ();
+         return [];
       }
       return $input;
    }
 
 
-   function defineTabs($options=array()) {
+   function defineTabs($options=[]) {
 
-      $ong = array();
-      $this->addDefaultFormTab($ong);
-      $this->addStandardTab('PluginArchiresQueryType', $ong, $options);
-      $this->addStandardTab('PluginArchiresView', $ong, $options);
-      $this->addStandardTab('PluginArchiresPrototype', $ong, $options);
-      $this->addStandardTab('Notepad',$ong, $options);
+      $ong = [];
+      $this->addDefaultFormTab($ong)
+         ->addStandardTab('PluginArchiresQueryType', $ong, $options)
+         ->addStandardTab('PluginArchiresView', $ong, $options)
+         ->addStandardTab('PluginArchiresPrototype', $ong, $options)
+         ->addStandardTab('Notepad',$ong, $options);
+
       return $ong;
    }
 
 
-   function showForm ($ID, $options=array()) {
+   function showForm ($ID, $options=[]) {
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
@@ -142,36 +153,36 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
       Html::autocompletionTextField($this,"name");
       echo "</td>";
       echo "<td>".__('Group')."</td><td>";
-      Group::dropdown(array('name'   => "groups_id",
-                            'value'  => $this->fields["groups_id"],
-                            'entity' => $this->fields["entities_id"]));
+      Group::dropdown(['name'   => "groups_id",
+                       'value'  => $this->fields["groups_id"],
+                       'entity' => $this->fields["entities_id"]]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".PluginAppliancesAppliance::getTypeName(1)."</td><td>";
       Dropdown::show('PluginAppliancesAppliance',
-                     array('name'   => "appliances_id",
-                           'value'  => $this->fields["plugin_appliances_appliances_id"],
-                           'entity' => $this->fields["entities_id"]));
+                     ['name'   => "appliances_id",
+                      'value'  => $this->fields["plugin_appliances_appliances_id"],
+                      'entity' => $this->fields["entities_id"]]);
       echo "</td>";
       echo "<td>".__('VLAN')."</td><td>";
-      Vlan::dropdown(array('name'  => "vlans_id",
-                           'value' => $this->fields["vlans_id"]));
+      Vlan::dropdown(['name'  => "vlans_id",
+                      'value' => $this->fields["vlans_id"]]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'><td>".__('Network')."</td><td>";
-      Network::dropdown(array('name'  => "networks_id",
-                              'value' => $this->fields["networks_id"]));
+      Network::dropdown(['name'  => "networks_id",
+                         'value' => $this->fields["networks_id"]]);
       echo "</td>";
       echo "<td>".PluginArchiresView::getTypeName(1)."</td><td>";
       //View
       Dropdown::show('PluginArchiresView',
-                     array('name'  => "plugin_archires_views_id",
-                           'value' => $this->fields["plugin_archires_views_id"]));
+                     ['name'  => "plugin_archires_views_id",
+                      'value' => $this->fields["plugin_archires_views_id"]]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'><td>".__('State')."</td><td colspan='3'>";
-      State::dropdown(array('name' => "states_id"));
+      State::dropdown(['name' => "states_id"]);
       echo "</td></tr>";
 
       $this->showFormButtons($options);
@@ -183,11 +194,13 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
    function Query ($ID,$PluginArchiresView,$for) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       $this->getFromDB($ID);
 
-      $types   = array();
-      $devices = array();
-      $ports   = array();
+      $types   = [];
+      $devices = [];
+      $ports   = [];
 
       if ($PluginArchiresView->fields["computer"] != 0) {
          $types[] = 'Computer';
@@ -208,9 +221,9 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
          $fieldsnp = "`np`.`id`, `np`.`items_id`, `np`.`logical_number`, `np`.`instantiation_type`,
                       `glpi_ipaddresses`.`name` AS ip, `ipn`.`netmask`, `np`.`name` AS namep";
 
-         $itemtable = getTableForItemType($val);
+         $itemtable = $dbu->getTableForItemType($val);
          $query = "SELECT `$itemtable`.`id` AS idc, $fieldsnp , `$itemtable`.`name`,
-                          `$itemtable`.`".getForeignKeyFieldForTable(getTableForItemType($val."Type"))."`
+                          `$itemtable`.`".getForeignKeyFieldForTable($dbu->getTableForItemType($val."Type"))."`
                               AS `type`,
                           `$itemtable`.`users_id`, `$itemtable`.`groups_id`, `$itemtable`.`contact`,
                           `$itemtable`.`states_id`, `$itemtable`.`entities_id`,
@@ -262,8 +275,8 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
          $query .= "ORDER BY `glpi_ipaddresses`.`name` ASC ";
 
-         if ($result = $DB->query($query)) {
-            while ($data = $DB->fetch_array($result)) {
+         if ($result = $DB->request($query)) {
+            while ($data = $result->next()) {
 
                if ($PluginArchiresView->fields["display_state"] != 0) {
                   $devices[$val][$data["items_id"]]["states_id"] = $data["states_id"];
@@ -287,7 +300,6 @@ class PluginArchiresApplianceQuery extends CommonDBTM {
 
                $ports[$data["id"]]["items_id"]             = $data["items_id"];
                $ports[$data["id"]]["logical_number"]       = $data["logical_number"];
-               $ports[$data["id"]]["networkinterfaces_id"] = $data["networkinterfaces_id"];
                $ports[$data["id"]]["ip"]                   = $data["ip"];
                $ports[$data["id"]]["netmask"]              = $data["netmask"];
                $ports[$data["id"]]["namep"]                = $data["namep"];

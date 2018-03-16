@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -51,84 +51,101 @@ class PluginArchiresView extends CommonDBTM {
    }
 
 
-   function getSearchOptions() {
+   function getSearchOptionsNew() {
 
-      $tab = array();
+      $tab = [];
 
-      $tab['common']             = self::getTypeName();
+      $tab[] = ['id'             => 'common',
+               'name'           => self::getTypeName(2)];
 
-      $tab[1]['table']           = $this->getTable();
-      $tab[1]['field']           = 'name';
-      $tab[1]['name']            = __('Name');
-      $tab[1]['datatype']        = 'itemlink';
-      $tab[1]['itemlink_type']   = $this->getType();
+      $tab[] = ['id'             => '1',
+               'table'          => $this->getTable(),
+               'field'          =>'name',
+               'name'           => __('Name'),
+               'datatype'       => 'itemlink',
+               'itemlink_type'  => $this->getType()];
 
-      $tab[2]['table']           = $this->getTable();
-      $tab[2]['field']           = 'computer';
-      $tab[2]['name']            = _n('Computer', 'Computers', 2);
-      $tab[2]['datatype']        = 'bool';
+      $tab[] = ['id'             => '2',
+               'table'          => $this->getTable(),
+               'field'          => 'computer',
+               'name'           => _n('Computer', 'Computers', 2),
+               'datatype'       => 'bool'];
 
-      $tab[3]['table']           = $this->getTable();
-      $tab[3]['field']           = 'networking';
-      $tab[3]['name']            = _n('Network equipment', 'Network equipments', 2, 'archires');
-      $tab[3]['datatype']        = 'bool';
 
-      $tab[4]['table']           = $this->getTable();
-      $tab[4]['field']           = 'printer';
-      $tab[4]['name']            = _n('Printer', 'Printers', 2);
-      $tab[4]['datatype']        = 'bool';
+      $tab[] = ['id'             => '3',
+               'table'          => $this->getTable(),
+               'field'          => 'networking',
+               'name'           => _n('Network equipment', 'Network equipments', 2, 'archires'),
+               'datatype'       => 'bool'];
 
-      $tab[5]['table']           = $this->getTable();
-      $tab[5]['field']           = 'peripheral';
-      $tab[5]['name']            = _n('Device', 'Devices', 2);
-      $tab[5]['datatype']        = 'bool';
+      $tab[] = ['id'             => '4',
+               'table'          => $this->getTable(),
+               'field'          => 'printer',
+               'name'           => _n('Printer', 'Printers', 2),
+               'datatype'       => 'bool'];
 
-      $tab[6]['table']           = $this->getTable();
-      $tab[6]['field']           = 'phone';
-      $tab[6]['name']            = _n('Phone', 'Phones', 2);
-      $tab[6]['datatype']        = 'bool';
+      $tab[] = ['id'             => '5',
+               'table'          => $this->getTable(),
+               'field'          => 'peripheral',
+               'name'           => _n('Device', 'Devices', 2),
+               'datatype'       => 'bool'];
 
-      $tab[7]['table']           = $this->getTable();
-      $tab[7]['field']           = 'display_ports';
-      $tab[7]['name']            = __('Display sockets', 'archires');
-      $tab[7]['datatype']        = 'text';
+      $tab[] = ['id'             => '6',
+               'table'          => $this->getTable(),
+               'field'          => 'phone',
+               'name'           => _n('Phone', 'Phones', 2),
+               'datatype'       => 'bool'];
 
-      $tab[8]['table']           = $this->getTable();
-      $tab[8]['field']           = 'display_ip';
-      $tab[8]['name']            = __('Display IP/Mask', 'archires');
-      $tab[8]['datatype']        = 'bool';
+      $tab[] = ['id'             => '7',
+               'table'          => $this->getTable(),
+               'field'          => 'display_ports',
+               'name'           => __('Display sockets', 'archires'),
+               'datatype'       => 'text'];
 
-      $tab[9]['table']           = $this->getTable();
-      $tab[9]['field']           = 'display_type';
-      $tab[9]['name']            = __('Display item types', 'archires');
-      $tab[9]['datatype']        = 'bool';
+      $tab[] = ['id'             => '8',
+               'table'          => $this->getTable(),
+               'field'          => 'display_ip',
+               'name'           => __('Display IP/Mask', 'archires'),
+               'datatype'       => 'bool'];
 
-      $tab[10]['table']          = $this->getTable();
-      $tab[10]['field']          = 'display_state';
-      $tab[10]['name']           = __('Display item statuses', 'archires');
-      $tab[10]['datatype']       = 'bool';
+      $tab[] = ['id'             => '9',
+               'table'          => $this->getTable(),
+               'field'          => 'display_type',
+               'name'           => __('Display item types', 'archires'),
+               'datatype'       => 'bool'];
 
-      $tab[11]['table']          = $this->getTable();
-      $tab[11]['field']          = 'display_location';
-      $tab[11]['name']           = __('Display item locations', 'archires');
-      $tab[11]['datatype']       = 'bool';
+      $tab[] = ['id'             => '10',
+               'table'          => $this->getTable(),
+               'field'          => 'display_state',
+               'name'           => __('Display item statuses', 'archires'),
+               'datatype'       => 'bool'];
 
-      $tab[12]['table']          = $this->getTable();
-      $tab[12]['field']          = 'display_entity';
-      $tab[12]['name']           = __('Display item entities', 'archires');
-      $tab[12]['datatype']       = 'bool';
+      $tab[] = ['id'             => '11',
+               'table'          => $this->getTable(),
+               'field'          => 'display_location',
+               'name'           => __('Display item locations', 'archires'),
+               'datatype'       => 'bool'];
 
-      $tab[13]['table']          = $this->getTable();
-      $tab[13]['field']          = 'engine';
-      $tab[13]['name']           = __('Rendering engine', 'archires');
+      $tab[] = ['id'             => '12',
+               'table'          => $this->getTable(),
+               'field'          => 'display_entity',
+               'name'           => __('Display item entities', 'archires'),
+               'datatype'       => 'bool'];
 
-      $tab[14]['table']          = $this->getTable();
-      $tab[14]['field']          = 'format';
-      $tab[14]['name']           = __('Image format', 'archires');
+      $tab[] = ['id'             => '13',
+               'table'          => $this->getTable(),
+               'field'          => 'engine',
+               'name'           => __('Rendering engine', 'archires')];
 
-      $tab[15]['table']          = $this->getTable();
-      $tab[15]['field']          = 'color';
-      $tab[15]['name']           = __('Color', 'archires');
+      $tab[] = ['id'             => '14',
+               'table'          => $this->getTable(),
+               'field'          => 'format',
+               'name'           => __('Image format', 'archires')];
+
+      $tab[] = ['id'             => '15',
+               'table'          => $this->getTable(),
+               'field'          => 'color',
+               'name'           => __('Color', 'archires')];
 
       return $tab;
    }
@@ -137,6 +154,8 @@ class PluginArchiresView extends CommonDBTM {
    function dropdownObject($obj) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       $ID = $obj->fields["id"];
 
       $query = "SELECT `id`, `name`
@@ -144,12 +163,17 @@ class PluginArchiresView extends CommonDBTM {
                 WHERE `is_deleted` = '0' ";
       // Add Restrict to current entities
       if ($obj->isEntityAssign()) {
-         $query .= getEntitiesRestrictRequest(" AND",$obj->getTable());
+         $where = $dbu->getEntitiesRestrictCriteria($obj->getTable());
       }
-      $query.=" ORDER BY `name` ASC";
 
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) > 0) {
+      $query = ['SELECT' => ['id', 'name'],
+                'FROM'   => $obj->getTable(),
+                'WHERE'  => ['is_deleted' => 0,
+                             $where],
+                'ORDER'  => 'name ASC'];
+
+      if ($result = $DB->request($query)) {
+         if (count($result)) {
             echo "<select name='plugin_archires_queries_id' size='1'> ";
             while ($ligne = $DB->fetch_array($result)) {
                echo "<option value='".$ligne["id"]."' ".(($ligne["id"] == "".$ID."")?" selected ":"").">".
@@ -167,16 +191,16 @@ class PluginArchiresView extends CommonDBTM {
       if (isset($obj->fields["id"])) {
          $default = $obj->fields["plugin_archires_views_id"];
       }
-      $query = "SELECT `id`, `name`
-                FROM `".$this->getTable()."`
-                WHERE `is_deleted` = '0'
-                      AND `entities_id` = '" . $_SESSION["glpiactive_entity"] . "'
-                ORDER BY `name` ASC";
+      $query = ['SELECT'   => ['id', 'name'],
+                'FROM'     => $this->getTable(),
+                'WHERE'    => ['is_deleted'  => 0,
+                               'entities_id' => $_SESSION["glpiactive_entity"]],
+                'ORDER'    => 'name ASC'];
 
       echo "<select name='plugin_archires_views_id' size='1'> ";
       echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>\n";
-      if ($result = $DB->query($query)) {
-         while ($ligne= $DB->fetch_array($result)) {
+      if ($result = $DB->request($query)) {
+         while ($ligne= $result->next()) {
             $view_name = $ligne["name"];
             $view_id   = $ligne["id"];
             echo "<option value='".$view_id."' ".($view_id=="".$default.""?" selected ":"").">".
@@ -236,7 +260,7 @@ class PluginArchiresView extends CommonDBTM {
    }
 
 
-   function showForm($ID, $options=array()) {
+   function showForm($ID, $options=[]) {
 
       $this->initForm($ID, $options);
       $this->showFormHeader($options);
@@ -244,7 +268,7 @@ class PluginArchiresView extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td colspan='1'>".__('Name')."</td>";
       echo "<td colspan='3'>";
-      Html::autocompletionTextField($this, "name", array('size' => 20));
+      Html::autocompletionTextField($this, "name", ['size' => 20]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_2'><th colspan='4'>".__('Display of items', 'archires')."</th></tr>";

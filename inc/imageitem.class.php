@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/aarchires
@@ -41,16 +41,15 @@ class PluginArchiresImageItem extends CommonDBTM {
    function getFromDBbyType($itemtype, $type) {
       global $DB;
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                WHERE `itemtype` = '$itemtype'
-                      AND `type` = '$type'";
+      $query = ['FROM'  => $this->getTable(),
+                'WHERE' =>  ['itemtype' => $itemtype,
+                             'type'     => $type]];
 
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
+      if ($result = $DB->request($query)) {
+         if (count($result) != 1) {
             return false;
          }
-         $this->fields = $DB->fetch_assoc($result);
+         $this->fields = $result->next();
          if (is_array($this->fields) && count($this->fields)) {
             return true;
          }
@@ -62,31 +61,32 @@ class PluginArchiresImageItem extends CommonDBTM {
    function addItemImage($type,$itemtype,$img) {
       global $DB;
 
+      $dbu = new DbUtils();
+
       if ($type != '-1') {
          if ($this->GetfromDBbyType($itemtype,$type)) {
-            $this->update(array('id'  => $this->fields['id'],
-                                'img' => $img));
+            $this->update(['id'  => $this->fields['id'],
+                           'img' => $img]);
          } else {
-            $this->add(array('itemtype' => $itemtype,
-                             'type'     => $type,
-                             'img'      => $img));
+            $this->add(['itemtype' => $itemtype,
+                        'type'     => $type,
+                        'img'      => $img]);
          }
       } else {
-         $query  = "SELECT *
-                    FROM `".getTableForItemType($itemtype."Type")."` ";
+         $query  = ['FROM' => $dbu->getTableForItemType($itemtype."Type")];
 
-         $result = $DB->query($query);
-         $number = $DB->numrows($result);
+         $result = $DB->request($query);
          $i      = 0;
-         while ($i < $number) {
-            $type_table = $DB->result($result, $i, "id");
+         while ($i < count($result)) {
+            $row        = $result->next();
+            $type_table = $row['id'];
             if ($this->GetfromDBbyType($itemtype,$type_table)) {
-            $this->update(array('id'  => $this->fields['id'],
-                                'img' => $img));
+            $this->update(['id'  => $this->fields['id'],
+                           'img' => $img]);
            } else {
-             $this->add(array('itemtype' => $itemtype,
-                              'type'     => $type_table,
-                              'img'      => $img));
+             $this->add(['itemtype' => $itemtype,
+                         'type'     => $type_table,
+                         'img'      => $img]);
             }
             $i++;
          }
@@ -126,18 +126,17 @@ class PluginArchiresImageItem extends CommonDBTM {
       echo "</table>";
       Html::closeForm();
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                ORDER BY `itemtype`,`type` ASC";
+      $query = ['FROM'  => $this->getTable(),
+                'ORDER' => ['itemtype ASC', 'type ASC']];
 
-      if ($result = $DB->query($query)) {
-         $number = $DB->numrows($result);
-         if ($number != 0) {
+      if ($result = $DB->request($query)) {
+         $number = count($result);
+         if ($number) {
             $rand = mt_rand();
             echo "<div id='liste'>";
             Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-            $massiveactionparams = array('num_displayed'    => $number,
-                                         'container'        => 'mass'.__CLASS__.$rand);
+            $massiveactionparams = ['num_displayed'    => $number,
+                                    'container'        => 'mass'.__CLASS__.$rand];
             Html::showMassiveActions($massiveactionparams);
 
             echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
@@ -150,7 +149,7 @@ class PluginArchiresImageItem extends CommonDBTM {
             echo "<th class='left'>".__('Picture', 'archires')."</th><th></th>";
             echo "</tr>";
 
-            while ($ligne = $DB->fetch_assoc($result)) {
+            while ($ligne = $result->next()) {
                $ID = $ligne["id"];
                echo "<tr class='tab_bg_1'>";
                echo "<td width='10'>";
@@ -186,12 +185,12 @@ class PluginArchiresImageItem extends CommonDBTM {
          $path="../";
 
       $image_name = $path."pics/nothing.png";
-      $query = "SELECT *
-                FROM `glpi_plugin_archires_imageitems`
-                WHERE `itemtype` = '$itemtype'";
 
-      if ($result = $DB->query($query)) {
-         while ($ligne= $DB->fetch_array($result)) {
+      $query = ['FROM'  => 'glpi_plugin_archires_imageitems',
+                'WHERE' => ['itemtype' => $itemtype]];
+
+      if ($result = $DB->request($query)) {
+         while ($ligne= $result->next()) {
             $config_img = $ligne["img"];
             if ($type == $ligne["type"]) {
                $image_name = $path."pics/$config_img";

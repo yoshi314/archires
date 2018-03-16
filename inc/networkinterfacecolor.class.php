@@ -21,7 +21,7 @@
 
  @package   archires
  @author    Nelly Mahu-Lasson, Xavier Caillaud
- @copyright Copyright (c) 2016-2017 Archires plugin team
+ @copyright Copyright (c) 2016-2018 Archires plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/archires
@@ -41,15 +41,14 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
    function getFromDBbyNetworkInterface($networkinterfaces_id) {
       global $DB;
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                WHERE `networkinterfaces_id` = '$networkinterfaces_id'";
+      $query = ['FROM'  => $this->getTable(),
+                'WHERE' => ['networkinterfaces_id' => $networkinterfaces_id]];
 
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
+      if ($result = $DB->request($query)) {
+         if (count($result) != 1) {
             return false;
          }
-         $this->fields = $DB->fetch_assoc($result);
+         $this->fields = $result->next();
          if (is_array($this->fields) && count($this->fields)) {
             return true;
          }
@@ -61,28 +60,27 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
    function addNetworkInterfaceColor($networkinterfaces_id,$color) {
       global $DB;
 
-      if ($networkinterfaces_id!='-1') {
+      if ($networkinterfaces_id != '-1') {
          if ($this->getFromDBbyNetworkInterface($networkinterfaces_id)) {
-            $this->update(array('id'    => $this->fields['id'],
-                                'color' => $color));
+            $this->update(['id'    => $this->fields['id'],
+                           'color' => $color]);
          } else {
-            $this->add(array('networkinterfaces_id' => $networkinterfaces_id,
-                             'color'                => $color));
+            $this->add(['networkinterfaces_id' => $networkinterfaces_id,
+                        'color'                => $color]);
          }
       } else {
-         $query  = "SELECT *
-                    FROM `glpi_networkinterfaces` ";
-         $result = $DB->query($query);
-         $number = $DB->numrows($result);
+         $query  = ['FROM' => 'glpi_networkinterfaces'];
+         $result = $DB->request($query);
          $i      = 0;
-         while ($i < $number) {
-           $networkinterface_table = $DB->result($result, $i, "id");
+         while ($i < count($result)) {
+            $row = $result->next();
+           $networkinterface_table = $rox['id'];
            if ($this->getFromDBbyNetworkInterface($networkinterface_table)) {
-               $this->update(array('id'    => $this->fields['id'],
-                                  'color' => $color));
+               $this->update(['id'    => $this->fields['id'],
+                              'color' => $color]);
            } else {
-               $this->add(array('networkinterfaces_id' => $networkinterface_table,
-                                'color'                => $color));
+               $this->add(['networkinterfaces_id' => $networkinterface_table,
+                           'color'                => $color]);
            }
            $i++;
          }
@@ -105,8 +103,8 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
          echo "<input type='text' name=\"color\">";
          echo "&nbsp;";
          Html::showToolTip(nl2br(__('Please use this color format', 'archires')),
-                           array('link'       => 'http://www.graphviz.org/doc/info/colors.html',
-                                 'linktarget' => '_blank'));
+                           ['link'       => 'http://www.graphviz.org/doc/info/colors.html',
+                            'linktarget' => '_blank']);
          echo "</td><td></div>";
          echo "<div class='center'>";
          echo "<input type='submit' name='add_color_networkinterface' value=\"".
@@ -116,20 +114,19 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
          echo "</div>";
       }
 
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                ORDER BY `networkinterfaces_id` ASC";
+      $query = ['FROM'  => $this->getTable(),
+                'ORDER' => 'networkinterfaces_id ASC'];
 
-      if ($result = $DB->query($query)) {
-         $number = $DB->numrows($result);
+      if ($result = $DB->request($query)) {
+         $number = count($result);
 
-         if ($number != 0) {
+         if ($number) {
             echo "<div id='liste_color' class='spaced center'>";
             if ($canupdate) {
                $rand = mt_rand();
                Html::openMassiveActionsForm('mass'.__CLASS__.$rand);
-               $massiveactionparams = array('num_displayed'    => $number,
-                                            'container'        => 'mass'.__CLASS__.$rand);
+               $massiveactionparams = ['num_displayed'    => $number,
+                                       'container'        => 'mass'.__CLASS__.$rand];
                Html::showMassiveActions($massiveactionparams);
             }
             echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
@@ -143,10 +140,9 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
             echo "<th class='left'>".__('Color', 'archires')."</th><th></th>";
             echo "</tr>";
 
-            while ($ligne = $DB->fetch_array($result)) {
+            while ($ligne = $result->next()) {
                $ID = $ligne["id"];
                echo "<tr class='tab_bg_1'>";
-
                if ($canupdate) {
                   echo "<td width='10'>";
                   Html::showMassiveActionCheckBox(__CLASS__, $ID);
@@ -172,25 +168,23 @@ class PluginArchiresNetworkInterfaceColor extends CommonDBTM {
    function dropdownNetworkInterface() {
       global $DB;
 
-      $colors = array();
+      $colors = [];
       foreach($DB->request("glpi_plugin_archires_networkinterfacecolors") as $color) {
          $colors[] = $color['networkinterfaces_id'];
       }
 
-      $query = "SELECT *
-                FROM `glpi_networkinterfaces`
-                WHERE `id` NOT IN ('".implode("','",$colors)."')
-                ORDER BY `name`";
+      $query = ['FROM'  => 'glpi_networkinterfaces',
+                'WHERE' =>  ['NOT' => ['id' => [implode("','",$colors)]]],
+                'ORDER' => 'name'];
 
-      $result = $DB->query($query);
-      $number = $DB->numrows($result);
+      $result = $DB->request($query);
 
-      if ($number != 0) {
-         $values = array(0 => Dropdown::EMPTY_VALUE);
-         while ($data = $DB->fetch_array($result)) {
+      if (count($result)) {
+         while ($data = $result->next()) {
             $values[$data['id']] = $data["name"];
          }
-         Dropdown::showFromArray('networkinterfaces_id', $values, array('width' => '80%'));
+         Dropdown::showFromArray('networkinterfaces_id', $values, ['width'               => '80%',
+                                                                   'display_emptychoice' => true]);
       }
    }
 
