@@ -317,7 +317,7 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                            AND `np`.`itemtype` = '$val'";
 
          if ($this->fields["vlans_id"] > "0") {
-            $query .= " AND `nv`.`networkports_id` = np`.`id`
+            $query .= " AND `nv`.`networkports_id` = `np`.`id`
                         AND `vlans_id` = '".$this->fields["vlans_id"]."'";
          }
          if (($this->fields["networks_id"] > "0")
@@ -337,13 +337,13 @@ class PluginArchiresLocationQuery extends CommonDBTM {
                 && !empty($this->fields["locations_id"])) {
                $query .= " AND " . getRealQueryForTreeItem('glpi_locations',
                                                            $this->fields["locations_id"],
-                                                           "`lc`.`id`");
+                                                           "`lc`.`id` ");
             } else {
-               $query .= " AND `lc`.`id` = '".$this->fields["locations_id"]."'";
+               $query .= " AND `lc`.`id` = '".$this->fields["locations_id"]."' ";
 
             }
          } else { // locations_id == -1 soit Lieux racines
-            $query .= " AND `lc`.`id` = `$itemtable`.`locations_id`";
+            $query .= " AND `lc`.`id` = `$itemtable`.`locations_id` ";
 
             if ($this->fields["child"]=='0') { // Pas d'enfants'
                $query .= " AND `lc`.`level`=1 ";
